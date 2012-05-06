@@ -3,25 +3,26 @@
 
 #include <vector>
 #include "Defines.h"
+#include "Hbond.h"
 
 struct TreeNode;
 struct TreeNode 
 {
-  Indentity identity;
+  Identity identity;
   // unsigned numFather;
   // unsigned numBother;
   // unsigned numSon;
   std::vector<TreeNode *> vecFather;
   std::vector<TreeNode *> vecBrother;
   std::vector<TreeNode *> vecSon;
-  TreeNode (const Indentity & id);
+  TreeNode (const Identity & id);
   unsigned numFather  () const {return vecFather.size();}
   unsigned numBrother () const {return vecBrother.size();}
   unsigned numSon     () const {return vecSon.size();}
 }
     ;
 
-Struct Generation
+struct Generation
 {
   std::vector<TreeNode > brothers;
   unsigned size () const;
@@ -33,30 +34,14 @@ class Tree
 public:
   void clear ();
   const Generation & lastGeneration () const;
-  void addGeneration (const HbondMap & map);
+  bool addGeneration (const HbondMap & map);
 }
     ;
 
-
-TreeNode::
-TreeNode(const Identity & id)
-    // : numFather(0), numBother(0), numSon(0)
-    : identity (id)
-{
-}
-
-unsigned Generations::
-size () const 
-{
-  return brothers.size();
-}
-
-const Generation & Generation::
-lastGeneration () const 
-{
-  return generations.back();
-}
-
-
+// const Generation & Generation::
+// lastGeneration () const 
+// {
+//   return generations.back();
+// }
 
 #endif

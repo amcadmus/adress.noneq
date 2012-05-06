@@ -1,5 +1,18 @@
 #include "Tree.h"
 
+TreeNode::
+TreeNode(const Identity & id)
+    // : numFather(0), numBother(0), numSon(0)
+    : identity (id)
+{
+}
+
+unsigned Generation::
+size () const 
+{
+  return brothers.size();
+}
+
 bool Tree::
 addGeneration (const HbondMap & map)
 {
@@ -43,9 +56,9 @@ addGeneration (const HbondMap & map)
       }
       // if do not fine, creat new tree node.
       if (find == false){
-	newGen.push_back (TreeNode(idSon[jj]));
-	me.vecSon.push_back(&newGen.back());
-	newGen.back().vecFather.push_back (&me);
+	newGen.brothers.push_back (TreeNode(idSon[jj]));
+	me.vecSon.push_back(&(newGen.brothers.back()));
+	newGen.brothers.back().vecFather.push_back (&me);
       }
     }
   }

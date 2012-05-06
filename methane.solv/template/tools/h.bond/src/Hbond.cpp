@@ -17,7 +17,7 @@ push_pair (const Identity & i,
   if (find == false){
     iidx = nodes.size();
     nodes.push_back (i);
-    neigbors.push_back (std::vector<Identity >());
+    neighbors_nodes.push_back (std::vector<unsigned >());
   }
   find = false;
   for (unsigned ii = 0; ii < nodes.size(); ++ii){
@@ -30,16 +30,16 @@ push_pair (const Identity & i,
   if (find == false){
     jidx = nodes.size();
     nodes.push_back (j);
-    neigbors.push_back (std::vector<Identity >());
+    neighbors_nodes.push_back (std::vector<unsigned >());
   }  
   
-  neigbors[iidx].push_back (jidx);
-  neigbors[jidx].push_back (iidx);
+  neighbors_nodes[iidx].push_back (jidx);
+  neighbors_nodes[jidx].push_back (iidx);
 }
 
 bool HbondMap::
-findNeighbors (const Indentity & me,
-	       std::vector<Identity > & neighbors)
+findNeighbors (const Identity & me,
+	       std::vector<Identity > & neighbors) const
 {
   neighbors.clear ();
   bool find = false;
@@ -47,7 +47,7 @@ findNeighbors (const Indentity & me,
     if (me == nodes[ii]){
       find = true;
       for (unsigned jj = 0; jj < neighbors_nodes.size(); ++jj){
-	neigbors.push_back (nodes[neighbors_nodes[ii][jj]]);
+	neighbors.push_back (nodes[neighbors_nodes[ii][jj]]);
       }
       break;
     }

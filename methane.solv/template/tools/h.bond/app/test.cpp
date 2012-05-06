@@ -18,5 +18,12 @@
 
 int main(int argc, char * argv[])
 {
-  
+  HbondMap map;
+  map.push_pair (0, 1);
+  map.push_pair (0, 2);
+  map.push_pair (1, 2);
+  map.push_pair (1, 3);
+  map.push_pair (2, 3);
+
+  return 0;
 }

@@ -11,8 +11,8 @@ class HbondMap
 public:
   void push_pair (const Identity & i,
 		  const Identity & j);
-  bool findNeighbors (const Indentity & me,
-		      std::vector<Identity > & neighbors);
+  bool findNeighbors (const Identity & me,
+		      std::vector<Identity > & neighbors) const;
 }
     ;
 

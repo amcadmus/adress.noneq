@@ -18,14 +18,14 @@ calCosTheta (const std::vector<ValueType > & r0,
 
   
 
-virtual bool
+bool HydrogenBond_Geo_1::
 operator () (const std::vector<std::vector<ValueType > > & denotor,
 	     const std::vector<std::vector<ValueType > > & acceptor) const
 {
-  std::vector<ValueType> & o0  (denotor[0]);
-  std::vector<ValueType> & h00 (denotor[1]);
-  std::vector<ValueType> & h01 (denotor[2]);
-  std::vector<ValueType> & o1  (acceptor[0]);
+  const std::vector<ValueType> & o0  (denotor[0]);
+  const std::vector<ValueType> & h00 (denotor[1]);
+  const std::vector<ValueType> & h01 (denotor[2]);
+  const std::vector<ValueType> & o1  (acceptor[0]);
   
   ValueType dist2 = 0.;
   std::vector<ValueType > doo (3);
