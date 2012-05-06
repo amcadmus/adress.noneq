@@ -70,7 +70,7 @@ addGeneration (const HbondMap & map)
     for (; itIdSon != idSon.end(); itIdSon ++){
       for (unsigned jj = 0; jj < me.numFather(); ++jj){
 	TreePosition fPosi = me.vecFather[jj];
-	if (generations[fPosi.genId].brothers[fPosi.broId].identity == (*itIdSon)){
+	if (getTreeNode(fPosi).identity == (*itIdSon)){
 	  idSon.erase(itIdSon);
 	  break;
 	}
@@ -79,7 +79,7 @@ addGeneration (const HbondMap & map)
     for (; itIdSon != idSon.end(); itIdSon ++){
       for (unsigned jj = 0; jj < me.numBrother(); ++jj){
 	TreePosition bPosi = me.vecBrother[jj];
-	if (generations[bPosi.genId].brothers[bPosi.broId].identity == (*itIdSon)){
+	if (getTreeNode(bPosi).identity == (*itIdSon)){
 	  idSon.erase(itIdSon);
 	  break;
 	}
@@ -134,12 +134,12 @@ print () const
       printf ("Fathers: ");
       for (unsigned kk = 0; kk < generations[ii].brothers[jj].numFather(); ++kk){
 	TreePosition fatherPosi = generations[ii].brothers[jj].vecFather[kk];
-	printf ("%d ", generations[fatherPosi.genId].brothers[fatherPosi.broId].identity);
+	printf ("%d ", getTreeNode(fatherPosi).identity);
       }
       printf (" Sons: ");
       for (unsigned kk = 0; kk < generations[ii].brothers[jj].numSon(); ++kk){
 	TreePosition sonPosi = generations[ii].brothers[jj].vecSon[kk];
-	printf ("%d ", generations[sonPosi.genId].brothers[sonPosi.broId].identity);
+	printf ("%d ", getTreeNode(sonPosi).identity);
       }
       printf ("\n");
     }
