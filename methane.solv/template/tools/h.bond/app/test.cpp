@@ -13,7 +13,7 @@
 #include <cmath>
 
 #include "Tree.h"
-#include "Hbond.h"
+#include "HbondMap.h"
 
 
 int main(int argc, char * argv[])
@@ -25,5 +25,16 @@ int main(int argc, char * argv[])
   map.push_pair (1, 3);
   map.push_pair (2, 3);
 
+  std::vector<Identity > neigbors;
+  for (int i = 0; i < 3; ++i){
+    if (map.findNeighbors (i, neigbors)){
+      printf ("%d      ", i);
+      for (unsigned jj = 0; jj < neigbors.size(); ++jj){
+	printf ("%d ", neigbors[jj]);
+      }
+      printf ("\n");
+    }
+  }
+  
   return 0;
 }

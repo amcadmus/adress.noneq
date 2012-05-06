@@ -1,4 +1,4 @@
-#include "Hbond.h"
+#include "HbondMap.h"
 #include <algorithm>
 
 void HbondMap::

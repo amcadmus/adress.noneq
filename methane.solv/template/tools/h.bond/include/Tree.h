@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Defines.h"
-#include "Hbond.h"
+#include "HbondMap.h"
 
 struct TreeNode;
 struct TreeNode 

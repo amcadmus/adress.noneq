@@ -110,7 +110,7 @@ calculate()
   for (int i = 1; i < nbins; ++i){
     double r0 = (i-0.5) * binSize;
     double r1 = (i+0.5) * binSize;
-    double r01 = i * binSize;
+    // double r01 = i * binSize;
     hist[i] /= 4. / 3. * M_PI * (r1*r1*r1 - r0*r0*r0) * rho;
     // hist[i] /= 4. * M_PI * r0 * r1 * (r1 - r0) * rho;
   }
