@@ -11,6 +11,7 @@ class HbondMap
 public:
   void push_pair (const Identity & i,
 		  const Identity & j);
+  unsigned nNodes () const {return nodes.size();}
   bool findNeighbors (const Identity & me,
 		      std::vector<Identity > & neighbors) const;
 }

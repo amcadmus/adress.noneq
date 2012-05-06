@@ -46,7 +46,7 @@ findNeighbors (const Identity & me,
   for (unsigned ii = 0; ii < nodes.size(); ++ii){
     if (me == nodes[ii]){
       find = true;
-      for (unsigned jj = 0; jj < neighbors_nodes.size(); ++jj){
+      for (unsigned jj = 0; jj < neighbors_nodes[ii].size(); ++jj){
 	neighbors.push_back (nodes[neighbors_nodes[ii][jj]]);
       }
       break;

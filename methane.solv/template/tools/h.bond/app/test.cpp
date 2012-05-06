@@ -19,14 +19,14 @@
 int main(int argc, char * argv[])
 {
   HbondMap map;
+  std::vector<Identity > neigbors;
+
   map.push_pair (0, 1);
   map.push_pair (0, 2);
   map.push_pair (1, 2);
   map.push_pair (1, 3);
   map.push_pair (2, 3);
-
-  std::vector<Identity > neigbors;
-  for (int i = 0; i < 3; ++i){
+  for (unsigned i = 0; i < map.nNodes(); ++i){
     if (map.findNeighbors (i, neigbors)){
       printf ("%d      ", i);
       for (unsigned jj = 0; jj < neigbors.size(); ++jj){
