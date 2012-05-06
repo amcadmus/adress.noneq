@@ -35,6 +35,14 @@ int main(int argc, char * argv[])
       printf ("\n");
     }
   }
+  printf ("\n");
+
+  Tree tree;
+  tree.addRoot(0);
+  tree.addGeneration (map);
+  tree.print ();
+  tree.addGeneration (map);
+  tree.print ();
   
   return 0;
 }

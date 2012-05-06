@@ -1,4 +1,12 @@
 #include "Tree.h"
+#include <iostream>
+#include <fstream>
+
+inline TreePosition::
+TreePosition (const unsigned g, const unsigned b)
+    : genId(g), broId(b)
+{
+}
 
 TreeNode::
 TreeNode(const Identity & id)
@@ -13,22 +21,56 @@ size () const
   return brothers.size();
 }
 
+void Generation::
+buildBrothers()
+{
+  if (brothers.size() < 2){
+    return;
+  }
+} 
+
+void Tree::
+addRoot (const Identity & id)
+{
+  generations.push_back(Generation());
+  generations[0].brothers.push_back(TreeNode(id));
+}
+
+inline TreeNode & Tree::
+getTreeNode (const TreePosition & p)
+{
+  return generations[p.genId].brothers[p.broId];
+}
+
+inline const TreeNode & Tree::
+getTreeNode (const TreePosition & p) const
+{
+  return generations[p.genId].brothers[p.broId];
+}
+
 bool Tree::
 addGeneration (const HbondMap & map)
 {
-  Generation & oldGen (generations.back());
-  generations.push_back(Generation());
-  Generation & newGen (generations.back());
+  if (generations.size() == 0){
+    std::cerr << "cannot add genaration without adding a root"<< std::endl;
+    return false;
+  }
+  // std::cout << generations.size() << std::endl;
+  generations.push_back(Generation());  
+  Generation & oldGen (generations[generations.size() - 2]);
+  Generation & newGen (generations[generations.size() - 1]);
   
   for (unsigned ii = 0; ii < oldGen.size(); ++ii){
     TreeNode & me (oldGen.brothers[ii]);
+    TreePosition myPosi (generations.size() - 2, ii);
     std::vector<Identity > idSon;
     map.findNeighbors (me.identity, idSon);
     std::vector<Identity >::iterator itIdSon = idSon.begin();
     // remove father and brothers from neighbors
     for (; itIdSon != idSon.end(); itIdSon ++){
       for (unsigned jj = 0; jj < me.numFather(); ++jj){
-	if (me.vecFather[jj]->identity == (*itIdSon)){
+	TreePosition fPosi = me.vecFather[jj];
+	if (generations[fPosi.genId].brothers[fPosi.broId].identity == (*itIdSon)){
 	  idSon.erase(itIdSon);
 	  break;
 	}
@@ -36,7 +78,8 @@ addGeneration (const HbondMap & map)
     }
     for (; itIdSon != idSon.end(); itIdSon ++){
       for (unsigned jj = 0; jj < me.numBrother(); ++jj){
-	if (me.vecBrother[jj]->identity == (*itIdSon)){
+	TreePosition bPosi = me.vecBrother[jj];
+	if (generations[bPosi.genId].brothers[bPosi.broId].identity == (*itIdSon)){
 	  idSon.erase(itIdSon);
 	  break;
 	}
@@ -49,19 +92,22 @@ addGeneration (const HbondMap & map)
       for (unsigned kk = 0; kk < newGen.brothers.size(); ++kk){
 	if (newGen.brothers[kk].identity == idSon[jj]){
 	  find = true;
-	  me.vecBrother.push_back (&newGen.brothers[kk]);
-	  newGen.brothers[kk].vecFather.push_back (&me);
+	  // me.vecBrother.push_back (&newGen.brothers[kk]);
+	  me.vecSon.push_back (TreePosition(generations.size() - 1, kk));
+	  newGen.brothers[kk].vecFather.push_back (myPosi);
 	  break;
 	}
       }
-      // if do not fine, creat new tree node.
+      // if do not find, creat new tree node.
       if (find == false){
 	newGen.brothers.push_back (TreeNode(idSon[jj]));
-	me.vecSon.push_back(&(newGen.brothers.back()));
-	newGen.brothers.back().vecFather.push_back (&me);
+	me.vecSon.push_back(TreePosition(generations.size()-1, newGen.brothers.size()-1));
+	newGen.brothers.back().vecFather.push_back (myPosi);
       }
     }
   }
+
+  newGen.buildBrothers();
 
   if (newGen.brothers.size() != 0){
     return true;
@@ -77,6 +123,29 @@ addGeneration (const HbondMap & map)
   // generations.back().push_back (TreeNode (idSon[jj]));
   // generations.back().back().vecFather.push_back (&me);
       
-      
+
+void Tree::
+print () const
+{
+  for (unsigned ii = 0; ii < generations.size(); ++ii){
+    printf ("Level: %d\n", ii);
+    for (unsigned jj = 0; jj < generations[ii].size(); ++jj){
+      printf ("item %d:\t\t", generations[ii].brothers[jj].identity);
+      printf ("Fathers: ");
+      for (unsigned kk = 0; kk < generations[ii].brothers[jj].numFather(); ++kk){
+	TreePosition fatherPosi = generations[ii].brothers[jj].vecFather[kk];
+	printf ("%d ", generations[fatherPosi.genId].brothers[fatherPosi.broId].identity);
+      }
+      printf (" Sons: ");
+      for (unsigned kk = 0; kk < generations[ii].brothers[jj].numSon(); ++kk){
+	TreePosition sonPosi = generations[ii].brothers[jj].vecSon[kk];
+	printf ("%d ", generations[sonPosi.genId].brothers[sonPosi.broId].identity);
+      }
+      printf ("\n");
+    }
+    printf ("\n");
+  }
+}
+
       
 	

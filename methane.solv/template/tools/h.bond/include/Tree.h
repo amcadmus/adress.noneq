@@ -5,6 +5,13 @@
 #include "Defines.h"
 #include "HbondMap.h"
 
+struct TreePosition
+{
+  unsigned genId;
+  unsigned broId;
+  TreePosition (const unsigned g, const unsigned b) ;
+};
+
 struct TreeNode;
 struct TreeNode 
 {
@@ -12,9 +19,9 @@ struct TreeNode
   // unsigned numFather;
   // unsigned numBother;
   // unsigned numSon;
-  std::vector<TreeNode *> vecFather;
-  std::vector<TreeNode *> vecBrother;
-  std::vector<TreeNode *> vecSon;
+  std::vector<TreePosition> vecFather;
+  std::vector<TreePosition> vecBrother;
+  std::vector<TreePosition> vecSon;
   TreeNode (const Identity & id);
   unsigned numFather  () const {return vecFather.size();}
   unsigned numBrother () const {return vecBrother.size();}
@@ -26,15 +33,20 @@ struct Generation
 {
   std::vector<TreeNode > brothers;
   unsigned size () const;
+  void buildBrothers ();
 };
 
 class Tree 
 {
   std::vector<Generation > generations;
+  const Generation & lastGeneration () const;
+  TreeNode & getTreeNode (const TreePosition & p);
+  const TreeNode & getTreeNode (const TreePosition & p) const;
 public:
   void clear ();
-  const Generation & lastGeneration () const;
+  void addRoot (const Identity & id);
   bool addGeneration (const HbondMap & map);
+  void print () const;
 }
     ;
 
