@@ -121,6 +121,44 @@ int main(int argc, char * argv[])
   std::vector<std::vector<unsigned > > p0, p1;
   CircleOperations::findCommonPatterns (c.circles[0], c.circles[1],
 					p0, p1);
+
+  Circle c0, c1;
+  c0.push_back (2);
+  c0.push_back (3);
+  c0.push_back (11);
+  c0.push_back (12);
+  c0.push_back (13);
+  c0.push_back (14);
+  c0.push_back (101);
+  c0.push_back (102);
+  c0.push_back (103);
+  c0.push_back (104);
+  c0.push_back (31);
+  c0.push_back (32);
+  c0.push_back (33);
+  c0.push_back (0);
+  c0.push_back (1);
+ 
+  c1.push_back (3);
+  c1.push_back (21);
+  c1.push_back (22);
+  c1.push_back (23);
+  c1.push_back (101);
+  c1.push_back (102);
+  c1.push_back (103);
+  c1.push_back (104);
+  c1.push_back (41);
+  c1.push_back (42);
+  c1.push_back (43);
+  c1.push_back (44);
+  c1.push_back (45);
+  c1.push_back (0);
+  c1.push_back (1);
+  c1.push_back (2);
+  std::cout << std::endl;
+  std::cout << std::endl;  
+  CircleOperations::findCommonPatterns (c0, c1, p0, p1);
+  
   
   return 0;
 }
