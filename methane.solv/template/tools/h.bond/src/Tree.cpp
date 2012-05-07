@@ -53,6 +53,15 @@ addRoot (const Identity & id)
   generations[0].brothers.push_back(TreeNode(id));
 }
 
+bool Tree::
+isCircular () const
+{
+  if (generations.size() == 0){
+    return false;
+  }
+  return (generations[0].brothers[0].numSon() > 1);
+}
+
 inline TreeNode & Tree::
 getTreeNode (const TreePosition & p)
 {
@@ -153,6 +162,43 @@ addGeneration (const HbondMap & map)
       
 
 void Tree::
+buildCables (const TreePosition & posi)
+{
+  TreeNode & node (getTreeNode(posi));
+  if (node.cables.size() != 0){
+    return;
+  }
+  // root node
+  if (node.numFather() == 0){
+    node.cables.push_back (Cable());
+    node.cables[0].push_back (posi);
+    return;
+  }
+  // otherwise
+  for (unsigned ii = 0; ii < node.numFather(); ++ii){
+    buildCables (node.vecFather[ii]);
+    TreeNode & fatherNode (getTreeNode(node.vecFather[ii]));    
+    Cable tmpCable;
+    for (unsigned jj = 0; jj < fatherNode.cables.size(); ++jj){
+      tmpCable = fatherNode.cables[jj];
+      tmpCable.push_back (posi);
+      node.cables.push_back(tmpCable);
+    }
+  }
+}
+
+void Tree::
+buildCables ()
+{
+  unsigned newGenId = generations.size() - 1;
+  for (unsigned ii = 0; ii < generations[newGenId].brothers.size(); ++ii){
+    TreePosition posi(newGenId, ii);
+    buildCables (posi);
+  }
+}
+    
+
+void Tree::
 print () const
 {
   for (unsigned ii = 0; ii < generations.size(); ++ii){
@@ -178,7 +224,128 @@ print () const
     }
     printf ("\n");
   }
+
+  // unsigned newGenId = generations.size() - 1;
+  // for (unsigned ii = 0; ii < generations[newGenId].brothers.size(); ++ii){
+  //   TreePosition posi(newGenId, ii);
+  //   const TreeNode & node (getTreeNode(posi));
+  //   printf ("NodePosi: %d %d,   id: %d\n", newGenId, ii, node.identity);
+  //   for (unsigned jj = 0; jj < node.cables.size(); ++jj){
+  //     printf ("Cable No. %d: ", jj);
+  //     for (unsigned kk = 0; kk < node.cables[jj].size(); ++kk){
+  // 	printf ("%d ", getTreeNode(node.cables[jj][kk]).identity);
+  //     }
+  //     printf ("\n");
+  //   }
+  // }
 }
 
-      
+
+Circles Tree::
+buildCircleCable (const Cable & c0,
+		  const Cable & c1) const
+{
+  if (c0.size() != c1.size()){
+    std::cerr << "cable size do not match, cannot build circle" << std::endl;
+    return Circles();
+  }
+  unsigned size = c0.size();
+  if (size <= 1) {
+    return Circles();
+  }
+  unsigned idx0 = 0;
+  unsigned idx2 = size;
+  unsigned idx1 = 1;
+
+  Circles tmp;
+  while (idx1 != idx2){
+    if (c0[idx1] == c1[idx1]){
+      if (idx1 - idx0 >= 2){
+	Circle tmpCir;
+	for (unsigned ii = idx0; ii <= idx1; ++ii){
+	  tmpCir.push_back (getTreeNode(c0[ii]).identity);
+	}
+	for (unsigned ii = idx1 - 1; ii >= idx0+1; --ii){
+	  tmpCir.push_back (getTreeNode(c1[ii]).identity);
+	}
+	tmp.circles.push_back(tmpCir);
+      }
+      idx0 = idx1;
+      idx1 ++;
+    }
+    else {
+      idx1 ++;
+    }
+  }
+
+  if (c0[idx2-1] != c1[idx2-1]){
+    Circle tmpCir;
+    for (unsigned ii = idx0; ii <= idx2-1; ++ii){
+      tmpCir.push_back (getTreeNode(c0[ii]).identity);
+    }
+    for (unsigned ii = idx2-1; ii >= idx0+1; --ii){
+      tmpCir.push_back (getTreeNode(c1[ii]).identity);
+    }
+    tmp.circles.push_back(tmpCir);
+  }
+
+  return tmp;
+}
+
+
+void Tree::
+buildCircles (Circles & cir) const
+{
+  // unsigned newGenId = generations.size() - 1;
+  // const Generation & newGen (generations[newGenId]);
+  
+  cir.circles.clear();
+
+  // // build from end nodes
+  // for (unsigned ii = 0; ii < newGen.brothers.size(); ++ii){
+  //   const TreeNode & me ((newGen.brothers[ii]));
+  //   for (unsigned jj = 0; jj < me.cables.size(); ++jj){
+  //     for (unsigned kk = jj+1; kk < me.cables.size(); ++kk){
+  // 	Circles tmp = buildCircleCable (me.cables[jj], me.cables[kk]);
+  // 	cir.add (tmp);
+  //     }
+  //   }
+  // }
+
+  // build from end nodes
+  for (unsigned ii = 2; ii < generations.size(); ++ii){
+    for (unsigned ll = 0; ll < generations[ii].brothers.size(); ++ll){
+      const TreeNode & me (generations[ii].brothers[ll]);
+      if (me.cables.size() > 1 && me.numSon() == 0 && me.numBrother() == 0){
+	// printf ("build circle at node: %d\n", me.identity);
+	for (unsigned jj = 0; jj < me.cables.size(); ++jj){
+	  for (unsigned kk = jj+1; kk < me.cables.size(); ++kk){
+	    Circles tmp = buildCircleCable (me.cables[jj], me.cables[kk]);
+	    cir.add (tmp);
+	  }
+	}
+      }
+    }
+  }
+
+  // build from brothers
+  for (unsigned ii = 1; ii < generations.size(); ++ii){
+    for (unsigned jj = 0; jj < generations[ii].brothers.size(); ++jj){
+      const TreeNode & node0 (generations[ii].brothers[jj]);
+      for (unsigned kk = 0; kk < node0.numBrother(); ++kk){
+	if (node0.vecBrother[kk].broId > jj){
+	  const TreeNode & node1 (getTreeNode(node0.vecBrother[kk]));
+	  // printf ("build circle at node: %d %d\n", node0.identity, node1.identity);
+	  for (unsigned aa = 0; aa < node0.cables.size(); ++aa){
+	    for (unsigned bb = 0; bb < node1.cables.size(); ++bb){
+	      Circles tmp = buildCircleCable (node0.cables[aa], node1.cables[bb]);
+	      cir.add (tmp);
+	    }
+	  }
+	}
+      }
+    }
+  }   
+}
+
 	
