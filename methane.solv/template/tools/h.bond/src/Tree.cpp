@@ -80,29 +80,39 @@ addGeneration (const HbondMap & map)
   for (unsigned ii = 0; ii < oldGen.size(); ++ii){
     TreeNode & me (oldGen.brothers[ii]);
     TreePosition myPosi (generations.size() - 2, ii);
-    std::vector<Identity > idSon;
+    std::vector<Identity > idSon, tmpIdSon;
     map.findNeighbors (me.identity, idSon);
-    std::vector<Identity >::iterator itIdSon = idSon.begin();
-    // remove father and brothers from neighbors
-    for (; itIdSon != idSon.end(); itIdSon ++){
+    tmpIdSon = idSon;
+    idSon.clear();
+    for (unsigned kk = 0; kk < tmpIdSon.size(); ++kk){
+      bool find = false;
       for (unsigned jj = 0; jj < me.numFather(); ++jj){
 	TreePosition fPosi = me.vecFather[jj];
-	if (getTreeNode(fPosi).identity == (*itIdSon)){
-	  idSon.erase(itIdSon);
+	if (getTreeNode(fPosi).identity == tmpIdSon[kk]){
+	  find = true;
 	  break;
 	}
       }
+      if (!find){
+	idSon.push_back(tmpIdSon[kk]);
+      }
     }
-    itIdSon = idSon.begin();
-    for (; itIdSon != idSon.end(); itIdSon ++){
+    tmpIdSon = idSon;
+    idSon.clear();
+    for (unsigned kk = 0; kk < tmpIdSon.size(); ++kk){
+      bool find = false;
       for (unsigned jj = 0; jj < me.numBrother(); ++jj){
 	TreePosition bPosi = me.vecBrother[jj];
-	if (getTreeNode(bPosi).identity == (*itIdSon)){
-	  idSon.erase(itIdSon);
+	if (getTreeNode(bPosi).identity == tmpIdSon[kk]){
+	  find = true;
 	  break;
 	}
       }
+      if (!find){
+	idSon.push_back(tmpIdSon[kk]);
+      }
     }
+
     // end remove father and brothers from neighbors
     for (unsigned jj = 0; jj < idSon.size(); ++jj){
       // check if the son is already in the generation.
