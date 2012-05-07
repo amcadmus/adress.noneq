@@ -21,11 +21,28 @@ size () const
   return brothers.size();
 }
 
-void Generation::
-buildBrothers()
+void Tree::
+buildBrothers(const HbondMap & map)
 {
-  if (brothers.size() < 2){
+  unsigned newGenId = generations.size() - 1;
+  if (generations[newGenId].brothers.size() < 2){
     return;
+  }
+
+  for (unsigned ii = 0; ii < generations[newGenId].size(); ++ii){
+    std::vector<Identity > ineighbor;
+    map.findNeighbors (generations[newGenId].brothers[ii].identity, ineighbor);
+    TreePosition iposi (newGenId, ii);
+    for (unsigned jj = ii+1; jj < generations[newGenId].size(); ++jj){
+      for (unsigned kk = 0; kk < ineighbor.size(); ++kk){
+	if (ineighbor[kk] == generations[newGenId].brothers[jj].identity){
+	  TreePosition jposi (newGenId, jj);
+	  generations[newGenId].brothers[ii].vecBrother.push_back (jposi);
+	  generations[newGenId].brothers[jj].vecBrother.push_back (iposi);
+	  break;
+	}
+      }
+    }
   }
 } 
 
@@ -76,6 +93,7 @@ addGeneration (const HbondMap & map)
 	}
       }
     }
+    itIdSon = idSon.begin();
     for (; itIdSon != idSon.end(); itIdSon ++){
       for (unsigned jj = 0; jj < me.numBrother(); ++jj){
 	TreePosition bPosi = me.vecBrother[jj];
@@ -107,7 +125,7 @@ addGeneration (const HbondMap & map)
     }
   }
 
-  newGen.buildBrothers();
+  buildBrothers(map);
 
   if (newGen.brothers.size() != 0){
     return true;
@@ -139,6 +157,11 @@ print () const
       printf (" Sons: ");
       for (unsigned kk = 0; kk < generations[ii].brothers[jj].numSon(); ++kk){
 	TreePosition sonPosi = generations[ii].brothers[jj].vecSon[kk];
+	printf ("%d ", getTreeNode(sonPosi).identity);
+      }
+      printf (" Brothers: ");
+      for (unsigned kk = 0; kk < generations[ii].brothers[jj].numBrother(); ++kk){
+	TreePosition sonPosi = generations[ii].brothers[jj].vecBrother[kk];
 	printf ("%d ", getTreeNode(sonPosi).identity);
       }
       printf ("\n");

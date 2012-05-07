@@ -33,7 +33,6 @@ struct Generation
 {
   std::vector<TreeNode > brothers;
   unsigned size () const;
-  void buildBrothers ();
 };
 
 class Tree 
@@ -42,6 +41,7 @@ class Tree
   const Generation & lastGeneration () const;
   TreeNode & getTreeNode (const TreePosition & p);
   const TreeNode & getTreeNode (const TreePosition & p) const;
+  void buildBrothers (const HbondMap & map);
 public:
   void clear ();
   void addRoot (const Identity & id);
