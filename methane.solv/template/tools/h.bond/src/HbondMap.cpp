@@ -6,33 +6,40 @@ push_pair (const Identity & i,
 	   const Identity & j)
 {
   unsigned iidx, jidx;
-  bool find = false;
+  bool ifind = false;
   for (unsigned ii = 0; ii < nodes.size(); ++ii){
     if (i == nodes[ii]){
-      find = true;
+      ifind = true;
       iidx = ii;
       break;
     }
   }
-  if (find == false){
+  if (ifind == false){
     iidx = nodes.size();
     nodes.push_back (i);
     neighbors_nodes.push_back (std::vector<unsigned >());
   }
-  find = false;
+  bool jfind = false;
   for (unsigned ii = 0; ii < nodes.size(); ++ii){
     if (j == nodes[ii]){
-      find = true;
+      jfind = true;
       jidx = ii;
       break;
     }
   }
-  if (find == false){
+  if (jfind == false){
     jidx = nodes.size();
     nodes.push_back (j);
     neighbors_nodes.push_back (std::vector<unsigned >());
   }  
-  
+
+  if (ifind && jfind){
+    for (unsigned ii = 0; ii < neighbors_nodes[iidx].size(); ++ii){
+      if (neighbors_nodes[iidx][ii] == jidx){
+	return;
+      }
+    }
+  }
   neighbors_nodes[iidx].push_back (jidx);
   neighbors_nodes[jidx].push_back (iidx);
 }
