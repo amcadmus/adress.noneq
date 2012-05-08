@@ -14,6 +14,8 @@ public:
   unsigned nNodes () const {return nodes.size();}
   bool findNeighbors (const Identity & me,
 		      std::vector<Identity > & neighbors) const;
+  void buildSubMap (const std::vectror<Identity > nodes,
+		    HbondMap & map);
 }
     ;
 

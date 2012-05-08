@@ -34,6 +34,24 @@ sameCircle (const Circle & c0,
   return value;
 }
 
+bool Circles::
+find (const Circle & c_)
+{
+  bool tmp = false;
+  Circle c(c_);
+  std::sort (c.begin(), c.end());
+  std::vector<Circle > sortedCircles (circles);
+  
+  for (unsigned ii = 0; ii < circles.size(); ++ii){
+    std::sort(sortedCircles[ii].begin(), sortedCircles[ii].end());
+    if (sameCircle(c, sortedCircles[ii])){
+      tmp = true;
+      break;
+    }
+  }
+  return tmp;
+}
+
 
 void Circles::
 uniqueCircles ()
@@ -62,6 +80,168 @@ uniqueCircles ()
       circles.push_back(tmpCircles[ii]);
     }
   }
+}
+
+void Circles::
+simplifyCircles ()
+{
+  // start:
+  // std::cout << "called" << std::endl;
+  start:
+  
+  unsigned circleEnd = circles.size();
+  for (unsigned ii = 0; ii < circleEnd; ++ii){
+    for (unsigned jj = ii+1; jj < circleEnd; ++jj){
+      printf ("%d\t %d      %d\n", ii, jj, circleEnd);
+      Circle tmp = diffCircle (circles[ii], circles[jj]);
+      if (!tmp.empty()){
+	if (circles[ii].size() == circles[jj].size()){
+	  if (tmp.size() <= circles[ii].size()){
+	    // if (! find(tmp) ){
+	    //   circles.push_back (tmp);
+	    //   circleEnd ++;
+	    // }	    
+	    continue;
+	  }
+	  if (tmp.size() < circles[ii].size()){
+	    if (! find(tmp) ){
+	      printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
+	      circles.push_back (tmp);
+	      circleEnd ++;
+	    }	    
+	  }
+	}
+	else if (circles[ii].size() < circles[jj].size()){
+	  if (tmp.size() < circles[jj].size()){
+	    printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
+	    circles[jj] = tmp;
+	    uniqueCircles ();
+	    goto start;
+	    // return;
+	  }
+	  else if (tmp.size() == circles[jj].size()){
+	    // if (! find(tmp) ){
+	    //   circles.push_back (tmp);
+	    //   circleEnd ++;
+	    // }
+	    continue;
+	  }
+	  else{
+	    continue;
+	  }
+	}
+	else {
+	  if (tmp.size() < circles[ii].size()){
+	    printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
+	    circles[ii] = tmp;
+	    uniqueCircles ();
+	    goto start;
+	    // return;
+	  }
+	  else if (tmp.size() == circles[ii].size()){
+	    // if (! find(tmp) ){
+	    //   circles.push_back (tmp);
+	    //   circleEnd ++;
+	    // }
+	    continue;
+	  }
+	  else{
+	    continue;
+	  }
+	}
+      }
+    }
+  }
+  
+  
+  // std::vector<Circle >::iterator ii;
+  // std::vector<Circle >::iterator jj;
+  // std::vector<Circle >::iterator cirEnd = circles.end();
+
+  // int counti = 0;
+  // for (ii = circles.begin(); ii != circles.end(); ++ii, counti++){
+  //   int countj = counti+1;
+  //   for (jj = ii, ++jj; jj != circles.end(); ++jj, countj++){
+  //     printf ("%d\t %d\n", counti, countj);
+  //     Circle tmp = diffCircle (*ii, *jj);
+  //     if (!tmp.empty()){
+  // 	if (ii->size() == jj->size()){
+  // 	  if (tmp.size() <= ii->size()){
+  // 	    circles.push_back (tmp);
+  // 	    continue;
+  // 	  }
+  // 	  else {
+  // 	    continue;
+  // 	  }
+  // 	}
+  // 	else if (ii->size() < jj->size()){
+  // 	  if (tmp.size() < jj->size()){
+  // 	    *jj = tmp;
+  // 	    uniqueCircles ();
+  // 	    return;
+  // 	  }
+  // 	  else if (tmp.size() == jj->size()){
+  // 	    circles.push_back (tmp);
+  // 	    continue;
+  // 	  }
+  // 	  else{
+  // 	    continue;
+  // 	  }
+  // 	}
+  // 	else {
+  // 	  if (tmp.size() < ii->size()){
+  // 	    *jj = tmp;
+  // 	    uniqueCircles ();
+  // 	    return;
+  // 	  }
+  // 	  else if (tmp.size() == ii->size()){
+  // 	    circles.push_back (tmp);
+  // 	    continue;
+  // 	  }
+  // 	  else{
+  // 	    continue;
+  // 	  }
+  // 	}
+  //     }
+  //     // if (tmp.size() < ii->size() && tmp.size() < jj->size()){
+  //     //   if (ii->size() < jj->size()){
+  //     //     circles.erase (jj);
+  //     //     circles.push_back (tmp);
+  //     //     uniqueCircles ();
+  //     //     // std::cout << "jump" << std::endl;
+  //     //     // goto start;
+  //     //     simplifyCircles ();
+  //     //   }
+  //     //   else {
+  //     //     circles.erase (ii);
+  //     //     circles.push_back (tmp);
+  //     //     uniqueCircles ();
+  //     //     // std::cout << "jump" << std::endl;
+  //     //     // goto start;
+  //     //     simplifyCircles ();
+  //     //   }
+  //     // }
+  //     // else if (tmp.size() < ii->size()){
+  //     //   circles.erase (ii);
+  //     //   circles.push_back (tmp);
+  //     //   uniqueCircles ();
+  //     //   // std::cout << "jump" << std::endl;
+  //     //   // goto start;
+  //     //   simplifyCircles ();
+  //     // }
+  //     // else if (tmp.size() < jj->size()){
+  //     //   circles.erase (jj);
+  //     //   circles.push_back (tmp);
+  //     //   uniqueCircles ();
+  //     //   // std::cout << "jump" << std::endl;
+  //     //   // goto start;
+  //     //   simplifyCircles ();
+  //     // }
+  //     // return;
+  //   }
+  // }
+
+
 }
 
 
@@ -140,6 +320,19 @@ findCommonPatterns (const Circle & c0_,
   
   out100:
   if (find){
+    c0_pattern.push_back(tmp0);
+    c1_pattern.push_back(tmp1);
+    // for (unsigned ii = 0; ii < tmp0.size(); ++ii){
+    //   printf ("%d ", tmp0[ii]);
+    // }
+    // printf ("\n");
+    // for (unsigned ii = 0; ii < tmp1.size(); ++ii){
+    //   printf ("%d ", tmp1[ii]);
+    // }
+    // printf ("\n");
+  }
+
+  if (find){
     if (c0.size() - tmp0.size() <= 2 ||
 	c1.size() - tmp1.size() <= 2 ){
       goto out200;
@@ -177,37 +370,51 @@ findCommonPatterns (const Circle & c0_,
   }
   
   out200:  
-  if (find){
-    c0_pattern.push_back(tmp0);
-    c1_pattern.push_back(tmp1);
-    for (unsigned ii = 0; ii < tmp0.size(); ++ii){
-      printf ("%d ", tmp0[ii]);
-    }
-    printf ("\n");
-    for (unsigned ii = 0; ii < tmp1.size(); ++ii){
-      printf ("%d ", tmp1[ii]);
-    }
-    printf ("\n");
-  }
   return find;
 }
 
 
+static Circle
+merge (const Circle & c0,
+       const Circle & c1,
+       std::vector<std::vector<unsigned > > & patt0,
+       std::vector<std::vector<unsigned > > & patt1)
+{
+  Circle tmp;
+  int ii = int(patt0[0].back());
+  int iiUp = normIdx(c0, int(patt0[0].front()) + 1);
+  for (; ii != iiUp; ++ii, ii = normIdx(c0, ii)){
+    tmp.push_back(c0[ii]);
+  }
+  ii = normIdx(c1, int(patt1[0].front()) - 1);
+  iiUp = int(patt1[0].back());
+  for (; ii != iiUp; --ii, ii = normIdx(c1, ii)){
+    tmp.push_back(c1[ii]);
+  }
+  return tmp;
+}
   
-// Circle diffCircle (const Circle & c0,
-// 		   const Circle & c1)
-// {
-//   int iId0, iId1, iId2;
-//   int jId0, jId1, jId2;
-//   iId0 = 0;
-//   iId1 = 1;
-//   iId2 = 2;
+Circle CircleOperations::
+diffCircle (const Circle & c0_,
+	    const Circle & c1_)
+{
+  Circle c0 (c0_);
+  Circle c1 (c1_);
   
-//   for (int ii = 0; ii < int(c0.size()); ++ii){
-//     jId0 = 0;
-//     jId1 = 1;
-//     jId2 = 2;
-//     for (int jj = 0; jj < int(c1.size()); ++jj){
-//       if (c0[ii+0] == c1[jj+0] &&
-// 	  c0[c0.normIdx(ii+1)] == c1[c1.normIdx(jj+1)] &&
-// 	  c0[c0.normIdx(ii+2)] == 
+  std::vector<std::vector<unsigned > > patt0, patt1;
+  if (findCommonPatterns(c0, c1, patt0, patt1)){
+    return merge (c0, c1, patt0, patt1);
+  }
+  else {
+    Circle tmp(c1);
+    unsigned size = c1.size();
+    for (unsigned ii = 0; ii < size; ++ii){
+      c1[ii] = tmp[size-1-ii];
+    }
+    if (findCommonPatterns(c0, c1, patt0, patt1)){
+      return merge (c0, c1, patt0, patt1);
+    }
+  }
+  return Circle();
+}
+

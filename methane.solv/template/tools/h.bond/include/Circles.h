@@ -10,8 +10,10 @@ struct Circles
 {
   std::vector<Circle > circles;
 private:
+  bool find (const Circle & c);
 public:
   void uniqueCircles ();
+  void simplifyCircles ();
   void add (const Circles & c);
   void print () const;
 }

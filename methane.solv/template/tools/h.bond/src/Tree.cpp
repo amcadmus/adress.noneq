@@ -190,12 +190,22 @@ buildCables (const TreePosition & posi)
 void Tree::
 buildCables ()
 {
-  unsigned newGenId = generations.size() - 1;
-  for (unsigned ii = 0; ii < generations[newGenId].brothers.size(); ++ii){
-    TreePosition posi(newGenId, ii);
-    buildCables (posi);
+  for (unsigned ii = 0; ii < generations.size(); ++ii){
+    for (unsigned jj = 0; jj < generations[ii].brothers.size(); ++jj){
+      TreePosition posi(ii, jj);
+      if (getTreeNode(posi).numSon() == 0) {
+	buildCables (posi);
+      }
+    }
   }
-}
+}      
+  
+//   unsigned newGenId = generations.size() - 1;
+//   for (unsigned ii = 0; ii < generations[newGenId].brothers.size(); ++ii){
+//     TreePosition posi(newGenId, ii);
+//     buildCables (posi);
+//   }
+// }
     
 
 void Tree::
@@ -220,6 +230,8 @@ print () const
 	TreePosition sonPosi = generations[ii].brothers[jj].vecBrother[kk];
 	printf ("%d ", getTreeNode(sonPosi).identity);
       }
+      printf (" No. Cables: ");
+      printf ("%d ", generations[ii].brothers[jj].cables.size());
       printf ("\n");
     }
     printf ("\n");

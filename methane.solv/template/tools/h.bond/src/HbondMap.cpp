@@ -62,5 +62,11 @@ findNeighbors (const Identity & me,
   return find;	
 }
 
+// void buildSubMap (const std::vectror<Identity > nodes,
+// 		  HbondMap & map)
+// {
+  
+
+
 
 
