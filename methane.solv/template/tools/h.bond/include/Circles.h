@@ -3,6 +3,7 @@
 
 #include "Defines.h"
 #include <vector>
+#include <algorithm>
 
 typedef std::vector<Identity> Circle;
 
@@ -14,6 +15,7 @@ private:
 public:
   void uniqueCircles ();
   void simplifyCircles ();
+  void sortCircles ();
   void add (const Circles & c);
   void print () const;
 }
@@ -35,6 +37,12 @@ inline void Circles::
 add (const Circles & c)
 {
   circles.insert (circles.end(), c.circles.begin(), c.circles.end());
+}
+
+inline void Circles::
+sortCircles ()
+{
+  std::sort (circles.begin(), circles.end());
 }
 
 

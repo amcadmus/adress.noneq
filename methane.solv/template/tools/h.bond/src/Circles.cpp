@@ -92,7 +92,7 @@ simplifyCircles ()
   unsigned circleEnd = circles.size();
   for (unsigned ii = 0; ii < circleEnd; ++ii){
     for (unsigned jj = ii+1; jj < circleEnd; ++jj){
-      printf ("%d\t %d      %d\n", ii, jj, circleEnd);
+      // printf ("%d\t %d      %d\n", ii, jj, circleEnd);
       Circle tmp = diffCircle (circles[ii], circles[jj]);
       if (!tmp.empty()){
 	if (circles[ii].size() == circles[jj].size()){
@@ -105,7 +105,7 @@ simplifyCircles ()
 	  }
 	  if (tmp.size() < circles[ii].size()){
 	    if (! find(tmp) ){
-	      printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
+	      // printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
 	      circles.push_back (tmp);
 	      circleEnd ++;
 	    }	    
@@ -113,7 +113,7 @@ simplifyCircles ()
 	}
 	else if (circles[ii].size() < circles[jj].size()){
 	  if (tmp.size() < circles[jj].size()){
-	    printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
+	    // printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
 	    circles[jj] = tmp;
 	    uniqueCircles ();
 	    goto start;
@@ -132,7 +132,7 @@ simplifyCircles ()
 	}
 	else {
 	  if (tmp.size() < circles[ii].size()){
-	    printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
+	    // printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
 	    circles[ii] = tmp;
 	    uniqueCircles ();
 	    goto start;

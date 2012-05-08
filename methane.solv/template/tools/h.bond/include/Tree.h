@@ -54,12 +54,16 @@ private:
   void buildCables (const TreePosition & posi);
   Circles buildCircleCable (const Cable & c0,
 			    const Cable & c1) const;
+  bool addGeneration	(const HbondMap & map);
+  void addRoot		(const Identity & id);
 public:
   bool empty		() const;
-  bool isCircular	() const;
+  // bool isCircular	() const;
   void clear		();
-  void addRoot		(const Identity & id);
-  bool addGeneration	(const HbondMap & map);
+  void addRoot		(const HbondMap & map, const unsigned i = 0);
+  void addGenerations	(const HbondMap & map);
+  void renewMap		(const HbondMap & map,
+			 HbondMap & newMap) const;
   void buildCables	();
   void buildCircles	(Circles & cir) const;
   void print		() const;

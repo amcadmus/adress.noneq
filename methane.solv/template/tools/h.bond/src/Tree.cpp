@@ -49,18 +49,27 @@ buildBrothers(const HbondMap & map)
 void Tree::
 addRoot (const Identity & id)
 {
+  generations.clear();
   generations.push_back(Generation());
   generations[0].brothers.push_back(TreeNode(id));
 }
 
-bool Tree::
-isCircular () const
+void Tree::
+addRoot (const HbondMap & map, const unsigned i )
 {
-  if (generations.size() == 0){
-    return false;
-  }
-  return (generations[0].brothers[0].numSon() > 1);
+  unsigned ii = i%map.nodes.size();
+  addRoot (map.nodes[ii]);
 }
+
+
+// bool Tree::
+// isCircular () const
+// {
+//   if (generations.size() == 0){
+//     return false;
+//   }
+//   return (generations[0].brothers[0].numSon() > 1);
+// }
 
 inline TreeNode & Tree::
 getTreeNode (const TreePosition & p)
@@ -72,6 +81,13 @@ inline const TreeNode & Tree::
 getTreeNode (const TreePosition & p) const
 {
   return generations[p.genId].brothers[p.broId];
+}
+
+void Tree::
+addGenerations (const HbondMap & map)
+{
+  while (addGeneration (map));
+  buildCables();
 }
 
 bool Tree::
@@ -359,5 +375,44 @@ buildCircles (Circles & cir) const
     }
   }   
 }
+
+
+void Tree::
+renewMap (const HbondMap & map,
+	  HbondMap & newMap) const
+{
+  newMap.clear();
+  std::vector<Identity > nodes (map.nodes);
+  std::vector<bool > used (nodes.size(), false);
+
+  for (unsigned ii = 0; ii < generations.size(); ++ii){
+    for (unsigned jj = 0; jj < generations[ii].brothers.size(); ++jj){
+      for (unsigned kk = 0; kk < nodes.size(); ++kk){
+	if (generations[ii].brothers[jj].identity == nodes[kk]){
+	  used[kk] = true;
+	}
+      }
+    }
+  }
+  
+  for (unsigned ii = 0; ii < used.size(); ++ii){
+    if (!used[ii]){
+      newMap.nodes.push_back(nodes[ii]);
+    }
+  }
+  map.buildSubMap (newMap);
+
+  for (unsigned ii = 0; ii < generations.size(); ++ii){
+    for (unsigned jj = 0; jj < generations[ii].brothers.size(); ++jj){
+      for (unsigned kk = 0; kk < generations[ii].brothers[jj].numBrother(); ++kk){
+	newMap.push_pair (generations[ii].brothers[jj].identity,
+			  getTreeNode(generations[ii].brothers[jj].vecBrother[kk]).identity);
+      }
+    }
+  }
+}
+
+  
+
 
 	
