@@ -17,6 +17,7 @@ class Analyzer
 public:
   void clear ();
   void readData (const std::vector<Hbond> & bonds);
+  void readData_exhaustive (const std::vector<Hbond> & bonds);
   const Circles & getCircles () const;
 }
     ;

@@ -1,6 +1,7 @@
 #include "Analyzer.h"
 #include <string.h>
 #include <fstream>
+#include <iostream>
 
 using namespace CircleOperations;
 
@@ -43,6 +44,55 @@ readData (const std::vector<Hbond> & bonds)
     HbondMap newMap;
     tree.renewMap (map, newMap);
     map = newMap;
+  }
+
+  cs.uniqueCircles();
+  cs.sortCircles();
+}
+
+void Analyzer::
+readData_exhaustive (const std::vector<Hbond> & bonds)
+{
+  map.clear();
+  tree.clear();
+  for (unsigned ii = 0; ii < bonds.size(); ++ii){
+    map.push_bond (bonds[ii]);
+  }
+  HbondMap map_bk (map);
+  unsigned nNodes = map.nNodes();
+
+  for (unsigned ii = 0; ii < nNodes; ++ii){
+    while (!map.empty()){
+      // std::cout << ii << std::endl;
+      tree.clear ();
+      tree.addRoot(map, ii);
+      tree.addGenerations(map);
+      // tree.print();
+      Circles tmpc;
+      tree.buildCircles (tmpc);
+      tmpc.uniqueCircles();
+      // std::cout << std::endl;
+      // std::cout << "before simplified:" << std::endl;
+      // tmpc.print();
+      tmpc.simplifyCircles ();
+      // if (numFail != 0){
+      //   printf ("num of fail: %d   seed: %d    nNodes: %d\n",
+      // 	      numFail, seed, nNodes);
+      //   seed += 1;
+      //   if (seed < nNodes){
+      // 	goto restart;
+      //   }
+      // }
+      // std::cout << std::endl;
+      // std::cout << "simplified circles:" << std::endl;
+      // tmpc.print();    
+      cs.add (tmpc);
+      HbondMap newMap;
+      tree.renewMap (map, newMap);
+      map = newMap;
+    }
+    cs.uniqueCircles();
+    map = map_bk;
   }
 
   cs.uniqueCircles();

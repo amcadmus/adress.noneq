@@ -77,7 +77,7 @@ int main(int argc, char * argv[])
     tjl.formCoords (ch4, h2o);
     bonds = ofh.calBonds (ch4, h2o);
     ana.clear();
-    ana.readData(bonds);
+    ana.readData_exhaustive(bonds);
     printf ("time: %f    No. 1st shell: %d    No. H-bond: %d    No. Circle: %d |",
 	    tjl.getTime(), ofh.getNumFirstShell(), bonds.size(), ana.getCircles().circles.size());
     for (unsigned ii = 0; ii < ana.getCircles().circles.size(); ++ii){
