@@ -49,6 +49,37 @@ readData (const std::vector<Hbond> & bonds)
   cs.sortCircles();
 }
 
+
+static void
+alignWaters (const VectorType & box,
+	     std::vector<std::vector<ValueType > > & w0,
+	     std::vector<std::vector<ValueType > > & w1)
+{
+  std::vector<ValueType> vbox(3);
+  vbox[0] = box.x;
+  vbox[1] = box.y;
+  vbox[2] = box.z;
+
+  for (unsigned ii = 1; ii < 3; ++ii){
+    for (unsigned dd = 0; dd < 3; ++dd) {
+      ValueType diff = w0[ii][dd] - w0[0][dd];
+      if      (diff >  0.5 * vbox[dd]) diff -= vbox[dd];
+      else if (diff < -0.5 * vbox[dd]) diff += vbox[dd];
+      w0[ii][dd] = w0[0][dd] + diff;
+    }
+  }
+  
+  for (unsigned ii = 0; ii < 3; ++ii){
+    for (unsigned dd = 0; dd < 3; ++dd) {
+      ValueType diff = w1[ii][dd] - w0[0][dd];
+      if      (diff >  0.5 * vbox[dd]) diff -= vbox[dd];
+      else if (diff < -0.5 * vbox[dd]) diff += vbox[dd];
+      w1[ii][dd] = w0[0][dd] + diff;
+    }
+  }	
+}
+
+
 std::vector<Hbond> OneFrameHbonds::
 calBonds (const std::vector<std::vector<ValueType > > & ch4,
 	  const std::vector<std::vector<ValueType > > & h2o)
@@ -113,7 +144,8 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
       std::vector<std::vector<ValueType> > water1;
       water1.push_back(h2o[firstShellIdx[jj]+0]);
       water1.push_back(h2o[firstShellIdx[jj]+1]);
-      water1.push_back(h2o[firstShellIdx[jj]+2]);    
+      water1.push_back(h2o[firstShellIdx[jj]+2]);
+      alignWaters (box, water0, water1);
       if (hbond(water0, water1) || hbond(water1, water0)){
 	// the identity of water is the index of its oxygen
 	bonds.push_back(Hbond(firstShellIdx[ii], firstShellIdx[jj]));

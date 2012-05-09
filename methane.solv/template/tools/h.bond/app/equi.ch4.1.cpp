@@ -70,15 +70,20 @@ int main(int argc, char * argv[])
       if (time < begin - time_prec) continue;
     }
     if (countread++ % 1 == 0){
-      printf ("# load frame at time: %.1f ps\r", time);
+      // printf ("# load frame at time: %.1f ps\r", time);
       fflush (stdout);
     }
 
     tjl.formCoords (ch4, h2o);
     bonds = ofh.calBonds (ch4, h2o);
-    printf ("time: %f    No. 1st shell: %d    No. H-bond: %d\n",
-	    tjl.getTime(), ofh.getNumFirstShell(), bonds.size());
+    ana.clear();
     ana.readData(bonds);
+    printf ("time: %f    No. 1st shell: %d    No. H-bond: %d    No. Circle: %d |",
+	    tjl.getTime(), ofh.getNumFirstShell(), bonds.size(), ana.getCircles().circles.size());
+    for (unsigned ii = 0; ii < ana.getCircles().circles.size(); ++ii){
+      printf ("%d ", ana.getCircles().circles[ii].size());
+    }
+    printf ("\n");
   }
   
   return 0;
