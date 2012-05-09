@@ -35,7 +35,7 @@ public:
     ;
 
 
-HydrogenBond_Geo_1::
+inline HydrogenBond_Geo_1::
 HydrogenBond_Geo_1 (const ValueType r,
 		    const ValueType theta)
     : roo2(r*r), costhetahoo(cos(theta / 180. * M_PI))
