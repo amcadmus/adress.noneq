@@ -123,6 +123,9 @@ neighboringCellIndex (const unsigned cellIndex,
       }
     }
   }
+  // count the cell itself
+  cells.push_back (cellIndex);
+  
   return cells;
 }
 

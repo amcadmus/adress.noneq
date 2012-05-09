@@ -82,18 +82,21 @@ uniqueCircles ()
   }
 }
 
-void Circles::
+int Circles::
 simplifyCircles ()
 {
   // start:
   // std::cout << "called" << std::endl;
+  int numFail = 0;
   start:
   
   unsigned circleEnd = circles.size();
   for (unsigned ii = 0; ii < circleEnd; ++ii){
     for (unsigned jj = ii+1; jj < circleEnd; ++jj){
       // printf ("%d\t %d      %d\n", ii, jj, circleEnd);
-      Circle tmp = diffCircle (circles[ii], circles[jj]);
+      int tmpFail;
+      Circle tmp = diffCircle (circles[ii], circles[jj], tmpFail);
+      numFail += tmpFail;
       if (!tmp.empty()){
 	if (circles[ii].size() == circles[jj].size()){
 	  if (tmp.size() <= circles[ii].size()){
@@ -241,7 +244,7 @@ simplifyCircles ()
   //   }
   // }
 
-
+  return numFail;
 }
 
 
@@ -249,7 +252,8 @@ bool CircleOperations::
 findCommonPatterns (const Circle & c0_,
 		    const Circle & c1_,
 		    std::vector<std::vector<unsigned > > & c0_pattern,
-		    std::vector<std::vector<unsigned > > & c1_pattern)
+		    std::vector<std::vector<unsigned > > & c1_pattern,
+		    int & numFail)
 {
   c0_pattern.clear();
   c1_pattern.clear();
@@ -379,6 +383,7 @@ findCommonPatterns (const Circle & c0_,
       //   iId_Id2 = normIdx(c0, iId_Id2);
     }
     if (find2){
+      numFail += 1;
       std::cerr << "find 2 matched patterns" << std::endl;
       return false;
     }
@@ -411,13 +416,15 @@ merge (const Circle & c0,
   
 Circle CircleOperations::
 diffCircle (const Circle & c0_,
-	    const Circle & c1_)
+	    const Circle & c1_,
+	    int & numFail)
 {
+  numFail = 0;
   Circle c0 (c0_);
   Circle c1 (c1_);
   
   std::vector<std::vector<unsigned > > patt0, patt1;
-  if (findCommonPatterns(c0, c1, patt0, patt1)){
+  if (findCommonPatterns(c0, c1, patt0, patt1, numFail)){
     return merge (c0, c1, patt0, patt1);
   }
   else {
@@ -426,7 +433,7 @@ diffCircle (const Circle & c0_,
     for (unsigned ii = 0; ii < size; ++ii){
       c1[ii] = tmp[size-1-ii];
     }
-    if (findCommonPatterns(c0, c1, patt0, patt1)){
+    if (findCommonPatterns(c0, c1, patt0, patt1, numFail)){
       return merge (c0, c1, patt0, patt1);
     }
   }

@@ -1,5 +1,6 @@
 #include "Analyzer.h"
 #include <string.h>
+#include <fstream>
 
 using namespace CircleOperations;
 
@@ -11,9 +12,13 @@ readData (const std::vector<Hbond> & bonds)
   for (unsigned ii = 0; ii < bonds.size(); ++ii){
     map.push_bond (bonds[ii]);
   }
+  unsigned nNodes = map.nNodes();
+  unsigned seed = 0;
   
   while (!map.empty()){
-    tree.addRoot(map, 0);
+    restart:
+    tree.clear ();
+    tree.addRoot(map, seed);
     tree.addGenerations(map);
     // tree.print();
     Circles tmpc;
@@ -22,7 +27,15 @@ readData (const std::vector<Hbond> & bonds)
     // std::cout << std::endl;
     // std::cout << "before simplified:" << std::endl;
     // tmpc.print();
-    tmpc.simplifyCircles ();
+    int numFail = tmpc.simplifyCircles ();
+    if (numFail != 0){
+      printf ("num of fail: %d   seed: %d    nNodes: %d\n",
+	      numFail, seed, nNodes);
+      seed += 1;
+      if (seed < nNodes){
+	goto restart;
+      }
+    }
     // std::cout << std::endl;
     // std::cout << "simplified circles:" << std::endl;
     // tmpc.print();    
@@ -46,6 +59,14 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
   for (unsigned ii = 0; ii < nmol; ++ii) {
     resd.push_back (h2o[ii*3]);
   }
+  for (unsigned ii = 0; ii < resd.size(); ++ii){
+    if      (resd[ii][0] >= box.x) resd[ii][0] -= box.x;
+    else if (resd[ii][0] <  0    ) resd[ii][0] += box.x;
+    if      (resd[ii][1] >= box.y) resd[ii][1] -= box.y;
+    else if (resd[ii][1] <  0    ) resd[ii][1] += box.y;
+    if      (resd[ii][2] >= box.z) resd[ii][2] -= box.z;
+    else if (resd[ii][2] <  0    ) resd[ii][2] += box.z;
+  }
   
   clist.rebuild (resd);
   std::vector<unsigned > cellsIdx;
@@ -56,8 +77,9 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
   const std::vector<ValueType > & ch4_coord (ch4[0]);
   
   for (unsigned ii = 0; ii < cellsIdx.size(); ++ii){
-    for (unsigned jj = 0; jj < list[ii].size(); ++jj){
-      unsigned tgtIdx = list[ii][jj];
+    unsigned targetCellIdx = cellsIdx[ii];
+    for (unsigned jj = 0; jj < list[targetCellIdx].size(); ++jj){
+      unsigned tgtIdx = list[targetCellIdx][jj];
       if (tgtIdx == 0) continue;
       else tgtIdx --;
       // tgtIdx is the mol index in h2o now
@@ -72,6 +94,7 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
       if      (o_coord[2] >  box.z * 0.5) o_coord[2] -= box.z;
       else if (o_coord[2] < -box.z * 0.5) o_coord[2] += box.z;
       ValueType diff = o_coord[0] * o_coord[0] + o_coord[1] * o_coord[1] + o_coord[2] * o_coord[2];
+      // printf ("diff is %f\n", diff);
       if (diff < range2){
 	firstShellIdx.push_back(tgtIdx*3);
       }
@@ -102,26 +125,28 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
 }
 
 OneFrameHbonds::
-OneFrameHbonds (const unsigned & numResd,
+OneFrameHbonds (const unsigned & numAtomCh4,
+		const unsigned & numAtomH2o,
 		const VectorType & box,
 		const ValueType & cutoff,
 		const HydrogenBond_Geo_1 hbond_)
 {
-  reinit (numResd, box, cutoff);
+  reinit (numAtomCh4, numAtomH2o, box, cutoff);
 }
 
 void OneFrameHbonds::
-reinit (const unsigned & numResd,
+reinit (const unsigned & numAtomCh4,
+	const unsigned & numAtomH2o,
 	const VectorType & box_,
 	const ValueType & cutoff,
 	const HydrogenBond_Geo_1 hbond_)
 {
+  unsigned numResd = numAtomCh4 + numAtomH2o / 3;
   box = box_;
   clist.reinit (numResd, box_, cutoff);
   hbond = hbond_;
   range2 = cutoff * cutoff;
   numFistShell = 0;
-  
 }
 
 void TrajLoader::
@@ -141,7 +166,14 @@ TrajLoader ()
 }
 
 TrajLoader::
+~TrajLoader ()
+{
+  clear ();
+}
+
+TrajLoader::
 TrajLoader (const char * filename)
+    : inited (false)
 {
   reinit (filename);
 }  
@@ -159,36 +191,44 @@ reinit (const char * filename)
   box = VectorType (0.,0.,0.);
   xx = (rvec *) malloc (sizeof(rvec) * natoms);
   prec = 1000.;
+
+  numAtomCh4 = 1;
+  numAtomH2o = (natoms - 1);  
+
+  load ();
+  xdrfile_close (xd);
+  xd = xdrfile_open (filename, "r");
   
   inited = true;
 }
 
-void TrajLoader::
+bool TrajLoader::
 load ()
 {
   matrix tmpBox;
-  read_xtc (xd, natoms, &step, &time, tmpBox, xx, &prec);
+  int st = read_xtc (xd, natoms, &step, &time, tmpBox, xx, &prec);
   box.x = tmpBox[0][0];
   box.y = tmpBox[1][1];
   box.z = tmpBox[2][2];
+  if (st == exdrOK) return true;
+  else return false;
 }
 
 void TrajLoader::
 formCoords (std::vector<std::vector<ValueType > > & ch4,
 	    std::vector<std::vector<ValueType > > & h2o)
 {
-  unsigned numAtomCh4 = 1;
-  unsigned numAtomH2o = (natoms - 1);
-  
-  ch4.resize(1);
+  ch4.resize(numAtomCh4);
   h2o.resize(numAtomH2o);
 
   for (unsigned ii = 0; ii < numAtomCh4; ++ii){
+    ch4[ii].resize(3);
     for (unsigned dd = 0; dd < 3; ++dd){
       ch4[ii][dd] = xx[ii][dd];
     }
   }
   for (unsigned ii = 0; ii < numAtomH2o; ++ii){
+    h2o[ii].resize(3);
     for (unsigned dd = 0; dd < 3; ++dd){
       h2o[ii][dd] = xx[ii+numAtomCh4][dd];
     }

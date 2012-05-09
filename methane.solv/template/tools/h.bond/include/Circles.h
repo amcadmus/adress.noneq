@@ -15,7 +15,7 @@ private:
 public:
   void clear ();
   void uniqueCircles ();
-  void simplifyCircles ();
+  int  simplifyCircles ();
   void sortCircles ();
   void add (const Circles & c);
   void print () const;
@@ -25,13 +25,15 @@ public:
 
 namespace CircleOperations{
   Circle diffCircle (const Circle & c0,
-		     const Circle & c1);
+		     const Circle & c1,
+		     int & numFail);
   int normIdx (const Circle & c0,
 	       const int i);
   bool findCommonPatterns (const Circle & c0_,
 			   const Circle & c1_,
 			   std::vector<std::vector<unsigned > > & c0_pattern,
-			   std::vector<std::vector<unsigned > > & c1_pattern);
+			   std::vector<std::vector<unsigned > > & c1_pattern,
+			   int & numFail);
 }
 
 inline void Circles::
