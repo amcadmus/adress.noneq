@@ -13,11 +13,13 @@ struct Circles
 private:
   bool find (const Circle & c);
 public:
+  void clear ();
   void uniqueCircles ();
   void simplifyCircles ();
   void sortCircles ();
   void add (const Circles & c);
   void print () const;
+  const std::vector<Circle > & getCircles () const {return circles;}
 }
     ;
 
@@ -32,6 +34,17 @@ namespace CircleOperations{
 			   std::vector<std::vector<unsigned > > & c1_pattern);
 }
 
+inline void Circles::
+clear ()
+{
+  circles.clear ();
+}
+
+// inline const std::vector<Circle > & Circle::
+// getCircles () const
+// {
+//   return circles;
+// }
 
 inline void Circles::
 add (const Circles & c)

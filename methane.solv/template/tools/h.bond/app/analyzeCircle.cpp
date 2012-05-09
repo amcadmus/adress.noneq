@@ -14,12 +14,13 @@
 
 #include "Tree.h"
 #include "HbondMap.h"
+#include "Analyzer.h"
 
 using namespace CircleOperations;
 
 int main(int argc, char * argv[])
 {
-  HbondMap map, newMap;
+  HbondMap map;
 
   map.push_pair (0,1);
   map.push_pair (1,2);
@@ -80,4 +81,27 @@ int main(int argc, char * argv[])
   cs.print ();
 
 
+  std::vector<Hbond> bonds;
+  bonds.push_back (Hbond(0,1));
+  bonds.push_back (Hbond(1,2));
+  bonds.push_back (Hbond(2,3));
+  bonds.push_back (Hbond(3,4));
+  bonds.push_back (Hbond(4,5));
+  bonds.push_back (Hbond(5,0));
+
+  bonds.push_back (Hbond(0,2));
+  bonds.push_back (Hbond(1,3));
+  bonds.push_back (Hbond(2,4));
+  bonds.push_back (Hbond(3,5));
+  bonds.push_back (Hbond(4,0));
+  bonds.push_back (Hbond(5,1));
+
+  Analyzer ana;
+  ana.readData (bonds);
+  std::cout << std::endl;
+  std::cout << "simplified circles:" << std::endl;
+  ana.getCircles().print ();
+  
+
+  return 0;
 }

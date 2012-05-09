@@ -353,30 +353,30 @@ findCommonPatterns (const Circle & c0_,
       ++iId_Id2;
       iId_Id2 = normIdx(c0, iId_Id2);
       // old three compare version
-    // int iId_Id0, iId_Id1, iId_Id2;
-    // int jId_Id0, jId_Id1, jId_Id2;
-    // for (iId_Id2 = iId2; iId_Id2 != iId0;){
-    //   iId_Id0 = iId_Id2 + 1;
-    //   iId_Id1 = iId_Id2 + 2;
-    //   iId_Id0 = normIdx(c0, iId_Id0);
-    //   iId_Id1 = normIdx(c0, iId_Id1);
-    //   for (jId_Id2 = jId2; jId_Id2 != jId0;){
-    // 	jId_Id0 = jId_Id2 + 1;
-    // 	jId_Id1 = jId_Id2 + 2;
-    // 	jId_Id0 = normIdx(c1, jId_Id0);
-    // 	jId_Id1 = normIdx(c1, jId_Id1);
-    // 	// printf ("%d %d\n", iId_Id2, jId_Id2);
-    // 	if (c0[iId_Id0] == c1[jId_Id0] &&
-    // 	    c0[iId_Id1] == c1[jId_Id1] &&
-    // 	    c0[iId_Id2] == c1[jId_Id2] ){
-    // 	  find2 = true;
-    // 	  break;
-    // 	}
-    // 	++jId_Id2;
-    // 	jId_Id2 = normIdx(c1, jId_Id2);
-    //   }
-    //   ++iId_Id2;
-    //   iId_Id2 = normIdx(c0, iId_Id2);
+      // int iId_Id0, iId_Id1, iId_Id2;
+      // int jId_Id0, jId_Id1, jId_Id2;
+      // for (iId_Id2 = iId2; iId_Id2 != iId0;){
+      //   iId_Id0 = iId_Id2 + 1;
+      //   iId_Id1 = iId_Id2 + 2;
+      //   iId_Id0 = normIdx(c0, iId_Id0);
+      //   iId_Id1 = normIdx(c0, iId_Id1);
+      //   for (jId_Id2 = jId2; jId_Id2 != jId0;){
+      // 	jId_Id0 = jId_Id2 + 1;
+      // 	jId_Id1 = jId_Id2 + 2;
+      // 	jId_Id0 = normIdx(c1, jId_Id0);
+      // 	jId_Id1 = normIdx(c1, jId_Id1);
+      // 	// printf ("%d %d\n", iId_Id2, jId_Id2);
+      // 	if (c0[iId_Id0] == c1[jId_Id0] &&
+      // 	    c0[iId_Id1] == c1[jId_Id1] &&
+      // 	    c0[iId_Id2] == c1[jId_Id2] ){
+      // 	  find2 = true;
+      // 	  break;
+      // 	}
+      // 	++jId_Id2;
+      // 	jId_Id2 = normIdx(c1, jId_Id2);
+      //   }
+      //   ++iId_Id2;
+      //   iId_Id2 = normIdx(c0, iId_Id2);
     }
     if (find2){
       std::cerr << "find 2 matched patterns" << std::endl;
