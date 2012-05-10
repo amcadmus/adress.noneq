@@ -22,12 +22,29 @@ public:
 }
     ;
 
+class PolygonAverge
+{
+  unsigned nframe;
+  unsigned sizeValue;
+  ValueType numPolygon;
+  std::vector<ValueType > value;
+public:
+  PolygonAverge ();
+  void reinit (const unsigned & maxPolygon);
+  void deposit (const Circles & cirs);
+  void average ();
+  void print (FILE * fp) const;
+}
+    ;
+
+
 class OneFrameHbonds
 {
   VectorType box;
   CellList clist;
   HydrogenBond_Geo_1 hbond;
   ValueType range2;
+  std::vector<unsigned > firstShellIdx;
   unsigned numFistShell;
 public:
   OneFrameHbonds (const unsigned & numAtomCh4,

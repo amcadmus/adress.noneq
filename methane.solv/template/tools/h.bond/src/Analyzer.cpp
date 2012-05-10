@@ -2,6 +2,7 @@
 #include <string.h>
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 
 using namespace CircleOperations;
 
@@ -60,6 +61,7 @@ readData_exhaustive (const std::vector<Hbond> & bonds)
   }
   HbondMap map_bk (map);
   unsigned nNodes = map.nNodes();
+  // map.print();
 
   for (unsigned ii = 0; ii < nNodes; ++ii){
     while (!map.empty()){
@@ -97,6 +99,54 @@ readData_exhaustive (const std::vector<Hbond> & bonds)
 
   cs.uniqueCircles();
   cs.sortCircles();
+  // cs.print();
+}
+
+PolygonAverge::
+PolygonAverge ()
+{
+  reinit (0);
+}
+
+void PolygonAverge::
+reinit (const unsigned & maxPolygon)
+{
+  nframe = 0;
+  sizeValue = maxPolygon + 1;
+  numPolygon = 0.;
+  value.resize (sizeValue);
+  for (unsigned ii = 0; ii < sizeValue; ++ii){
+    value[ii]  = 0.;
+  }
+}
+
+void PolygonAverge::
+deposit (const Circles & cirs)
+{
+  numPolygon += cirs.circles.size();
+  for (unsigned ii = 0; ii < cirs.circles.size(); ++ii){
+    if (cirs.circles[ii].size() < sizeValue){
+      value[cirs.circles[ii].size()] += 1.;
+    }
+  }
+  nframe ++;
+}
+
+void PolygonAverge::
+average ()
+{
+  numPolygon /= ValueType(nframe);
+  for (unsigned ii = 0; ii < sizeValue; ++ii){
+    value[ii] /= ValueType(nframe);
+  }
+}
+
+void PolygonAverge::
+print (FILE * fp) const
+{
+  for (unsigned ii = 3; ii < sizeValue; ++ii){
+    fprintf (fp, "%d %f\n", ii, value[ii]);
+  }
 }
 
 
@@ -154,8 +204,8 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
   unsigned refIdx = clist.calCellIndex (ch4[0]);
   cellsIdx = clist.neighboringCellIndex (refIdx);
   const std::vector<std::vector<unsigned > > & list (clist.getList());
-  std::vector<unsigned > firstShellIdx;
   const std::vector<ValueType > & ch4_coord (ch4[0]);
+  firstShellIdx.clear ();
   
   for (unsigned ii = 0; ii < cellsIdx.size(); ++ii){
     unsigned targetCellIdx = cellsIdx[ii];

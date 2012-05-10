@@ -50,6 +50,8 @@ int main(int argc, char * argv[])
   TrajLoader tjl (ifile.c_str());
   OneFrameHbonds ofh (tjl.getNumAtomCh4(), tjl.getNumAtomH2o(), tjl.getBox(), rcut);
   Analyzer ana;
+  PolygonAverge pavg;
+  pavg.reinit (13);
 
   std::vector<std::vector<ValueType > > ch4;
   std::vector<std::vector<ValueType > > h2o;
@@ -78,13 +80,19 @@ int main(int argc, char * argv[])
     bonds = ofh.calBonds (ch4, h2o);
     ana.clear();
     ana.readData_exhaustive(bonds);
-    printf ("time: %f    No. 1st shell: %d    No. H-bond: %d    No. Circle: %d |",
+    printf ("time: %.2f    No. 1st shell: %d    No. H-bond: %d    No. Circle: %d |",
 	    tjl.getTime(), ofh.getNumFirstShell(), bonds.size(), ana.getCircles().circles.size());
     for (unsigned ii = 0; ii < ana.getCircles().circles.size(); ++ii){
       printf ("%d ", ana.getCircles().circles[ii].size());
     }
+    pavg.deposit (ana.getCircles());
     printf ("\n");
   }
+
+  pavg.average();
+  FILE * fp = fopen ("poly.distrib.out", "w");
+  pavg.print (fp);
+  fclose (fp);
   
   return 0;
 }
