@@ -10,3 +10,6 @@ fi
 cp -a $gro_dir result.equi
 cd result.equi
 set_parameters_equi grompp.mdp
+
+grompp
+mdrun -v
