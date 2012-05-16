@@ -23,7 +23,7 @@ namespace po = boost::program_options;
 int main(int argc, char * argv[])
 {
   float begin, end, rcut;
-  std::string ifile;
+  std::string ifile, ofile;
   float time_prec = .01;
   
   po::options_description desc ("Allow options");
@@ -32,6 +32,7 @@ int main(int argc, char * argv[])
       ("begin,b", po::value<float > (&begin)->default_value(0.f), "start time")
       ("end,e",   po::value<float > (&end  )->default_value(0.f), "end   time")
       ("rcut,r", po::value<float > (&rcut)->default_value(0.53f), "cut-off to cal h-bond")
+      ("output,o",   po::value<std::string > (&ofile)->default_value ("count.out"), "the output of count of h-bond")
       ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
       
   po::variables_map vm;
@@ -59,6 +60,8 @@ int main(int argc, char * argv[])
   std::vector<Hbond > bonds;
 
   int countread = 0;
+  FILE * fo = fopen(ofile.c_str(), "w");
+  fprintf (fo, "# time  No.1st_shell  No.Hbond  No.3  No. 4  No.5  No.6  No.7\n");
   while (true == tjl.load()){
     float time = tjl.getTime();
     if (end != 0.f) {
@@ -88,7 +91,16 @@ int main(int argc, char * argv[])
     }
     pavg.deposit (ana.getCircles());
     printf ("\n");
+    ana.getCircles().countPoly ();
+    fprintf (fo, "%.3f  %d  %d  %d %d %d %d %d\n",
+	     tjl.getTime(), ofh.getNumFirstShell(), bonds.size(),
+	     ana.getCircles().count[3], 
+	     ana.getCircles().count[4], 
+	     ana.getCircles().count[5], 
+	     ana.getCircles().count[6], 
+	     ana.getCircles().count[7]);
   }
+  fclose(fo);
 
   pavg.average();
   FILE * fp = fopen ("poly.distrib.out", "w");
