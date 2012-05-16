@@ -3,6 +3,9 @@
 source parameters.sh
 source functions.sh
 
+make -C tools/perturbations/ makedir
+make -C tools/perturbations/ -j4
+
 cwd=`pwd`
 # prepare files
 if test ! -d $pert_conf_dir ; then
