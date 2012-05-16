@@ -12,7 +12,7 @@ function set_parameters_equi () {
     sed -e "/^nstvout/s/=.*/= $equi_xvout_feq/g" |\
     sed -e "/^ld-seed/s/=.*/= $equi_seed/g" |\
     sed -e "/^tau_t/s/=.*/= $equi_taut/g" |\
-    sed -e "/^nstxtcout/s/=.*/= 0/g" > tmptmptmp.mdp
+    sed -e "/^nstxtcout/s/=.*/= $equi_xvout_feq/g" > tmptmptmp.mdp
     mv -f tmptmptmp.mdp $file
 }
 
