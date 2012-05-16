@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source parameters.sh
+source functions.sh
+
 cwd=`pwd`
 # prepare files
 if test ! -d $pert_conf_dir ; then
@@ -15,14 +18,18 @@ for i in $targets;
 do
     count=`echo $i | cut -d '.' -f 2`
     my_dir=pert.$count
-    cp $gro_dir $my_dir
+    if test -d $my_dir; then
+	echo "existing dir $my_dir, remove"
+	rm -fr $my_dir
+    fi
+    cp -a $gro_dir $my_dir
     rm -f $my_dir/$i
     cp $pert_conf_dir/$i $my_dir
     cd $my_dir
-    mv $i conf.gro
+    mv -f $i conf.gro
     set_parameters_pert grompp.mdp
-    grompp
-    mdrun -v &> md.log
+    grompp &> run.log
+    mdrun -v &>> run.log
     cd ..
 done
 

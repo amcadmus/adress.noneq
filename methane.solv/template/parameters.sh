@@ -9,7 +9,7 @@ equi_taut=0.5			# ps
 equi_seed=`date +%s`		# 
 
 # non-equilibrium settings
-perturbation_command="tools/center/gauss.v"
+perturbation_command="tools/perturbations/center.step"
 pert_conf_dir="result.equi/equiConfs/"
 pert_time=5			# ps
 pert_frame_feq=0.1		# ps
