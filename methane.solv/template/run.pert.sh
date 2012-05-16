@@ -26,9 +26,10 @@ do
     rm -f $my_dir/$i
     cp $pert_conf_dir/$i $my_dir
     cd $my_dir
-    mv -f $i conf.gro
+    rm -f run.log
+    ../$perturbation_command -f $i -o conf.gro &>> run.log
     set_parameters_pert grompp.mdp
-    grompp &> run.log
+    grompp &>> run.log
     mdrun -v &>> run.log
     cd ..
 done

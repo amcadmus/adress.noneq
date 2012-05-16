@@ -86,7 +86,12 @@ int main(int argc, char * argv[])
     std::cout << desc<< "\n";
     return 0;
   }
-  
+  std::cout << "###################################################" << std::endl;
+  std::cout << "# rcut0: " << rcut0 << std::endl;
+  std::cout << "# rcut1: " << rcut0 << std::endl;
+  std::cout << "# strength: " << strength << std::endl;
+  std::cout << "###################################################" << std::endl;  
+
   std::vector<int > resdindex;
   std::vector<std::string >  resdname;
   std::vector<std::string >  atomname;
