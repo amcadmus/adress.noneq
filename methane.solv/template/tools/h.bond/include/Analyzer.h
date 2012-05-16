@@ -19,6 +19,7 @@ public:
   void readData (const std::vector<Hbond> & bonds);
   void readData_exhaustive (const std::vector<Hbond> & bonds);
   const Circles & getCircles () const;
+  Circles & getCircles ();
 }
     ;
 
@@ -105,6 +106,12 @@ clear ()
 
 inline const Circles &  Analyzer::
 getCircles () const
+{
+  return cs;
+}
+
+inline Circles &  Analyzer::
+getCircles ()
 {
   return cs;
 }

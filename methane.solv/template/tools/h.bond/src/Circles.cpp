@@ -6,6 +6,18 @@
 using namespace CircleOperations;
 
 void Circles::
+countPoly (const unsigned maxPoly)
+{
+  count.resize(maxPoly);
+  std::fill (count.begin(), count.end(), 0);
+  for (unsigned ii = 0; ii < circles.size(); ++ii){
+    if (circles[ii].size() < maxPoly){
+      count[circles[ii].size()] ++;
+    }
+  }
+}
+
+void Circles::
 print () const
 {
   for (unsigned ii = 0; ii < circles.size(); ++ii){
