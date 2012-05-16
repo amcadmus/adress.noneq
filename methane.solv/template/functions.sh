@@ -36,9 +36,9 @@ function split_trr () {
     equi_nline_gro=`wc -l conf.gro | awk '{print $1}'`
     tmp_nline_del=`echo "$equi_nline_gro * ($equi_warm_num_frame+1)" | bc -l`
     sed "1,$tmp_nline_del d" out.gro > tmptmp.gro
-    split -l $equi_nline_gro --additional-suffix=conf -a 5 -d tmptmp.gro
+    split -l $equi_nline_gro -a 5 -d tmptmp.gro
     mkdir -p equiConfs
-    for i in `ls | grep "conf$" | grep "^x"`
+    for i in `ls | grep "^x"`
     do
 	tmp_number=`echo $i | cut -d 'x' -f 2 | cut -d 'c' -f 1`
 	mv -f $i conf.$tmp_number.gro
