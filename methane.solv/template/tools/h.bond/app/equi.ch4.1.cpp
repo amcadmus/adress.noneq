@@ -47,8 +47,9 @@ int main(int argc, char * argv[])
   std::cout << "# rcut: " << rcut << std::endl;
   std::cout << "###################################################" << std::endl;  
 
+  HydrogenBond_Geo_1 hbond_id (.35, 30.);
   TrajLoader tjl (ifile.c_str());
-  OneFrameHbonds ofh (tjl.getNumAtomCh4(), tjl.getNumAtomH2o(), tjl.getBox(), rcut);
+  OneFrameHbonds ofh (tjl.getNumAtomCh4(), tjl.getNumAtomH2o(), tjl.getBox(), rcut, hbond_id);
   Analyzer ana;
   PolygonAverge pavg;
   pavg.reinit (13);

@@ -29,6 +29,8 @@ namespace CircleOperations{
 		     int & numFail);
   int normIdx (const Circle & c0,
 	       const int i);
+  bool find3Pattern (const Circle & c,
+		     const std::vector<Identity > & pattern);
   bool findCommonPatterns (const Circle & c0_,
 			   const Circle & c1_,
 			   std::vector<std::vector<unsigned > > & c0_pattern,

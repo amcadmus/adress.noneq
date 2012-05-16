@@ -440,3 +440,26 @@ diffCircle (const Circle & c0_,
   return Circle();
 }
 
+bool CircleOperations::
+find3Pattern (const Circle & c,
+	      const std::vector<Identity > & pattern)
+{
+  if (pattern.size() != 3){
+    std::cerr << "invalid 3 pattern, return" << std::endl;
+    return false;
+  }
+  for (unsigned ii = 0; ii < c.size(); ++ii){
+    if (c[ii] == pattern[1]){
+      unsigned left = ii - 1;
+      left = normIdx (c, left);
+      unsigned right = ii + 1;
+      right = normIdx (c, right);
+      if ((c[left] == pattern[0] && c[right] == pattern[2]) ||
+	  (c[left] == pattern[2] && c[right] == pattern[0]) ){
+	return true;
+      }
+    }
+  }
+  return false;
+}
+

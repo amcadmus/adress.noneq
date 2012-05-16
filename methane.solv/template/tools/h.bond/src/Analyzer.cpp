@@ -72,22 +72,22 @@ readData_exhaustive (const std::vector<Hbond> & bonds)
       // tree.print();
       Circles tmpc;
       tree.buildCircles (tmpc);
-      tmpc.uniqueCircles();
-      // std::cout << std::endl;
-      // std::cout << "before simplified:" << std::endl;
-      // tmpc.print();
-      tmpc.simplifyCircles ();
-      // if (numFail != 0){
-      //   printf ("num of fail: %d   seed: %d    nNodes: %d\n",
-      // 	      numFail, seed, nNodes);
-      //   seed += 1;
-      //   if (seed < nNodes){
-      // 	goto restart;
-      //   }
-      // }
-      // std::cout << std::endl;
-      // std::cout << "simplified circles:" << std::endl;
-      // tmpc.print();    
+      // tmpc.uniqueCircles();
+      // // std::cout << std::endl;
+      // // std::cout << "before simplified:" << std::endl;
+      // // tmpc.print();
+      // tmpc.simplifyCircles ();
+      // // if (numFail != 0){
+      // //   printf ("num of fail: %d   seed: %d    nNodes: %d\n",
+      // // 	      numFail, seed, nNodes);
+      // //   seed += 1;
+      // //   if (seed < nNodes){
+      // // 	goto restart;
+      // //   }
+      // // }
+      // // std::cout << std::endl;
+      // // std::cout << "simplified circles:" << std::endl;
+      // // tmpc.print();    
       cs.add (tmpc);
       HbondMap newMap;
       tree.renewMap (map, newMap);
@@ -98,6 +98,7 @@ readData_exhaustive (const std::vector<Hbond> & bonds)
   }
 
   cs.uniqueCircles();
+  cs.simplifyCircles();
   cs.sortCircles();
   // cs.print();
 }
@@ -263,7 +264,7 @@ OneFrameHbonds (const unsigned & numAtomCh4,
 		const ValueType & cutoff,
 		const HydrogenBond_Geo_1 hbond_)
 {
-  reinit (numAtomCh4, numAtomH2o, box, cutoff);
+  reinit (numAtomCh4, numAtomH2o, box, cutoff, hbond_);
 }
 
 void OneFrameHbonds::
