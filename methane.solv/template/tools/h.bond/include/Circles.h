@@ -13,25 +13,42 @@ struct Circles
 private:
   bool find (const Circle & c);
 public:
+  void clear ();
   void uniqueCircles ();
-  void simplifyCircles ();
+  int  simplifyCircles ();
   void sortCircles ();
   void add (const Circles & c);
   void print () const;
+  const std::vector<Circle > & getCircles () const {return circles;}
 }
     ;
 
 namespace CircleOperations{
   Circle diffCircle (const Circle & c0,
-		     const Circle & c1);
+		     const Circle & c1,
+		     int & numFail);
   int normIdx (const Circle & c0,
 	       const int i);
+  bool find3Pattern (const Circle & c,
+		     const std::vector<Identity > & pattern);
   bool findCommonPatterns (const Circle & c0_,
 			   const Circle & c1_,
 			   std::vector<std::vector<unsigned > > & c0_pattern,
-			   std::vector<std::vector<unsigned > > & c1_pattern);
+			   std::vector<std::vector<unsigned > > & c1_pattern,
+			   int & numFail);
 }
 
+inline void Circles::
+clear ()
+{
+  circles.clear ();
+}
+
+// inline const std::vector<Circle > & Circle::
+// getCircles () const
+// {
+//   return circles;
+// }
 
 inline void Circles::
 add (const Circles & c)

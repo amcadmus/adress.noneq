@@ -82,18 +82,21 @@ uniqueCircles ()
   }
 }
 
-void Circles::
+int Circles::
 simplifyCircles ()
 {
   // start:
   // std::cout << "called" << std::endl;
+  int numFail = 0;
   start:
   
   unsigned circleEnd = circles.size();
   for (unsigned ii = 0; ii < circleEnd; ++ii){
     for (unsigned jj = ii+1; jj < circleEnd; ++jj){
       // printf ("%d\t %d      %d\n", ii, jj, circleEnd);
-      Circle tmp = diffCircle (circles[ii], circles[jj]);
+      int tmpFail;
+      Circle tmp = diffCircle (circles[ii], circles[jj], tmpFail);
+      numFail += tmpFail;
       if (!tmp.empty()){
 	if (circles[ii].size() == circles[jj].size()){
 	  if (tmp.size() <= circles[ii].size()){
@@ -241,7 +244,7 @@ simplifyCircles ()
   //   }
   // }
 
-
+  return numFail;
 }
 
 
@@ -249,7 +252,8 @@ bool CircleOperations::
 findCommonPatterns (const Circle & c0_,
 		    const Circle & c1_,
 		    std::vector<std::vector<unsigned > > & c0_pattern,
-		    std::vector<std::vector<unsigned > > & c1_pattern)
+		    std::vector<std::vector<unsigned > > & c1_pattern,
+		    int & numFail)
 {
   c0_pattern.clear();
   c1_pattern.clear();
@@ -338,32 +342,48 @@ findCommonPatterns (const Circle & c0_,
       goto out200;
     }
     bool find2 = false;
-    int iId_Id0, iId_Id1, iId_Id2;
-    int jId_Id0, jId_Id1, jId_Id2;
+    int iId_Id2;
+    int jId_Id2;
     for (iId_Id2 = iId2; iId_Id2 != iId0;){
-      iId_Id0 = iId_Id2 + 1;
-      iId_Id1 = iId_Id2 + 2;
-      iId_Id0 = normIdx(c0, iId_Id0);
-      iId_Id1 = normIdx(c0, iId_Id1);
       for (jId_Id2 = jId2; jId_Id2 != jId0;){
-	jId_Id0 = jId_Id2 + 1;
-	jId_Id1 = jId_Id2 + 2;
-	jId_Id0 = normIdx(c1, jId_Id0);
-	jId_Id1 = normIdx(c1, jId_Id1);
-	// printf ("%d %d\n", iId_Id2, jId_Id2);
-  	if (c0[iId_Id0] == c1[jId_Id0] &&
-  	    c0[iId_Id1] == c1[jId_Id1] &&
-  	    c0[iId_Id2] == c1[jId_Id2] ){
-  	  find2 = true;
-  	  break;
-  	}
-	++jId_Id2;
-	jId_Id2 = normIdx(c1, jId_Id2);
+    	// printf ("%d %d\n", iId_Id2, jId_Id2);
+    	if (c0[iId_Id2] == c1[jId_Id2]){
+    	  find2 = true;
+    	  break;
+    	}
+    	++jId_Id2;
+    	jId_Id2 = normIdx(c1, jId_Id2);
       }
       ++iId_Id2;
       iId_Id2 = normIdx(c0, iId_Id2);
+      // old three compare version
+      // int iId_Id0, iId_Id1, iId_Id2;
+      // int jId_Id0, jId_Id1, jId_Id2;
+      // for (iId_Id2 = iId2; iId_Id2 != iId0;){
+      //   iId_Id0 = iId_Id2 + 1;
+      //   iId_Id1 = iId_Id2 + 2;
+      //   iId_Id0 = normIdx(c0, iId_Id0);
+      //   iId_Id1 = normIdx(c0, iId_Id1);
+      //   for (jId_Id2 = jId2; jId_Id2 != jId0;){
+      // 	jId_Id0 = jId_Id2 + 1;
+      // 	jId_Id1 = jId_Id2 + 2;
+      // 	jId_Id0 = normIdx(c1, jId_Id0);
+      // 	jId_Id1 = normIdx(c1, jId_Id1);
+      // 	// printf ("%d %d\n", iId_Id2, jId_Id2);
+      // 	if (c0[iId_Id0] == c1[jId_Id0] &&
+      // 	    c0[iId_Id1] == c1[jId_Id1] &&
+      // 	    c0[iId_Id2] == c1[jId_Id2] ){
+      // 	  find2 = true;
+      // 	  break;
+      // 	}
+      // 	++jId_Id2;
+      // 	jId_Id2 = normIdx(c1, jId_Id2);
+      //   }
+      //   ++iId_Id2;
+      //   iId_Id2 = normIdx(c0, iId_Id2);
     }
     if (find2){
+      numFail += 1;
       std::cerr << "find 2 matched patterns" << std::endl;
       return false;
     }
@@ -396,13 +416,15 @@ merge (const Circle & c0,
   
 Circle CircleOperations::
 diffCircle (const Circle & c0_,
-	    const Circle & c1_)
+	    const Circle & c1_,
+	    int & numFail)
 {
+  numFail = 0;
   Circle c0 (c0_);
   Circle c1 (c1_);
   
   std::vector<std::vector<unsigned > > patt0, patt1;
-  if (findCommonPatterns(c0, c1, patt0, patt1)){
+  if (findCommonPatterns(c0, c1, patt0, patt1, numFail)){
     return merge (c0, c1, patt0, patt1);
   }
   else {
@@ -411,10 +433,33 @@ diffCircle (const Circle & c0_,
     for (unsigned ii = 0; ii < size; ++ii){
       c1[ii] = tmp[size-1-ii];
     }
-    if (findCommonPatterns(c0, c1, patt0, patt1)){
+    if (findCommonPatterns(c0, c1, patt0, patt1, numFail)){
       return merge (c0, c1, patt0, patt1);
     }
   }
   return Circle();
+}
+
+bool CircleOperations::
+find3Pattern (const Circle & c,
+	      const std::vector<Identity > & pattern)
+{
+  if (pattern.size() != 3){
+    std::cerr << "invalid 3 pattern, return" << std::endl;
+    return false;
+  }
+  for (unsigned ii = 0; ii < c.size(); ++ii){
+    if (c[ii] == pattern[1]){
+      unsigned left = ii - 1;
+      left = normIdx (c, left);
+      unsigned right = ii + 1;
+      right = normIdx (c, right);
+      if ((c[left] == pattern[0] && c[right] == pattern[2]) ||
+	  (c[left] == pattern[2] && c[right] == pattern[0]) ){
+	return true;
+      }
+    }
+  }
+  return false;
 }
 

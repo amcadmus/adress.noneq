@@ -344,7 +344,8 @@ buildCircles (Circles & cir) const
   for (unsigned ii = 2; ii < generations.size(); ++ii){
     for (unsigned ll = 0; ll < generations[ii].brothers.size(); ++ll){
       const TreeNode & me (generations[ii].brothers[ll]);
-      if (me.cables.size() > 1 && me.numSon() == 0 && me.numBrother() == 0){
+      // if (me.cables.size() > 1 && me.numSon() == 0 && me.numBrother() == 0){
+      if (me.cables.size() > 1 && me.numBrother() == 0){
 	// printf ("build circle at node: %d\n", me.identity);
 	for (unsigned jj = 0; jj < me.cables.size(); ++jj){
 	  for (unsigned kk = jj+1; kk < me.cables.size(); ++kk){
@@ -373,7 +374,46 @@ buildCircles (Circles & cir) const
 	}
       }
     }
-  }   
+  }
+  // std::cout << "this is " << getTreeNode(TreePosition(0,0 )).identity<<  std::endl;
+  // // print ();
+  // cir.print ();
+  
+  
+  if (generations.size() == 1) return;
+  Circles tmpCir (cir);
+  cir.clear();
+  for (unsigned ii = 0; ii < generations[1].size(); ++ii){
+    for (unsigned jj = ii+1; jj < generations[1].size(); ++jj){
+      std::vector<Identity > patt;
+      patt.push_back (getTreeNode(TreePosition(1,ii)).identity);
+      patt.push_back (getTreeNode(TreePosition(0,0 )).identity);
+      patt.push_back (getTreeNode(TreePosition(1,jj)).identity);
+      Circles patternCircle;
+      for (unsigned kk = 0; kk < tmpCir.circles.size(); ++kk){
+	if (CircleOperations::find3Pattern(tmpCir.circles[kk], patt)){
+	  patternCircle.circles.push_back (tmpCir.circles[kk]);
+	}
+      }
+      if (patternCircle.circles.size() != 0){
+	unsigned minlength = patternCircle.circles[0].size();
+	unsigned minIdx = 0;
+	for (unsigned ll = 0; ll < patternCircle.circles.size(); ++ll){
+	  if (minlength > patternCircle.circles[ll].size()) {
+	    minlength = patternCircle.circles[ll].size();
+	    minIdx = ll;
+	  }
+	}
+	cir.circles.push_back (patternCircle.circles[minIdx]);
+      }
+    }
+  }
+  // std::cout << std::endl;
+  // cir.print ();
+  // std::cout << std::endl;
+
+  cir.uniqueCircles ();
+  cir.simplifyCircles ();
 }
 
 
@@ -402,14 +442,14 @@ renewMap (const HbondMap & map,
   }
   map.buildSubMap (newMap);
 
-  for (unsigned ii = 0; ii < generations.size(); ++ii){
-    for (unsigned jj = 0; jj < generations[ii].brothers.size(); ++jj){
-      for (unsigned kk = 0; kk < generations[ii].brothers[jj].numBrother(); ++kk){
-	newMap.push_pair (generations[ii].brothers[jj].identity,
-			  getTreeNode(generations[ii].brothers[jj].vecBrother[kk]).identity);
-      }
-    }
-  }
+  // for (unsigned ii = 0; ii < generations.size(); ++ii){
+  //   for (unsigned jj = 0; jj < generations[ii].brothers.size(); ++jj){
+  //     for (unsigned kk = 0; kk < generations[ii].brothers[jj].numBrother(); ++kk){
+  // 	newMap.push_pair (generations[ii].brothers[jj].identity,
+  // 			  getTreeNode(generations[ii].brothers[jj].vecBrother[kk]).identity);
+  //     }
+  //   }
+  // }
 }
 
   

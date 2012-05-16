@@ -92,4 +92,42 @@ calCellIndex (const std::vector<ValueType > & coord) const
 }
 
 
+std::vector<unsigned > CellList::
+neighboringCellIndex (const unsigned cellIndex,
+		      const IntVectorType nNei_)
+{
+  std::vector<unsigned > cells;
+  IntVectorType nNei (nNei_);
+  if (nNei.x > ((nCell.x - 1) >> 1)) nNei.x = ((nCell.x - 1) >> 1);
+  if (nNei.y > ((nCell.y - 1) >> 1)) nNei.y = ((nCell.y - 1) >> 1);
+  if (nNei.z > ((nCell.z - 1) >> 1)) nNei.z = ((nCell.z - 1) >> 1);
+
+  IntVectorType refIdx, tgtIdx;
+  index1to3 (cellIndex, refIdx.x, refIdx.y, refIdx.z);
+
+  IntVectorType dd;
+  for (dd.x = -nNei.x; dd.x <= nNei.x; ++dd.x){
+    tgtIdx.x = refIdx.x + dd.x;
+    if (tgtIdx.x < 0) tgtIdx.x += nCell.x;
+    else if (tgtIdx.x >= nCell.x) tgtIdx.x -= nCell.x;
+    for (dd.y = -nNei.y; dd.y <= nNei.y; ++dd.y){
+      tgtIdx.y = refIdx.y + dd.y;
+      if (tgtIdx.y < 0) tgtIdx.y += nCell.y;
+      else if (tgtIdx.y >= nCell.y) tgtIdx.y -= nCell.y;
+      for (dd.z = -nNei.z; dd.z <= nNei.z; ++dd.z){
+	tgtIdx.z = refIdx.z + dd.z;
+	if (tgtIdx.z < 0) tgtIdx.z += nCell.z;
+	else if (tgtIdx.z >= nCell.z) tgtIdx.z -= nCell.z;
+	if (0 == dd.x && 0 == dd.y && 0 == dd.z) continue;
+	cells.push_back (index3to1(tgtIdx.x, tgtIdx.y, tgtIdx.z));
+      }
+    }
+  }
+  // count the cell itself
+  cells.push_back (cellIndex);
+  
+  return cells;
+}
+
+
 

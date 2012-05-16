@@ -4,6 +4,8 @@
 #include <vector>
 #include "Defines.h"
 
+typedef std::pair<Identity, Identity>	Hbond;
+
 class HbondMap
 {
 public:
@@ -15,6 +17,7 @@ public:
   void clear ();
   void push_pair (const Identity & i,
 		  const Identity & j);
+  void push_bond (const Hbond & bond);
   unsigned nNodes () const {return nodes.size();}
   bool findNeighbors (const Identity & me,
 		      std::vector<Identity > & neighbors) const;
@@ -37,6 +40,10 @@ clear ()
   neighbors_nodes.clear();
 }
 
-
+inline void HbondMap::
+push_bond (const Hbond & bd)
+{
+  push_pair (bd.first, bd.second);
+}
 
 #endif
