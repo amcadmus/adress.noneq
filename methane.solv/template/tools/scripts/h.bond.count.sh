@@ -12,7 +12,11 @@ for i in $targets;
 do
     echo "# processing $i"
     cd $i
-    ../tools/h.bond/equi.ch4.1 -o h.count.out &> /dev/null
+    if test ! -f mytop; then
+	echo "old version, no mytop, exit"
+	exit
+    fi
+    ../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
     cd ..
     echo "$i/h.count.out" >> h.count.name
 done

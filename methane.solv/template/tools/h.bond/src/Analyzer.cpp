@@ -258,25 +258,20 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
 }
 
 OneFrameHbonds::
-OneFrameHbonds (const unsigned & numAtomCh4,
-		const unsigned & numAtomH2o,
-		const VectorType & box,
+OneFrameHbonds (const VectorType & box,
 		const ValueType & cutoff,
 		const HydrogenBond_Geo_1 hbond_)
 {
-  reinit (numAtomCh4, numAtomH2o, box, cutoff, hbond_);
+  reinit (box, cutoff, hbond_);
 }
 
 void OneFrameHbonds::
-reinit (const unsigned & numAtomCh4,
-	const unsigned & numAtomH2o,
-	const VectorType & box_,
+reinit (const VectorType & box_,
 	const ValueType & cutoff,
 	const HydrogenBond_Geo_1 hbond_)
 {
-  unsigned numResd = numAtomCh4 + numAtomH2o / 3;
   box = box_;
-  clist.reinit (numResd, box_, cutoff);
+  clist.reinit (box_, cutoff);
   hbond = hbond_;
   range2 = cutoff * cutoff;
   numFistShell = 0;
@@ -292,6 +287,18 @@ clear ()
   }
 }
 
+TopInfo::
+TopInfo ()
+    : numAtomOnCh4 (1),
+      comIndexCh4 (0),
+      numAtomOnH2o (3),
+      OIndexH2o (0),
+      H1IndexH2o (1),
+      H2IndexH2o (2)
+{
+}
+
+
 TrajLoader::
 TrajLoader ()
     : inited (false)
@@ -305,19 +312,25 @@ TrajLoader::
 }
 
 TrajLoader::
-TrajLoader (const char * filename)
+TrajLoader (const char * filename,
+	    const TopInfo info)
     : inited (false)
 {
-  reinit (filename);
+  reinit (filename, info);
 }  
 
 void TrajLoader::
-reinit (const char * filename)
+reinit (const char * filename,
+	const TopInfo info)
 {
   char tmpname[2048];
   strncpy (tmpname, filename, 2047);
   
   xd = xdrfile_open (filename, "r");
+  if (xd == NULL){
+    std::cerr << "cannot open file " << filename << std::endl;
+    return ;
+  }
   read_xtc_natoms (tmpname, &natoms);
   step = 0;
   time = 0.;
@@ -325,45 +338,71 @@ reinit (const char * filename)
   xx = (rvec *) malloc (sizeof(rvec) * natoms);
   prec = 1000.;
 
-  numAtomCh4 = 1;
-  numAtomH2o = (natoms - 1);  
-
-  load ();
-  xdrfile_close (xd);
-  xd = xdrfile_open (filename, "r");
+  tinfo = info;
+  numMolCh4 = 1;
+  numAtomCh4 = tinfo.numAtomOnCh4 * numMolCh4;
+  numAtomH2o = natoms - numAtomCh4;
+  if (numAtomH2o % tinfo.numAtomOnH2o != 0){
+    std::cerr << "inconsistent num atom and mol size, exit" << std::endl;
+    exit(1);
+  }
+  numMolH2o = numAtomH2o / tinfo.numAtomOnH2o;
   
   inited = true;
+
+  load ();
+
+  xdrfile_close (xd);
+  xd = xdrfile_open (filename, "r");  
+  if (xd == NULL){
+    std::cerr << "cannot open file " << filename << std::endl;
+    return ;
+  }
 }
 
 bool TrajLoader::
 load ()
 {
-  matrix tmpBox;
-  int st = read_xtc (xd, natoms, &step, &time, tmpBox, xx, &prec);
-  box.x = tmpBox[0][0];
-  box.y = tmpBox[1][1];
-  box.z = tmpBox[2][2];
-  if (st == exdrOK) return true;
-  else return false;
+  if (inited){
+    matrix tmpBox;
+    int st = read_xtc (xd, natoms, &step, &time, tmpBox, xx, &prec);
+    box.x = tmpBox[0][0];
+    box.y = tmpBox[1][1];
+    box.z = tmpBox[2][2];
+    if (st == exdrOK) return true;
+    else return false;
+  }
+  else {
+    return false;
+  }
 }
 
 void TrajLoader::
 formCoords (std::vector<std::vector<ValueType > > & ch4,
 	    std::vector<std::vector<ValueType > > & h2o)
 {
-  ch4.resize(numAtomCh4);
-  h2o.resize(numAtomH2o);
+  
+  ch4.resize(numMolCh4);
+  h2o.resize(numMolH2o * 3);
 
-  for (unsigned ii = 0; ii < numAtomCh4; ++ii){
+  for (unsigned ii = 0; ii < numMolCh4; ++ii){
     ch4[ii].resize(3);
     for (unsigned dd = 0; dd < 3; ++dd){
-      ch4[ii][dd] = xx[ii][dd];
+      ch4[ii][dd] = xx[ii * tinfo.numAtomOnCh4 + tinfo.comIndexCh4][dd];
     }
   }
-  for (unsigned ii = 0; ii < numAtomH2o; ++ii){
-    h2o[ii].resize(3);
+  for (unsigned ii = 0; ii < numMolH2o; ++ii){
+    h2o[ii*3+0].resize(3);
+    h2o[ii*3+1].resize(3);
+    h2o[ii*3+2].resize(3);
+    if (int(numAtomCh4 + ii * tinfo.numAtomOnH2o + tinfo.H2IndexH2o) > int(natoms)){
+      std::cerr << "wrong index of water! exit" << std::endl;
+      exit(1);
+    }
     for (unsigned dd = 0; dd < 3; ++dd){
-      h2o[ii][dd] = xx[ii+numAtomCh4][dd];
+      h2o[ii*3+0][dd] = xx[numAtomCh4 + ii * tinfo.numAtomOnH2o + tinfo.OIndexH2o][dd];
+      h2o[ii*3+1][dd] = xx[numAtomCh4 + ii * tinfo.numAtomOnH2o + tinfo.H1IndexH2o][dd];
+      h2o[ii*3+2][dd] = xx[numAtomCh4 + ii * tinfo.numAtomOnH2o + tinfo.H2IndexH2o][dd];
     }
   }
 }

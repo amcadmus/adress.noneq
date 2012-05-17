@@ -28,6 +28,10 @@ public:
   CellList (const unsigned & numAtom,
 	    const VectorType & box,
 	    const ValueType & cellSize);
+  CellList (const VectorType & box,
+	    const ValueType & cellSize);
+  void reinit (const VectorType & box,
+	       const ValueType & cellSize);
   void reinit (const unsigned & numAtom,
 	       const VectorType & box,
 	       const ValueType & cellSize);

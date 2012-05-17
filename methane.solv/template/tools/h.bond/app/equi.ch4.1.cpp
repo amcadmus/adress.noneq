@@ -16,15 +16,32 @@
 #include "HbondMap.h"
 #include "Analyzer.h"
 #include <boost/program_options.hpp>
+#include "StringSplit.h"
 
 using namespace CircleOperations;
 namespace po = boost::program_options;
 
+void readTop (const std::string & file,
+	      TopInfo & info)
+{
+  FILE * fp = fopen (file.c_str(), "r");
+  if (fp == NULL){
+    std::cout << "cannot open file " << file << std::endl;
+    return;
+  }
+  fscanf (fp, "%d %d", &(info.numAtomOnCh4), &(info.comIndexCh4));
+  fscanf (fp, "%d", &(info.numAtomOnH2o));
+  fscanf (fp, "%d %d %d", &(info.OIndexH2o), &(info.H1IndexH2o), &(info.H2IndexH2o));
+  fclose (fp);
+}
+
+
 int main(int argc, char * argv[])
 {
   float begin, end, rcut;
-  std::string ifile, ofile;
+  std::string ifile, ofile, tfile;
   float time_prec = .01;
+  TopInfo info;
   
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -32,7 +49,8 @@ int main(int argc, char * argv[])
       ("begin,b", po::value<float > (&begin)->default_value(0.f), "start time")
       ("end,e",   po::value<float > (&end  )->default_value(0.f), "end   time")
       ("rcut,r", po::value<float > (&rcut)->default_value(0.53f), "cut-off to cal h-bond")
-      ("output,o",   po::value<std::string > (&ofile)->default_value ("count.out"), "the output of count of h-bond")
+      ("top-file,t",po::value<std::string > (&tfile), "topolgy of the system")
+      ("output,o",  po::value<std::string > (&ofile)->default_value ("count.out"), "the output of count of h-bond")
       ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
       
   po::variables_map vm;
@@ -42,6 +60,9 @@ int main(int argc, char * argv[])
     std::cout << desc<< "\n";
     return 0;
   }
+  if (vm.count("top-file")){
+    readTop (tfile, info);
+  }
   
   std::cout << "###################################################" << std::endl;
   std::cout << "# begin->end: " << begin << " " << end << std::endl;
@@ -49,8 +70,8 @@ int main(int argc, char * argv[])
   std::cout << "###################################################" << std::endl;  
 
   HydrogenBond_Geo_1 hbond_id (.35, 30.);
-  TrajLoader tjl (ifile.c_str());
-  OneFrameHbonds ofh (tjl.getNumAtomCh4(), tjl.getNumAtomH2o(), tjl.getBox(), rcut, hbond_id);
+  TrajLoader tjl (ifile.c_str(), info);
+  OneFrameHbonds ofh (tjl.getBox(), rcut, hbond_id);
   Analyzer ana;
   PolygonAverge pavg;
   pavg.reinit (13);

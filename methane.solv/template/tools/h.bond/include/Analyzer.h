@@ -9,6 +9,19 @@
 #include "xdrfile/xdrfile.h"
 #include "xdrfile/xdrfile_xtc.h"
 
+struct TopInfo
+{
+  unsigned numAtomOnCh4;
+  unsigned comIndexCh4;
+  unsigned numAtomOnH2o;
+  unsigned OIndexH2o;
+  unsigned H1IndexH2o;
+  unsigned H2IndexH2o;
+  TopInfo ();
+}
+    ;
+
+
 class Analyzer 
 {
   HbondMap map;  
@@ -48,14 +61,10 @@ class OneFrameHbonds
   std::vector<unsigned > firstShellIdx;
   unsigned numFistShell;
 public:
-  OneFrameHbonds (const unsigned & numAtomCh4,
-		  const unsigned & numAtomH2o,
-		  const VectorType & box,
+  OneFrameHbonds (const VectorType & box,
 		  const ValueType & cutoff,
 		  const HydrogenBond_Geo_1 hbond_ = HydrogenBond_Geo_1 ());
-  void reinit (const unsigned & numAtomCh4,
-	       const unsigned & numAtomH2o,
-	       const VectorType & box,
+  void reinit (const VectorType & box,
 	       const ValueType & cutoff,
 	       const HydrogenBond_Geo_1 hbond_ = HydrogenBond_Geo_1 ());
 public:
@@ -69,8 +78,8 @@ class TrajLoader
 {
   XDRFILE *xd;
   int natoms;
-  unsigned numAtomCh4;
-  unsigned numAtomH2o;
+  unsigned numMolCh4, numMolH2o;
+  unsigned numAtomCh4, numAtomH2o;
   int step;
   float time;
   VectorType box;
@@ -78,16 +87,19 @@ class TrajLoader
   float prec;
   bool inited;
   void clear ();
+  TopInfo tinfo;
 public:
   TrajLoader ();
   ~TrajLoader ();
-  TrajLoader (const char * filename);
-  void reinit (const char * filename);
+  TrajLoader (const char * filename,
+	      const TopInfo info = TopInfo());
+  void reinit (const char * filename,
+	       const TopInfo info = TopInfo());
   bool load ();
 public:
-  int getNumAtom () const {return natoms;}
-  int getNumAtomCh4 () const {return numAtomCh4;}
-  int getNumAtomH2o () const {return numAtomH2o;}
+  // int getNumAtom () const {return natoms;}
+  // int getNumAtomCh4 () const {return numAtomCh4;}
+  // int getNumAtomH2o () const {return numAtomH2o;}
   VectorType getBox () const {return box;}
   float getTime () const {return time;}
 public:

@@ -9,6 +9,13 @@ CellList (const unsigned & numAtom,
   reinit (numAtom, box_, cellSize_);
 }
 
+CellList::
+CellList (const VectorType & box_,
+	  const ValueType & cellSize_)
+{
+  reinit (box_, cellSize_);
+}
+
 void CellList::
 reinit (const unsigned & numAtom,
 	const VectorType & box_,
@@ -44,6 +51,38 @@ reinit (const unsigned & numAtom,
     // std::cout << "the capacity is " << list[i].capacity() << std::endl;
   }
 }
+
+void CellList::
+reinit (const VectorType & box_,
+	const ValueType & cellSize_)
+{
+  box = box_;
+  cellSize.x = cellSize_;
+  cellSize.y = cellSize_;
+  cellSize.z = cellSize_;
+  nCell.x = box.x / cellSize.x;
+  nCell.y = box.y / cellSize.y;
+  nCell.z = box.z / cellSize.z;
+  cellSize.x = box.x / ValueType(nCell.x);
+  cellSize.y = box.y / ValueType(nCell.y);
+  cellSize.z = box.z / ValueType(nCell.z);
+
+  list.clear ();
+  if (nCell.x <= 1 || nCell.y <= 1 || nCell.z <=1){
+    std::cerr << "number of cell on each diretion should be no less than 1. do nothing" << std::endl;
+    return ;
+  }
+  
+  // numInCell.resize (nCell.x * nCell.y * nCell.z);
+  // std::fill (numInCell.begin(), numInCell.end(), 0);
+  list.resize (nCell.x * nCell.y * nCell.z);
+
+  for (unsigned i = 0; i < unsigned(nCell.x * nCell.y * nCell.z); ++i){
+    list[i].clear ();
+    // std::cout << "the capacity is " << list[i].capacity() << std::endl;
+  }
+}
+
 
 bool CellList::
 isEmpty () const
