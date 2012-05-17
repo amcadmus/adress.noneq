@@ -25,6 +25,7 @@ function set_parameters_pert () {
     sed -e "/^nstxout/s/=.*/= 0/g" |\
     sed -e "/^nstvout/s/=.*/= 0/g" |\
     sed -e "/^tau_t/s/=.*/= $pert_taut/g" |\
+    sed -e "/^ld-seed/s/=.*/= `date +%s`/g" |\
     sed -e "/^nstxtcout/s/=.*/= $pert_xtcout_feq/g" > tmptmptmp.mdp
     mv -f tmptmptmp.mdp $file
 }
