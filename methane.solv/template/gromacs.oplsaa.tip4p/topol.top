@@ -1,0 +1,10 @@
+#include "oplsaa.ff/forcefield.itp"
+#include "methane.itp"
+#include "tip4p.itp"
+
+[ system ]
+Methane in water
+
+[ molecules ]
+Methane		1
+SOL		887
