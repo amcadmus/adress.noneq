@@ -99,6 +99,7 @@ readData_exhaustive (const std::vector<Hbond> & bonds)
 
   cs.uniqueCircles();
   cs.simplifyCircles();
+  cs.combineSimilar();
   cs.sortCircles();
   // cs.print();
 }

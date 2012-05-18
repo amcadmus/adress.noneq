@@ -17,6 +17,7 @@ public:
   void clear ();
   void uniqueCircles ();
   int  simplifyCircles ();
+  void combineSimilar ();
   void sortCircles ();
   void add (const Circles & c);
   void print () const;

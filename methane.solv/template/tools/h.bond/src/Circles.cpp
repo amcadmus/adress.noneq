@@ -94,13 +94,54 @@ uniqueCircles ()
   }
 }
 
+void Circles::
+combineSimilar ()
+{ 
+  combineSimilar_start:
+  for (unsigned ii = 0; ii < circles.size(); ++ii){
+    for (unsigned jj = ii+1; jj < circles.size(); ++jj){
+      std::vector<std::vector<unsigned > > p0, p1;
+      int numFail = 0;
+      findCommonPatterns (circles[ii], circles[jj], p0, p1, numFail);
+      if (numFail > 0){
+	std::cout << "find!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	std::vector<Circle >::iterator it = circles.begin();
+	for (unsigned kk = 0; kk < jj; ++kk){
+	  ++it;
+	}
+	std::cout << circles.size() << std::endl;
+	circles.erase(it);
+	std::cout << circles.size() << std::endl;
+	goto combineSimilar_start;
+      }
+      Circle tmp(circles[jj]);
+      for (unsigned ll = 0; ll < circles[jj].size(); ++ll){
+	tmp[ll] = circles[jj][circles[jj].size()-1-ll];
+      }
+      findCommonPatterns (circles[ii], tmp, p0, p1, numFail);
+      if (numFail > 0){
+	std::cout << "find!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	std::vector<Circle >::iterator it = circles.begin();
+	for (unsigned kk = 0; kk < jj; ++kk){
+	  ++it;
+	}
+	std::cout << circles.size() << std::endl;
+	circles.erase(it);
+	std::cout << circles.size() << std::endl;
+	goto combineSimilar_start;
+      }      
+    }
+  }
+}
+	
+
 int Circles::
 simplifyCircles ()
 {
   // start:
   // std::cout << "called" << std::endl;
   int numFail = 0;
-  start:
+  simplifyCircles_start:
   
   unsigned circleEnd = circles.size();
   for (unsigned ii = 0; ii < circleEnd; ++ii){
@@ -131,7 +172,7 @@ simplifyCircles ()
 	    // printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
 	    circles[jj] = tmp;
 	    uniqueCircles ();
-	    goto start;
+	    goto simplifyCircles_start;
 	    // return;
 	  }
 	  else if (tmp.size() == circles[jj].size()){
@@ -150,7 +191,7 @@ simplifyCircles ()
 	    // printf ("new cir: %d   %d %d\n", tmp.size(), circles[ii].size(), circles[jj].size());
 	    circles[ii] = tmp;
 	    uniqueCircles ();
-	    goto start;
+	    goto simplifyCircles_start;
 	    // return;
 	  }
 	  else if (tmp.size() == circles[ii].size()){
@@ -474,4 +515,5 @@ find3Pattern (const Circle & c,
   }
   return false;
 }
+
 
