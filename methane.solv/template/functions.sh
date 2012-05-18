@@ -16,6 +16,22 @@ function set_parameters_equi () {
     mv -f tmptmptmp.mdp $file
 }
 
+function set_parameters_long_equi () {
+    file=$1
+    long_equi_nstep_warm=`echo "$long_equi_warm_time/$long_equi_dt" | bc -l | cut -d '.' -f 1`
+    long_equi_nstep_count=`echo "$long_equi_frame_feq * $long_equi_num_frame / $long_equi_dt" | bc -l | cut -d '.' -f 1`
+    long_equi_nstep=`echo "$long_equi_nstep_warm + $long_equi_nstep_count" | bc`
+    long_equi_xvout_feq=`echo "$long_equi_frame_feq / $long_equi_dt" | bc -l | cut -d '.' -f 1`
+    sed -e "/^dt/s/=.*/= $long_equi_dt/g" $file |\
+    sed -e "/^nstep/s/=.*/= $long_equi_nstep/g" |\
+    sed -e "/^nstxout/s/=.*/= 0/g" |\
+    sed -e "/^nstvout/s/=.*/= 0/g" |\
+    sed -e "/^ld-seed/s/=.*/= $long_equi_seed/g" |\
+    sed -e "/^tau_t/s/=.*/= $long_equi_taut/g" |\
+    sed -e "/^nstxtcout/s/=.*/= $long_equi_xvout_feq/g" > tmptmptmp.mdp
+    mv -f tmptmptmp.mdp $file
+}
+
 function set_parameters_pert () {
     file=$1
     pert_nstep=`echo "$pert_time / $pert_dt" | bc -l | cut -d '.' -f 1`

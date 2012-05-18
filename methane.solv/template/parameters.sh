@@ -1,5 +1,13 @@
 gro_dir=gromacs.gromos43a1.spce
 
+# productive equilibrium run settings
+long_equi_warm_time=200		# ps
+long_equi_frame_feq=5		# ps
+long_equi_num_frame=100		# n
+long_equi_dt=0.002		# ps
+long_equi_taut=0.5		# ps
+long_equi_seed=`date +%s`	# 
+
 # equilibrium run settings
 equi_warm_time=200		# ps
 equi_frame_feq=5		# ps
