@@ -13,10 +13,11 @@ do
     echo "# processing $i"
     cd $i
     if test ! -f mytop; then
-	echo "old version, no mytop, exit"
-	exit
+	echo "old version, no mytop"
+	../tools/h.bond/equi.ch4.1 -o h.count.out &> /dev/null
+    else
+	../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
     fi
-    ../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
     cd ..
     echo "$i/h.count.out" >> h.count.name
 done
