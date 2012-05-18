@@ -247,7 +247,7 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
       water1.push_back(h2o[firstShellIdx[jj]+1]);
       water1.push_back(h2o[firstShellIdx[jj]+2]);
       alignWaters (box, water0, water1);
-      if (hbond(water0, water1) || hbond(water1, water0)){
+      if ((*hbond)(water0, water1) || (*hbond)(water1, water0)){
 	// the identity of water is the index of its oxygen
 	bonds.push_back(Hbond(firstShellIdx[ii], firstShellIdx[jj]));
       }
@@ -260,7 +260,7 @@ calBonds (const std::vector<std::vector<ValueType > > & ch4,
 OneFrameHbonds::
 OneFrameHbonds (const VectorType & box,
 		const ValueType & cutoff,
-		const HydrogenBond_Geo_1 hbond_)
+		const HydrogenBond * hbond_)
 {
   reinit (box, cutoff, hbond_);
 }
@@ -268,7 +268,7 @@ OneFrameHbonds (const VectorType & box,
 void OneFrameHbonds::
 reinit (const VectorType & box_,
 	const ValueType & cutoff,
-	const HydrogenBond_Geo_1 hbond_)
+	const HydrogenBond * hbond_)
 {
   box = box_;
   clist.reinit (box_, cutoff);

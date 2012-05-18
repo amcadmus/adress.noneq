@@ -69,9 +69,9 @@ int main(int argc, char * argv[])
   std::cout << "# rcut: " << rcut << std::endl;
   std::cout << "###################################################" << std::endl;  
 
-  HydrogenBond_Geo_1 hbond_id (.35, 30.);
+  HydrogenBond_Geo_2 hbond_id;
   TrajLoader tjl (ifile.c_str(), info);
-  OneFrameHbonds ofh (tjl.getBox(), rcut, hbond_id);
+  OneFrameHbonds ofh (tjl.getBox(), rcut, dynamic_cast<const HydrogenBond *const>(&hbond_id));
   Analyzer ana;
   PolygonAverge pavg;
   pavg.reinit (13);

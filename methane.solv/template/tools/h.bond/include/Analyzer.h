@@ -56,17 +56,17 @@ class OneFrameHbonds
 {
   VectorType box;
   CellList clist;
-  HydrogenBond_Geo_1 hbond;
+  const HydrogenBond * hbond;
   ValueType range2;
   std::vector<unsigned > firstShellIdx;
   unsigned numFistShell;
 public:
   OneFrameHbonds (const VectorType & box,
 		  const ValueType & cutoff,
-		  const HydrogenBond_Geo_1 hbond_ = HydrogenBond_Geo_1 ());
+		  const HydrogenBond *hbond_);
   void reinit (const VectorType & box,
 	       const ValueType & cutoff,
-	       const HydrogenBond_Geo_1 hbond_ = HydrogenBond_Geo_1 ());
+	       const HydrogenBond * hbond_);
 public:
   unsigned getNumFirstShell () const {return numFistShell;}
   std::vector<Hbond > calBonds (const std::vector<std::vector<ValueType > > & ch4,

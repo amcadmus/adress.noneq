@@ -22,7 +22,7 @@ public:
 
 // r [nm] is the O-O distance thread 
 // theta [deg] is the H-O-O angle thread 
-class HydrogenBond_Geo_1
+class HydrogenBond_Geo_1 : public HydrogenBond
 {
   ValueType roo2;
   ValueType costhetahoo;
@@ -35,10 +35,30 @@ public:
     ;
 
 
+class HydrogenBond_Geo_2 : public HydrogenBond
+{
+  ValueType roo2;
+  ValueType costhetaoho;
+public:
+  HydrogenBond_Geo_2 (const ValueType r = 0.35,
+		      const ValueType theta = 40);
+  virtual bool operator () (const std::vector<std::vector<ValueType > > & denotor,
+			    const std::vector<std::vector<ValueType > > & acceptor) const;
+}
+    ;
+
+
 inline HydrogenBond_Geo_1::
 HydrogenBond_Geo_1 (const ValueType r,
 		    const ValueType theta)
     : roo2(r*r), costhetahoo(cos(theta / 180. * M_PI))
+{
+}
+
+inline HydrogenBond_Geo_2::
+HydrogenBond_Geo_2 (const ValueType r,
+		    const ValueType theta)
+    : roo2(r*r), costhetaoho(cos(theta / 180. * M_PI))
 {
 }
 
