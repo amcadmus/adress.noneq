@@ -104,12 +104,13 @@ combineSimilar ()
       int numFail = 0;
       findCommonPatterns (circles[ii], circles[jj], p0, p1, numFail);
       if (numFail > 0){
-	std::cout << "find!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	std::cout << "find similar 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 	std::vector<Circle >::iterator it = circles.begin();
 	for (unsigned kk = 0; kk < jj; ++kk){
 	  ++it;
 	}
-	std::cout << circles.size() << std::endl;
+	std::cout << circles.size() << " kick a circle of size " << circles[jj].size()  << std::endl;
+	// print();
 	circles.erase(it);
 	std::cout << circles.size() << std::endl;
 	goto combineSimilar_start;
@@ -120,16 +121,67 @@ combineSimilar ()
       }
       findCommonPatterns (circles[ii], tmp, p0, p1, numFail);
       if (numFail > 0){
-	std::cout << "find!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	std::cout << "find similar 2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
 	std::vector<Circle >::iterator it = circles.begin();
 	for (unsigned kk = 0; kk < jj; ++kk){
 	  ++it;
 	}
-	std::cout << circles.size() << std::endl;
+	std::cout << circles.size() << " kick a circle of size " << circles[jj].size() << std::endl;
+	// print();
 	circles.erase(it);
 	std::cout << circles.size() << std::endl;
 	goto combineSimilar_start;
       }      
+    }
+  }
+
+  combineSimilar_start1:
+  double similarRatio = 0.65;
+  for (unsigned ii = 0; ii < circles.size(); ++ii){
+    for (unsigned jj = ii+1; jj < circles.size(); ++jj){
+      if (circles[ii].size() != circles[jj].size()) continue;
+      std::vector<std::vector<unsigned > > p0, p1;
+      int numFail = 0;
+      bool isfind = findCommonPatterns (circles[ii], circles[jj], p0, p1, numFail);
+      if (isfind && p0.size() == 0){
+	std::cerr << "wrong p0 size" << std::endl;
+	exit(1);
+      }
+      if (isfind && double(p0[0].size()) / double(circles[ii].size()) > similarRatio){
+	std::cout << "find similar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	std::vector<Circle >::iterator it = circles.begin();
+	for (unsigned kk = 0; kk < jj; ++kk){
+	  ++it;
+	}
+	std::cout << circles.size() << " kick a circle of size " << circles[jj].size()  << std::endl;
+	// std::cout << ii << " " << jj << " " << circles.size() << std::endl;
+	print();
+	circles.erase(it);
+	std::cout << circles.size() << std::endl;
+	goto combineSimilar_start1;
+      }
+      Circle tmp(circles[jj]);
+      for (unsigned ll = 0; ll < circles[jj].size(); ++ll){
+	tmp[ll] = circles[jj][circles[jj].size()-1-ll];
+      }
+      isfind = findCommonPatterns (circles[ii], tmp, p0, p1, numFail);
+      if (isfind && p0.size() == 0){
+	std::cerr << "wrong p0 size" << std::endl;
+	exit(1);
+      }
+      if (isfind && double(p0[0].size()) / double(circles[ii].size()) > similarRatio){
+	std::cout << "find similar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	std::vector<Circle >::iterator it = circles.begin();
+	for (unsigned kk = 0; kk < jj; ++kk){
+	  ++it;
+	}
+	std::cout << circles.size() << " kick a circle of size " << circles[jj].size()  << std::endl;
+	// std::cout << ii << " " << jj << " " << circles.size() << std::endl;
+	print();
+	circles.erase(it);
+	std::cout << circles.size() << std::endl;
+	goto combineSimilar_start1;
+      }
     }
   }
 }
