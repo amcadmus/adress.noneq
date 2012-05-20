@@ -39,12 +39,16 @@ public:
 class PolygonAverge
 {
   unsigned nframe;
+  unsigned numBlock;
   unsigned sizeValue;
   ValueType numPolygon;
-  std::vector<ValueType > value;
+  std::vector<double > value;
+  std::vector<std::vector<double > > record;
+  std::vector<double > avg;
+  std::vector<double > err;  
 public:
   PolygonAverge ();
-  void reinit (const unsigned & maxPolygon);
+  void reinit (const unsigned & maxPolygon, const unsigned block=20);
   void deposit (const Circles & cirs);
   void average ();
   void print (FILE * fp) const;

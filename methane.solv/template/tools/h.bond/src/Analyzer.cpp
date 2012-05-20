@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include "BlockAverage.h"
 
 using namespace CircleOperations;
 
@@ -111,14 +112,17 @@ PolygonAverge ()
 }
 
 void PolygonAverge::
-reinit (const unsigned & maxPolygon)
+reinit (const unsigned & maxPolygon, const unsigned block)
 {
+  numBlock = block;
   nframe = 0;
   sizeValue = maxPolygon + 1;
   numPolygon = 0.;
   value.resize (sizeValue);
+  record.resize (sizeValue);
   for (unsigned ii = 0; ii < sizeValue; ++ii){
     value[ii]  = 0.;
+    record[ii].clear();
   }
 }
 
@@ -126,9 +130,13 @@ void PolygonAverge::
 deposit (const Circles & cirs)
 {
   numPolygon += cirs.circles.size();
+  for (unsigned ii = 0; ii < sizeValue; ++ii){
+    record[ii].push_back(0.);
+  }
   for (unsigned ii = 0; ii < cirs.circles.size(); ++ii){
     if (cirs.circles[ii].size() < sizeValue){
       value[cirs.circles[ii].size()] += 1.;
+      record[cirs.circles[ii].size()].back() += 1.;
     }
   }
   nframe ++;
@@ -141,13 +149,26 @@ average ()
   for (unsigned ii = 0; ii < sizeValue; ++ii){
     value[ii] /= ValueType(nframe);
   }
+
+  if (nframe != record[0].size()){
+    std::cout << "in consistent number of frames" << std::endl;
+    exit(1);
+  }
+  avg.resize (sizeValue);
+  err.resize(sizeValue);
+  BlockAverage ba;
+  for (unsigned ii = 0; ii < sizeValue; ++ii){  
+    ba.processData (record[ii], numBlock);
+    avg[ii] = ba.getAvg();
+    err[ii] = ba.getAvgError();
+  }
 }
 
 void PolygonAverge::
 print (FILE * fp) const
 {
   for (unsigned ii = 3; ii < sizeValue; ++ii){
-    fprintf (fp, "%d %f\n", ii, value[ii]);
+    fprintf (fp, "%d %f %f\n", ii, avg[ii], err[ii]);
   }
 }
 

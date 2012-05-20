@@ -38,6 +38,7 @@ void readTop (const std::string & file,
 
 int main(int argc, char * argv[])
 {
+  unsigned numBlock;
   float begin, end, rcut;
   std::string ifile, ofile, tfile;
   float time_prec = .01;
@@ -49,6 +50,7 @@ int main(int argc, char * argv[])
       ("begin,b", po::value<float > (&begin)->default_value(0.f), "start time")
       ("end,e",   po::value<float > (&end  )->default_value(0.f), "end   time")
       ("rcut,r", po::value<float > (&rcut)->default_value(0.53f), "cut-off to cal h-bond")
+      ("block,n", po::value<unsigned > (&numBlock)->default_value(20), "number of block for averaging")
       ("top-file,t",po::value<std::string > (&tfile), "topolgy of the system")
       ("output,o",  po::value<std::string > (&ofile)->default_value ("count.out"), "the output of count of h-bond")
       ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
@@ -67,6 +69,8 @@ int main(int argc, char * argv[])
   std::cout << "###################################################" << std::endl;
   std::cout << "# begin->end: " << begin << " " << end << std::endl;
   std::cout << "# rcut: " << rcut << std::endl;
+  std::cout << "# block: " << numBlock << std::endl;
+  std::cout << "# top file: " << tfile << std::endl;
   std::cout << "###################################################" << std::endl;  
 
   HydrogenBond_Geo_2 hbond_id;
@@ -74,7 +78,7 @@ int main(int argc, char * argv[])
   OneFrameHbonds ofh (tjl.getBox(), rcut, dynamic_cast<const HydrogenBond *const>(&hbond_id));
   Analyzer ana;
   PolygonAverge pavg;
-  pavg.reinit (13);
+  pavg.reinit (13, numBlock);
 
   std::vector<std::vector<ValueType > > ch4;
   std::vector<std::vector<ValueType > > h2o;
