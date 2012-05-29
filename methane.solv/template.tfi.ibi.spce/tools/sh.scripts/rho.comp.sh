@@ -4,6 +4,7 @@ frame_begin=100
 refh=2.50
 nblock=10
 
+make -C tools/analyze.number/ makedir
 make -C tools/analyze.number/ -j4
 
 dir=$1

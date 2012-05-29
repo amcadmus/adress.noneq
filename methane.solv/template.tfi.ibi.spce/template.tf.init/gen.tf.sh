@@ -52,7 +52,8 @@ cp confout.gro ../conf.gro
 cd ..
 ## add COM site
 make -C tools/gen.conf/ clean &> $makelog
-make -j4 -C tools/gen.conf/ &> $makelog
+make -C tools/gen.conf/ makedir &>> $makelog
+make -j4 -C tools/gen.conf/ &>> $makelog
 tools/gen.conf/stupid.add.com -f conf.gro -o out.gro &>> $mylog
 mv -f out.gro conf.gro
 
