@@ -155,7 +155,7 @@ combineSimilar ()
 	}
 	std::cout << circles.size() << " kick a circle of size " << circles[jj].size()  << std::endl;
 	// std::cout << ii << " " << jj << " " << circles.size() << std::endl;
-	print();
+	// print();
 	circles.erase(it);
 	std::cout << circles.size() << std::endl;
 	goto combineSimilar_start1;
@@ -177,7 +177,7 @@ combineSimilar ()
 	}
 	std::cout << circles.size() << " kick a circle of size " << circles[jj].size()  << std::endl;
 	// std::cout << ii << " " << jj << " " << circles.size() << std::endl;
-	print();
+	// print();
 	circles.erase(it);
 	std::cout << circles.size() << std::endl;
 	goto combineSimilar_start1;
