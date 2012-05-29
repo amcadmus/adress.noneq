@@ -91,7 +91,7 @@ gen-vel                  = no
 ; OPTIONS FOR BONDS    
 constraints              = none
 
-adress_type			= xsplit
+adress_type			= sphere
 adress_cg_grp_names		= CG
 adress_ex_width			= 2.0
 adress_hy_width			= 2.0
