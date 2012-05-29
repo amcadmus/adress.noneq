@@ -7,22 +7,22 @@ cg_pot_file=tools/table_CG_CG.xvg
 tgt_rdf_file=tools/rdf.com.1e-2.xvg
 
 # rdf interation
-rdf_iterations=50
+rdf_iterations=20
 
 # ibi parameters
-ibi_iterations_max=1
+ibi_iterations_max=50
 
-ibi_gmx_nsteps=500000
-ibi_gmx_nstenergy=500
-ibi_gmx_nstxtcout=500
+ibi_gmx_nsteps=50000
+ibi_gmx_nstenergy=50
+ibi_gmx_nstxtcout=50
 
 # tf parameters
-tf_iterations_max=1
+tf_iterations_max=2
 tf_iterations_init=10
 
 tf_gmx_nsteps=500000
-tf_gmx_nstenergy=500
-tf_gmx_nstxtcout=500
+tf_gmx_nstenergy=200
+tf_gmx_nstxtcout=200
 
 ex_region_r=0.54
 hy_region_r=2.70
