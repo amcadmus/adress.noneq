@@ -32,8 +32,10 @@ do
     rm -f run.log
     ../$perturbation_command -f $i -o conf.gro &>> run.log
     set_parameters_pert grompp.mdp
-    grompp &>> run.log
-    mdrun -v &>> run.log
+    echo "# run with command `which grompp`" &>> run.log
+    $grompp_command &>> run.log
+    echo "# run with command `which mdrun`" &>> run.log
+    $mdrun_command &>> run.log
     cd ..
 done
 
