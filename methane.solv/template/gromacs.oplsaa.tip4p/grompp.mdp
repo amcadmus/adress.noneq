@@ -37,6 +37,9 @@ xtc-grps                 =
 ; Selection of energy groups
 energygrps               = 
 
+freezegrps = Meth
+freezedim  = Y Y Y
+
 ; NEIGHBORSEARCHING PARAMETERS
 ; nblist update frequency
 nstlist                  = 10
