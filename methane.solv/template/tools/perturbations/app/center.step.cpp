@@ -137,6 +137,7 @@ int main(int argc, char * argv[])
     preResdIndex = resdindex[ii];
   }
   if (mole_posi.size() != 0){
+    regulateMol  (boxsize, mole_posi);
     applyPertMol (rcut0, rcut1, strength, boxsize, mole_posi, mole_velo);
     newVelo.insert (newVelo.end(), mole_velo.begin(), mole_velo.end());
   }
