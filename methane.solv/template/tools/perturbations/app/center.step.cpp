@@ -17,6 +17,21 @@
 
 namespace po = boost::program_options;
 
+void regulateMol (const std::vector<double > & box,
+		  std::vector<std::vector<double > > & posi)
+{
+  for (unsigned ii = 1; ii < posi.size(); ++ii){
+    for (unsigned dd = 0; dd < 3; ++dd){
+      if      (posi[ii][dd] - posi[0][dd] > box[dd] * 0.5) {
+	posi[ii][dd] -= box[dd];
+      }
+      else if (posi[ii][dd] - posi[0][dd] <-box[dd] * 0.5) {
+	posi[ii][dd] += box[dd];
+      }
+    }
+  }
+}		  
+
 void applyPertMol (const double & rcut0,
 		   const double & rcut1,
 		   const double & strength,
@@ -111,6 +126,7 @@ int main(int argc, char * argv[])
       mole_velo.push_back (velo[ii]);
     }
     else{
+      regulateMol  (boxsize, mole_posi);
       applyPertMol (rcut0, rcut1, strength, boxsize, mole_posi, mole_velo);
       newVelo.insert (newVelo.end(), mole_velo.begin(), mole_velo.end());
       mole_posi.clear();
