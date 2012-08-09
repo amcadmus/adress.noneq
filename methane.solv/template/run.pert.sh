@@ -14,7 +14,7 @@ if test ! -d $pert_conf_dir ; then
 fi
 
 cd $pert_conf_dir
-targets=`ls *gro`
+targets=`ls *gro | head -n $pert_num_conf_use`
 cd $cwd
 
 for i in $targets;
