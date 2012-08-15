@@ -36,6 +36,17 @@ do
     $grompp_command &>> run.log
     echo "# run with command `which mdrun`" &>> run.log
     $mdrun_command &>> run.log
+
+    if test ! -f mytop; then
+	echo "old version, no mytop"
+	../tools/h.bond/equi.ch4.1 -o h.count.out &> /dev/null
+    else
+	../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
+    fi
+    rm -f traj.xtc state*.cpt topol.tpr
+    
     cd ..
+    
+    echo "$my_dir/h.count.out" >> h.count.name    
 done
 
