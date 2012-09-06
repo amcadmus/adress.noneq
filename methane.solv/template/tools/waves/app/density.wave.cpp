@@ -52,7 +52,7 @@ int main(int argc, char * argv[])
       ("refh,r", po::value<double > (&refh)->default_value(.1), "size of bin")
       ("top-file,t",po::value<std::string > (&tfile)->default_value ("mytop"), "topolgy of the system")
       ("output,o",  po::value<std::string > (&ofile)->default_value ("count.out"), "the output of count of h-bond")
-      ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
+      ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.trr"), "the input .xtc file");
       
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
