@@ -12,6 +12,7 @@ if test ! -d $pert_conf_dir ; then
     echo "no dir result.equi/equiConfs/, exit"
     exit
 fi
+rm -f h.count.name
 
 cd $pert_conf_dir
 targets=`ls *gro | head -n $pert_num_conf_use`
@@ -31,6 +32,7 @@ do
     cd $my_dir
     rm -f run.log
     ../$perturbation_command -f $i -o conf.gro &>> run.log
+    rm -f $i
     set_parameters_pert grompp.mdp
     echo "# run with command `which grompp`" &>> run.log
     $grompp_command &>> run.log
@@ -43,7 +45,7 @@ do
     else
 	../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
     fi
-    rm -f traj.xtc state*.cpt topol.tpr
+    rm -f traj.xtc state*.cpt topol.tpr conf.gro confout.gro index.ndx 
     
     cd ..
     
