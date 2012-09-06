@@ -49,6 +49,7 @@ public:
   // int getNumAtomH2o () const {return numAtomH2o;}
   VectorType getBox () const {return box;}
   float getTime () const {return time;}
+  int getNatoms () const {return natoms;}
 public:
   void formCoords (std::vector<std::vector<ValueType > > & ch4,
 		   std::vector<std::vector<ValueType > > & h2o);
