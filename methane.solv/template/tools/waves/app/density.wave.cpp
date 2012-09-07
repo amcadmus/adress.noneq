@@ -152,6 +152,7 @@ int main(int argc, char * argv[])
     
     dw.calculate (time, com, tmass);
     dw.write();
+    dw.clear ();
   }
   
   return 0;

@@ -115,6 +115,8 @@ int main(int argc, char * argv[])
     fclose (fptraj);
   }
 
+  free (rr);
+  free (vv);
 
   for (unsigned ii = 0; ii < time.size(); ++ii){
     double tmp = time[ii];
@@ -127,7 +129,7 @@ int main(int argc, char * argv[])
       return 1;
     }
     for (unsigned jj = 0; jj < gridSize; ++jj){
-      fprintf (fp, "%e %e\n", time[ii], value[ii][jj] / double(countFile));
+      fprintf (fp, "%e %e\n", grid[jj], value[ii][jj] / double(countFile));
     }
     fclose (fp);
   }
