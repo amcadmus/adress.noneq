@@ -51,7 +51,7 @@ int main(int argc, char * argv[])
       ("block,n", po::value<unsigned > (&numBlock)->default_value(20), "number of block for averaging")
       ("refh,r", po::value<double > (&refh)->default_value(.1), "size of bin")
       ("top-file,t",po::value<std::string > (&tfile)->default_value ("mytop"), "topolgy of the system")
-      ("output,o",  po::value<std::string > (&ofile)->default_value ("count.out"), "the output of count of h-bond")
+      ("output,o",  po::value<std::string > (&ofile)->default_value ("density.wave.dat"), "the output of count of h-bond")
       ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.trr"), "the input .xtc file");
       
   po::variables_map vm;
@@ -94,10 +94,10 @@ int main(int argc, char * argv[])
   
 
   int countread = 0;
-  FILE * fo = fopen(ofile.c_str(), "w");
 
   DensityWave dw;
   dw.reinit (refh, tjl.getBox());
+  dw.initFile (ofile.c_str());
 
   while (true == tjl.load()){
     float time = tjl.getTime();
@@ -150,13 +150,9 @@ int main(int argc, char * argv[])
       }
     }
     
-    dw.calculate (com, tmass);
-    
+    dw.calculate (time, com, tmass);
+    dw.write();
   }
-  fclose(fo);
-
-  // FILE * fp = fopen ("poly.distrib.out", "w");
-  // fclose (fp);
   
   return 0;
 }
