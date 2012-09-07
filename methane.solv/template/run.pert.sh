@@ -5,6 +5,7 @@ source functions.sh
 
 make -C tools/perturbations/ makedir
 make -C tools/perturbations/ -j4
+make -C tools/waves/ -j4
 
 cwd=`pwd`
 # prepare files
@@ -13,6 +14,7 @@ if test ! -d $pert_conf_dir ; then
     exit
 fi
 rm -f h.count.name
+rm -f density.wave.name
 
 cd $pert_conf_dir
 targets=`ls *gro | head -n $pert_num_conf_use`
@@ -44,11 +46,13 @@ do
 	../tools/h.bond/equi.ch4.1 -o h.count.out &> /dev/null
     else
 	../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
+	../tools/waves/density.wave -t mytop --refh 0.1 -o density.wave.dat &> density.wave.log 
     fi
     rm -f traj.xtc state*.cpt topol.tpr conf.gro confout.gro index.ndx 
     
     cd ..
     
     echo "$my_dir/h.count.out" >> h.count.name    
+    echo "$my_dir/density.wave.dat" >> density.wave.name    
 done
 
