@@ -100,7 +100,6 @@ int main(int argc, char * argv[])
       float mytime;
       unsigned countTimeSlice = 0;
       while (fread (&mytime, sizeof(float), 1, fptraj) == 1){
-	time.push_back (mytime);
 	myread (vv, sizeof(float), gridSize, fptraj);
 	if (countTimeSlice >= time.size()){
 	  cerr << "wrong time frame of file " << nameline << endl;
