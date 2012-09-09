@@ -6,7 +6,8 @@ function set_parameters_equi () {
     equi_nstep_count=`echo "$equi_frame_feq * $equi_num_frame / $equi_dt" | bc -l | cut -d '.' -f 1`
     equi_nstep=`echo "$equi_nstep_warm + $equi_nstep_count" | bc`
     equi_xvout_feq=`echo "$equi_frame_feq / $equi_dt" | bc -l | cut -d '.' -f 1`
-    sed -e "/^dt/s/=.*/= $equi_dt/g" $file |\
+    sed -e "/^integrator/s/=.*/= sd/g" $file |\
+    sed -e "/^dt/s/=.*/= $equi_dt/g" |\
     sed -e "/^nstep/s/=.*/= $equi_nstep/g" |\
     sed -e "/^nstxout/s/=.*/= $equi_xvout_feq/g" |\
     sed -e "/^nstvout/s/=.*/= $equi_xvout_feq/g" |\
@@ -22,7 +23,8 @@ function set_parameters_long_equi () {
     long_equi_nstep_count=`echo "$long_equi_frame_feq * $long_equi_num_frame / $long_equi_dt" | bc -l | cut -d '.' -f 1`
     long_equi_nstep=`echo "$long_equi_nstep_warm + $long_equi_nstep_count" | bc`
     long_equi_xvout_feq=`echo "$long_equi_frame_feq / $long_equi_dt" | bc -l | cut -d '.' -f 1`
-    sed -e "/^dt/s/=.*/= $long_equi_dt/g" $file |\
+    sed -e "/^integrator/s/=.*/= sd/g" $file |\
+    sed -e "/^dt/s/=.*/= $long_equi_dt/g" |\
     sed -e "/^nstep/s/=.*/= $long_equi_nstep/g" |\
     sed -e "/^nstxout/s/=.*/= 0/g" |\
     sed -e "/^nstvout/s/=.*/= 0/g" |\

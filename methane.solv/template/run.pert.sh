@@ -47,10 +47,10 @@ do
 	../tools/h.bond/equi.ch4.1 -o h.count.out &> /dev/null
     else
 	../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
-	../tools/waves/density.wave -t mytop --refh 0.01 -o density.wave.dat &> density.wave.log 
-	../tools/waves/momentum.wave -t mytop --refh 0.01 -o momentum.wave.dat &> momentum.wave.log 
+	../tools/waves/density.wave -t mytop --refh 0.1 -o density.wave.dat &> density.wave.log 
+	../tools/waves/momentum.wave -t mytop --refh 0.1 -o momentum.wave.dat &> momentum.wave.log 
     fi
-    rm -f traj.xtc state*.cpt topol.tpr conf.gro confout.gro index.ndx 
+    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro confout.gro index.ndx 
     
     cd ..
     

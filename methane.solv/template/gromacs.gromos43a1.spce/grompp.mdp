@@ -130,3 +130,7 @@ morse                    = no
 ; Pairs of energy groups for which all non-bonded interactions are excluded
 energygrp_excl           = 
 
+userreal1                = 0
+userreal2                = 0
+userreal3                = 0
+userreal4                = 0
