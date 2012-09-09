@@ -15,6 +15,7 @@ if test ! -d $pert_conf_dir ; then
 fi
 rm -f h.count.name
 rm -f density.wave.name
+rm -f momentum.wave.name
 
 cd $pert_conf_dir
 targets=`ls *gro | head -n $pert_num_conf_use`
@@ -47,6 +48,7 @@ do
     else
 	../tools/h.bond/equi.ch4.1 -t mytop -o h.count.out &> /dev/null
 	../tools/waves/density.wave -t mytop --refh 0.01 -o density.wave.dat &> density.wave.log 
+	../tools/waves/momentum.wave -t mytop --refh 0.01 -o momentum.wave.dat &> momentum.wave.log 
     fi
     rm -f traj.xtc state*.cpt topol.tpr conf.gro confout.gro index.ndx 
     
@@ -54,5 +56,6 @@ do
     
     echo "$my_dir/h.count.out" >> h.count.name    
     echo "$my_dir/density.wave.dat" >> density.wave.name    
+    echo "$my_dir/momentum.wave.dat" >> momentum.wave.name    
 done
 
