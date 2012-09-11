@@ -40,11 +40,13 @@ function set_parameters_pert () {
     pert_xtcout_feq=`echo "$pert_frame_feq / $pert_dt" | bc -l | cut -d '.' -f 1`
     pert_xvout_feq=$pert_xtcout_feq
     sed -e "/^dt/s/=.*/= $pert_dt/g" $file |\
+    sed -e "/^integrator/s/=.*/= $pert_integrator/g" |\
     sed -e "/^nstep/s/=.*/= $pert_nstep/g" |\
     sed -e "/^nstxout/s/=.*/= $pert_xvout_feq/g" |\
     sed -e "/^nstvout/s/=.*/= $pert_xvout_feq/g" |\
     sed -e "/^nstfout/s/=.*/= 0/g" |\
     sed -e "/^tau_t/s/=.*/= $pert_taut/g" |\
+    sed -e "/^userreal1/s/=.*/= $pert_noSdRange/g" |\
     sed -e "/^ld-seed/s/=.*/= `date +%s`/g" |\
     sed -e "/^nstxtcout/s/=.*/= $pert_xtcout_feq/g" > tmptmptmp.mdp
     mv -f tmptmptmp.mdp $file
