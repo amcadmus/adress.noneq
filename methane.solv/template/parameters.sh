@@ -25,35 +25,32 @@ pert_strength=2			# nm/ps velocity
 pert_rcut0=0.8			# nm
 pert_rcut1=1.0			# nm
 perturbation_command="tools/perturbations/center.step --strength $pert_strength --rcut0 $pert_rcut0 --rcut1 $pert_rcut1"
-pert_time=3			# ps
-pert_frame_feq=0.01		# ps
+pert_time=2			# ps
+pert_frame_feq=0.02		# ps
 pert_dt=0.002			# ps
-pert_taut=1			# ps
+pert_taut=0.1			# ps
 pert_noSdRange=10		# nm
 
 grompp_command="grompp"
 mdrun_command="mdrun -v"
 
-if echo $run_method | grep adress &> /dev/null; then
+if	echo $run_method | grep adress &> /dev/null; then
+    pert_integrator=sd
     gro_dir=$gro_dir.adress
     grompp_command="grompp -n "
     gromacs_install_dir=~/study/thermo.convection/local.inhomo.thermostat.w.rdfCorr
     source $gromacs_install_dir/bin/GMXRC.bash
-fi
-
-if echo $run_method | grep "atom.inhomo.sd" &> /dev/null; then
+else if echo $run_method | grep "atom.inhomo.sd" | grep -v sd2 &> /dev/null; then
     pert_integrator=sd1
     gromacs_install_dir=~/study/adress.noneq/methane.solv/local.inhomo.sd
     source $gromacs_install_dir/bin/GMXRC.bash
-else
-    pert_integrator=md
-fi
-
-if echo $run_method | grep "atom.inhomo.sd2" &> /dev/null; then
+else if echo $run_method | grep "atom.inhomo.sd2" &> /dev/null; then
     pert_integrator=sd
     gromacs_install_dir=~/study/adress.noneq/methane.solv/local.inhomo.sd2
     source $gromacs_install_dir/bin/GMXRC.bash
 else
     pert_integrator=md
+fi
+fi
 fi
 

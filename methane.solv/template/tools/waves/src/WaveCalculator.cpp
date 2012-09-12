@@ -210,7 +210,7 @@ calculate (const float & time_,
     double rr = sqrt(diff.x * diff.x + diff.y * diff.y + diff.z * diff.z);
     int idx = int(rr / bin);
     if (idx < nbins) {
-      value[idx] += moment_r[ii] ;
+      value[idx] += moment_r[ii] / volume[idx];
     }
   }
 }
