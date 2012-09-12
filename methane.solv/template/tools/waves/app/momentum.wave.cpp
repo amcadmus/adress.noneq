@@ -147,6 +147,9 @@ int main(int argc, char * argv[])
 	  composi[dd] /= totalmass;
 	}
 	std::vector<double > rr (composi);
+	for (unsigned dd = 0; dd < 3; ++dd){
+	  rr[dd] -= boxSize[dd] * 0.5;
+	}
 	double dr = rr[0] * rr[0] + rr[1] * rr[1] + rr[2] * rr[2];
 	dr = sqrt(dr);
 	rr[0] /= dr;
