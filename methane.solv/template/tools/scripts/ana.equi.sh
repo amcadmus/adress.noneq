@@ -18,5 +18,6 @@ if test ! -d $target; then
 fi
 
 cd $target
-$cwd/tools/h.bond/equi.ch4.1 -t mytop -b 100 -r .52
+#$cwd/tools/h.bond/equi.ch4.1 -t mytop -b 100 -r .52
+$cwd/tools/h.bond/equi.ch4.1 -t mytop -b 100
 
