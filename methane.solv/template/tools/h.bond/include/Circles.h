@@ -21,7 +21,7 @@ public:
   void sortCircles ();
   void add (const Circles & c);
   void print () const;
-  void countPoly (const unsigned maxPoly=10);
+  void countPoly (const unsigned maxPoly=14);
   const std::vector<Circle > & getCircles () const {return circles;}
 }
     ;

@@ -117,13 +117,20 @@ int main(int argc, char * argv[])
     pavg.deposit (ana.getCircles());
     printf ("\n");
     ana.getCircles().countPoly ();
-    fprintf (fo, "%.3f  %d  %d  %d %d %d %d %d\n",
+    fprintf (fo, "%.3f  %d  %d  %d %d %d %d %d %d %d %d %d %d %d\n",
 	     tjl.getTime(), ofh.getNumFirstShell(), bonds.size(),
 	     ana.getCircles().count[3], 
 	     ana.getCircles().count[4], 
 	     ana.getCircles().count[5], 
 	     ana.getCircles().count[6], 
-	     ana.getCircles().count[7]);
+	     ana.getCircles().count[7],
+	     ana.getCircles().count[8],
+	     ana.getCircles().count[9],
+	     ana.getCircles().count[10],
+	     ana.getCircles().count[11],
+	     ana.getCircles().count[12],
+	     ana.getCircles().count[13]
+	     );
   }
   fclose(fo);
 
