@@ -90,7 +90,7 @@ int main(int argc, char * argv[])
 	vector<vector<double > > tmpdata (gridSize);
 	for (unsigned ii = 0; ii < gridSize; ++ii){
 	  tmpvalue[ii] = vv[ii];
-	  tmpdata[ii] = vector<double > (vv[ii], 1);
+	  tmpdata[ii] = vector<double > (1, vv[ii]);
 	}
 	value.push_back (tmpvalue);
 	data.push_back (tmpdata);
