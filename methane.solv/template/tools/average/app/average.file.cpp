@@ -15,6 +15,7 @@
 #define MaxLineLength 10240
 
 #include "StringSplit.h"
+#include "BlockAverage.h"
 namespace po = boost::program_options;
 using namespace std;
 
@@ -63,7 +64,7 @@ int main(int argc, char * argv[])
 	std::vector<std::string > words;
 	StringOperation::split (thisline, words);
 	std::vector<double > lineValues;
-	vector<vector<double > lineData;
+	vector<vector<double > > lineData;
 	for (unsigned ii = 0; ii < words.size(); ++ii){
 	  lineValues.push_back(atof(words[ii].c_str()));
 	  lineData.push_back(vector<double >(1, lineValues.back()));
