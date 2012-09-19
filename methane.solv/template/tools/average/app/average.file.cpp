@@ -16,10 +16,12 @@
 
 #include "StringSplit.h"
 namespace po = boost::program_options;
+using namespace std;
 
 int main(int argc, char * argv[])
 {
   std::string ifile, ofile;
+  unsigned numBlock = 20;
 
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -42,6 +44,7 @@ int main(int argc, char * argv[])
   }
   char nameline [MaxLineLength];
   std::vector<std::vector<double > > values;
+  vector<vector<vector<double > > > data;
   unsigned countFile = 0;
   
   while (fpname.getline(nameline, MaxLineLength)){
@@ -60,10 +63,13 @@ int main(int argc, char * argv[])
 	std::vector<std::string > words;
 	StringOperation::split (thisline, words);
 	std::vector<double > lineValues;
+	vector<vector<double > lineData;
 	for (unsigned ii = 0; ii < words.size(); ++ii){
 	  lineValues.push_back(atof(words[ii].c_str()));
+	  lineData.push_back(vector<double >(1, lineValues.back()));
 	}
 	values.push_back (lineValues);
+	data.push_back (lineData);
       }
     }
     else {
@@ -92,18 +98,22 @@ int main(int argc, char * argv[])
 	}
 	for (unsigned ii = 1; ii < lineValues.size(); ++ii){
 	  values[lineCount][ii] += lineValues[ii];
+	  data[lineCount][ii].push_back(lineValues[ii]);
 	}
 	lineCount ++;
       }
     }
   }
 
+  BlockAverage ba;
+  
   FILE * fout = fopen (ofile.c_str(), "w");
   for (unsigned ii = 0; ii < values.size(); ++ii){
     fprintf (fout, "%.3f  ", values[ii][0]);
     for (unsigned jj = 1; jj < values[ii].size(); ++jj){
       values[ii][jj] /= countFile;
-      fprintf (fout, "%f  ", values[ii][jj]);
+      ba.processData (data[ii][jj], numBlock);
+      fprintf (fout, "%f %f   ", values[ii][jj], ba.getAvgError());
     }
     fprintf (fout, "\n");
   }
