@@ -1,0 +1,10 @@
+#include "gromos43a1.ff/forcefield.itp"
+#include "methane.itp"
+#include "spce.itp"
+
+[ system ]
+Methane in water
+
+[ molecules ]
+Methane		1
+SOL		4153
