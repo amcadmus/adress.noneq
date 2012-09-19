@@ -15,6 +15,7 @@
 #define MaxLineLength 10240
 
 #include "StringSplit.h"
+#include "BlockAverage.h"
 namespace po = boost::program_options;
 using namespace std;
 
@@ -31,6 +32,7 @@ void myread (void *ptr, size_t size, size_t nmemb, FILE *stream)
 int main(int argc, char * argv[])
 {
   std::string ifile, ofile;
+  unsigned numBlock = 20;
 
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -55,6 +57,7 @@ int main(int argc, char * argv[])
   vector<double > grid;
   vector<double > time;
   vector<vector<double> > value;
+  vector<vector<vector<double> > > data;
   unsigned gridSize = 0;
   size_t tmpGridSize;
   float * rr;
@@ -84,10 +87,13 @@ int main(int argc, char * argv[])
 	time.push_back (mytime);
 	myread (vv, sizeof(float), gridSize, fptraj);
 	vector<double > tmpvalue (gridSize);
+	vector<vector<double > > tmpdata (gridSize);
 	for (unsigned ii = 0; ii < gridSize; ++ii){
 	  tmpvalue[ii] = vv[ii];
+	  tmpdata[ii] = vector<double > (vv[ii], 1);
 	}
 	value.push_back (tmpvalue);
+	data.push_back (tmpdata);
       }      
     }
     else {
@@ -107,6 +113,7 @@ int main(int argc, char * argv[])
 	}
 	for (unsigned ii = 0; ii < gridSize; ++ii){
 	  value[countTimeSlice][ii] += vv[ii];
+	  data[countTimeSlice][ii].push_back (vv[ii]);
 	}
 	countTimeSlice ++;
       }
@@ -117,6 +124,7 @@ int main(int argc, char * argv[])
   free (rr);
   free (vv);
 
+  BlockAverage ba;
   for (unsigned ii = 0; ii < time.size(); ++ii){
     double tmp = time[ii];
     int tmpint = int (tmp * 100 + 0.5) / 100;
@@ -128,7 +136,8 @@ int main(int argc, char * argv[])
       return 1;
     }
     for (unsigned jj = 0; jj < gridSize; ++jj){
-      fprintf (fp, "%e %e\n", grid[jj], value[ii][jj] / double(countFile));
+      ba.processData (data[ii][jj], numBlock);
+      fprintf (fp, "%e %e %e\n", grid[jj], value[ii][jj] / double(countFile), ba.getAvgError());
     }
     fclose (fp);
   }
