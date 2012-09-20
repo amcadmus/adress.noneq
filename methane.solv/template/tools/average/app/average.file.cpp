@@ -22,7 +22,7 @@ using namespace std;
 int main(int argc, char * argv[])
 {
   std::string ifile, ofile;
-  unsigned numBlock = 1;
+  unsigned numBlock = 20;
 
   po::options_description desc ("Allow options");
   desc.add_options()
