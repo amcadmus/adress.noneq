@@ -61,7 +61,12 @@ reinit (const double & bin_,
   rup *= 0.5;
   
   nbins = int(rup / bin_);
-  bin = rup / nbins;
+  // bin = rup / nbins;
+  bin = bin_;
+  rup = bin * nbins;
+  cout << "bin size is " << bin << endl;
+  cout << "r up is " << rup << endl;
+  cout << "number of bins is " << nbins << endl;
 
   boxCenter = box;
   boxCenter.x *= 0.5;
@@ -168,7 +173,12 @@ reinit (const double & bin_,
   rup *= 0.5;
   
   nbins = int(rup / bin_);
-  bin = rup / nbins;
+  // bin = rup / nbins;
+  bin = bin_;
+  rup = bin * nbins;
+  cout << "bin size is " << bin << endl;
+  cout << "r up is " << rup << endl;
+  cout << "number of bins is " << nbins << endl;
 
   boxCenter = box;
   boxCenter.x *= 0.5;
