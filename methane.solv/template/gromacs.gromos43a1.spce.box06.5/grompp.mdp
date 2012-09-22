@@ -77,7 +77,7 @@ ref_t                    = 300
 Pcoupl                   = no
 Pcoupltype               = isotropic
 ; Time constant (ps), compressibility (1/bar) and reference P (bar)
-tau_p                    = 2.0
+tau_p                    = 0.5
 compressibility          = 4.5e-5
 ref_p                    = 1.0
 ; Random seed for Andersen thermostat
