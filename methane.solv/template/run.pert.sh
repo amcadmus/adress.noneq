@@ -13,6 +13,10 @@ if test ! -d $pert_conf_dir ; then
     echo "no dir result.equi/equiConfs/, exit"
     exit
 fi
+if test ! -d $gro_dir; then
+    echo "no dir $gro_dir, exit"
+    exit
+fi
 rm -f h.count.name
 rm -f density.wave.name
 rm -f momentum.wave.name
