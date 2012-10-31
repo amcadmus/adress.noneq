@@ -32,7 +32,9 @@ static ValueType
 dotProd (const vector<ValueType> & diff0,
 	 const vector<ValueType> & diff1)
 {
-  return diff0[0] * diff1[0] + diff0[1] * diff1[1] + diff0[2] * diff1[2];
+  return (diff0[0] * diff1[0] +
+	  diff0[1] * diff1[1] +
+	  diff0[2] * diff1[2] );
 }
 
 static vector<ValueType>
@@ -61,8 +63,14 @@ calAngle (const vector<ValueType> aa,
     return -1000;
   }
   ValueType cosv = dotProd(aa, bb) / la / lb;
-  if (cosv > 1) cosv = 1;
-  else if (cosv < -1) cosv = -1;
+  if (cosv > 1) {
+    cerr << "cos value > 1" << endl;
+    cosv = 1;
+  }
+  else if (cosv < -1){
+    cerr << "cos value < -1" << endl;    
+    cosv = -1;
+  }
   return acos (cosv) / M_PI * 180;
 }
 
@@ -83,6 +91,10 @@ calPhiPsi (const vector<vector<ValueType> > & ala,
 
   // angle psi: 4, 6, 8, 14
   // angle phi: 6, 8, 14, 16
+  if (ala.size() != 22){
+    cerr << "size of alanine is not 22! may be a wrong molecule" << endl;
+    exit (1);
+  }
   vector<ValueType> aa(3), bb(3), cc(3), bond(3);
   vector<vector<ValueType> > group(3);
   
@@ -96,6 +108,9 @@ calPhiPsi (const vector<vector<ValueType> > & ala,
   bb = calNormVec (group);
   
   psi = calAngle (aa, bb);
+  if (psi < -999){
+    cerr << "wrong psi detected!" << endl;
+  }
   cc = crossProd (aa, bb);
   for (unsigned dd = 0; dd < 3; ++dd){
     bond[dd] = ala[8][dd] -  ala[6][dd];

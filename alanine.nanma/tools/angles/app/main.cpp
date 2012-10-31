@@ -103,6 +103,7 @@ int main(int argc, char * argv[])
 
     dist.deposite (psi, phi);
   }
+  cout << endl;
   
   dist.average();
   dist.print_xv (ofile);
