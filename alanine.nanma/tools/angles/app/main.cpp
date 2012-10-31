@@ -81,7 +81,8 @@ int main(int argc, char * argv[])
   int countread = 0;
   AngleCalculator ac (box);
   ValueType phi, psi;
-  Distribution_1d dist (-180, 180, nbin, -180, 180, nbin);
+  Distribution_1d dist  (-180, 180, nbin, -180, 180, nbin);
+  Distribution_1d poten (-180, 180, nbin, -180, 180, nbin);
 
   while (true == tjl.load()){
     float time = tjl.getTime();
@@ -116,6 +117,21 @@ int main(int argc, char * argv[])
   dist.average();
   dist.print_xv (ofile);
 
+  poten.values = dist.values;
+  double maxv = 100;
+  double kT = 2.5;
+  maxv = exp(maxv / (-kT));
+  for (unsigned ii = 0; ii < poten.nx; ++ii){
+    for (unsigned jj = 0; jj < poten.nv; ++jj){
+      if (poten.values[ii][jj] > maxv){
+	poten.values[ii][jj] = maxv;
+      }
+      else {
+	poten.values[ii][jj] = -kT * log(poten.values[ii][jj]);
+      }
+    }
+  }
+  poten.print_xv (std::string("poten") + ofile);
   
   return 0;
 }
