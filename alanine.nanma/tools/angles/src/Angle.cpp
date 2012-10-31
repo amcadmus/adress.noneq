@@ -64,11 +64,11 @@ calAngle (const vector<ValueType> aa,
   }
   ValueType cosv = dotProd(aa, bb) / la / lb;
   if (cosv > 1) {
-    cerr << "cos value > 1" << endl;
+    cerr << "cos value " << cosv << " >  1" << endl << endl;;
     cosv = 1;
   }
   else if (cosv < -1){
-    cerr << "cos value < -1" << endl;    
+    cerr << "cos value " << cosv << " < -1" << endl << endl;    
     cosv = -1;
   }
   return acos (cosv) / M_PI * 180;
