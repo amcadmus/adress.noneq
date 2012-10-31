@@ -72,7 +72,7 @@ void Distribution_1d::
 deposite (const double & psi,
 	  const double & phi)
 {
-  deposite (psi, phi, 1.);
+  deposite (psi, phi, 1./(hx * hv));
 }
 
 void Distribution_1d::
