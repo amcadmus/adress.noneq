@@ -16,6 +16,7 @@ namespace po = boost::program_options;
 
 #include "Analyzer.h"
 #include "Angle.h"
+#include "Distribution.h"
 
 void readTop (const std::string & file,
               TopInfo & info)
@@ -75,6 +76,7 @@ int main(int argc, char * argv[])
   int countread = 0;
   AngleCalculator ac (box);
   ValueType phi, psi;
+  Distribution_1d dist;
 
   while (true == tjl.load()){
     float time = tjl.getTime();
@@ -89,18 +91,21 @@ int main(int argc, char * argv[])
     else {
       if (time < begin - time_prec) continue;
     }
-    if (countread++ % 1 == 0){
-      // printf ("# load frame at time: %.1f ps\r", time);
-      // fflush (stdout);
+    if (countread++ % 100 == 0){
+      printf ("# load frame at time: %.1f ps\r", time);
+      fflush (stdout);
     }
     tjl.formCoords (ala, h2o);
     ac.calPhiPsi (ala, phi, psi);
     // cout << "time: " << time ;
     // cout << ";  angle psi is : " << psi << "; phi is: " << phi << endl;
-    cout << psi << "  " << phi << endl;
+    // cout << psi << "  " << phi << endl;
+
+    dist.deposite (psi, phi);
   }
   
-  
+  dist.average();
+  dist.print_xv (ofile);
 
   
   return 0;

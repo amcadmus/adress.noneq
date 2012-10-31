@@ -34,13 +34,13 @@ public:
   vector<double > gridv;
   double nframe;
 public:
-  Distribution_1d () {};
-  Distribution_1d (const double x0 = 0.,
+  // Distribution_1d () {};
+  Distribution_1d (const double x0 = -180,
 		   const double x1 = 180.,
-		   const unsigned nx = 18,
-		   const double v0 = 0.,
+		   const unsigned nx = 36,
+		   const double v0 = -180,
 		   const double v1 = 180.,
-		   const unsigned nv = 18);
+		   const unsigned nv = 36);
   void reinit (const double & x0,
 	       const double & x1,
 	       const unsigned & nx,
