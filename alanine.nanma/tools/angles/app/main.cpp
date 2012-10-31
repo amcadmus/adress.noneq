@@ -63,9 +63,14 @@ int main(int argc, char * argv[])
     readTop (tfile, info);
   }
   
+  int nbin = 360 / refh;
   std::cout << "###################################################" << std::endl;
   std::cout << "# begin->end: " << begin << " " << end << std::endl;
   std::cout << "# top file: " << tfile << std::endl;
+  std::cout << "# xtc file: " << ifile << std::endl;
+  std::cout << "# out file: " << ofile << std::endl;
+  std::cout << "# refh: " << refh
+	    << " nbin: "  << nbin << std::endl;
   std::cout << "###################################################" << std::endl;  
 
   TrajLoader_xtc tjl (ifile.c_str(), info);
@@ -76,7 +81,7 @@ int main(int argc, char * argv[])
   int countread = 0;
   AngleCalculator ac (box);
   ValueType phi, psi;
-  Distribution_1d dist;
+  Distribution_1d dist (-180, 180, nbin, -180, 180, nbin);
 
   while (true == tjl.load()){
     float time = tjl.getTime();
@@ -97,6 +102,9 @@ int main(int argc, char * argv[])
     }
     tjl.formCoords (ala, h2o);
     ac.calPhiPsi (ala, phi, psi);
+    // if (psi < 5 && psi > 0 && phi > 50 && phi < 55){
+    //   cout << psi << " " << phi << endl;
+    // }
     // cout << "time: " << time ;
     // cout << ";  angle psi is : " << psi << "; phi is: " << phi << endl;
     // cout << psi << "  " << phi << endl;
