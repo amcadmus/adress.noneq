@@ -8,12 +8,12 @@ normalize (vector<vector<ValueType> > & ala,
   //   return ;
   // }
   for (unsigned ii = 1; ii < ala.size() ; ++ii){
-    if      (ala[ii][0] - ala[ii-1][0] > 0.5 * box.x) ala[ii][0] -= box.x;
-    else if (ala[ii][0] - ala[ii-1][0] <-0.5 * box.x) ala[ii][0] += box.x;
-    if      (ala[ii][1] - ala[ii-1][1] > 0.5 * box.y) ala[ii][1] -= box.y;
-    else if (ala[ii][1] - ala[ii-1][1] <-0.5 * box.y) ala[ii][1] += box.y;
-    if      (ala[ii][2] - ala[ii-1][2] > 0.5 * box.z) ala[ii][2] -= box.z;
-    else if (ala[ii][2] - ala[ii-1][2] <-0.5 * box.z) ala[ii][2] += box.z;
+    if      (ala[ii][0] - ala[0][0] > 0.5 * box.x) ala[ii][0] -= box.x;
+    else if (ala[ii][0] - ala[0][0] <-0.5 * box.x) ala[ii][0] += box.x;
+    if      (ala[ii][1] - ala[0][1] > 0.5 * box.y) ala[ii][1] -= box.y;
+    else if (ala[ii][1] - ala[0][1] <-0.5 * box.y) ala[ii][1] += box.y;
+    if      (ala[ii][2] - ala[0][2] > 0.5 * box.z) ala[ii][2] -= box.z;
+    else if (ala[ii][2] - ala[0][2] <-0.5 * box.z) ala[ii][2] += box.z;
   }
 }
 
