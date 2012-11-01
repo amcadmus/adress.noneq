@@ -48,6 +48,7 @@ mv -f tmp.tmp topol.top
 
 echo "# do NPT run"
 sed -e "/^Pcoupl/s/= no/= Parrinello-Rahman/g" grompp.mdp |
+sed -e "/^Tcoupl/s/= no/= v-rescale/g" |
 sed -e "/^freezegrps/s/= .*/= FIX/g" |
 sed -e "/^freezedim/s/= .*/= Y Y Y/g" |
 sed -e "/^nsteps/s/= .*/= 100000/g" > tmp.tmp
