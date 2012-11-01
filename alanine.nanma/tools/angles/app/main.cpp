@@ -118,13 +118,13 @@ int main(int argc, char * argv[])
   dist.print_xv (ofile);
 
   poten.values = dist.values;
-  double maxv = 100;
+  double maxp = 100;
   double kT = 2.5;
-  maxv = exp(maxv / (-kT));
+  double maxv = exp(maxp / (-kT));
   for (unsigned ii = 0; ii < poten.nx; ++ii){
     for (unsigned jj = 0; jj < poten.nv; ++jj){
-      if (poten.values[ii][jj] > maxv){
-	poten.values[ii][jj] = maxv;
+      if (poten.values[ii][jj] < maxv){
+	poten.values[ii][jj] = maxp;
       }
       else {
 	poten.values[ii][jj] = -kT * log(poten.values[ii][jj]);
