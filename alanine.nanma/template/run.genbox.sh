@@ -48,9 +48,16 @@ mv -f tmp.tmp topol.top
 
 echo "# do NPT run"
 sed -e "/^Pcoupl/s/= no/= Parrinello-Rahman/g" grompp.mdp |
+sed -e "/^freezegrps/s/= .*/= FIX/g" |
+sed -e "/^freezedim/s/= .*/= Y Y Y/g" |
 sed -e "/^nsteps/s/= .*/= 100000/g" > tmp.tmp
 mv -f tmp.tmp grompp.mdp
-grompp &> genbox.log
+echo "a 9" > command.index
+echo "name 17 FIX" >> command.index
+echo "q" >> command.index
+cat command.index | make_ndx -f conf.gro &> genbox.log
+rm -f command.index
+grompp -n index.ndx &> genbox.log
 mdrun -v &> genbox.log
 
 echo "# resize box"
@@ -64,10 +71,10 @@ echo "# do NVT"
 sed -e "/^Pcoupl/s/= Parrinello-Rahman/= no/g" grompp.mdp |
 sed -e "/^nsteps/s/= .*/= 100000/g" > tmp.tmp
 mv -f tmp.tmp grompp.mdp
-grompp &> genbox.log
+grompp -n index.ndx &> genbox.log
 mdrun -v &> genbox.log
 
 echo "# cleaning"
 mv -f confout.gro conf.gro
 grocleanit
-rm -f out.gro energy.xvg
+rm -f out.gro energy.xvg spc216.gro
