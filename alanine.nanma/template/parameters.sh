@@ -1,6 +1,6 @@
 # method of run:
 run_method=atom
-gro_dir=gromacs.conf.box.002.50
+gro_dir=gromacs.conf.box.002.50.em
 
 # # productive equilibrium run settings
 # long_equi_warm_time=200		# ps

@@ -8,6 +8,7 @@ function set_parameters_equi () {
     equi_xvout_feq=`echo "$equi_frame_feq / $equi_dt" | bc -l | cut -d '.' -f 1`
     sed -e "/^integrator/s/=.*/= sd/g" $file |\
     sed -e "/^dt/s/=.*/= $equi_dt/g" |\
+    sed -e "/^Tcoupl/s/=.*/= no/g" |\
     sed -e "/^nstep/s/=.*/= $equi_nstep/g" |\
     sed -e "/^nstxout/s/=.*/= $equi_xvout_feq/g" |\
     sed -e "/^nstvout/s/=.*/= $equi_xvout_feq/g" |\

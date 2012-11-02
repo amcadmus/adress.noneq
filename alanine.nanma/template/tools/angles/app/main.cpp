@@ -97,18 +97,19 @@ int main(int argc, char * argv[])
     else {
       if (time < begin - time_prec) continue;
     }
-    if (countread++ % 100 == 0){
-      printf ("# load frame at time: %.1f ps\r", time);
-      fflush (stdout);
-    }
+    // if (countread++ % 100 == 0){
+    //   printf ("# load frame at time: %.1f ps\r", time);
+    //   fflush (stdout);
+    // }
     tjl.formCoords (ala, h2o);
     ac.calPhiPsi (ala, phi, psi);
-    // if (psi < 5 && psi > 0 && phi > 50 && phi < 55){
-    //   cout << psi << " " << phi << endl;
+    // if (psi < 63 && psi > 60 && phi > 45 && phi < 50){
+    //   cout << time << " " << psi << " " << phi << endl;
+    //   return 0;
     // }
     // cout << "time: " << time ;
     // cout << ";  angle psi is : " << psi << "; phi is: " << phi << endl;
-    // cout << psi << "  " << phi << endl;
+    cout << psi << "  " << phi << endl;
 
     dist.deposite (psi, phi);
   }
