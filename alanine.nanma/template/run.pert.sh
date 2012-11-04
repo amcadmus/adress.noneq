@@ -26,6 +26,8 @@ pert_main_dir=result.perts
 for i in $targets;
 do
     count=`echo $i | cut -d '.' -f 2`
+    runid=`echo "$count % $pert_parallel_num_pro" | bc`
+    test $runid -ne $pert_parallel_my_id && continue
     test ! -d $pert_main_dir && mkdir -p $pert_main_dir
     my_dir=$pert_main_dir/pert.$count
     if test -d $my_dir; then
