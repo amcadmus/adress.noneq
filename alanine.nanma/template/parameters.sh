@@ -20,10 +20,10 @@ equi_seed=`date +%s`		#
 
 # non-equilibrium settings
 pert_conf_dir="result.equi/equiConfs/"
-pert_num_conf_use=100		# 
+pert_num_conf_use=10000		# 
 pert_strength=2.0		# nm/ps velocity
-pert_time=2			# ps
-pert_frame_feq=0.02		# ps
+pert_time=20			# ps
+pert_frame_feq=0.2		# ps
 pert_dt=0.002			# ps
 pert_taut=0.1			# ps
 pert_noSdRange=10		# nm

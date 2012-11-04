@@ -27,17 +27,17 @@ bool myread (FILE * fp,
   size_t rv;
   rv = fread (&time, sizeof(float), 1, fp);
   if (rv != 1){
-    cerr << "error writing corr file " << endl;
+    // cerr << "error read time or reach EOF" << endl;
     return false;
   }
   rv = fread (&phi, sizeof(double), 1, fp);
   if (rv != 1){
-    cerr << "error writing corr file " << endl;
+    cerr << "error read phi " << endl;
     exit(1);
   }
   rv = fread (&psi, sizeof(double), 1, fp);
   if (rv != 1){
-    cerr << "error writing corr file " << endl;
+    cerr << "error read psi " << endl;
     exit(1);
   }
   return true;
@@ -82,6 +82,7 @@ int main(int argc, char * argv[])
   while (fpname.getline(nameline, MaxLineLength)){
     if (nameline[0] == '#') continue;
     FILE *fp = fopen (nameline, "r");
+    cout << "reading file " << nameline << endl;
     if (fp == NULL){
       std::cerr << "cannot open file " << nameline << std::endl;
       return 1;
