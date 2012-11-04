@@ -2,7 +2,9 @@
 
 make -C tools/average -j8
 
-targets=`ls | grep ^pert`
+pert_main_dir=result.perts
+
+targets=`ls $pert_main_dir | grep ^pert`
 
 count=0
 for i in $targets;
@@ -15,11 +17,11 @@ rm -f energy.name
 count1=0
 for i in $targets;
 do
-    echo doing $i
-    cd $i
+    echo doing $pert_main_dir/$i
+    cd $pert_main_dir/$i
     echo 14 15 17 | g_energy -xvg none &> /dev/null
-    cd ..
-    echo $i/energy.xvg >> energy.name
+    cd - &>/dev/null
+    echo $pert_main_dir/$i/energy.xvg >> energy.name
     
     count1=$(($count1+1))
     if test $count1 -eq $count; then

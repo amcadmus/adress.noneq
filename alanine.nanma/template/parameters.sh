@@ -1,5 +1,5 @@
 # method of run:
-run_method=atom
+run_method=atom.inhomo.sd
 gro_dir=gromacs.conf.box.002.50.em
 
 # # productive equilibrium run settings
@@ -21,13 +21,14 @@ equi_seed=`date +%s`		#
 # non-equilibrium settings
 pert_conf_dir="result.equi/equiConfs/"
 pert_num_conf_use=10000		# 
-pert_strength=2.0		# nm/ps velocity
+pert_strength=1.0		# nm/ps velocity
 pert_time=20			# ps
 pert_frame_feq=0.2		# ps
 pert_dt=0.002			# ps
 pert_taut=0.1			# ps
-pert_noSdRange=10		# nm
+pert_noSdRange=1.0		# nm
 pert_barostat=Parrinello-Rahman # Parrinello-Rahman or no
+pert_taup=2.0			# ps
 
 grompp_command="grompp -n index.ndx"
 mdrun_command="mdrun -v"
