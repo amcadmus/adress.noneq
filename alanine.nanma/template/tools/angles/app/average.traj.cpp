@@ -115,6 +115,7 @@ int main(int argc, char * argv[])
     int dectime = int ((times[ii] - inttime) * 100);
     char frameFileName [MaxLineLength];
     sprintf (frameFileName, "%s.%05d.%02d", ofile.c_str(), inttime, dectime);
+    dists[ii].average ();
     dists[ii].print_xv (frameFileName);
   }
   
