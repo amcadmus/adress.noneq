@@ -27,6 +27,7 @@ pert_frame_feq=0.2		# ps
 pert_dt=0.002			# ps
 pert_taut=0.1			# ps
 pert_noSdRange=10		# nm
+pert_barostat=Parrinello-Rahman # Parrinello-Rahman or no
 
 grompp_command="grompp -n index.ndx"
 mdrun_command="mdrun -v"
@@ -47,6 +48,7 @@ else if echo $run_method | grep "atom.inhomo.sd2" &> /dev/null; then
     source $gromacs_install_dir/bin/GMXRC.bash
 else
     pert_integrator=md
+    pert_barostat=no		# NVE run, force to no.
 fi
 fi
 fi

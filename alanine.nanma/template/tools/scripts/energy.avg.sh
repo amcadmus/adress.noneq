@@ -17,7 +17,7 @@ for i in $targets;
 do
     echo doing $i
     cd $i
-    echo 7 8 10 | g_energy -xvg none &> /dev/null
+    echo 14 15 17 | g_energy -xvg none &> /dev/null
     cd ..
     echo $i/energy.xvg >> energy.name
     

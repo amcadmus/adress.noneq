@@ -45,7 +45,7 @@ function set_parameters_pert () {
     sed -e "/^dt/s/=.*/= $pert_dt/g" $file |\
     sed -e "/^integrator/s/=.*/= $pert_integrator/g" |\
     sed -e "/^Tcoupl /s/=.*/= no/g" |\
-    sed -e "/^Pcoupl /s/=.*/= no/g" |\
+    sed -e "/^Pcoupl /s/=.*/= $pert_barostat/g" |\
     sed -e "/^nstep/s/=.*/= $pert_nstep/g" |\
     sed -e "/^nstxout/s/=.*/= $pert_xvout_feq/g" |\
     sed -e "/^nstvout/s/=.*/= $pert_xvout_feq/g" |\
