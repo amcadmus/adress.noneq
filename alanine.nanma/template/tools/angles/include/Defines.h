@@ -2,7 +2,7 @@
 #define __Defines_h_wanghan__
 
 typedef int	Identity;
-typedef float	ValueType;
+typedef double	ValueType;
 
 struct IntVectorType
 {

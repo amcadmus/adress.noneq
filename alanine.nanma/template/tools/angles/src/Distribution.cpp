@@ -255,14 +255,14 @@ save (FILE * fp) const
 }
 
 
-void Distribution_1d::
+bool Distribution_1d::
 load (FILE * fp)
 {
   size_t rv;
   rv = fread (&x0, sizeof(double), 1, fp);
   if (rv != 1){
-    cerr << "error reading corr file " << endl;
-    exit(1);
+    cerr << "error reading corr file or EOF is reached" << endl;
+    return false;
   }
   rv = fread (&x1, sizeof(double), 1, fp);
   if (rv != 1){
@@ -303,6 +303,8 @@ load (FILE * fp)
     }
   }
   free (buff);
+
+  return true;
 }
 
 
