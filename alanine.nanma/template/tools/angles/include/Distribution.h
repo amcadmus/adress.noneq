@@ -66,7 +66,7 @@ public:
   double getNframe () const {return nframe;}
 public:
   void save (FILE * fp) const;
-  void load (FILE * fp);
+  bool load (FILE * fp);
 }
     ;
 
