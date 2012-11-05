@@ -29,8 +29,8 @@ pert_taut=0.1			# ps
 pert_noSdRange=1.0		# nm
 pert_barostat=Parrinello-Rahman # Parrinello-Rahman or no
 pert_taup=2.0			# ps
-pert_parallel_num_pro=10	# n
-pert_parallel_my_id=3		# n
+pert_parallel_num_pro=1		# n
+pert_parallel_my_id=0		# n
 
 grompp_command="grompp -n index.ndx"
 mdrun_command="mdrun -v"

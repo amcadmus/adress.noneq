@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
 
   for (unsigned ii = 0; ii < times.size(); ++ii){
     int inttime = int (times[ii] + time_prec * 0.5);
-    int dectime = int ((times[ii] - inttime) * 100);
+    int dectime = int ((times[ii] + time_prec * 0.5 - inttime) * 100);
     char frameFileName [MaxLineLength];
     sprintf (frameFileName, "%s.%05d.%02d", ofile.c_str(), inttime, dectime);
     dists[ii].average ();
