@@ -49,7 +49,7 @@ do
     echo 3 14 | trjconv -center -pbc whole
     mv -f trajout.xtc alanine.xtc
     $cwd/tools/angles/evolve -f alanine.xtc -s angle.dat &> angle.log
-    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro confout.gro index.ndx 
+    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx 
     
     cd $cwd
     
