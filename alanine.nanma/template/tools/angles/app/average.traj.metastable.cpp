@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
-      fprintf (fp, "%f ", counts[ii][dd] / double(countFrame));
+      fprintf (fp, "%f ", counts[ii][dd] / double(countFile));
     }
     fprintf (fp, "\n");
   }
