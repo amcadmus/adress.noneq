@@ -82,6 +82,16 @@ int main(int argc, char * argv[])
   double setC_phi_b = 13,  setC_phi_e = 128;
   double setC_psi_b = -180,setC_psi_e = 180;
   
+  double setA1_phi_b =-134, setA1_phi_e = 13;
+  double setA1_psi_b =-125, setA1_psi_e = 74;
+  double setA2_phi_b = 128, setA2_phi_e =-134;
+  double setA2_psi_b =-125, setA2_psi_e = 74;
+
+  double setB1_phi_b =-110, setB1_phi_e = 13;
+  double setB1_psi_b = 74,  setB1_psi_e =-125;
+  double setB2_phi_b = 128, setB2_phi_e =-110;
+  double setB2_psi_b = 74,  setB2_psi_e =-125;
+
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
@@ -100,8 +110,12 @@ int main(int argc, char * argv[])
   // MetastableSet setB (setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e);
   // MetastableSet setC (setC_phi_b, setC_phi_e, setC_psi_b, setC_psi_e);
   vector<MetastableSet > sets;
-  sets.push_back (MetastableSet(setA_phi_b, setA_phi_e, setA_psi_b, setA_psi_e));
-  sets.push_back (MetastableSet(setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e));
+  // sets.push_back (MetastableSet(setA_phi_b, setA_phi_e, setA_psi_b, setA_psi_e));
+  // sets.push_back (MetastableSet(setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e));
+  sets.push_back (MetastableSet(setA1_phi_b, setA1_phi_e, setA1_psi_b, setA1_psi_e));
+  sets.push_back (MetastableSet(setA2_phi_b, setA2_phi_e, setA2_psi_b, setA2_psi_e));
+  sets.push_back (MetastableSet(setB1_phi_b, setB1_phi_e, setB1_psi_b, setB1_psi_e));
+  sets.push_back (MetastableSet(setB2_phi_b, setB2_phi_e, setB2_psi_b, setB2_psi_e));
   sets.push_back (MetastableSet(setC_phi_b, setC_phi_e, setC_psi_b, setC_psi_e));
 
   ifstream fpname (ifile.c_str());
