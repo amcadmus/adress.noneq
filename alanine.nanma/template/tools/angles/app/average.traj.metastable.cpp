@@ -43,19 +43,49 @@ bool myread (FILE * fp,
   return true;
 }
 
+void depositMetastable (const double & phi,
+			const double & psi,
+			const vector<MetastableSet> & sets,
+			vector<double > counts)
+{
+  int cc = 0;
+  counts.resize (sets.size());
+  for (unsigned ii = 0; ii < sets.size(); ++ii){
+    counts[ii] = 0;
+    if (sets[ii].inSet(phi, psi)){
+      counts[ii] = 1;
+      cc ++;
+    }
+  }
+  
+  if (cc != 1) {
+    if (cc == 0){
+      cerr << "not in any set!!!" << endl;
+    }
+    else {
+      cerr << "in multi sets" << endl;
+    }
+  }
+}
+
 
 int main(int argc, char * argv[])
 {
   std::string ifile, ofile;
-  unsigned numBlock = 20;
-  double refh;
-  float time_prec = .01;
+  // unsigned numBlock = 20;
+  // double refh;
+  // float time_prec = .01;
+  double setA_phi_b = 128, setA_phi_e = 13;
+  double setA_psi_b =-125, setA_psi_e = 74;
+  double setB_phi_b = 128, setB_phi_e = 13;
+  double setB_psi_b = 74,  setB_psi_e =-125;
+  double setC_phi_b = 13,  setC_phi_e = 128;
+  double setC_psi_b = -180,setC_psi_e = 180;
   
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("refh,r",  po::value<double > (&refh)->default_value(10), "size of bin (deg.)")
-      ("output,o", po::value<std::string > (&ofile)->default_value ("avg.angle"), "the output of average angle")
+      ("output,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.name"), "the file of file names");
 
   po::variables_map vm;
@@ -66,17 +96,24 @@ int main(int argc, char * argv[])
     return 0;
   }
 
+  // MetastableSet setA 
+  // MetastableSet setB (setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e);
+  // MetastableSet setC (setC_phi_b, setC_phi_e, setC_psi_b, setC_psi_e);
+  vector<MetastableSet > sets;
+  sets.push_back (MetastableSet(setA_phi_b, setA_phi_e, setA_psi_b, setA_psi_e));
+  sets.push_back (MetastableSet(setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e));
+  sets.push_back (MetastableSet(setC_phi_b, setC_phi_e, setC_psi_b, setC_psi_e));
+
   ifstream fpname (ifile.c_str());
   if (!fpname){
     std::cerr << "cannot open file " << ifile << std::endl;
     return 1;
   }
   char nameline [MaxLineLength];
-  int nbin = 360 / refh;
   float time;
   ValueType phi, psi;
   vector<float > times;
-  vector<Distribution_1d>  (dists);
+  vector<vector<double > > counts;
   unsigned countFile = 0;
 
   while (fpname.getline(nameline, MaxLineLength)){
@@ -88,12 +125,12 @@ int main(int argc, char * argv[])
       return 1;
     }
     countFile ++;
+    vector<double > tmpcount;
     if (countFile == 1){
       while (myread(fp, time, phi, psi)){
 	times.push_back (time);
-	Distribution_1d tmpdist (-180, 180, nbin, -180, 180, nbin);
-	tmpdist.deposite (psi, phi);
-	dists.push_back (tmpdist);
+	depositMetastable (phi, psi, sets, tmpcount);
+	counts.push_back (tmpcount);
       }
     }
     else {
@@ -103,21 +140,25 @@ int main(int argc, char * argv[])
 	  cerr << "inconsistent frames" << endl;
 	  return 1;
 	}
-	dists[countFrame].deposite (psi, phi);
+	depositMetastable (phi, psi, sets, tmpcount);
+	for (unsigned dd = 0; dd < tmpcount.size(); ++dd){
+	  counts[countFrame][dd] += tmpcount[dd];
+	}
 	countFrame ++;
       }
     }
     fclose (fp);
   }
 
+  FILE * fp = fopen (ofile.c_str(), "w");
   for (unsigned ii = 0; ii < times.size(); ++ii){
-    int inttime = int (times[ii] + time_prec * 0.5);
-    int dectime = int ((times[ii] + time_prec * 0.5 - inttime) * 100);
-    char frameFileName [MaxLineLength];
-    sprintf (frameFileName, "%s.%05d.%02d", ofile.c_str(), inttime, dectime);
-    dists[ii].average ();
-    dists[ii].print_xv (frameFileName);
+    fprintf (fp, "%f ", time);
+    for (unsigned dd = 0; dd < sets.size(); ++dd){
+      fprintf (fp, "%f ", counts[ii][dd]);
+    }
+    fprintf (fp, "\n");
   }
+  fclose (fp);
   
   return 0;
 }
