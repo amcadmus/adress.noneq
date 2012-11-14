@@ -152,7 +152,7 @@ int main(int argc, char * argv[])
 
   FILE * fp = fopen (ofile.c_str(), "w");
   for (unsigned ii = 0; ii < times.size(); ++ii){
-    fprintf (fp, "%f ", time);
+    fprintf (fp, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
       fprintf (fp, "%f ", counts[ii][dd]);
     }
