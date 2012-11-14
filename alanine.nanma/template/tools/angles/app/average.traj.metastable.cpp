@@ -75,22 +75,22 @@ int main(int argc, char * argv[])
   // unsigned numBlock = 20;
   // double refh;
   // float time_prec = .01;
-  double setA_phi_b = 128, setA_phi_e = 13;
-  double setA_psi_b =-125, setA_psi_e = 74;
-  double setB_phi_b = 128, setB_phi_e = 13;
-  double setB_psi_b = 74,  setB_psi_e =-125;
-  double setC_phi_b = 13,  setC_phi_e = 128;
-  double setC_psi_b = -180,setC_psi_e = 180;
+  double setA_psi_b = 128, setA_psi_e = 13;
+  double setA_phi_b =-125, setA_phi_e = 74;
+  double setB_psi_b = 128, setB_psi_e = 13;
+  double setB_phi_b = 74,  setB_phi_e =-125;
+  double setC_psi_b = 13,  setC_psi_e = 128;
+  double setC_phi_b = -180,setC_phi_e = 180;
   
-  double setA1_phi_b =-134, setA1_phi_e = 13;
-  double setA1_psi_b =-125, setA1_psi_e = 74;
-  double setA2_phi_b = 128, setA2_phi_e =-134;
-  double setA2_psi_b =-125, setA2_psi_e = 74;
+  double setA1_psi_b =-134, setA1_psi_e = 13;
+  double setA1_phi_b =-125, setA1_phi_e = 74;
+  double setA2_psi_b = 128, setA2_psi_e =-134;
+  double setA2_phi_b =-125, setA2_phi_e = 74;
 
-  double setB1_phi_b =-110, setB1_phi_e = 13;
-  double setB1_psi_b = 74,  setB1_psi_e =-125;
-  double setB2_phi_b = 128, setB2_phi_e =-110;
-  double setB2_psi_b = 74,  setB2_psi_e =-125;
+  double setB1_psi_b =-110, setB1_psi_e = 13;
+  double setB1_phi_b = 74,  setB1_phi_e =-125;
+  double setB2_psi_b = 128, setB2_psi_e =-110;
+  double setB2_phi_b = 74,  setB2_phi_e =-125;
 
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -107,16 +107,16 @@ int main(int argc, char * argv[])
   }
 
   // MetastableSet setA 
-  // MetastableSet setB (setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e);
-  // MetastableSet setC (setC_phi_b, setC_phi_e, setC_psi_b, setC_psi_e);
+  // MetastableSet setB (setB_psi_b, setB_psi_e, setB_phi_b, setB_phi_e);
+  // MetastableSet setC (setC_psi_b, setC_psi_e, setC_phi_b, setC_phi_e);
   vector<MetastableSet > sets;
-  // sets.push_back (MetastableSet(setA_phi_b, setA_phi_e, setA_psi_b, setA_psi_e));
-  // sets.push_back (MetastableSet(setB_phi_b, setB_phi_e, setB_psi_b, setB_psi_e));
-  sets.push_back (MetastableSet(setA1_phi_b, setA1_phi_e, setA1_psi_b, setA1_psi_e));
-  sets.push_back (MetastableSet(setA2_phi_b, setA2_phi_e, setA2_psi_b, setA2_psi_e));
-  sets.push_back (MetastableSet(setB1_phi_b, setB1_phi_e, setB1_psi_b, setB1_psi_e));
-  sets.push_back (MetastableSet(setB2_phi_b, setB2_phi_e, setB2_psi_b, setB2_psi_e));
-  sets.push_back (MetastableSet(setC_phi_b, setC_phi_e, setC_psi_b, setC_psi_e));
+  // sets.push_back (MetastableSet(setA_psi_b, setA_psi_e, setA_phi_b, setA_phi_e));
+  // sets.push_back (MetastableSet(setB_psi_b, setB_psi_e, setB_phi_b, setB_phi_e));
+  sets.push_back (MetastableSet(setA1_psi_b, setA1_psi_e, setA1_phi_b, setA1_phi_e));
+  sets.push_back (MetastableSet(setA2_psi_b, setA2_psi_e, setA2_phi_b, setA2_phi_e));
+  sets.push_back (MetastableSet(setB1_psi_b, setB1_psi_e, setB1_phi_b, setB1_phi_e));
+  sets.push_back (MetastableSet(setB2_psi_b, setB2_psi_e, setB2_phi_b, setB2_phi_e));
+  sets.push_back (MetastableSet(setC_psi_b, setC_psi_e, setC_phi_b, setC_phi_e));
 
   ifstream fpname (ifile.c_str());
   if (!fpname){
@@ -143,7 +143,7 @@ int main(int argc, char * argv[])
     if (countFile == 1){
       while (myread(fp, time, phi, psi)){
 	times.push_back (time);
-	depositMetastable (phi, psi, sets, tmpcount);
+	depositMetastable (psi, phi, sets, tmpcount);
 	counts.push_back (tmpcount);
       }
     }
@@ -154,7 +154,7 @@ int main(int argc, char * argv[])
 	  cerr << "inconsistent frames" << endl;
 	  return 1;
 	}
-	depositMetastable (phi, psi, sets, tmpcount);
+	depositMetastable (psi, phi, sets, tmpcount);
 	for (unsigned dd = 0; dd < tmpcount.size(); ++dd){
 	  counts[countFrame][dd] += tmpcount[dd];
 	}
@@ -168,7 +168,7 @@ int main(int argc, char * argv[])
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
-      fprintf (fp, "%f ", counts[ii][dd]);
+      fprintf (fp, "%f ", counts[ii][dd] / double(countFrame));
     }
     fprintf (fp, "\n");
   }
