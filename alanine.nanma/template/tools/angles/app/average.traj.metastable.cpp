@@ -46,7 +46,7 @@ bool myread (FILE * fp,
 void depositMetastable (const double & phi,
 			const double & psi,
 			const vector<MetastableSet> & sets,
-			vector<double > counts)
+			vector<double > & counts)
 {
   int cc = 0;
   counts.resize (sets.size());

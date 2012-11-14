@@ -55,12 +55,14 @@ function set_parameters_pert () {
     sed -e "/^nstenergy/s/=.*/= $pert_energy_feq/g" |\
     sed -e "/^userreal1/s/=.*/= $pert_noSdRange/g" |\
     sed -e "/^E-x /s/=.*/= 1 $pert_strength 0.0/g" |\
+    sed -e "/^E-xt /s/=.*/= 1 $pert_warm_time 0.0/g" |\
     sed -e "/^ld-seed/s/=.*/= `date +%s`/g" |\
     sed -e "/^gen_vel /s/=.*/= no/g" |\
     sed -e "/^gen-vel /s/=.*/= no/g" |\
     sed -e "/^nstxtcout/s/=.*/= $pert_xtcout_feq/g" > tmptmptmp.mdp
     mv -f tmptmptmp.mdp $file
 }
+
 
 function split_trr () {
     echo 2 0 | trjconv -f traj.trr -o out.gro -center

@@ -22,8 +22,9 @@ equi_seed=`date +%s`		#
 pert_conf_dir="result.equi/equiConfs/"
 pert_num_conf_use=10000		# 
 pert_strength=1.0		# nm/ps velocity
+pert_warm_time=0		# ps
 pert_time=20			# ps
-pert_frame_feq=0.2		# ps
+pert_frame_feq=0.5		# ps
 pert_dt=0.002			# ps
 pert_taut=0.1			# ps
 pert_noSdRange=1.0		# nm
@@ -49,9 +50,16 @@ else if echo $run_method | grep "atom.inhomo.sd2" &> /dev/null; then
     pert_integrator=sd
     gromacs_install_dir=~/study/adress.noneq/methane.solv/local.inhomo.sd2
     source $gromacs_install_dir/bin/GMXRC.bash
+else if echo $run_method | grep "atom.langevin" &> /dev/null; then
+    pert_integrator=sd1
+    gromacs_install_dir=~/study/adress.noneq/alanine.nanma/gromacses/local.gromacs.rev.1
+    source $gromacs_install_dir/bin/GMXRC.bash
 else
     pert_integrator=md
     pert_barostat=no		# NVE run, force to no.
+    gromacs_install_dir=~/study/adress.noneq/methane.solv/local.inhomo.sd
+    source $gromacs_install_dir/bin/GMXRC.bash
+fi
 fi
 fi
 fi
