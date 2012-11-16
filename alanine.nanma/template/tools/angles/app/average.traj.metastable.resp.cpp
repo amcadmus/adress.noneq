@@ -146,7 +146,7 @@ int main(int argc, char * argv[])
   }
   ifstream fpname1 (gfile.c_str());
   if (!fpname1){
-    std::cerr << "cannot open file " << ifile << std::endl;
+    std::cerr << "cannot open file " << gfile << std::endl;
     return 1;
   }
   char nameline [MaxLineLength];
@@ -211,6 +211,7 @@ int main(int argc, char * argv[])
       }
     }
     fclose (fp);
+    fclose (fp1);
   }
 
   FILE * fp = fopen (ofile.c_str(), "w");
