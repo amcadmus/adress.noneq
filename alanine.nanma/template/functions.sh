@@ -82,3 +82,16 @@ function split_trr () {
     rm -f out.gro tmptmp.gro
 }
 
+function print_equi_frame_time () {
+    rm -f equi.frame
+    equi_frame_start_time=`echo "$equi_warm_time + $equi_frame_feq" | bc -l`
+    equi_frame_end_time=`  echo "$equi_warm_time + $equi_frame_feq * $equi_num_frame" | bc -l`
+    count=1
+    for i in `seq $equi_frame_start_time $equi_frame_feq $equi_frame_end_time`
+    do
+	myprint=`echo "$i - $equi_frame_feq * 0.5" | bc -l`
+	mycount=`printf %06d $count`
+	echo "$mycount $myprint" >> equi.frame
+	count=$(($count+1))
+    done
+}

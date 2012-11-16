@@ -19,7 +19,8 @@ equi_taut=0.5			# ps
 equi_seed=`date +%s`		# 
 
 # non-equilibrium settings
-pert_conf_dir="result.equi/equiConfs/"
+# pert_conf_dir="result.equi/equiConfs/"
+pert_equi_result="result.equi"
 pert_num_conf_use=10000		# 
 pert_strength=1.0		# nm/ps velocity
 pert_warm_time=0		# ps
