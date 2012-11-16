@@ -22,5 +22,5 @@ $grompp_command &>> run.log
 echo "# run with command `which mdrun`"
 $mdrun_command &>> run.log
 
-split_trr
+#split_trr
 cd ..
