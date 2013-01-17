@@ -23,4 +23,5 @@ echo "# run with command `which mdrun`"
 $mdrun_command &>> run.log
 
 #split_trr
+print_equi_frame_time
 cd ..
