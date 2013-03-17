@@ -1,0 +1,105 @@
+% \documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolum]{revtex4-1}
+\documentclass[aip,jcp,a4paper,reprint,onecolumn]{revtex4-1}
+% \documentclass[aps,pre,twocolumn]{revtex4-1}
+% \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\makeatletter
+\makeatother
+
+\newcommand{\recheck}[1]{{\color{red} #1}}
+\newcommand{\redc}[1]{{\color{red} #1}}
+\newcommand{\bluec}[1]{{\color{blue} #1}}
+\newcommand{\greenc}[1]{{\color{green} #1}}
+\newcommand{\vect}[1]{\textbf{\textit{#1}}}
+\newcommand{\dd}[1]{\textsf{#1}}
+
+\newcommand{\AT}{{\textrm{{AT}}}}
+\newcommand{\EX}{{\textrm{EX}}}
+\newcommand{\ex}{{\textrm{ex}}}
+\newcommand{\CG}{{\textrm{CG}}}
+\newcommand{\HY}{{\Delta}}
+\newcommand{\rdf}{{\textrm{rdf}}}
+
+
+
+\begin{document}
+
+\title{Report: the non-equilibrium molecular dynamics simulation}
+\author{Han Wang}
+\affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+\author{Christof Sch\"utte}
+\affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+\author{Luigi Delle Site}
+\affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+
+\begin{abstract}
+\end{abstract}
+
+\maketitle
+
+\newpage
+
+\section{System set up}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{fig/kick.eps}
+  \caption{Schematic plot of the density perturbation.}
+  \label{fig:tmp1}
+\end{figure}
+
+Let's consider an infinitely large NVE system (here we call it
+"universe"). Some interesting process is happening in a small subsystem. For
+equilibrium phenomena, this subsystem is the usually considered as NVT
+(or NPT, $\mu$VT) system.
+In simulations, we ONLY simulate the subsystem and
+use the thermostat to mimic the embedding to the universe.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
+  \caption{Schematic plot of the truncated non-equilibrium subsystem.
+    The white part is the subsystem and the gray part is the boundary
+    condition, implemented by the thermostat and barostat mimicing
+    the infinitely large universe.}
+  \label{fig:tmp2}
+\end{figure}
+
+
+% If some non-equilibrium perturbation is going on in the subsystem,
+In this study, we consider the system of a methane molecule solvated
+in the liquid water environment. A local density perturbation is implemented
+by applying an impluse  in a shell surronding methane, see Fig.~\ref{fig:tmp1}.
+As far as we concerned, the situation is: we truncate the universe to the
+subsystem, and provide proper boundary condition for this
+subsystem.
+Here we denote the size of this subsystem by $R_{\ex}$.
+Notice this subsystem is simulated by the Newtonian
+dynamics. If the size of the
+subsystem is large enough so that the perturbation is
+small enough when it travels to the boundary of the subsystem, then a
+trivial boundary condition would be: coupling the system to a boundary
+layer equilibriated by the thermostat (and barostat or particle reservior),
+which mimics the infinitely large equilibrium universe.
+
+The simulation result of the universe is important
+for us, because it servers as the reference of all testing simulations.
+Practically speaking, it is impossible to simulate the infinitely large
+universe. We alway trancate it to a finite size system servered
+by the periodic bounday condition. Therefore, it is important to
+test the convergency of properties of interest with respect to the
+size of the truncated universe.
+
+
+
+
+
+\end{document}
