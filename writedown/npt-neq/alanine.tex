@@ -1,5 +1,5 @@
 % \documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolum]{revtex4-1}
-\documentclass[aip,jcp,a4paper,reprint,onecolumn]{revtex4-1}
+\documentclass[a4paper,preprint,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
 
@@ -47,49 +47,124 @@
 
 \newpage
 
-\section{System set up}
 
+\section{Alanine dipeptide
+  under turning on electric field}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
+  \caption{The maganitude of the external electric field as
+    a function of time.}
+  \label{fig:tmp3}
+\end{figure}
 
-Let's consider an infinitely large NVE system (here we call it
-"universe"). Some interesting process is happening in a small subsystem. For
-equilibrium phenomena, this subsystem is the usually considered as NVT
-(or NPT, $\mu$VT, depends on how the question is raised) system.
-In simulations, we only simulate the subsystem and
-use the thermostat to mimic the embedding to the universe.
-For non-equilibrium simulation, the physical meaning of directly applying
-a thermostat designed for generating equilibrium ensemble is still
-not clear. To make the non-equilibrium feasible, we assume the
-non-equilibrium process is \emph{local}, i.e. the non-equilibrium perturbation
-of the system happens only locally, and the rest of the system
-stays the unperturbed (usually assumed under ambient conditions).
-This provides us the possibility of simulating only the small subsystem
-of the universe: We can simulate only subsystem by providing proper
-boundary condition for it, so that it behaves as if it were embeded into
-the universe.
-
-\subsection{The water structure around methane under impluse }
-In this study, we firstly consider the system of a methane molecule solvated
-in the liquid water environment. A local density perturbation is implemented
-by applying an impluse  in a shell surronding methane, see Fig.~\ref{fig:tmp1}.
-% As far as we concerned, the situation is: we truncate the universe to the
-% subsystem, and provide proper boundary condition for this
-% subsystem.
-Here we denote the size of this subsystem by $R_{\ex}$.
-Notice this subsystem is simulated by the Newtonian
-dynamics. If the size of the
-subsystem is large enough so that the perturbation is
-small enough when it travels to the boundary of the subsystem, then a
-trivial boundary condition would be: coupling the system to a boundary
-layer equilibriated by the thermostat (and barostat or particle reservior),
-which mimics the infinitely large equilibrium universe.
+We study the response of the configuration of the alanine dipeptide
+with respect to a turning on electric field. The direction of this
+field is along the $x$ dirction and the magnitude with respect to time
+is plotted in Fig.~\ref{fig:tmp3}. From $t=0$ to
+$t=t_{\textrm{init}}$, the strength of the field grows linearly, while
+after $t=t_{\textrm{init}}$, the strength is kept constant at
+$E_{\textrm{max}}$.  The size of the system is $2.67\times 2.67\times
+2.67\, \textsf{nm}^3$, with one alanine dipeptide solved in 644 TIP3P
+water molecules. Firstly, an equilibrium NVT simulation of
+100~\textsf{nm} was performed with a Langvin thermostat (time-scale
+$\tau_T = 0.5~\textsf{ps}$) coupled to the system for constant
+temperature.  Along the trajectory, configurations were taken every
+5~\textsf{ps}.  They server as starting point of the branching
+trajectories. The branching trajectories were integrated by the
+Leap-frog scheme without any temperature and pressure control.  The
+time step was $\Delta t = 0.002~\textsf{ps}$. The short-range
+interaction was smoothed from $0.8$ to $1.0~\textsf{nm}$ by the
+``switch'' method provided by Gromacs.  An energy conserving PME
+method was applied to calculate the electorstatic interaction in this
+periodic system.  On each branching trajectory, to easy the analysis,
+the conformation of the alanine dipeptide is projected on the
+$\psi$--$\phi$ plane, as shown in Fig.~\ref{fig:tmp4}. The equilibrium
+distribution of the conformation on the $\psi$--$\phi$ plane is given
+in the Left plot of Fig.~\ref{fig:tmp4}.  It is clear the
+conformations are populated in several clusters that are called
+``metastable states'' in this research. For a clearer definition, we
+manually devide the $\psi$--$\phi$ plane into 5 subregions. $A_1$ and
+$A_2$ are corresponding to the alpha helix conformation. $B_1$ and
+$B_2$ are corresponding
+to beta sheet conformation. $C$ is corresponding to ill-folding.\\
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.3\textwidth]{fig/kick.eps}
-  \caption{Schematic plot of the density perturbation.}
-  \label{fig:tmp1}
+  \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-begin-1.eps}
+  \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-end-1.eps}
+  \caption{The population of different metastable state. Left: the equilibrium state at $t=0$~\textsf{ps}. Right: The non-equilibrium stady state at $t=1200$~\textsf{ps}, i.e., fully relaxed when the electric field is switched on. The darker color indicates larger population on the $\psi$--$\phi$ phase space.}
+  \label{fig:tmp4}
 \end{figure}
 
+
+For all testing cases, the maximum strength of the electric field
+$E_{\textrm{max}}$ is chosen to be 1~\textsf{V/nm}.  Three values of
+$t_{\textrm{init}}$ (10~\textsf{ps}, 100~\textsf{ps} and
+500~\textsf{ps}) are chosen to study the response of the system to the
+external electric field perturbation. The result is given in
+Fig.~\ref{fig:tmp5}.  No matter how fast is the electric field turned
+on, the beta sheet configuration, which presents at the beginning,
+fades away as the system relaxes to the new equilibrium. The
+population of alpha helix $A_1$ configuration grows from 45\% to 70\%.
+alpha helix $A_2$  does not change a lot under the electric field.
+The ill-folding configuration $C$ noticably grows from 0\% to 20\%.
+\\
+
+In the case of fastly switching on electric field
+($t_{\textrm{init}}=10~\textsf{ps}$), the dynamics of the population
+of the metastable sets shows three different time-scales. (1) From
+$t=0$ to 10~\textsf{ps}, the population of $A_2$ fastly increases,
+while the population of $A_1$ decreases with the same amount, so it is
+reasonable to argue that there is a fast configurational change from
+$A_1$ to $A_2$. Please see, in Fig.~\ref{fig:tmp5}, the green and read
+peak arount $t = 10~\textsf{ps}$. At the same time, the population of
+other metastable sets remains unchanged.  (2), From $t=10$ to
+40~\textsf{ps}, the population of $B_2$ decreases by 0.15, and this
+configuration almost disappers. Interestingly, the population of $A_1$
+increases by the same amount, and the population of $A_2$ goes back to
+the initial value. The populations of $B_1$ and $C$ start increasing
+and decreasing, correspondingly. The speed of these changes are much
+slower than that of $B_2$ and $A_1$.  (3) At the time scale of $t =
+300~\textsf{ps}$, the population of $A_1$, $B_1$ and $C$ converge to
+the non-equilibrium steady state (system with $E(\infty) = 1~\textsf{V/m}$).
+This time is actually thirty times large than when the electric field
+is fully switched on ($t_{\textrm{init}} = 10~\textsf{ps}$). This 
+indicates that the internal time scale of $A_1$, $B_1$ and $C$
+relaxation is around $300~\textsf{ps}$.\\
+
+To further test the dynamics of metastable population, two simulations
+of $t_{\textrm{init}} = 100~\textsf{ps}$ and $t_{\textrm{init}} =
+500~\textsf{ps}$ are performed. The first time scale of $t =
+10~\textsf{ps}$ disappers in both of the testing simulations. In the
+simulation of $t_{\textrm{init}} = 100~\textsf{ps}$, the population of
+$A$, $B_1$ and $C$ converges to the non-equilibrium steady state at
+around $300~\textsf{ps}$. This further verifies internal time scale of
+$A_1$, $B_1$ and $C$ presented in the testing case of
+$t_{\textrm{init}} = 10~\textsf{ps}$.  The dynamics of $B_2$ is
+faster: it decays to zero as fast as the external electric field is
+switched on. In the case of $t_{\textrm{init}} = 500~\textsf{ps}$, the
+growth of the external electric field is slower than the longest
+internal time scale of system, which means that the changes of the
+perturbation to the system is so slow that the system can catch up
+with that. The numerical results show the same story: the relaxation
+of all populations are around $500 \sim 600~\textsf{ps}$.
+\\
+
+% Clearly two time-scales of relaxation are observed.  For
+% configurations $A_2$ and $B_2$, the relaxations are very fast and
+% comparable to $t_{\textrm{init}}$. For configurations $A_1$, $B_1$ and
+% $C$, the time-scales of relaxation are roughly 600~\textsf{ps}.
+\begin{figure}
+  \centering
+  \includegraphics[]{fig.ala/fig-meta.eps}
+  \caption{The populations of the metastable sets as a function of time.
+    The dashed vertical lines indicate the three different time scale of
+  metastable set population at $t_{\textrm{init}} = 10~\textsf{ps}$.}
+  \label{fig:tmp5}
+\end{figure}
+
+\section{Testing the effect of the thermostat and barostat}
 \begin{figure}
   \centering
   \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
@@ -101,75 +176,114 @@ which mimics the infinitely large equilibrium universe.
 \end{figure}
 
 
-\subsection{Alanine dipeptide under electric field}
-
-We study the response of the configuration of the alanine dipeptide
-with respect to a turning on electric field. The direction of this field
-is along the $x$ dirction and the magnitude with respect to time is plotted
-in Fig.~\ref{fig:tmp3}. From $t=0$ to $t=t_{\textrm{init}}$, the strength
-of the field grows linearly, while after $t=t_{\textrm{init}}$, the strength
-is kept constant at $E_{\textrm{max}}$. 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
-  \caption{The maganitude of the external electric field as
-    a function of time.}
-  \label{fig:tmp3}
-\end{figure}
-The size of the system is $2.67\times 2.67\times 2.67\,
-\textsf{nm}^3$, with one alanine dipeptide solved in 644 TIP3P water
-molecules. Firstly, an equilibrium simulation of 100~\textsf{nm} was
-performed, along which configurations were taken every
-5~\textsf{ps}. They server as starting point of the branching
-trajectories. The time step was $\Delta t = 0.002~\textsf{ps}$. The
-short-range interaction was switched from $0.8$ to $1.0~\textsf{nm}$.
-An energy conserving PME method was applied. Langvin thermostat was
-coupled to the system, with a time-scale of $\tau = 0.5~\textsf{ps}$.
-On each branching trajectory, $R_{\textrm{ex}}$ was chosen to be
-$1.0$~\textsf{nm}, which means that a Langvin thermostat ($\tau =
-0.1~\textsf{ps}$) was applied to water molecules that were more than
-$1.0$~\textsf{nm} away from the center of the simulation box. In
-addition, a Parrinello-Rahman barostat was couple to the system with a
-time-scale of $\tau_{\textrm{P}} = 2.0~\textsf{ps}$. To easy the
-analysis, the conformation of the alanine dipeptide is projected on
-the $\psi$--$\phi$ plane, as shown in Fig.~\ref{fig:tmp4}. The
-equilibrium distribution of the conformation on the $\psi$--$\phi$
-plane is given in the Left plot of Fig.~\ref{fig:tmp4}.  It is clear
-the conformations are populated in several clusters that are called
-``metastable states'' in this research. For a clearer definition, we
-manually devide the $\psi$--$\phi$ plane into 5 subregions. $A_1$ and $A_2$ are
-corresponding to the alpha helix conformation. $B_1$ and $B_2$ are corresponding
-to beta sheet conformation. $C$ is corresponding to ill-folding.\\
-\begin{figure}
-  \centering
-  \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-begin-1.eps}
-  \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-end-1.eps}
-  \caption{The population of different metastable state. Left: the equilibrium state at $t=0$~\textsf{ps}. Right: The non-equilibrium stady state at $t=1200$~\textsf{ps}. The darker color indicates larger population on the $\psi$--$\phi$ phase space.}
-  \label{fig:tmp4}
-\end{figure}
 
 
-For all testing cases, the maximum strength of the electric field
-$E_{\textrm{max}}$ is chosen to be 1~\textsf{V/nm}.  Three values of
-$t_{\textrm{init}}$ (10~\textsf{ps}, 50~\textsf{ps} and
-100~\textsf{ps}) are chosen to study the response of the system to the
-external electric field perturbation. The result is given in
-Fig.~\ref{fig:tmp5}.  No matter how fast is the electric field turned
-on, the beta sheet configuration, which presents at the beginning,
-fades away as the system relaxes to the new equilibrium. The
-population of alpha helix $A_1$ configuration grows from 45\% to 70\%.
-alpha helix $A_2$  does not change a lot under the electric field.
-The ill-folding configuration $C$ noticably grows from 0\% to 20\%.
-Clearly two time-scales of relaxation are observed.  For
-configurations $A_2$ and $B_2$, the relaxations are very fast and
-comparable to $t_{\textrm{init}}$. For configurations $A_1$, $B_1$ and
-$C$, the time-scales of relaxation are roughly 600~\textsf{ps}.
+% \section{System set up}
+
+% $R_{\textrm{ex}}$ was chosen to be
+% $1.0$~\textsf{nm}, which means that a Langvin thermostat ($\tau =
+% 0.1~\textsf{ps}$) was applied to water molecules that were more than
+% $1.0$~\textsf{nm} away from the center of the simulation box. In
+% addition, a Parrinello-Rahman barostat was couple to the system with a
+% time-scale of $\tau_{\textrm{P}} = 2.0~\textsf{ps}$. 
+
+
+Let's consider an infinitely large NVE system (here we call it
+"universe"). Some interesting process is happening in a small
+subsystem. For equilibrium phenomena, this subsystem is the usually
+considered as NVT (or NPT, $\mu$VT, depends on how the question is
+raised) system.  In simulations, we only simulate the subsystem and
+use the thermostat to mimic the embedment into the universe.  For
+non-equilibrium simulation, we also want to simulate only the
+subsystem of interest, but the physical meaning of directly applying a
+thermostat designed for generating equilibrium ensemble is not clear
+to a non-equilibrium process. Moreover, there is no unique way of
+defining how the subsystem is coupled into the universe: It is subject
+to how the perturbation comes into the subsystem, and how the energy
+of the system dissipates into the universe. In the case of swithing on
+electric field system, two limiting senarios are considered by us: (1)
+the subsystem is isolated from the universe. That is to say the we
+study the non-equilibrium behavior of a system, which conserves the
+energy, volume and number of particle, under the turning on electric
+field.
+
+(1), the
+electric field is applied to the whole universe, the correctness of
+considering a subsystem is tested by varying the size of the
+subsystem, and investigating the convergence of the result.
+
+(2), the
+perturbation is applied locally, and the extra energy dissipates into
+the universe infinitely fast. That is to say the subsystem is coupled
+to a thermostat and barostat with infinitely high
+efficiency. Practically, it is impossible to simulation with a
+``infinitely fast'' thermostat and barostat. We locally truncate the
+system with radius $R_{\textrm{ex}} = 1~\textsf{nm}$ (see
+Fig.~\ref{fig:tmp2} for explanation), and couple it to very sufficient
+thermo- and barostat. We use a Langvin thermostat coupled to the
+thermostating region with a time-scale of $\tau_{T} =
+0.1~\textsf{ps}$, and a Parrinello-Rahman barostat with a time-scale
+of $\tau_{P} = 2.0~\textsf{ps}$.
+
+The non-equilibrium steady temperature and pressure of the
+non-thermostated simulation are $330$ K and -500 Bar,
+correspondingly. Those of the thermostated sytem are $300$ K and 1
+Bar, correspondingly. Therefore, we can see from Fig.~\ref{fig:tmp6}
+that the relaxation of the thermostated system is faster than the
+non-thermostated system. The three time-scale of metastable population
+dynamics in the thermostated system is consistent with that of the
+non-thermostated system. This means that thermostating, in this case,
+does not qulitativly change the population dynamics of metastable
+states.
+
 \begin{figure}
   \centering
-  \includegraphics[]{fig.ala/fig-meta.eps}
-  \caption{The populations of the metastable sets as a function of time.}
-  \label{fig:tmp5}
+  \includegraphics[]{fig.ala/fig-meta-stat-10.eps}
+  \caption{ Comparison between simulations with and without
+    temperature and pressure control at $t_{\textrm{init}} =
+    10~\textsf{ps}$. The The populations of the metastable sets as a
+    function of time are plotted.  The dashed vertical lines indicate
+    the three different time scale of metastable set population at
+    $t_{\textrm{init}} = 10~\textsf{ps}$.}
+  \label{fig:tmp6}
 \end{figure}
+
+
+
+% To make the non-equilibrium feasible, we assume the
+% non-equilibrium process is \emph{local}, i.e. the non-equilibrium perturbation
+% of the system happens only locally, and the rest of the system
+% stays the unperturbed (usually assumed under ambient conditions).
+% This provides us the possibility of simulating only the small subsystem
+% of the universe: We can simulate only subsystem by providing proper
+% boundary condition for it, so that it behaves as if it were embeded into
+% the universe.
+
+% \subsection{The water structure around methane under impluse }
+% In this study, we firstly consider the system of a methane molecule solvated
+% in the liquid water environment. A local density perturbation is implemented
+% by applying an impluse  in a shell surronding methane, see Fig.~\ref{fig:tmp1}.
+% % As far as we concerned, the situation is: we truncate the universe to the
+% % subsystem, and provide proper boundary condition for this
+% % subsystem.
+% Here we denote the size of this subsystem by $R_{\ex}$.
+% Notice this subsystem is simulated by the Newtonian
+% dynamics. If the size of the
+% subsystem is large enough so that the perturbation is
+% small enough when it travels to the boundary of the subsystem, then a
+% trivial boundary condition would be: coupling the system to a boundary
+% layer equilibriated by the thermostat (and barostat or particle reservior),
+% which mimics the infinitely large equilibrium universe.
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.3\textwidth]{fig/kick.eps}
+%   \caption{Schematic plot of the density perturbation.}
+%   \label{fig:tmp1}
+% \end{figure}
+
+
+
 
 
 \end{document}
