@@ -21,9 +21,11 @@ equi_seed=`date +%s`		#
 # non-equilibrium settings
 # pert_conf_dir="result.equi/equiConfs/"
 pert_equi_result="result.equi"
-pert_num_conf_use=10000		# 
+pert_num_conf_use=100000	#
+pert_mode=2			# 1: relax, 2: peaks
 pert_strength=1.0		# nm/ps velocity
 pert_warm_time=0		# ps
+pert_last_time=10		# ps
 pert_time=20			# ps
 pert_frame_feq=0.5		# ps
 pert_dt=0.002			# ps
@@ -35,7 +37,7 @@ pert_parallel_num_pro=1		# n
 pert_parallel_my_id=0		# n
 
 grompp_command="grompp -n index.ndx"
-mdrun_command="mdrun -v"
+mdrun_command="mdrun"
 
 if	echo $run_method | grep adress &> /dev/null; then
     pert_integrator=sd

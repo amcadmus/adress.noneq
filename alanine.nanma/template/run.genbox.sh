@@ -62,7 +62,7 @@ grompp -n index.ndx &> genbox.log
 mdrun -v &> genbox.log
 
 echo "# resize box"
-echo 18 | g_energy -b 50 -xvg none &> genbox.log
+echo 19 | g_energy -b 50 -xvg none &> genbox.log
 newbox=`avg_jk -v col=2 energy.xvg | grep -v \# | awk '{print $1}'`
 oldbox=`tail -n 1 confout.gro | awk '{print $1}'`
 scale=`echo "$newbox / $oldbox" | bc -l`
