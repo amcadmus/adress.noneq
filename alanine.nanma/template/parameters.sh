@@ -19,8 +19,7 @@ equi_taut=0.5			# ps
 equi_seed=`date +%s`		# 
 
 # non-equilibrium settings
-# pert_conf_dir="result.equi/equiConfs/"
-pert_equi_result="result.equi"
+pert_equi_result="$HOME/study/adress.noneq/alanine.nanma/results/run.result.equi.box02.70/result.equi/"
 pert_num_conf_use=100000	#
 pert_mode=2			# 1: relax, 2: cos wave
 pert_strength=1.0		# nm/ps velocity
