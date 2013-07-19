@@ -240,7 +240,9 @@ int main(int argc, char * argv[])
 	}
       }
       else {
-	fprintf (fp1, "%f ", 0.);
+	for (unsigned mm = 0; mm < sets.size(); ++mm){
+	  fprintf (fp1, "%f ", 0.);
+	}
       }
       fprintf (fp1, "  ");
     }
