@@ -173,7 +173,6 @@ int main(int argc, char * argv[])
     Traj traj (nLagTime);
     fclose (fp);
     fp = fopen (nameline, "r");
-    cout << "reading file " << nameline << endl;
     if (fp == NULL){
       std::cerr << "cannot open file " << nameline << std::endl;
       return 1;
@@ -202,6 +201,10 @@ int main(int argc, char * argv[])
       while (myread(fp, time, phi, psi)){
 	if (countFrame >= times.size()){
 	  cerr << "inconsistent frames" << endl;
+	  return 1;
+	}
+	if (fabs (time - times[countFrame]) > 0.001 * time) {
+	  cerr << "inconsistent time " << endl;
 	  return 1;
 	}
 	depositMetastable (psi, phi, sets, tmpcount);
