@@ -63,7 +63,10 @@ function set_parameters_pert () {
     if test $pert_mode -eq 1; then
 	sed -e "/^E-xt /s/=.*/= 1 $pert_warm_time 0.0/g" $file > tmptmptmp.mdp
     else if test $pert_mode -eq 2; then
-	sed -e "/^E-xt /s/=.*/= 2 $pert_warm_time 0.0 $pert_last_time 0.0/g" $file > tmptmptmp.mdp
+	pi=3.14159265359
+	my_phi=`echo "$pert_phi / 180.0 * $pi" | bc -l`
+	my_T=`echo "2. * $pi / $pert_warm_time" | bc -l`
+	sed -e "/^E-xt /s/=.*/= 2 $my_T $my_phi $pert_shift 0.0/g" $file > tmptmptmp.mdp
     else
 	echo "wrong pert mode: $pert_mode"
 	exit

@@ -19,13 +19,13 @@ equi_taut=0.5			# ps
 equi_seed=`date +%s`		# 
 
 # non-equilibrium settings
-# pert_conf_dir="result.equi/equiConfs/"
-pert_equi_result="result.equi"
+pert_equi_result="$HOME/study/adress.noneq/alanine.nanma/results/run.result.equi.box02.70/result.equi/"
 pert_num_conf_use=100000	#
-pert_mode=2			# 1: relax, 2: peaks
+pert_mode=2			# 1: relax, 2: cos wave
 pert_strength=1.0		# nm/ps velocity
-pert_warm_time=0		# ps
-pert_last_time=10		# ps
+pert_warm_time=10		# ps 1: warm time, 2: periodicity
+pert_shift=1			# unitless
+pert_phi=180			# deg. shift of the phase
 pert_time=20			# ps
 pert_frame_feq=0.5		# ps
 pert_dt=0.002			# ps

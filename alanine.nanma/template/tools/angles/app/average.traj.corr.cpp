@@ -71,7 +71,7 @@ void depositMetastable (const double & phi,
 
 void calCorr (const vector<double> & counts0,
 	      const vector<double> & counts1,
-	      vector<vector<double > > countCorr)
+	      vector<vector<double > > & countCorr)
 {
   countCorr.resize (counts0.size());
   for (unsigned ii = 0; ii < countCorr.size(); ++ii){
@@ -227,15 +227,22 @@ int main(int argc, char * argv[])
   }
 
   FILE * fp = fopen (ofile.c_str(), "w");
-  FILE * fp1 = fopen (o1file.c_str(), "w");
+  FILE * fp1 = fopen (obwfile.c_str(), "w");
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
     fprintf (fp1, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
       counts[ii][dd] = counts[ii][dd] / double(countFile);
       fprintf (fp, "%f ", counts[ii][dd]);
-      for (unsigned mm = 0; mm < sets.size(); ++mm){
-	fprintf (fp1, "%f ", corrsBw[ii][dd][mm] / counts[ii][dd]);
+      if (counts[ii][dd] != 0){
+	for (unsigned mm = 0; mm < sets.size(); ++mm){
+	  fprintf (fp1, "%f ", corrsBw[ii][dd][mm] / counts[ii][dd] / double (countFile));
+	}
+      }
+      else {
+	for (unsigned mm = 0; mm < sets.size(); ++mm){
+	  fprintf (fp1, "%f ", 0.);
+	}
       }
       fprintf (fp1, "  ");
     }
