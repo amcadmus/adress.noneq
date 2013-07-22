@@ -87,11 +87,9 @@ void calCorr (const vector<double> & counts0,
   }
 }
 
-
-
 int main(int argc, char * argv[])
 {
-  std::string ifile, ofile, o1file;
+  std::string ifile, ofile, ofwfile, obwfile;
   double lagTime;
   // unsigned numBlock = 20;
   // double refh;
@@ -119,7 +117,8 @@ int main(int argc, char * argv[])
       ("help,h", "print this message")
       ("corr-lag-time,c", po::value<double > (&lagTime)->default_value (10.), "the lag time of corrlation")
       ("output-meta,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
-      ("output-meta-corr", po::value<std::string > (&o1file)->default_value ("meta.corr.out"), "the output of metastable propulation correlation")
+      ("output-meta-corr-forward", po::value<std::string > (&ofwfile)->default_value ("meta.corr.fw.out"), "the output of metastable propulation forward correlation")
+      ("output-meta-corr-backward", po::value<std::string > (&obwfile)->default_value ("meta.corr.bw.out"), "the output of metastable propulation backward correlation")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.name"), "the file of file names");
 
   po::variables_map vm;
@@ -153,7 +152,8 @@ int main(int argc, char * argv[])
   ValueType phi, psi;
   vector<float > times;
   vector<vector<double > > counts;
-  vector<vector<vector<double > > > corrs;
+  vector<vector<vector<double > > > corrsBw;
+  vector<vector<vector<double > > > corrsFw;
   unsigned countFile = 0;
 
   while (fpname.getline(nameline, MaxLineLength)){
@@ -191,7 +191,7 @@ int main(int argc, char * argv[])
 	if (traj.full ()){
 	  calCorr (traj.front(), traj.back(), tmpcorr);
 	}	
-	corrs.push_back (tmpcorr);
+	corrsBw.push_back (tmpcorr);
       }
     }
     else {
@@ -217,7 +217,7 @@ int main(int argc, char * argv[])
 	}	
 	for (unsigned dd = 0; dd < tmpcorr.size(); ++dd){
 	  for (unsigned mm = 0; mm < tmpcorr[dd].size(); ++mm){
-	    corrs[countFrame][dd][mm] += tmpcorr[dd][mm];
+	    corrsBw[countFrame][dd][mm] += tmpcorr[dd][mm];
 	  }
 	}
 	countFrame ++;
@@ -235,7 +235,7 @@ int main(int argc, char * argv[])
       counts[ii][dd] = counts[ii][dd] / double(countFile);
       fprintf (fp, "%f ", counts[ii][dd]);
       for (unsigned mm = 0; mm < sets.size(); ++mm){
-	fprintf (fp1, "%f ", corrs[ii][dd][mm] / counts[ii][dd]);
+	fprintf (fp1, "%f ", corrsBw[ii][dd][mm] / counts[ii][dd]);
       }
       fprintf (fp1, "  ");
     }
