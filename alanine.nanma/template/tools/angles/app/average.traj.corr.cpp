@@ -149,6 +149,7 @@ int main(int argc, char * argv[])
   char nameline [MaxLineLength];
   float time;
   double dt;
+  int nLagTime;
   ValueType phi, psi;
   vector<float > times;
   vector<vector<double > > counts;
@@ -168,7 +169,7 @@ int main(int argc, char * argv[])
     myread(fp, time0, phi, psi);
     myread(fp, time1, phi, psi);
     dt = time1 - time0;
-    int nLagTime = int ((lagTime + 0.5 * dt) / dt) + 1;
+    nLagTime = int ((lagTime + 0.5 * dt) / dt) + 1;
     if (nLagTime == 1) nLagTime ++;
     Traj traj (nLagTime);
     fclose (fp);
@@ -249,24 +250,26 @@ int main(int argc, char * argv[])
     }
     fprintf (fp, "\n");
     fprintf (fp1, "\n");
-    if (ii != times.size() - 1) {
-      fprintf (fp2, "%f ", times[ii]);
-      for (unsigned dd = 0; dd < sets.size(); ++dd){
-	if (counts[ii+1][dd] != 0){
-	  for (unsigned mm = 0; mm < sets.size(); ++mm){
-	    fprintf (fp2, "%f ", corrsBw[ii+1][mm][dd] / counts[ii+1][dd] / double (countFile));
-	  }
-	}
-	else{
-	  for (unsigned mm = 0; mm < sets.size(); ++mm){
-	    fprintf (fp2, "%f ", 0.);
-	  }
-	}
-	fprintf (fp1, "  ");
-      }
-      fprintf (fp2, "\n");
-    }
   }
+
+  for (unsigned ii = 0; ii < times.size()-nLagTime+1; ++ii){
+    fprintf (fp2, "%f ", times[ii]);
+    for (unsigned dd = 0; dd < sets.size(); ++dd){
+      if (counts[ii+nLagTime-1][dd] != 0){
+	for (unsigned mm = 0; mm < sets.size(); ++mm){
+	    fprintf (fp2, "%f ", corrsBw[ii+nLagTime-1][mm][dd] / counts[ii+nLagTime-1][dd] / double (countFile));
+	}
+      }
+      else{
+	for (unsigned mm = 0; mm < sets.size(); ++mm){
+	  fprintf (fp2, "%f ", 0.);
+	}
+      }
+      fprintf (fp2, "  ");
+      }
+    fprintf (fp2, "\n");
+  }
+  
   fclose (fp);
   fclose (fp1);
   fclose (fp2);
