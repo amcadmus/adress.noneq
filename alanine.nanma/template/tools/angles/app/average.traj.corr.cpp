@@ -228,6 +228,7 @@ int main(int argc, char * argv[])
 
   FILE * fp = fopen (ofile.c_str(), "w");
   FILE * fp1 = fopen (obwfile.c_str(), "w");
+  FILE * fp2 = fopen (ofwfile.c_str(), "w");
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
     fprintf (fp1, "%f ", times[ii]);
@@ -248,9 +249,27 @@ int main(int argc, char * argv[])
     }
     fprintf (fp, "\n");
     fprintf (fp1, "\n");
+    if (ii != times.size() - 1) {
+      fprintf (fp2, "%f ", times[ii]);
+      for (unsigned dd = 0; dd < sets.size(); ++dd){
+	if (counts[ii+1][dd] != 0){
+	  for (unsigned mm = 0; mm < sets.size(); ++mm){
+	    fprintf (fp2, "%f ", corrsBw[ii+1][mm][dd] / counts[ii+1][dd] / double (countFile));
+	  }
+	}
+	else{
+	  for (unsigned mm = 0; mm < sets.size(); ++mm){
+	    fprintf (fp2, "%f ", 0.);
+	  }
+	}
+	fprintf (fp1, "  ");
+      }
+      fprintf (fp2, "\n");
+    }
   }
   fclose (fp);
   fclose (fp1);
+  fclose (fp2);
   
   return 0;
 }
