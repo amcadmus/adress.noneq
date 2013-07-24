@@ -1,5 +1,5 @@
 % \documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolum]{revtex4-1}
-\documentclass[a4paper,preprint,onecolumn]{revtex4-1}
+\documentclass[aip,jcp,a4paper,preprint,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
 
@@ -20,23 +20,19 @@
 \newcommand{\greenc}[1]{{\color{green} #1}}
 \newcommand{\vect}[1]{\textbf{\textit{#1}}}
 \newcommand{\dd}[1]{\textsf{#1}}
-
-\newcommand{\AT}{{\textrm{{AT}}}}
-\newcommand{\EX}{{\textrm{EX}}}
-\newcommand{\ex}{{\textrm{ex}}}
-\newcommand{\CG}{{\textrm{CG}}}
-\newcommand{\HY}{{\Delta}}
-\newcommand{\rdf}{{\textrm{rdf}}}
+\newcommand{\fwd}[0]{\textrm{fwd}}
+\newcommand{\bwd}[0]{\textrm{bwd}}
 
 
 
 \begin{document}
 
-\title{Report: the non-equilibrium molecular dynamics simulation}
+\title{The non-equilibrium molecular dynamics simulation of the alanine dipeptide under electric field}
 \author{Han Wang}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
 \author{Christof Sch\"utte}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+% \affiliation{Zuse Institute Berlin, Germany}
 \author{Luigi Delle Site}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
 
@@ -48,46 +44,216 @@
 \newpage
 
 
-\section{Alanine dipeptide
-  under turning on electric field}
+\section{Methodology}
+\subsection{Nonequilibrium molecular dynamics simulation}
+Here we fastly review the approach of performing nonequilibrium
+molecular dynamics that was initiated by Giovanni Ciccoti and his
+colleagues~\cite{ciccotti1975direct, ciccotti1979thought,
+  orlandini2011hydrodynamics, orlandini2011hydrodynamics-01}.
+We denote the macroscopic nonequilibrium observable by $O(t)$. If at $t$
+the configurational probability distribution is $\rho(\vect x, t)$, where
+$\vect x$ is the phase space variable, then the observable can be
+expressed by
+\begin{align}\label{eqn:tmp1}
+  O(t) = \int d\vect x\, \hat O(\vect x)\rho(\vect x, t)  = \langle \hat O(\vect x), \rho(\vect x, t)\rangle,
+\end{align}
+where $\hat O (\vect x)$ is the microscopic observable. Compared with
+the macroscopic observable, it is measured at the phase space position $\vect x$.
+The bracket on the right hand side denotes the inner produce in the
+phase space.  We assume the dynamics of the system is governed by the
+Hamiltonian equation, i.e. $\dot {\vect x} = J \cdot \nabla_{\vect x}
+\mathcal H(\vect x)$, where $\mathcal H$ is the Hamiltonian and $J$ is
+the symplectic matrix, then the Liouville equation of the probability
+distribution is
+\begin{align}\label{eqn:tmp2}
+  \frac{\partial \rho(\vect x, t)}{\partial t} = - iL(t) \rho(\vect x, t),
+\end{align}
+where $iL(t) = \{\cdot, \mathcal H\}$ is the Liouville operator and
+$\mathcal H$ is the Hamiltonian of the system. The Eq.~\eqref{eqn:tmp2}
+can be formally solved by $\rho(\vect x, t) = e^{-iL(t)} \rho(\vect x, 0)$.
+On the other hand
+\begin{align}
+  \frac{d \hat O(\vect x(t))}{dt} = \nabla_{\vect x}\hat O\cdot \dot{\vect x}
+  = \nabla_{\vect x}\hat O\cdot J\cdot \nabla_{\vect x}\mathcal H
+  = iL(t) \hat O (\vect x(t))
+\end{align}
+This equation can be formally solved by $\hat O(\vect x(t)) = e^{iL(t)} O(\vect x, 0)$, therefore,
+\begin{align}\nonumber
+  O(t) & = \langle \hat O(\vect x), \rho(\vect x, t)\rangle
+  = \langle \hat O(\vect x), e^{-iL(t)} \rho(\vect x, 0)\rangle
+  = \langle e^{iL(t)}\hat O(\vect x), \rho(\vect x, 0)\rangle\\\label{eqn:tmp4}
+  &= \langle \hat O(\vect x(t)), \rho(\vect x, 0)\rangle
+\end{align}
+If the inital state of the system is in equilibrium, i.e. the initial
+probability distribution is the equilibrium distribution. Then an
+explicit translation of Eq.~\eqref{eqn:tmp4} is that the
+nonequilibrium observable is equal to the ensenble average of
+microscopic observable measured along trajectory $\vect x(t)$, the
+inital configuration of which is subject to the equilibrium
+distribution. In practice, we firstly run an equilibrium MD simulation
+to generate a collection of configurations that are subject to the
+equilibrium distribution. And then by using these configurations as
+inital configuration, the Hamiltonian dynamicses are integrated until
+time $t$. These trajectories are also called \emph{branching
+  trajectories} in this paper. Finially, the macroscopic observable is
+estimated by averaging the microscopic observable measured at the end
+points of the trajectories.
+
+Being more gneralize, if the microscopic depends not only on the end
+configuation of at time $t$ but also depends on the historical
+configurations along the trajectory, the experssion~\eqref{eqn:tmp4} can be generalize to
+\begin{align}
+  O(t) = \int d\vect x\,\rho(\vect x, 0) \int_{\mathcal C\{\vect x, 0; t\}} \hat O[\vect x_s] \,d\mathcal P[\vect x_s] 
+\end{align}
+where the microscopic observable $ \hat O[\vect x_s] $ is now a
+functional of the trajectory.  $\mathcal C\{\vect x, 0; t\}$ is the
+set of all continuous trajectories starting at point $\vect x$ at time
+0, and ending at time $t$. $\mathcal P[\vect x_s] $ is the meansure of
+the trajectory space $\mathcal C$.  In our case, it is the
+$\delta$-function peaked around the trajectory generated by the
+Hamiltonian dynamics. To be general, it can also be the measure of all
+trajectories generated by, for example, a Langevin dynamics, then the
+branching trajectories should be generated by the Langevin
+dynamics rather than the Hamiltonian dynamics.
+
+
+\subsection{Nonequilibrium temperature control}
+
+The aformentioned nonequilibrium molecular dynamicses simulation algorithm
+does not describe how the boundary of the system should be set up. The 100\% save
+method is to simulate a infinitely large isolated system, or any large enough
+isolated subsystem of it. In practice, it is both impossible and unnecessary to
+do such a simulation. In practice, proper boundary condition should be developped
+based on how the nonequilibrium system is set up, and what are the nonequilibrium
+observables to measure.
+Since we are mainly interested in the non-thermal effect of
+the electric field to the configuration of a solvated alanine dipeptide,
+we assume the alanine is embeded into an infinitely large solvent envrionment,
+and the electric field is only applied to the neighborhood of the alanine. Therefore, 
+extra heat generated by turing on the electric field can be effectively absorbed
+by the envrionment. 
+
 \begin{figure}
   \centering
-  \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
-  \caption{The magnitude of the external electric field as
-    a function of time.}
+  \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
+  \caption{Schematic plot of the truncated nonequilibrium subsystem.
+    The white part is the subsystem and the gray part is the boundary
+    condition, implemented by the thermostat and barostat mimicing
+    the infinitely large universe.}
+  \label{fig:tmp2}
+\end{figure}
+
+In practice, it is impossible to simulate an infinitely large
+environment.  For an equilibrium simulation, the solution is to couple
+the system to a thermostat, under which the canonical ensember can be
+sampled by only simulate a finite size system with periodic boundary
+condition. For a nonequilibrium simulation, simply couple the system
+to a thermostat may not be a good idea, because the \emph{dynamics}
+generated by the thermostat is artificial, and deviation from the
+Hamiltonian dynamics under investigation will introduce artificial
+effects in the nonequilibrium observations. To solve this problem, we
+observe that only the Hamiltonian dynamics of the alanine molecule
+itself and the water molecules in the nearby solvation shell is
+crutial to the configuration change, while the detailed dynamics of
+the water molecules far away has less effect. Notice again we actually
+do not want to precisely calculate each trajectory starting from the
+initial configurations, but want to sample correctly the trajectory
+ensemble correctly, so that the nonequilibrium observable can be
+calculated correctly.  Therefore, instead of simulating an infinitely
+large system, we only simulate a finite size system with periodic
+boundary condition. The simulating region is divided into two
+subregions: Near the alanine dipeptide, the dynamics is kept to be
+Hamiltonian, and this subregion is called the Hamiltonian dynamics
+region. While far from the alanine, the dynamics of water is coupled
+to a Langevin thermostat, and this region is called the thermostating
+region (see Fig.~\ref{fig:tmp2}).  For simplicity, the Hamiltonian
+dynamics region is assumed to be spherical, centered at the
+alpha-carbon of the alanine, and with radius of $R_{ex}$.  Further, we
+freeze the movment of the alpha-carbon, so that the alanine is always
+located at the center of the simulation region.  The validity of this
+setting will be later check by numerical examples showing that the
+nonequilibrium observables do not depends on the size of the system
+and the size of the Hamiltonian dynamics subregion, if they are
+reasonably large and the finite size effect does not play a role.
+
+
+\section{Example I: Alanine dipeptide
+  under a linearly switching on electric field}
+
+\subsection{System setting up }
+\begin{figure}
+  \centering
+  % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
+  \includegraphics[]{fig.ala/fig-field-dipol.eps}
+  \caption{The magnitude of the external electric field, and the
+    x-component of the dipole moment of the alanine molecule as a
+    function of time. The dashed lines are the strengths of the
+    external electric field, while the solid lines are the dipole
+    moments. Three test cases are indicated by different colors.}
   \label{fig:tmp3}
 \end{figure}
 
-We study the response of the configuration of the alanine dipeptide
-with respect to a turning on electric field. The direction of this
-field is along the $x$ direction and the magnitude with respect to time
-is plotted in Fig.~\ref{fig:tmp3}. From $t=0$ to
+We want to study the nonequilibrium properties of an alanine dipeptide
+under a changing electric field. As a model system, we study the
+linearly switching on electric field: From $t=0$ to
 $t=t_{\textrm{init}}$, the strength of the field grows linearly, while
 after $t=t_{\textrm{init}}$, the strength is kept constant at
-$E_{\textrm{max}}$.  The size of the system is $2.67\times 2.67\times
-2.67\, \textsf{nm}^3$, with one alanine dipeptide solved in 644 TIP3P
-water molecules. Firstly, an equilibrium NVT simulation of
+$E_{\textrm{max}}$. Fig.~\ref{fig:tmp3} shows the three different
+cases considered in this work: $t_{\textrm{init}} = 10$, 100, and
+500~ps, and 
+in all cases the maximum strength of the electric field is
+$E_{\textrm{max}} = 1$~V/nm.
+The direction of this field is arbitarily chosen: along the
+$x$ direction. Since the dipole of the equilibrium configurations of
+alanine can be along any direction (see also Fig.~\ref{fig:tmp3} for
+the vanished initial dipole moment), applying the electric along x-axis is
+not biased.
+The size of the system is $2.67\times 2.67\times
+2.67\, \textsf{nm}^3$, with one alanine dipeptide described by the CHARMM27 force field, and solved in 644 TIP3P
+water molecules.
+All simulations are performed by a home-modified GROMACS 4.5~\cite{pronk2013gromacs}.
+Firstly, an equilibrium NVT simulation of
 100~\textsf{nm} was performed with a Langevin thermostat (time-scale
 $\tau_T = 0.5~\textsf{ps}$) coupled to the system for constant
 temperature.  Along the trajectory, configurations were taken every
 5~\textsf{ps}.  They server as starting point of the branching
 trajectories. The branching trajectories were integrated by the
-Leap-frog scheme without any temperature and pressure control.  The
+Leap-frog scheme with the aformentioned nonequilibrium temperature control technique.  The
 time step was $\Delta t = 0.002~\textsf{ps}$. The short-range
 interaction was smoothed from $0.8$ to $1.0~\textsf{nm}$ by the
 ``switch'' method provided by Gromacs.  An energy conserving PME
 method was applied to calculate the electrostatic interaction in this
-periodic system.  On each branching trajectory, to easy the analysis,
-the conformation of the alanine dipeptide is projected on the
-$\psi$--$\phi$ plane, as shown in Fig.~\ref{fig:tmp4}. The equilibrium
-distribution of the conformation on the $\psi$--$\phi$ plane is given
-in the Left plot of Fig.~\ref{fig:tmp4}.  It is clear the
-conformations are populated in several clusters that are called
-``metastable states'' in this research. For a clearer definition, we
-manually divide the $\psi$--$\phi$ plane into 5 subregions. $A_1$ and
-$A_2$ are corresponding to the alpha helix conformation. $B_1$ and
-$B_2$ are corresponding
-to beta sheet conformation. $C$ is corresponding to ill-folding.\\
+periodic system. In the thermostating region, the original dyanmics was
+coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
+The whole system is also coupled to a Parrinello-Rahman barostat with $\tau_P = 2.0~\textsf{ps}$ to keep
+the pressure at the ambient condition (1~Bar). Since the
+change of the system size is small and slow, it does not have an obviously effect on the
+dyanmics of the system.
+
+\subsection{Metastable sets}
+
+On each branching trajectory, to easy the analysis, the conformation
+of the alanine dipeptide is plotted by the Ramachandran histogram, as
+shown in Fig.~\ref{fig:tmp4}. The equilibrium distribution of the
+conformation is given in the left plot, and the fully relaxed
+conformation at $E_{\max} = 1$~V/nm is given in the right plot.  It is
+clear the conformations are populated in several clusters, and the
+position of the clusters do not change when the external electric
+field is applied. This means that only a few of the configurations are likely to be observed, while there is nearly
+no oppotunity to see others. 
+These configurations are called ``metastable states''. The strict definition of the
+metastability is not exactly the same as those conformations that are likely to be observed.
+Since in this paper we do not focus on the discussion of the definition for the metastability of the system,
+we assume they have the same meaning.
+We manually divide the
+$\psi$--$\phi$ plane into 5 subregions, see Fig.~\ref{fig:tmp4},
+then the observation on the Ramachandran histogram is projected to the
+observation of these 5 subregions.  These subregions
+correspond to different secondary structure of a peptide chain:
+$A_1$ and $A_2$ are
+corresponding to the alpha helix. $B_1$ and $B_2$ are
+corresponding to beta sheet. $C$ is corresponding to the
+left-handed alpha helix.
 
 \begin{figure}
   \centering
@@ -95,6 +261,60 @@ to beta sheet conformation. $C$ is corresponding to ill-folding.\\
   \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-end-1.eps}
   \caption{The population of different metastable state. Left: the equilibrium state at $t=0$~\textsf{ps}. Right: The non-equilibrium study state at $t=1200$~\textsf{ps}, i.e., fully relaxed when the electric field is switched on. The darker color indicates larger population on the $\psi$--$\phi$ phase space.}
   \label{fig:tmp4}
+\end{figure}
+
+From Fig.~\ref{fig:tmp4}, it is obvious that the population in each
+metastable sets changes due to the external electric field, for
+example, the population of conformations C vanishes in equilibrium,
+but plays an important role when the electric field is applied. We
+therefore want to study how the alanine changes from one conformation
+to the other, how fast is the change, and the relation to the speed of
+the increasing electric field (i.e. the value of $t_{init}$). 
+Firly, we study the population of the metastable conformations
+Being more strict, we calculate the nonequilibrium observable
+\begin{align}
+  p_I(t) = \mathbb P (\vect x_t \in I), \quad  I \in \{A_1, A_2, B_1, B_2, C\}
+\end{align}
+Secondly, we study the
+forward and backward transition probability of the metastable conformations, which is defined by
+\begin{align}
+  p^{\fwd}_{J,I}(t) & = \mathbb P( \vect x_{t+\Delta t} \in J | \vect x_t \in I) \\
+  p^{\bwd}_{J,I}(t) & = \mathbb P( \vect x_{t-\Delta t} \in J | \vect x_t \in I)
+  \qquad I, J \in \{A_1, A_2, B_1, B_2, C\},
+\end{align}
+where $\Delta t$ is the time-scale of the observation.
+For a revserible and homogeneous Markov process, it is easy to show
+that $p^{\fwd}_{J,I} = p^{\bwd}_{J,I}$, and both of them are time independent. For a general nonequilibrium
+process considered by the present work, this relation is genarlly not guarenteed.
+
+
+\subsection{Results and discusstions}
+\begin{figure}
+  \centering
+  \includegraphics[]{fig.ala/fig-meta-npt.eps}
+  \caption{The populations of the metastable sets as a function of time.
+    The dashed vertical lines indicate the three different time scale of
+  metastable set population at $t_{\textrm{init}} = 10~\textsf{ps}$.}
+  \label{fig:tmp5}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-5.eps}\\
+  % \caption{The populations of the metastable sets as a function of time.
+  %   The dashed vertical lines indicate the three different time scale of
+  % metastable set population at $t_{\textrm{init}} = 10~\textsf{ps}$.}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-5.eps}\\
+  \caption{Forward and backward nonequilibrium transition probability of the case $t_{init} = 10$~ps.}
+  \label{fig:tmp6}
 \end{figure}
 
 
@@ -155,25 +375,8 @@ of all populations are around $500 \sim 600~\textsf{ps}$.
 % configurations $A_2$ and $B_2$, the relaxations are very fast and
 % comparable to $t_{\textrm{init}}$. For configurations $A_1$, $B_1$ and
 % $C$, the time-scales of relaxation are roughly 600~\textsf{ps}.
-\begin{figure}
-  \centering
-  \includegraphics[]{fig.ala/fig-meta.eps}
-  \caption{The populations of the metastable sets as a function of time.
-    The dashed vertical lines indicate the three different time scale of
-  metastable set population at $t_{\textrm{init}} = 10~\textsf{ps}$.}
-  \label{fig:tmp5}
-\end{figure}
 
 \section{Testing the effect of the thermostat and barostat}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
-  \caption{Schematic plot of the truncated non-equilibrium subsystem.
-    The white part is the subsystem and the gray part is the boundary
-    condition, implemented by the thermostat and barostat mimicing
-    the infinitely large universe.}
-  \label{fig:tmp2}
-\end{figure}
 
 
 
@@ -304,6 +507,9 @@ states.
 %   \caption{Schematic plot of the density perturbation.}
 %   \label{fig:tmp1}
 % \end{figure}
+
+\bibliography{ref}{}
+\bibliographystyle{unsrt}
 
 
 
