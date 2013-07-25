@@ -89,7 +89,7 @@ void calCorr (const vector<double> & counts0,
 
 int main(int argc, char * argv[])
 {
-  std::string ifile, ofile, ofwfile, obwfile;
+  std::string ifile, ofile, ofwfile, obwfile, ofluxfile;
   double lagTime;
   // unsigned numBlock = 20;
   // double refh;
@@ -119,6 +119,7 @@ int main(int argc, char * argv[])
       ("output-meta,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
       ("output-meta-corr-forward", po::value<std::string > (&ofwfile)->default_value ("meta.corr.fw.out"), "the output of metastable propulation forward correlation")
       ("output-meta-corr-backward", po::value<std::string > (&obwfile)->default_value ("meta.corr.bw.out"), "the output of metastable propulation backward correlation")
+      ("output-meta-flux", po::value<std::string > (&ofluxfile)->default_value ("meta.flux.out"), "the output of metastable propulation flux")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.name"), "the file of file names");
 
   po::variables_map vm;
@@ -230,12 +231,21 @@ int main(int argc, char * argv[])
   FILE * fp = fopen (ofile.c_str(), "w");
   FILE * fp1 = fopen (obwfile.c_str(), "w");
   FILE * fp2 = fopen (ofwfile.c_str(), "w");
+  FILE * fp3 = fopen (ofluxfile.c_str(), "w");
+
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
-    fprintf (fp1, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
       counts[ii][dd] = counts[ii][dd] / double(countFile);
       fprintf (fp, "%f ", counts[ii][dd]);
+    }
+    fprintf (fp, "\n");
+  }
+
+  for (unsigned ii = 0; ii < times.size(); ++ii){
+    if (int(ii) < nLagTime-1) continue;
+    fprintf (fp1, "%f ", times[ii]);
+    for (unsigned dd = 0; dd < sets.size(); ++dd){
       if (counts[ii][dd] != 0){
 	for (unsigned mm = 0; mm < sets.size(); ++mm){
 	  fprintf (fp1, "%f ", corrsBw[ii][dd][mm] / counts[ii][dd] / double (countFile));
@@ -248,7 +258,6 @@ int main(int argc, char * argv[])
       }
       fprintf (fp1, "  ");
     }
-    fprintf (fp, "\n");
     fprintf (fp1, "\n");
   }
 
@@ -257,7 +266,7 @@ int main(int argc, char * argv[])
     for (unsigned dd = 0; dd < sets.size(); ++dd){
       if (counts[ii+nLagTime-1][dd] != 0){
 	for (unsigned mm = 0; mm < sets.size(); ++mm){
-	    fprintf (fp2, "%f ", corrsBw[ii+nLagTime-1][mm][dd] / counts[ii+nLagTime-1][dd] / double (countFile));
+	    fprintf (fp2, "%f ", corrsBw[ii+nLagTime-1][mm][dd] / counts[ii][dd] / double (countFile));
 	}
       }
       else{
@@ -270,9 +279,24 @@ int main(int argc, char * argv[])
     fprintf (fp2, "\n");
   }
   
+
+  for (unsigned ii = nLagTime - 1; ii < times.size(); ++ii){
+    fprintf (fp3, "%f ", times[ii]);
+    for (unsigned dd = 0; dd < sets.size(); ++dd){
+      for (unsigned mm = 0; mm < sets.size(); ++mm){
+	fprintf (fp3, "%f ", (corrsBw[ii][dd][mm] - corrsBw[ii][mm][dd]) / double (countFile));
+      }
+      fprintf (fp3, "  ");
+    }
+    fprintf (fp3, "\n");
+  }
+  
+
+
   fclose (fp);
   fclose (fp1);
   fclose (fp2);
+  fclose (fp3);
   
   return 0;
 }
