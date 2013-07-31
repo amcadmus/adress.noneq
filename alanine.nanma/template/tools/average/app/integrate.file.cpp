@@ -26,8 +26,8 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("output,o", po::value<std::string > (&ofile)->default_value ("avg.h.bond.count.out"), "the output of count of h-bond")
-      ("input,f",  po::value<std::string > (&ifile)->default_value ("h.count.name"), "the file of file names");
+      ("output,o", po::value<std::string > (&ofile)->default_value ("meta.flux.inte.out"), "the integrated file")
+      ("input,f",  po::value<std::string > (&ifile)->default_value ("meta.flux.out"), "the file to integrate");
       
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -81,7 +81,12 @@ int main(int argc, char * argv[])
   FILE * fout = fopen (ofile.c_str(), "w");
   for (unsigned ii = 0; ii < sums.size(); ++ii){
     for (unsigned jj = 0; jj < sums[ii].size(); ++jj){
-      fprintf (fout, "%f  ", sums[ii][jj]);
+      if (jj == 0){
+	fprintf (fout, "%f  ", sums[ii][jj]);
+      }
+      else {
+	fprintf (fout, "%f  ", sums[ii][jj] * (values[1][0] - values[0][0]));
+      }
     }
     fprintf (fout, "\n");
   }
