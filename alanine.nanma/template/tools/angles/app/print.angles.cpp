@@ -95,8 +95,8 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("output,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
-      ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.name"), "the file of file names");
+      ("output,o", po::value<std::string > (&ofile)->default_value ("print.angle.out"), "the output of angle from dat file")
+      ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.dat"), "data recording the angle");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
