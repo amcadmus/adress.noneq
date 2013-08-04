@@ -3,6 +3,12 @@
 file="meta.flux.inte.out"
 up=1000
 lo=600
+if test $# -ge 1; then
+    lo=$1
+fi
+if test $# -ge 2; then
+    up=$2
+fi
 
 echo "# doing linear fitting in [$lo:$up]"
 
