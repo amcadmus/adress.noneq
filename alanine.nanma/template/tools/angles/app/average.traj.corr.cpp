@@ -286,7 +286,7 @@ int main(int argc, char * argv[])
     fprintf (fp3, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
       for (unsigned mm = 0; mm < sets.size(); ++mm){
-	fprintf (fp3, "%f ", (corrsBw[ii][dd][mm] - corrsBw[ii][mm][dd]) / double (countFile));
+	fprintf (fp3, "%f ", (corrsBw[ii][dd][mm] - corrsBw[ii][mm][dd]) / double (countFile) / lagTime);
       }
       fprintf (fp3, "  ");
     }
@@ -297,7 +297,7 @@ int main(int argc, char * argv[])
     fprintf (fp4, "%f ", times[ii]);
     for (unsigned dd = 0; dd < sets.size(); ++dd){
       for (unsigned mm = 0; mm < sets.size(); ++mm){
-	fprintf (fp4, "%f ", (corrsBw[ii][dd][mm]) / double (countFile));
+	fprintf (fp4, "%f ", (corrsBw[ii][dd][mm]) / double (countFile) / lagTime);
       }
       fprintf (fp4, "  ");
     }

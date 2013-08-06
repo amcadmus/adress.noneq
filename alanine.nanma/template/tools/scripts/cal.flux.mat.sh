@@ -9,8 +9,11 @@ fi
 if test $# -ge 2; then
     up=$2
 fi
+if test $# -ge 3; then
+    file=$3
+fi
 
-echo "# doing linear fitting in [$lo:$up]"
+echo "# doing linear fitting for $file in [$lo:$up]"
 
 echo "set xrange [$lo:$up]"		>  tmp.gp
 echo "f(x) = a*x + b"			>> tmp.gp
