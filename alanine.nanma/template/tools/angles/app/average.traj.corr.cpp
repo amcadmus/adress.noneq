@@ -89,7 +89,7 @@ void calCorr (const vector<double> & counts0,
 
 int main(int argc, char * argv[])
 {
-  std::string ifile, ofile, ofwfile, obwfile, ofluxfile;
+  std::string ifile, ofile, ofwfile, obwfile, ofluxfile, odirfile;
   double lagTime;
   // unsigned numBlock = 20;
   // double refh;
@@ -120,6 +120,7 @@ int main(int argc, char * argv[])
       ("output-meta-corr-forward", po::value<std::string > (&ofwfile)->default_value ("meta.corr.fw.out"), "the output of metastable propulation forward correlation")
       ("output-meta-corr-backward", po::value<std::string > (&obwfile)->default_value ("meta.corr.bw.out"), "the output of metastable propulation backward correlation")
       ("output-meta-flux", po::value<std::string > (&ofluxfile)->default_value ("meta.flux.out"), "the output of metastable propulation flux")
+      ("output-meta-direct-flux", po::value<std::string > (&odirfile)->default_value ("meta.direct.flux.out"), "the output of metastable propulation flux")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.name"), "the file of file names");
 
   po::variables_map vm;
@@ -232,6 +233,7 @@ int main(int argc, char * argv[])
   FILE * fp1 = fopen (obwfile.c_str(), "w");
   FILE * fp2 = fopen (ofwfile.c_str(), "w");
   FILE * fp3 = fopen (ofluxfile.c_str(), "w");
+  FILE * fp4 = fopen (odirfile.c_str(), "w");
 
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
@@ -291,12 +293,24 @@ int main(int argc, char * argv[])
     fprintf (fp3, "\n");
   }
   
+  for (unsigned ii = nLagTime - 1; ii < times.size(); ++ii){
+    fprintf (fp4, "%f ", times[ii]);
+    for (unsigned dd = 0; dd < sets.size(); ++dd){
+      for (unsigned mm = 0; mm < sets.size(); ++mm){
+	fprintf (fp4, "%f ", (corrsBw[ii][dd][mm]) / double (countFile));
+      }
+      fprintf (fp4, "  ");
+    }
+    fprintf (fp4, "\n");
+  }
+  
 
 
   fclose (fp);
   fclose (fp1);
   fclose (fp2);
   fclose (fp3);
+  fclose (fp4);
   
   return 0;
 }
