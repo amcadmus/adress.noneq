@@ -31,7 +31,7 @@ set yrange [0:.7]
 set mytics 2
 # set lmargin 8
 # set rmargin 2
-set xtics 400
+set xtics 800
 set mxtics 4
 # set ylabel "P_I"
 set xlabel "t [ ps ]"
@@ -41,7 +41,7 @@ set key at 1100, 0.5
 # set label 't_{init}=10 ps' at 10, 0.7
 set grid
 
-set xrange [0:3200]
+set xrange [0:6400]
 pl \
-'ext.mode2.200.Ex.01.00.shift0.t3200ps/set/metastable.out'		u 1:2 every 4 w l ls 11 not, '' u 1:3 every 4 w l ls 12 not, '' u 1:4 every 4 w l ls 13  not, '' u 1:5 every 4 w l ls 14  not, '' u 1:6 every 4 w l ls 15 not
+'ext.mode2.200.Ex.01.00.shift0.t6400ps/set/metastable.out'		u 1:2 every 4 w l ls 11 not, '' u 1:3 every 4 w l ls 12 not, '' u 1:4 every 4 w l ls 13  not, '' u 1:5 every 4 w l ls 14  not, '' u 1:6 every 4 w l ls 15 not
 
