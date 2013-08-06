@@ -33,7 +33,9 @@
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
 \author{Christof Sch\"utte}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
-% \affiliation{Zuse Institute Berlin, Germany}
+\affiliation{Zuse Institute Berlin, Germany}
+\author{Giovanni Ciccotti}
+\affiliation{Department of Physics, University of Roma "La Sapienza", Italy}
 \author{Luigi Delle Site}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
 
@@ -47,10 +49,10 @@
 
 
 The possible effect of the electric field (EF) on the conformation of
-proteins gains increasing attention recently, because it closely
+proteins gains increasing attention recently, because it is closely
 related to the health problem of exposing human tissue in the
 electromagnetic radiation. Despite the importance of this problem, a
-complete understanding of how the electric field influence the  protein
+complete understanding of how the EF influence the  protein
 is still lacking, therefore, a considerable number of
 experimental~\cite{bohr2000microwave, bohr2000microwave-1,
   dePomerai2000cell, inskip2001cellular, mancinelli2004non} and
@@ -62,28 +64,27 @@ and the references listed above is far from complete.
 
 The molecular dynamics (MD) simulation has been proved to be useful in
 understanding the behavior of a protein (or a short peptide segment)
-in both static and oscillatory electric
-fields~\cite{budi2005electric, budi2007effect, budi2008comparative,
+in both static and oscillatory EF~\cite{budi2005electric, budi2007effect, budi2008comparative,
   toschi2008effects, astrakas2011electric, astrakas2012structural,
   damm2012can, starzyk2013proteins, english2009nonequilibrium,
   solomentsev2012effects}. In these studies, the initial
 configurations are usually taken from the Protein Data Bank (PDB).
-And then the temperature controlled simulation are performed for from
+And then the temperature controlled simulation are performed for 
 a few to tens of nanoseconds, during which the interested
 conformational changes can be observed. Along the trajectories, the
 secondary structure, root mean square displacement (RMSD), the dipole
 moment and some shape parameters are calculated and investigated by
 either plotted as a function of time, or doing time average over the
 whole simulation. This approach release useful information on how the
-secondary structure is changed by external electric field.  However,
+secondary structure is changed by external  EF.  However,
 by plotting the quantities against time, one may observe strong
 fluctuation in plots, which hintered the quantitative and conclusive
-analysis on what is happening during the conformational change, when
-it happens and what is the strength. Although the statistical
-uncertainty in the time-averaged observations are small, the
-time-average itself is not well defined for a nonequilibrium process
-such as relaxing process to the new conformations under static
-electric field, and the dynamics under oscillating electric field.
+analysis on what is the trend of the conformational change, when
+it happens and what is the strength.
+Although the time average reduces the statistical uncertainty,
+it is indeed not well defined for a nonequilibrium process
+such as relaxing process to the new conformations under a static
+EF, or the dynamics under an oscillating EF.
 
 The dynamical nonequilibrium molecular dynamics simulation (D-NEMD)
 was firstly developed by G. Ciccotti and his
@@ -92,41 +93,42 @@ recently successfully applied to the study of
 hydrodynamics~\cite{orlandini2011hydrodynamics,
   orlandini2011hydrodynamics-01}. D-NEMD provides a way of evaluating
 nonequilibrium observables by doing an ensemble of nonequilibrium MD
-simulations.  This provides a promising way of analyzing the
-conformational changing under a generally time-dependent electric
-field. In the present paper, we study the minimal model peptide
+simulations.  It can be used for analyzing the
+conformational changing under a generally time-dependent EF.
+In the present paper, we study the minimal model peptide
 segment -- alanine dipeptide. We take the approach of starting from a
-single peptide rather than a more realistic chain, firstly because it
+single peptide piece rather than a more realistic chain, firstly because it
 is easier to draw clear conclusions on the nonequilibrium properties
 of a single peptide by excluding all possible interplay between
-different peptide segments along a chain, then construct the chain
-nonequilibrium properties from the well-studied single peptides.
+different peptide segments along a chain.
 Secondly, the current computational resource available is not enough
 to study peptide chains by D-NEMD, since one needs to simulate an
 ensemble of MD trajectories (typically a few thousands), so it
-requires much higher computational cost than producing a single MD
-trajectory.
+requires much higher computational cost than producing a single
+equilibrium MD trajectory.
 
 In this paper, we firstly describe the idea of the D-NEMD, then
-observables helping us the analyze the nonequilibrium properties
+introduce the
+observables for analyzing the nonequilibrium properties
 (i.e., the dipole moment, time-dependent properties of being a certain
-conformation, the nonequilibrium transition properties and the net
-property flux) are introduced. The numerical results of alanine
-dipeptide under static and sine-shaped oscillating electric field are
+conformation and the net
+probability flux). The numerical results of alanine
+dipeptide under static and sine-shaped oscillating EF are
 presented. By calculating the nonequilibrium properties from the D-NEMD
-simulations, we are able to answer from which to which the conformation
-changes, when do these changes happens, and how strong are the changes.
+simulations, we are able to answer how the peptide
+changes the conformation in a EF, when do these changes happens,
+and how strong are they.
 As far as we know, our simulation is the first D-NEMD simulation
-on the electric field effect on alanine dipeptide, and provides new
+of alanine dipeptide under EF, and provides new
 information helping people better understand the nonequilibrium
-effect of electric field on the protein conformation.
+effect of EF on the protein conformation.
 
 
 
 \section{Methodology}
 \subsection{Nonequilibrium molecular dynamics simulation}
-Here we fastly review the approach of performing nonequilibrium
-molecular dynamics that was initiated by Giovanni Ciccoti and his
+Here we fastly review the approach of performing dynamical nonequilibrium
+molecular dynamics (D-NEMD) that was initiated by Giovanni Ciccoti and his
 colleagues~\cite{ciccotti1975direct, ciccotti1979thought,
   orlandini2011hydrodynamics, orlandini2011hydrodynamics-01}.
 We denote the macroscopic nonequilibrium observable by $O(t)$. If at $t$
@@ -202,7 +204,7 @@ dynamics rather than the Hamiltonian dynamics.
 
 \subsection{Nonequilibrium temperature control}\label{sec:tmp2b}
 
-The aforementioned nonequilibrium molecular dynamics simulation algorithm
+The aforementioned D-NEMD simulation algorithm
 does not describe how the boundary of the system should be set up.
 The very naive idea of doing the simulation
 is to simulate a infinitely large isolated system, or any large enough
@@ -218,9 +220,9 @@ and what are the nonequilibrium observables to measure.
   \centering
   \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
   \caption{Schematic plot of the truncated nonequilibrium subsystem.
-    The white part is the subsystem and the gray part is the boundary
-    condition, implemented by the thermostat and barostat mimicing
-    the infinitely large universe.}
+    The white part is the Hamiltonian dynamics subsystem
+    and the gray part is thermostating region. The whole system
+    is subject to the periodic boundary condition.}
   \label{fig:tmp2}
 \end{figure}
 
@@ -290,10 +292,10 @@ reasonably large and the finite size effect does not play a dominating role.
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
   \caption{The magnitude of the external electric field, and the
-    x-component of the dipole moment of the alanine molecule as a
-    function of time. The dashed lines are the strengths of the
-    external electric field, while the solid lines are the dipole
-    moments. Three test cases are indicated by different colors.}
+    $x$-component of the dipole moment of the alanine molecule as a
+    function of time. The dashed line presents the strengths of the
+    external electric field, while the solid line presents the dipole
+    moments. }
   \label{fig:tmp3}
 \end{figure}
 
@@ -855,7 +857,7 @@ for $T=10$ and $40$~ps, while they are much longer for $T=200$~ps.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{fig.ala/graphs/graph-t0010.eps}
+  \includegraphics[width=0.5\textwidth]{fig.ala/graphs/graph-t0010-1.eps}
   \caption{The schematic plot of the main probability flux among the metastable
     states on the Ramachandran histogram
     for periodically oscillating EF, $T=10$~ps. The thickness 
