@@ -15,8 +15,10 @@
 #include "Defines.h"
 #include "Distribution.h"
 #include <boost/program_options.hpp>
+
 namespace po = boost::program_options;
 using namespace std;
+
 #define MaxLineLength 2048
 
 bool myread (FILE * fp,
@@ -75,10 +77,10 @@ int main(int argc, char * argv[])
   // unsigned numBlock = 20;
   // double refh;
   // float time_prec = .01;
-  double setA_psi_b = 128, setA_psi_e = 13;
-  double setA_phi_b =-125, setA_phi_e = 74;
-  double setB_psi_b = 128, setB_psi_e = 13;
-  double setB_phi_b = 74,  setB_phi_e =-125;
+  // double setA_psi_b = 128, setA_psi_e = 13;
+  // double setA_phi_b =-125, setA_phi_e = 74;
+  // double setB_psi_b = 128, setB_psi_e = 13;
+  // double setB_phi_b = 74,  setB_phi_e =-125;
   double setC_psi_b = 13,  setC_psi_e = 128;
   double setC_phi_b = -180,setC_phi_e = 180;
   
