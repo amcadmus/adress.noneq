@@ -129,7 +129,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("output,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
+      ("output,o", po::value<std::string > (&ofile)->default_value ("conf.dipole.out"), "the output dipole for different conformation")
       ("input-angle",  po::value<std::string > (&iafile)->default_value ("angle.name"), "the file of file names")
       ("input-dipole",  po::value<std::string > (&idfile)->default_value ("dipole.name"), "the file of file names");
 
