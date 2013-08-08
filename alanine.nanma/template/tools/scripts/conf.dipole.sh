@@ -15,7 +15,7 @@ rm -f $out_angle_name $out_dipole_name
 for i in `grep -v \# $dipole_name`;
 do
     pert_dir=`echo $i | sed 's/.*\(pert\.[0-9]*\).*/\1/g'`
-    echo $pert_dir
+#    echo $pert_dir
     grep $pert_dir $angle_name >> $out_angle_name
 done
 sort $out_angle_name > tmp.tmp

@@ -24,6 +24,7 @@ do
 	echo "no backup dir $backup"
 	exit
     fi
+    rm -f Mtot.xvg
     echo 16 | g_dipoles -n $backup_dir/index.ndx  -f alanine.xtc -s $backup_dir//topol.tpr -nice 0 &> /dev/null
     rm -f epsilon.xvg aver.xvg dipdist.xvg
     cd - &>/dev/null
