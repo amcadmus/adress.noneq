@@ -90,10 +90,10 @@ int main(int argc, char * argv[])
   desc.add_options()
       ("help,h", "print this message")
       ("output,o", po::value<std::string > (&ofile)->default_value ("order.parameter.out"), "the order parameter of the molecule")
-      ("input-moi",  po::value<std::string > (&ifile_moi)->default_value ("pincipal.name"), "the file of file names")
-      ("input-axis1",  po::value<std::string > (&ifile_a1)->default_value ("pincipal.a1.name"), "the file of file names")
-      ("input-axis2",  po::value<std::string > (&ifile_a2)->default_value ("pincipal.a2.name"), "the file of file names")
-      ("input-axis3",  po::value<std::string > (&ifile_a3)->default_value ("pincipal.a3.name"), "the file of file names");
+      ("input-moi",  po::value<std::string > (&ifile_moi)->default_value ("principal.name"), "the file of file names")
+      ("input-axis1",  po::value<std::string > (&ifile_a1)->default_value ("principal.a1.name"), "the file of file names")
+      ("input-axis2",  po::value<std::string > (&ifile_a2)->default_value ("principal.a2.name"), "the file of file names")
+      ("input-axis3",  po::value<std::string > (&ifile_a3)->default_value ("principal.a3.name"), "the file of file names");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -186,6 +186,7 @@ int main(int argc, char * argv[])
 	}
 	times.push_back (time_moi);
 	mysort (moi, order);
+	// printf ("%f %d %d %d   %f %f %f\n", time_moi, order[0], order[1], order[2], moi[0], moi[1], moi[2]);
 	for (unsigned dd = 0; dd < 3; ++dd){
 	  double cosv = aa[order[dd]][0];
 	  values[dd].push_back (0.5 * (3. * cosv * cosv - 1.));
@@ -209,6 +210,7 @@ int main(int argc, char * argv[])
 	  exit (1);
 	}
 	mysort (moi, order);
+	// printf ("%f %d %d %d   %f %f %f\n", time_moi, order[0], order[1], order[2], moi[0], moi[1], moi[2]);
 	for (unsigned dd = 0; dd < 3; ++dd){
 	  double cosv = aa[order[dd]][0];
 	  values[dd][countFrame] += 0.5 * (3. * cosv * cosv - 1.);
@@ -232,7 +234,7 @@ int main(int argc, char * argv[])
   }
   
   FILE * fp = fopen (ofile.c_str(), "w");
-  fprintf (fp, "# time   S_for_max_eigen   S_for_next_max_eigen   S_for_min_eigen)\n");
+  fprintf (fp, "# time   S_for_min_eigen   S_for_next_max_eigen   S_for_max_eigen)\n");
   for (unsigned ii = 0; ii < times.size(); ++ii){
     fprintf (fp, "%f ", times[ii]);
     for (unsigned dd = 0; dd < 3; ++dd){
