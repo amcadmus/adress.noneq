@@ -27,15 +27,15 @@ set style line 45 lc 5 lw 3 pt 2 lt 4
 
 set style line 20 lc 0 lw 3 pt 2 lt 2
 
-set xrange [0:1000]
+set xrange [0:500]
 set y2tics
 set ytics nomirror
 set key bottom right
-set yrange [0:9]
-set y2range [-.2:.5]
+set yrange [0:1.2]
+set y2range [0:9]
 set xlabel 't [ ps ]'
-set ylabel 'Dipole moment [ Debye ]'
-set y2label 'Orientational order parameter'
+set ylabel 'Electric field [ V/nm ]'
+set y2label 'Dipole moment [ D ]'
 set lmargin 8
 set rmargin 6
 set mxtics 10
@@ -47,5 +47,5 @@ set label "Electric field" at 200,1.05
 set label "Dipole moment" at 200,0.85
 
 pl \
-   '../ext.mode1.010.Ex.01.00.t1000ps.recheck/set/avg.dipole.out'	w l ls 11 ax x1y1 not, \
-   '../ext.mode1.010.Ex.01.00.t1000ps.recheck/set/two.vectors.out'	w l ls 21 ax x1y1 not
+   '../ext.mode1.010.Ex.01.00.t0600ps/set/field.out'	w l ls 21 ax x1y1 not, \
+   '../ext.mode1.010.Ex.01.00.t0600ps/set/avg.dipole.out'	w l ls 11 ax x1y2 not't_{init} = 10 ps'

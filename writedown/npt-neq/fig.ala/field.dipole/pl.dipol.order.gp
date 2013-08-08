@@ -1,5 +1,5 @@
 set term post eps enh color font 16 size 8.5cm,6cm
-set out 'fig-field-dipol.eps'
+set out 'fig-dipol-order.eps'
 
 set style line 11 lc 1 lw 3 pt 2 lt 1
 set style line 12 lc 2 lw 3 pt 2 lt 1
