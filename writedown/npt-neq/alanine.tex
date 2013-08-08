@@ -1,6 +1,6 @@
 % \documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolum]{revtex4-1}
-\documentclass[aip,jcp,a4paper,preprint,onecolumn]{revtex4-1}
-% \documentclass[aps,pre,twocolumn]{revtex4-1}
+\documentclass[a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
+% \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
 
 \usepackage[fleqn]{amsmath}
@@ -284,15 +284,16 @@ reasonably large and the finite size effect does not play a dominating role.
 \begin{figure}
   \centering
   % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
-  \includegraphics[]{fig.ala/field.dipole/fig-field-dipol-conf.eps}
+  \includegraphics[width=0.45\textwidth]{fig.ala/field.dipole/fig-dipol-order-conf.eps}
   % \\
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b1-1.eps}
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
-  \caption{The magnitude of the external electric field, and the
-    $x$-component of the dipole moment of the alanine molecule as a
+  \caption{The
+    $x$-component of the dipole moment, and the orientational order parameter
+    of the alanine molecule as a
     function of time. The dashed line presents the strengths of the
     external electric field, while the solid line presents the dipole
     moments. }
@@ -305,13 +306,11 @@ under a constant EF. At time $t=0$~ps, the system
 has been fully equilibriated without any electric field. From $t=0$ to
 $t=t_{\textrm{init}}$, the eclectic field is switched on linearly, while
 after $t=t_{\textrm{init}}$, the field is kept constant at
-$E_{\infty}$. In Fig.~\ref{fig:tmp3}, the dashed line shows the 
-cases considered in this work: $t_{\textrm{init}} = 10$~ps,
+$E_{\infty}$.  In this work we consider $t_{\textrm{init}} = 10$~ps,
 and $E_{\infty} = 1$~V/nm.
 The direction of this field is arbitrarily chosen: along the
 $x$ direction. Since the dipole of the equilibrium configurations of
-alanine can be along any direction (see also Fig.~\ref{fig:tmp3} for
-the vanished initial dipole moment), applying the electric along $x$-axis is
+alanine can be along any direction, applying the electric along $x$-axis is
 not biased.
 The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
@@ -342,6 +341,10 @@ change of the system size is small and slow, the pressure control
 does not have an obviously effect on the
 dynamics of the system.
 
+
+%  (see also Fig.~\ref{fig:tmp3} for
+%  the vanished initial dipole moment)
+
 \subsection{Metastable sets}
 
 \begin{figure}
@@ -349,8 +352,8 @@ dynamics of the system.
   \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-begin-1.eps}
   \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-end-1.eps}
   \caption{The population of metastable states of the alanine dipeptide.
-    Left: the
-    equilibrium state at $t=0$~\textsf{ps}. Right: The new equilibrium
+    (a): the
+    equilibrium state at $t=0$~\textsf{ps}. (b): The new equilibrium
     state at $t=1000$~\textsf{ps}, i.e., fully relaxed under the
     constant electric field 1~V/nm. The darker color
     indicates larger population on the Ramachandran histogram.}
@@ -939,6 +942,20 @@ and the integrated flux will be periodical, and being constant in time-average.
 
 
 \section{Concluding remarks}
+
+The D-NEMD method. The design of the nonequilibrium thermostating.
+
+Time scales discovered in the constant EF case.
+
+The discover of the directional probability flux introduced by the
+oscillating EF.
+
+Comment on the force field. cite A.Mey's paper.
+
+Comment on the real life-strength and frequency of the EF, if it is
+possible in experiment. such a strong field may distroy the molecule.
+
+Comment on the limitation of the non-polarizable model. 
 
 % Clearly two time-scales of relaxation are observed.  For
 % configurations $A_2$ and $B_2$, the relaxations are very fast and
