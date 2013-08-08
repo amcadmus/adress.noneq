@@ -60,7 +60,7 @@ int main(int argc, char * argv[])
     string myfilename (nameline);
     myfilename += string("/traj.xtc");
     cout << "reading file " << myfilename << endl;    
-    if (! xtcl.reinit(myfilename)){
+    if (! xtcl.reinit(myfilename.c_str())){
       return 1;
     }
     countFile ++;
