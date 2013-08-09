@@ -281,24 +281,6 @@ reasonably large and the finite size effect does not play a dominating role.
   under a constant electric field}
 
 \subsection{System settings and simulation protocol}
-\begin{figure}
-  \centering
-  % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
-  \includegraphics[width=0.45\textwidth]{fig.ala/field.dipole/fig-dipol-order-conf.eps}
-  % \\
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b1-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
-  \caption{The
-    $x$-component of the dipole moment, and the orientational order parameter
-    of the alanine molecule as a
-    function of time. The dashed line presents the strengths of the
-    external electric field, while the solid line presents the dipole
-    moments. }
-  \label{fig:tmp3}
-\end{figure}
 
 In this section,
 we want to study the nonequilibrium properties of an alanine dipeptide
@@ -456,6 +438,64 @@ which presents the time averaged effect of the EF to the molecular conformation.
 
 
 \subsection{Results and discussions}
+
+\begin{figure}
+  \centering
+  % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
+  \includegraphics[width=0.45\textwidth]{fig.ala/field.dipole/fig-dipol-order-conf.eps}
+  % \\
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b1-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
+  \caption{The
+    $x$-component of the dipole moment, and the orientational order parameter
+    of the alanine molecule as a
+    function of time. The dashed line presents the strengths of the
+    external electric field, while the solid line presents the dipole
+    moments. }
+  \label{fig:tmp3}
+\end{figure}
+
+The Fig.~\ref{fig:tmp3}
+shows that the $x$-component of the dipole moment of the alanine dipeptide
+reaches 85\% of the maximum value in only 20~ps, which is comparable to
+the warm-up time $t_{init}$. Then the dipole slowly relaxes to the 
+maximum value in the following 400~ps. Notice that 20~ps is 25 times
+smaller than the slowest time scale of the conformational relaxation.
+We also consider the orientation of the alanine dipeptide as a function
+of time. The geometric direction of the alanine is defined by the red vector in
+Fig.~\ref{fig:tmp3}, which is the angle bisector of the two black vectors.
+The black vectors are define to connect the $\alpha$-carbon and the carbons
+on the methyl groups. We define the orientational order parameter
+\begin{align}
+  S_\theta = \langle 3\sin^2\theta - 2\rangle,
+\end{align}
+where $\theta$ is the angle between the orientation of the alanine dipeptide
+and the direction of the electric field. The order parameter
+indicate if the molecule is perpendicular to the electric field.
+If the molecule is perfectly perpendicular to the electric field, then $S_\theta = 1$;
+If the molecule has no directional
+preference at all, then $S_\theta = 0$;
+If the molecule is perfectly parallel to the electric field, then $S_\theta = -2$.
+From $t=0$ to roughly 10~ps, the orientational order parameter fastly
+decreases from 0 to -0.15, which means a weak alignment of the molecule to the external field.
+Then from $t=0$ to 500~ps, the molecule slowy changes to the orientation
+that is perpendicular to the electric field.
+
+% This indicate that when the EF is switched on, the alanine almost immediately
+% changes its conformation so that the molecular dipole is aligned to the
+% external EF.
+% align itself to the
+% direction of the external EF without much conformational change.
+% And then, the conformation is slowly adjusted according to the
+% external field (now it is the same as the molecular dipole),
+% finally  the new equilibrium is reached at a much slower time scale
+% (approximately 500~ps).
+
+
+
 \begin{figure}
   \centering
   \includegraphics[]{fig.ala/fig-meta-npt.eps}
@@ -616,20 +656,6 @@ The magnitude of the flux from $B_1$ to  $C$ is larger than that from  $B_1$ to 
 This time-scale is actually 50 times slower than speed, at which
 the electric field is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
 
-The Fig.~\ref{fig:tmp3}
-shows that the $x$-component of the dipole moment of the alanine dipeptide
-reaches 85\% of the maximum value in only 20~ps, which is comparable to
-the warm-up time $t_{init}$. Then the dipole slowly relaxes to the 
-maximum value in the following 400~ps. Notice that 20~ps is 25 times
-smaller than the slowest time scale of the conformational relaxation.
-This indicate that when the EF is switched on, the alanine almost immediately
-align itself to the
-direction of the external EF without much conformational change.
-And then, the conformation is slowly adjusted according to the
-external field (now it is the same as the molecular dipole),
-finally  the new equilibrium is reached at a much slower time scale
-(approximately 500~ps).
-
 % After aligning to the external EF, the alanine slowly adjust its confromation,
 % and the new equilibrium is reached at slower time scales.
 
@@ -716,17 +742,21 @@ to frequency 100, 25 and 5~GHz.
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig.ala/fig-mode2-dipol.eps}
-  \caption{The nonequilibrium dipole moment of alanine dipeptide as a
-    function of time. Only the $x$-component of the dipole moment is
-    shown here. The black line: the static electric field with turning on
+  \includegraphics[width=0.48\textwidth]{fig.ala/fig-mode2-dipol.eps}
+  \includegraphics[width=0.48\textwidth]{fig.ala/fig-mode2-order.eps}
+  \caption{The nonequilibrium dipole moment (a) and
+    orientation order parameter (b) of alanine dipeptide as a
+    function of time. In plot (a),
+    only the $x$-component of the dipole moment is
+    shown. The black line: the static electric field with turning on
     time $t_{init} = 10$~ps. The red line: oscillating field with period
     10~ps. The green line: period 40~ps. The blue line: period 200~ps.}
   \label{fig:tmp8}
 \end{figure}
 
 
-Fig.~\ref{fig:tmp8} presents the $x$-component of the molecular dipole moment as
+Fig.~\ref{fig:tmp8} (a)
+presents the $x$-component of the molecular dipole moment as
 a function of time. The red, green and blue lines stands for the
 results of $T=10$~ps, 40~ps and 200~ps, respectively. The black lines
 shows the dipole moment under constant electric field
@@ -738,16 +768,31 @@ is able to response to the external EF almost immediately.
 At $T=200$~ps, the maximum magnitude of the molecular
 dipole moment is almost the same as the case of constant electric field, which
 means that the changing of the electric field is so slow that the
-alanine have enough time to firstly align to the external EF, and then
+alanine have enough time to 
 relax its internal dipole (although not completely). However,
-for $T=40$~ps, as the electric field changes faster,
-although the molecules can align to the electric field immediately,
+for $T=10$ and 40~ps, as the electric field changes faster,
+although the alanine dipeptide can response to the electric field immediately,
 it does not have enough time to fully relax the internal dipole, so we
 see the maximum alanine's dipole moment reached is smaller.
-For even smaller period $T=10$~ps, the alanine does not have enough
-time  to properly align the molecular dipole according to the external
-field, so we see the maximum dipole moment is only about one third of the
-constant EF case.
+% For even smaller period $T=10$~ps, the alanine does not have enough
+% time  to properly align the molecular dipole according to the external
+% field, so we see the maximum dipole moment is only about one third of the
+% constant EF case.
+Plot (b) of Fig.~\ref{fig:tmp9} presents the orientational order
+parameter. The notations are the same as plot (a).
+% From the constant
+% EF simulation, we see that the response of order parameter has
+% two time scales: In the fast time scale, the 
+For all periodically oscillating cases the order parameter is much
+smaller than the constant EF case. One possible reason is that the
+relaxation of the order parameter is very slow, and the molecule does
+not expose to a strong enough EF for a long enough time in a oscillating
+EF. For  $T=10$ and 40~ps, the orientation of the alanine is only weakly
+parallel to the EF. Please notice that for the constant EF case,
+we also observe a quit alignment of molecular orientation to the EF
+at time scale 10~ps. For $T=200$~ps, The molecule periodically
+becomes perpendicular to the EF, but this directional preference is much
+weaker than the constant EF case.
 
 \begin{figure}
   \centering
