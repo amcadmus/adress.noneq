@@ -1,6 +1,6 @@
 % \documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolum]{revtex4-1}
-\documentclass[aip,jcp,a4paper,preprint,onecolumn]{revtex4-1}
-% \documentclass[aps,pre,twocolumn]{revtex4-1}
+\documentclass[a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
+% \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
 
 \usepackage[fleqn]{amsmath}
@@ -27,7 +27,7 @@
 
 \begin{document}
 
-\title{Exploring Molecular Conformations and Related Time Scales via Nonequilibrium Molecular Dynamics Simulation}
+\title{Exploring Conformational Dynamics and Related Time Scales via Nonequilibrium Molecular Dynamics Simulation}
 % \title{The non-equilibrium molecular dynamics simulation of the alanine dipeptide under electric field}
 \author{Han Wang}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
@@ -264,8 +264,14 @@ region} (see Fig.~\ref{fig:tmp2}).  For simplicity, the Hamiltonian
 dynamics region is assumed to be spherical, centered at the
 alpha-carbon of the alanine, and with radius of $R_{ex}$.  Further, we
 freeze the movement of the alpha-carbon, so that the alanine is always
-located at the center of the simulation region.  The validity of this
-setting will be later check by numerical examples showing that the
+located at the center of the simulation region.
+Therefore, the dynamics is preseved in the Hamiltonian dynamics region (where the properties of interest are observed)
+and the artificial effect of thermostating is negligible.
+At the same time, the thermostating region works as a infinitely large
+environment that effectively absorbs the extra heat, so that
+the nonthermal effect can be studied.
+The validity of the above
+statement will be later check latter by numerical examples showing that the
 nonequilibrium observables do not depends on the size of the system
 and the size of the Hamiltonian dynamics subregion, if they are
 reasonably large and the finite size effect does not play a dominating role.
@@ -281,42 +287,31 @@ reasonably large and the finite size effect does not play a dominating role.
   under a constant electric field}
 
 \subsection{System settings and simulation protocol}
-\begin{figure}
-  \centering
-  % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
-  \includegraphics[]{fig.ala/field.dipole/fig-field-dipol-conf.eps}
-  % \\
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b1-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
-  \caption{The magnitude of the external electric field, and the
-    $x$-component of the dipole moment of the alanine molecule as a
-    function of time. The dashed line presents the strengths of the
-    external electric field, while the solid line presents the dipole
-    moments. }
-  \label{fig:tmp3}
-\end{figure}
 
 In this section,
 we want to study the nonequilibrium properties of an alanine dipeptide
-under a constant EF. At time $t=0$~ps, the system
+under a constant EF.  At time $t=0$~ps, the system
 has been fully equilibriated without any electric field. From $t=0$ to
 $t=t_{\textrm{init}}$, the eclectic field is switched on linearly, while
 after $t=t_{\textrm{init}}$, the field is kept constant at
-$E_{\infty}$. In Fig.~\ref{fig:tmp3}, the dashed line shows the 
-cases considered in this work: $t_{\textrm{init}} = 10$~ps,
+$E_{\infty}$.  In this work we consider $t_{\textrm{init}} = 10$~ps,
 and $E_{\infty} = 1$~V/nm.
 The direction of this field is arbitrarily chosen: along the
 $x$ direction. Since the dipole of the equilibrium configurations of
-alanine can be along any direction (see also Fig.~\ref{fig:tmp3} for
-the vanished initial dipole moment), applying the electric along $x$-axis is
+alanine can be along any direction, applying the electric along $x$-axis is
 not biased.
+Being more general, in this paper we denote the
+electric field as a function of time $\vect E(t)$.
+Therefore, the constant electric field is
+$\vect E(t) = (E_\infty\cdot t/t_{init},0,0)$ as $0\leq t < t_{init}$, and 
+$\vect E(t) = (E_\infty,0,0)$
+as $t \geq t_{init}$.
 The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
 described by the CHARMM27 force field, and solved in 644 TIP3P
 water molecules.
+The electric field exserts force $\vect F = q \vect E(t)$ on
+the partial charge $q$ in the system.
 The size of the  Hamiltonian dynamics region is $R_{ex} = 1.0$~nm.
 All simulations are performed by a home-modified GROMACS 4.5~\cite{pronk2013gromacs}.
 Firstly, an equilibrium NVT simulation of
@@ -342,15 +337,20 @@ change of the system size is small and slow, the pressure control
 does not have an obviously effect on the
 dynamics of the system.
 
+
+%  (see also Fig.~\ref{fig:tmp3} for
+%  the vanished initial dipole moment)
+
 \subsection{Metastable sets}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-begin-1.eps}
-  \includegraphics[width=0.45\textwidth]{fig.ala/ext.mode1.100.Ex.01.00.t1200ps/fig-end-1.eps}
+  \raisebox{0.2\height}{\includegraphics[width=0.22\textwidth]{fig.ala/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-2.eps}}
+  \includegraphics[width=0.37\textwidth]{fig.ala/ext.mode1.010.Ex.01.00.t1000ps.recheck/fig-begin-1.eps}
+  \includegraphics[width=0.37\textwidth]{fig.ala/ext.mode1.010.Ex.01.00.t1000ps.recheck/fig-end-1.eps}
   \caption{The population of metastable states of the alanine dipeptide.
-    Left: the
-    equilibrium state at $t=0$~\textsf{ps}. Right: The new equilibrium
+    (a): the
+    equilibrium state at $t=0$~\textsf{ps}. (b): The new equilibrium
     state at $t=1000$~\textsf{ps}, i.e., fully relaxed under the
     constant electric field 1~V/nm. The darker color
     indicates larger population on the Ramachandran histogram.}
@@ -453,6 +453,8 @@ which presents the time averaged effect of the EF to the molecular conformation.
 
 
 \subsection{Results and discussions}
+
+
 \begin{figure}
   \centering
   \includegraphics[]{fig.ala/fig-meta-npt.eps}
@@ -502,7 +504,7 @@ which presents the time averaged effect of the EF to the molecular conformation.
   \caption{
     The net probability flux and its integration under the constant EF case.
     The warm-up time $t_{init} = 10$~ps.
-    The first row shows the probability flux $F_{J,I}(t)$, while the second
+    The first row shows the probability flux $F_{J,I}(t)$ with unit $\textrm{ps}^{-1}$, while the second
     shows the integrated  probability flux denoted by $Q_{J,I}(t)$.
     A constant $Q_{J,I}$ means vanishing net flux, while a increasing (deceasing)
     $Q_{J,I}$ indicates positive (negative) net flux.
@@ -613,20 +615,6 @@ The magnitude of the flux from $B_1$ to  $C$ is larger than that from  $B_1$ to 
 This time-scale is actually 50 times slower than speed, at which
 the electric field is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
 
-The Fig.~\ref{fig:tmp3}
-shows that the $x$-component of the dipole moment of the alanine dipeptide
-reaches 85\% of the maximum value in only 20~ps, which is comparable to
-the warm-up time $t_{init}$. Then the dipole slowly relaxes to the 
-maximum value in the following 400~ps. Notice that 20~ps is 25 times
-smaller than the slowest time scale of the conformational relaxation.
-This indicate that when the EF is switched on, the alanine almost immediately
-align itself to the
-direction of the external EF without much conformational change.
-And then, the conformation is slowly adjusted according to the
-external field (now it is the same as the molecular dipole),
-finally  the new equilibrium is reached at a much slower time scale
-(approximately 500~ps).
-
 % After aligning to the external EF, the alanine slowly adjust its confromation,
 % and the new equilibrium is reached at slower time scales.
 
@@ -647,6 +635,96 @@ finally  the new equilibrium is reached at a much slower time scale
 % the process can be treated as  quasi-equilibrium.
 % The numerical results show the same story: the relaxation
 % of all populations are around $500 \sim 600~\textsf{ps}$.
+
+
+\begin{figure}
+  \centering
+  % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
+  \includegraphics[width=0.45\textwidth]{fig.ala/field.dipole/fig-dipol-order-conf.eps}
+  % \\
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b1-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
+  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
+  \caption{The
+    $x$-component of the dipole moment, and the orientational order parameter
+    of the alanine molecule as a
+    function of time. The dashed line presents the strengths of the
+    external electric field, while the solid line presents the dipole
+    moments. The left vertical axis is for the dipole moment, while
+    the right is for the orientational order parameter.
+  }
+  \label{fig:tmp3}
+\end{figure}
+
+The Fig.~\ref{fig:tmp3}
+shows that the $x$-component of the dipole moment of the alanine dipeptide
+reaches 85\% of the maximum value in only 20~ps, which is comparable to
+the warm-up time $t_{init}$, and is 25 times
+smaller than the slowest time scale of the conformational relaxation.
+Then in the following 400~ps, the dipole slowly relaxes to the 
+maximum value, that reads
+6.8~Debye, and is  corresponding to a dipole energy of ca.
+$-13.6$~kJ/mol. The main free energy barriers among the
+metastable states are reported to be of order $20\sim 40$~kJ/mol~\cite{bohner2012algorithm},
+which is comparable to the dipole energy. This explains the 
+conformational changes under the electric field.
+We calculate the averaged dipole moment of different metastable state
+under the constant EF, and they are 6.8, 6.0, 5.1, 3.1 and 7.1~Debye
+for $A_1$, $A_2$, $B_1$, $B_2$ and $C$, respectively.
+Under a constant EF, the system will be driven towards those
+conformations that with higher dipole moment, because the
+energy of the system will be lowered by aligning the the dipole
+to the external EF.
+It is clear that
+the $\alpha$-helix and left-handed $\alpha$-helix are of higher
+dipole moments than $\beta$-sheet conformations, so the probability
+of being in the $\alpha$-helix conformations were
+observed being increased under the EF.  $A_1$ and $C$ are the most
+probable conformations because their dipole moments are the highest
+among all metastable conformation. Moreover, the $B_2$  vanishes, because
+its dipole is significantly lower than other conformations.
+% This also explains the two-time scale behavior of the molecular dipole
+% moment.
+From 0 to 20~ps, the probability of
+lowest dipole conformation $B_2$ quickly
+vanishes, so there is a sharp increment of the average molecular
+dipole moment. Then until 500~ps, since the conformation slowly migrates from
+$B_1$ to $A_1$ and $C$, and also since the dipole moment $A_1$ and $C$
+is higher than $B_1$, the average molecular dipole moment slowly increases
+to the maximum value.
+
+We also consider the orientation of the alanine dipeptide as a function
+of time.
+The geometric direction of the alanine is defined by the red vector in
+Fig.~\ref{fig:tmp3}, which is the angle bisector of the two black vectors.
+The black vectors are define to connect the $\alpha$-carbon and the carbons
+on the methyl groups. We define the orientational order parameter
+\begin{align}
+  S_\theta = \langle 3\sin^2\theta - 2\rangle,
+\end{align}
+where $\theta$ is the angle between the orientation of the alanine dipeptide
+and the direction of the electric field. The order parameter
+indicate if the molecule is perpendicular to the electric field.
+If the molecule is perfectly perpendicular to the electric field, then $S_\theta = 1$;
+If the molecule has no directional
+preference at all, then $S_\theta = 0$;
+If the molecule is perfectly parallel to the electric field, then $S_\theta = -2$.
+From $t=0$ to roughly 10~ps, the orientational order parameter fastly
+decreases from 0 to $-0.15$, which means a weak alignment of the molecule to the external field.
+Then from $t=0$ to 500~ps, the molecule slowly changes to the orientation
+that is perpendicular to the electric field.
+
+% This indicate that when the EF is switched on, the alanine almost immediately
+% changes its conformation so that the molecular dipole is aligned to the
+% external EF.
+% align itself to the
+% direction of the external EF without much conformational change.
+% And then, the conformation is slowly adjusted according to the
+% external field (now it is the same as the molecular dipole),
+% finally  the new equilibrium is reached at a much slower time scale
+% (approximately 500~ps).
 
 
 \subsection{Testing the finite-size effect}
@@ -685,7 +763,7 @@ actually negligible in the system we used in the previous sections.
 We have tested the periodically oscillating electric field which has
 a $\sin$-wave shape:
 \begin{align}
-  E(t) = E_0\sin(2\pi \omega t),
+  \vect E(t) = (E_0\sin(2\pi \omega t), 0, 0)
 \end{align}
 where $E_0$ is the strength of the field, which is chosen to be
 1.0~V/nm.  $\omega$ is the frequency of the field, which is related to
@@ -713,17 +791,21 @@ to frequency 100, 25 and 5~GHz.
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig.ala/fig-mode2-dipol.eps}
-  \caption{The nonequilibrium dipole moment of alanine dipeptide as a
-    function of time. Only the $x$-component of the dipole moment is
-    shown here. The black line: the static electric field with turning on
+  \includegraphics[width=0.48\textwidth]{fig.ala/fig-mode2-dipol.eps}
+  \includegraphics[width=0.48\textwidth]{fig.ala/fig-mode2-order.eps}
+  \caption{The nonequilibrium dipole moment (a) and
+    orientation order parameter (b) of alanine dipeptide as a
+    function of time. In plot (a),
+    only the $x$-component of the dipole moment is
+    shown. The black line: the static electric field with turning on
     time $t_{init} = 10$~ps. The red line: oscillating field with period
     10~ps. The green line: period 40~ps. The blue line: period 200~ps.}
   \label{fig:tmp8}
 \end{figure}
 
 
-Fig.~\ref{fig:tmp8} presents the $x$-component of the molecular dipole moment as
+Fig.~\ref{fig:tmp8} (a)
+presents the $x$-component of the molecular dipole moment as
 a function of time. The red, green and blue lines stands for the
 results of $T=10$~ps, 40~ps and 200~ps, respectively. The black lines
 shows the dipole moment under constant electric field
@@ -735,16 +817,31 @@ is able to response to the external EF almost immediately.
 At $T=200$~ps, the maximum magnitude of the molecular
 dipole moment is almost the same as the case of constant electric field, which
 means that the changing of the electric field is so slow that the
-alanine have enough time to firstly align to the external EF, and then
+alanine have enough time to 
 relax its internal dipole (although not completely). However,
-for $T=40$~ps, as the electric field changes faster,
-although the molecules can align to the electric field immediately,
+for $T=10$ and 40~ps, as the electric field changes faster,
+although the alanine dipeptide can response to the electric field immediately,
 it does not have enough time to fully relax the internal dipole, so we
 see the maximum alanine's dipole moment reached is smaller.
-For even smaller period $T=10$~ps, the alanine does not have enough
-time  to properly align the molecular dipole according to the external
-field, so we see the maximum dipole moment is only about one third of the
-constant EF case.
+% For even smaller period $T=10$~ps, the alanine does not have enough
+% time  to properly align the molecular dipole according to the external
+% field, so we see the maximum dipole moment is only about one third of the
+% constant EF case.
+Plot (b) of Fig.~\ref{fig:tmp9} presents the orientational order
+parameter. The notations are the same as plot (a).
+% From the constant
+% EF simulation, we see that the response of order parameter has
+% two time scales: In the fast time scale, the 
+For all periodically oscillating cases the order parameter is much
+smaller than the constant EF case. One possible reason is that the
+relaxation of the order parameter is very slow, and the molecule does
+not expose to a strong enough EF for a long enough time in a oscillating
+EF. For  $T=10$ and 40~ps, the orientation of the alanine is only weakly
+parallel to the EF. Please notice that for the constant EF case,
+we also observe a quit alignment of molecular orientation to the EF
+at time scale 10~ps. For $T=200$~ps, The molecule periodically
+becomes perpendicular to the EF, but this directional preference is much
+weaker than the constant EF case.
 
 \begin{figure}
   \centering
@@ -862,6 +959,8 @@ for $T=10$ and $40$~ps, while they are much longer for $T=200$~ps.
     states on the Ramachandran histogram
     for periodically oscillating EF, $T=10$~ps. The thickness 
     of the arrows approximately presents the strength of the flux.
+    The numbers near the arrows indicates the strength of the averged
+    probability flux, the unit of which is $10^{-3}\textrm{ps}^{-1}$.
   }
   \label{fig:tmp11}
 \end{figure}
@@ -939,6 +1038,20 @@ and the integrated flux will be periodical, and being constant in time-average.
 
 
 \section{Concluding remarks}
+
+The D-NEMD method. The design of the nonequilibrium thermostating.
+
+Time scales discovered in the constant EF case.
+
+The discover of the directional probability flux introduced by the
+oscillating EF.
+
+Comment on the force field. cite A.Mey's paper.
+
+Comment on the real life-strength and frequency of the EF, if it is
+possible in experiment. such a strong field may distroy the molecule.
+
+Comment on the limitation of the non-polarizable model. 
 
 % Clearly two time-scales of relaxation are observed.  For
 % configurations $A_2$ and $B_2$, the relaxations are very fast and
