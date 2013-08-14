@@ -27,7 +27,7 @@
 
 \begin{document}
 
-\title{Exploring Molecular Conformations and Related Time Scales via Nonequilibrium Molecular Dynamics Simulation}
+\title{Exploring Conformational Dynamics and Related Time Scales via Nonequilibrium Molecular Dynamics Simulation}
 % \title{The non-equilibrium molecular dynamics simulation of the alanine dipeptide under electric field}
 \author{Han Wang}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
@@ -264,8 +264,14 @@ region} (see Fig.~\ref{fig:tmp2}).  For simplicity, the Hamiltonian
 dynamics region is assumed to be spherical, centered at the
 alpha-carbon of the alanine, and with radius of $R_{ex}$.  Further, we
 freeze the movement of the alpha-carbon, so that the alanine is always
-located at the center of the simulation region.  The validity of this
-setting will be later check by numerical examples showing that the
+located at the center of the simulation region.
+Therefore, the dynamics is preseved in the Hamiltonian dynamics region (where the properties of interest are observed)
+and the artificial effect of thermostating is negligible.
+At the same time, the thermostating region works as a infinitely large
+environment that effectively absorbs the extra heat, so that
+the nonthermal effect can be studied.
+The validity of the above
+statement will be later check latter by numerical examples showing that the
 nonequilibrium observables do not depends on the size of the system
 and the size of the Hamiltonian dynamics subregion, if they are
 reasonably large and the finite size effect does not play a dominating role.
@@ -284,7 +290,7 @@ reasonably large and the finite size effect does not play a dominating role.
 
 In this section,
 we want to study the nonequilibrium properties of an alanine dipeptide
-under a constant EF. At time $t=0$~ps, the system
+under a constant EF.  At time $t=0$~ps, the system
 has been fully equilibriated without any electric field. From $t=0$ to
 $t=t_{\textrm{init}}$, the eclectic field is switched on linearly, while
 after $t=t_{\textrm{init}}$, the field is kept constant at
@@ -294,10 +300,18 @@ The direction of this field is arbitrarily chosen: along the
 $x$ direction. Since the dipole of the equilibrium configurations of
 alanine can be along any direction, applying the electric along $x$-axis is
 not biased.
+Being more general, in this paper we denote the
+electric field as a function of time $\vect E(t)$.
+Therefore, the constant electric field is
+$\vect E(t) = (E_\infty\cdot t/t_{init},0,0)$ as $0\leq t < t_{init}$, and 
+$\vect E(t) = (E_\infty,0,0)$
+as $t \geq t_{init}$.
 The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
 described by the CHARMM27 force field, and solved in 644 TIP3P
 water molecules.
+The electric field exserts force $\vect F = q \vect E(t)$ on
+the partial charge $q$ in the system.
 The size of the  Hamiltonian dynamics region is $R_{ex} = 1.0$~nm.
 All simulations are performed by a home-modified GROMACS 4.5~\cite{pronk2013gromacs}.
 Firstly, an equilibrium NVT simulation of
@@ -490,7 +504,7 @@ which presents the time averaged effect of the EF to the molecular conformation.
   \caption{
     The net probability flux and its integration under the constant EF case.
     The warm-up time $t_{init} = 10$~ps.
-    The first row shows the probability flux $F_{J,I}(t)$, while the second
+    The first row shows the probability flux $F_{J,I}(t)$ with unit $\textrm{ps}^{-1}$, while the second
     shows the integrated  probability flux denoted by $Q_{J,I}(t)$.
     A constant $Q_{J,I}$ means vanishing net flux, while a increasing (deceasing)
     $Q_{J,I}$ indicates positive (negative) net flux.
@@ -638,16 +652,24 @@ the electric field is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
     of the alanine molecule as a
     function of time. The dashed line presents the strengths of the
     external electric field, while the solid line presents the dipole
-    moments. }
+    moments. The left vertical axis is for the dipole moment, while
+    the right is for the orientational order parameter.
+  }
   \label{fig:tmp3}
 \end{figure}
 
 The Fig.~\ref{fig:tmp3}
 shows that the $x$-component of the dipole moment of the alanine dipeptide
 reaches 85\% of the maximum value in only 20~ps, which is comparable to
-the warm-up time $t_{init}$. Then the dipole slowly relaxes to the 
-maximum value in the following 400~ps. Notice that 20~ps is 25 times
+the warm-up time $t_{init}$, and is 25 times
 smaller than the slowest time scale of the conformational relaxation.
+Then in the following 400~ps, the dipole slowly relaxes to the 
+maximum value, that reads
+6.8~Debye, and is  corresponding to a dipole energy of ca.
+$-13.6$~kJ/mol. The main free energy barriers among the
+metastable states are reported to be of order $20\sim 40$~kJ/mol~\cite{bohner2012algorithm},
+which is comparable to the dipole energy. This explains the 
+conformational changes under the electric field.
 We calculate the averaged dipole moment of different metastable state
 under the constant EF, and they are 6.8, 6.0, 5.1, 3.1 and 7.1~Debye
 for $A_1$, $A_2$, $B_1$, $B_2$ and $C$, respectively.
@@ -690,7 +712,7 @@ If the molecule has no directional
 preference at all, then $S_\theta = 0$;
 If the molecule is perfectly parallel to the electric field, then $S_\theta = -2$.
 From $t=0$ to roughly 10~ps, the orientational order parameter fastly
-decreases from 0 to -0.15, which means a weak alignment of the molecule to the external field.
+decreases from 0 to $-0.15$, which means a weak alignment of the molecule to the external field.
 Then from $t=0$ to 500~ps, the molecule slowly changes to the orientation
 that is perpendicular to the electric field.
 
@@ -741,7 +763,7 @@ actually negligible in the system we used in the previous sections.
 We have tested the periodically oscillating electric field which has
 a $\sin$-wave shape:
 \begin{align}
-  E(t) = E_0\sin(2\pi \omega t),
+  \vect E(t) = (E_0\sin(2\pi \omega t), 0, 0)
 \end{align}
 where $E_0$ is the strength of the field, which is chosen to be
 1.0~V/nm.  $\omega$ is the frequency of the field, which is related to
@@ -937,6 +959,8 @@ for $T=10$ and $40$~ps, while they are much longer for $T=200$~ps.
     states on the Ramachandran histogram
     for periodically oscillating EF, $T=10$~ps. The thickness 
     of the arrows approximately presents the strength of the flux.
+    The numbers near the arrows indicates the strength of the averged
+    probability flux, the unit of which is $10^{-3}\textrm{ps}^{-1}$.
   }
   \label{fig:tmp11}
 \end{figure}
