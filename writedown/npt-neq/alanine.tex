@@ -95,7 +95,7 @@ hydrodynamics~\cite{orlandini2011hydrodynamics,
 nonequilibrium observables by doing an ensemble of nonequilibrium MD
 simulations.  It can be used for analyzing the
 conformational changing under a generally time-dependent EF.
-In the present paper, we study the minimal model peptide
+In the present paper, we study a small model peptide
 segment -- alanine dipeptide. We take the approach of starting from a
 single peptide piece rather than a more realistic chain, firstly because it
 is easier to draw clear conclusions on the nonequilibrium properties
@@ -208,7 +208,8 @@ The aforementioned D-NEMD simulation algorithm
 does not describe how the boundary of the system should be set up.
 The very naive idea of doing the simulation
 is to simulate a infinitely large isolated system, or any large enough
-isolated subsystem of it. In practice, it is both impossible and unnecessary to
+isolated subsystem of it.
+In practice, it is both impossible and unnecessary to
 do such a simulation, due to the unaffordable computational expense.
 Therefore, proper boundary condition should be supplied
 to truncated the simulation region. It is only possible when we
@@ -562,6 +563,21 @@ is fully relaxed to the new equilibrium defined by the constant EF,
 so we do not see and change
 in the population of the metastable states.
 
+\begin{table}
+  \centering
+  \begin{tabular*}{0.4\textwidth}{@{\extracolsep{\fill}}lc}\hline\hline
+    Direction        & time scale [ ps ] \\\hline
+    $A_1\rightarrow A_2$        &       $0\sim 10$      \\
+    $B_1\rightarrow B_2$        &       $0\sim 10$      \\    
+    $A_2\rightarrow A_1$        &       $10\sim 100$      \\
+    $B_2\rightarrow B_1$        &       $10\sim 100$      \\    
+    $B_2\rightarrow A_1,\ A_2,\ C$        &       $10\sim 50$      \\    
+    $B_1\rightarrow A_1,\ C$        &       $10\sim 500$      \\    \hline\hline
+  \end{tabular*}
+  \caption{A list of main probabilty fluxes and the corresponding time scales observed in the constant EF case.}
+  \label{tab:tmp1}
+\end{table}
+
 Even though the system is finally relaxed to the new equilibrium,
 the speed of relaxation of each metastable state is different. 
 From Fig.~\ref{fig:tmp6}, we observe mainly
@@ -665,9 +681,15 @@ the warm-up time $t_{init}$, and is 25 times
 smaller than the slowest time scale of the conformational relaxation.
 Then in the following 400~ps, the dipole slowly relaxes to the 
 maximum value, that reads
-6.8~Debye, and is  corresponding to a dipole energy of ca.
-$-13.6$~kJ/mol. The main free energy barriers among the
-metastable states are reported to be of order $20\sim 40$~kJ/mol~\cite{bohner2012algorithm},
+6.8~Debye, and is corresponding to a dipole energy of ca.
+$-13.6$~kJ/mol.
+The EF induced solvent effect on the alanine is also counted by calculating the
+difference of the water-alaine electrostatic interaction 
+between systems with and without the EF, and the
+energy difference is found to be $-19.1$~~kJ/mol that is
+comparable to the dipole energy of the alanine itself.
+The main free energy barriers among the
+metastable states were reported to be of order $20\sim 40$~kJ/mol~\cite{bohner2012algorithm},
 which is comparable to the dipole energy. This explains the 
 conformational changes under the electric field.
 We calculate the averaged dipole moment of different metastable state
