@@ -142,8 +142,8 @@ where $\hat O (\vect x)$ is the microscopic observable,
 which is measured at the phase space position $\vect x$,
 comparing with the macroscopic observable that is not phase space independent.
 In this work, we always assume that the initial probability distribution
-$\rho(\vect x, 0)$ is known, and is equal to the equilibrium distribution
-without any electric field.
+$\rho(\vect x, 0)$ is known, and is identical to the equilibrium distribution
+without any EF.
 The bracket on the right hand side of Eq.~\eqref{eqn:tmp1} denotes the inner produce in the
 phase space.  We assume the dynamics of the system is governed by the
 Hamiltonian equation, i.e. $\dot {\vect x} = J \cdot \nabla_{\vect x}
@@ -154,7 +154,7 @@ distribution is
   \frac{\partial \rho(\vect x, t)}{\partial t} = - iL(t) \rho(\vect x, t),
 \end{align}
 where $iL(t) = \{\cdot, \mathcal H\}$ is the Liouville operator.
-The Eq.~\eqref{eqn:tmp2}
+Eq.~\eqref{eqn:tmp2}
 can be formally solved by $\rho(\vect x, t) = e^{-iL(t)} \rho(\vect x, 0)$.
 On the other hand
 \begin{align}
@@ -162,19 +162,19 @@ On the other hand
   = \nabla_{\vect x}\hat O\cdot J\cdot \nabla_{\vect x}\mathcal H
   = iL(t) \hat O (\vect x(t))
 \end{align}
-This equation can be formally solved by $\hat O(\vect x(t)) = e^{iL(t)} O(\vect x, 0)$, therefore,
+This equation can be formally solved by $\hat O(\vect x(t)) = e^{iL(t)} \hat O(\vect x(0))$, therefore,
 \begin{align}\nonumber
   O(t) & = \langle \hat O(\vect x), \rho(\vect x, t)\rangle
   = \langle \hat O(\vect x), e^{-iL(t)} \rho(\vect x, 0)\rangle
   = \langle e^{iL(t)}\hat O(\vect x), \rho(\vect x, 0)\rangle\\\label{eqn:tmp4}
   &= \langle \hat O(\vect x(t)), \rho(\vect x, 0)\rangle
 \end{align}
-Since we assume that the initial
-probability distribution is the equilibrium distribution, an
+Since we assume that the system starts from the equilibrium
+distribution, an
 explicit translation of Eq.~\eqref{eqn:tmp4} is that the
 nonequilibrium observable is equal to the ensemble average of
-microscopic observable measured along trajectory $\vect x(t)$, the
-initial configuration of which is subject to the \emph{equilibrium}
+microscopic observable measured along trajectories, the
+initial configurations of which are subject to the \emph{equilibrium}
 distribution. In practice, we firstly run an equilibrium MD simulation
 to generate a sampling of configurations that are subject to the
 equilibrium distribution. And then by using these configurations as
@@ -185,8 +185,8 @@ estimated by averaging the microscopic observable measured at the end
 points of the trajectories.
 
 Being more generalized, if the microscopic observable depends not only on the end
-configuration at time $t$ but also depends on the historical
-configurations along the trajectory, the expression~\eqref{eqn:tmp4} can be generalize to
+configuration at time $t$, but also on the historical
+configurations along the trajectory, then expression~\eqref{eqn:tmp4} takes the generalized form:
 \begin{align}
   O(t) = \int d\vect x\,\rho(\vect x, 0) \int_{\mathcal C\{\vect x, 0; t\}} \hat O[\vect x_s] \,d\mathcal P[\vect x_s] 
 \end{align}
@@ -204,50 +204,72 @@ dynamics rather than the Hamiltonian dynamics.
 
 \subsection{Nonequilibrium temperature control}\label{sec:tmp2b}
 
-The aforementioned D-NEMD simulation algorithm
-does not describe how the boundary of the system should be set up.
-The very naive idea of doing the simulation
-is to simulate a infinitely large isolated system, or any large enough
-isolated subsystem of it.
-In practice, it is both impossible and unnecessary to
-do such a simulation, due to the unaffordable computational expense.
-Therefore, proper boundary condition should be supplied
-to truncated the simulation region. It is only possible when we
-have a clear knowledge on
-on how the nonequilibrium system is set up,
-and what are the nonequilibrium observables to measure.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
-  \caption{Schematic plot of the truncated nonequilibrium subsystem.
-    The white part is the Hamiltonian dynamics subsystem
-    and the gray part is thermostating region. The whole system
-    is subject to the periodic boundary condition.}
+  \caption{Schematic plot of the nonequilibrium temperature control.
+    The white part is the Hamiltonian dynamics region
+    and the gray part is thermostating region.
+    $R_{ex}$ denotes the size of the Hamiltonian dynamics region, which
+    is a sphere located at the center of the box in the Figure.
+    The whole system
+    is subject to the periodic boundary condition. }
   \label{fig:tmp2}
 \end{figure}
 
-Since we are mainly interested in the
-nonthermal~\cite{delaHoz2005microwaves} effect of the electric field
-to the configuration of a solvated alanine dipeptide, we assume the
-alanine is embeded into an infinitely large solvent environment, and
-the electric field is only applied to the neighborhood of the alanine.
-Any extra heat generated by the electric field can be effectively
-absorbed by the solvent environment.  It is argued that such an
-accurate reaction temperature control is essential for being able to
+% The aforementioned D-NEMD simulation algorithm
+% does not describe how the boundary of the system should be set up.
+% The very naive idea of doing the simulation
+% is to simulate a infinitely large isolated system, or any large enough
+% isolated subsystem of it.
+% In practice, 
+% Therefore, we are interested in a 
+
+We are mainly interested in the
+nonthermal~\cite{delaHoz2005microwaves} effect of the EF
+to the configuration of a solvated alanine dipeptide,
+so the temperature control in a nonequilibrium system
+becomes an important issue, becuase it was argued that  an
+accurate internal reaction temperature control is essential for being able to
 perform reproducible experiments~\cite{damm2012can}.
-Now the question comes to how to truncate the solvent environment
-so that the system can be handled by the limited computer resource.
+A naive (but close to realistic) implementation of the temperature control is to 
+embeded the alanine into an infinitely large solvent environment, and 
+the EF is only applied to the neighborhood of the alanine, so that
+any extra heat generated by the EF can be effectively
+absorbed by the solvent environment.
+However, in practice, it is sometime too expensive to explicitly
+simulate a very large solvent environment
+due to the usually limited computational resources.
+Therefore, we are interested in how to cheaply replace the infinitely large
+solvent environment by a small affordable system, while
+at the same time accurately reproduce the nonequilibrium
+physical properties of interest.
 % In practice, it is impossible to simulate an infinitely large
 % environment.
-For an equilibrium simulation, the solution is to couple
-the system to a thermostat, under which the canonical ensemble can be
+If only the equilibrium properties are interested, the solution is to couple
+the system to a thermostat, under which the desired ensemble
+(canonical in this case) can be
 sampled by only simulating a finite size system with periodic boundary
-condition. For a nonequilibrium simulation, simply couple the system
-to a thermostat may not be a good idea, because the \emph{dynamics}
-generated by the thermostat is artificial, and deviation from the
-Hamiltonian dynamics under investigation will introduce artificial
-effects in the nonequilibrium observations. To solve this problem, we
+condition.
+However, directly coupling a thermostat to the nonequilibrium system
+will disturb the original Hamiltonian dynamics. This is
+in general problematic, 
+because the dynamics  under thermostating is artificial designed,
+so that the equilibrium distribution can be correctly produce, but not
+the nonequilibrium properties of system.
+% dynamics of the system is no longer Hamiltonian, and is
+% artificial designed to reach the equilibrium probability distribution.
+% However, for a nonequilibrium system, the \emph{dynamics} properties
+% will be distrubed by the thermostat, because the
+% dynamics of the system is no longer Hamiltonian, and is
+% artificial designed to reach the equilibrium probability distribution.
+% For a nonequilibrium simulation, simply couple the system
+% to a thermostat may not be a good idea, because the \emph{dynamics}
+% generated by the thermostat is artificial, and deviation from the
+% Hamiltonian dynamics under investigation will introduce artificial
+% effects in the nonequilibrium observations.
+To solve this problem, we
 observe that only preserving the Hamiltonian dynamics of the alanine 
 itself and the water molecules in the nearby solvation shell is
 crucial to the interested nonequilibrium observable
@@ -256,7 +278,7 @@ while the detailed dynamics of
 the water molecules far away is of less importance. 
 Therefore, instead of simulating an infinitely
 large system, we only simulate a finite size system with periodic
-boundary condition. The simulating region is divided into two
+boundary condition. Accordingly, the simulating region is divided into two
 subregions: Near the alanine dipeptide, the dynamics is kept to be
 Hamiltonian, and this subregion is called \emph{the Hamiltonian dynamics
 region}. While far from the alanine, the dynamics of water is coupled
@@ -267,7 +289,8 @@ alpha-carbon of the alanine, and with radius of $R_{ex}$.  Further, we
 freeze the movement of the alpha-carbon, so that the alanine is always
 located at the center of the simulation region.
 Therefore, the dynamics is preseved in the Hamiltonian dynamics region (where the properties of interest are observed)
-and the artificial effect of thermostating is negligible.
+and the artificial effect of thermostating is negligible due to the finite corrlation
+range of liquid water.
 At the same time, the thermostating region works as a infinitely large
 environment that effectively absorbs the extra heat, so that
 the nonthermal effect can be studied.
@@ -285,14 +308,14 @@ reasonably large and the finite size effect does not play a dominating role.
 % we 
 
 \section{Example I: Alanine dipeptide
-  under a constant electric field}
+  under a constant EF}
 
 \subsection{System settings and simulation protocol}
 
 In this section,
 we want to study the nonequilibrium properties of an alanine dipeptide
 under a constant EF.  At time $t=0$~ps, the system
-has been fully equilibriated without any electric field. From $t=0$ to
+has been fully equilibriated without any EF. From $t=0$ to
 $t=t_{\textrm{init}}$, the eclectic field is switched on linearly, while
 after $t=t_{\textrm{init}}$, the field is kept constant at
 $E_{\infty}$.  In this work we consider $t_{\textrm{init}} = 10$~ps,
@@ -302,8 +325,8 @@ $x$ direction. Since the dipole of the equilibrium configurations of
 alanine can be along any direction, applying the electric along $x$-axis is
 not biased.
 Being more general, in this paper we denote the
-electric field as a function of time $\vect E(t)$.
-Therefore, the constant electric field is
+EF as a function of time $\vect E(t)$.
+Therefore, the constant EF is
 $\vect E(t) = (E_\infty\cdot t/t_{init},0,0)$ as $0\leq t < t_{init}$, and 
 $\vect E(t) = (E_\infty,0,0)$
 as $t \geq t_{init}$.
@@ -311,7 +334,7 @@ The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
 described by the CHARMM27 force field, and solved in 644 TIP3P
 water molecules.
-The electric field exserts force $\vect F = q \vect E(t)$ on
+The EF exserts force $\vect F = q \vect E(t)$ on
 the partial charge $q$ in the system.
 The size of the  Hamiltonian dynamics region is $R_{ex} = 1.0$~nm.
 All simulations are performed by a home-modified GROMACS 4.5~\cite{pronk2013gromacs}.
@@ -353,7 +376,7 @@ dynamics of the system.
     (a): the
     equilibrium state at $t=0$~\textsf{ps}. (b): The new equilibrium
     state at $t=1000$~\textsf{ps}, i.e., fully relaxed under the
-    constant electric field 1~V/nm. The darker color
+    constant EF 1~V/nm. The darker color
     indicates larger population on the Ramachandran histogram.}
   \label{fig:tmp4}
 \end{figure}
@@ -389,12 +412,12 @@ left-handed alpha helix.
 
 
 From Fig.~\ref{fig:tmp4}, it is obvious that the population in each
-metastable state changes due to the external electric field, for
+metastable state changes due to the external EF, for
 example, the population of state $C$ vanishes in equilibrium,
-but plays an important role when the electric field is applied. We
+but plays an important role when the EF is applied. We
 therefore want to study how the alanine changes from one conformation
 to the other, how fast is the change, and the relations to the 
-the electric field. 
+the EF. 
 Firstly, we calculate the probability of being in a certain state that
 is defined by:
 \begin{align}
@@ -548,7 +571,7 @@ Fig.~\ref{fig:tmp5}. The beta sheet conformation,
 which presents at the beginning,
 fades away as the system relaxes to the new equilibrium. The
 probability of alpha helix $A_1$ conformation grows from 45\% to 70\%.
-Alpha helix $A_2$  does not change a lot under the electric field.
+Alpha helix $A_2$  does not change a lot under the EF.
 The left-hand helix configuration $C$ noticeably grows from 0\% to 20\%.
 
 We plot the net probability fluxes and their integration in Fig.~\ref{fig:tmp6}.
@@ -629,7 +652,7 @@ The magnitude of the flux from $B_1$ to  $C$ is larger than that from  $B_1$ to 
 % transition probability of set $C$. This implies that at the left-handed $\alpha$-helix is
 % acutally more stable than  other conformations.
 This time-scale is actually 50 times slower than speed, at which
-the electric field is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
+the EF is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
 
 % After aligning to the external EF, the alanine slowly adjust its confromation,
 % and the new equilibrium is reached at slower time scales.
@@ -643,9 +666,9 @@ the electric field is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
 % around $500~\textsf{ps}$. This further verifies internal time scale of
 % $A_1$, $B_1$ and $C$ presented in the testing case of
 % $t_{\textrm{init}} = 10~\textsf{ps}$.  The dynamics of $B_2$ is
-% faster: it decays to zero as soon as the external electric field is fully
+% faster: it decays to zero as soon as the external EF is fully
 % switched on. In the case of $t_{\textrm{init}} = 500~\textsf{ps}$, the
-% growth of the external electric field is comparable to the longest
+% growth of the external EF is comparable to the longest
 % internal time scale of system, which means that the changes of the
 % perturbation to the system is so slow that the system can catch up, so
 % the process can be treated as  quasi-equilibrium.
@@ -667,7 +690,7 @@ the electric field is switched on ($t_{\textrm{init}} = 10~\textsf{ps}$).
     $x$-component of the dipole moment, and the orientational order parameter
     of the alanine molecule as a
     function of time. The dashed line presents the strengths of the
-    external electric field, while the solid line presents the dipole
+    external EF, while the solid line presents the dipole
     moments. The left vertical axis is for the dipole moment, while
     the right is for the orientational order parameter.
   }
@@ -691,7 +714,7 @@ comparable to the dipole energy of the alanine itself.
 The main free energy barriers among the
 metastable states were reported to be of order $20\sim 40$~kJ/mol~\cite{bohner2012algorithm},
 which is comparable to the dipole energy. This explains the 
-conformational changes under the electric field.
+conformational changes under the EF.
 We calculate the averaged dipole moment of different metastable state
 under the constant EF, and they are 6.8, 6.0, 5.1, 3.1 and 7.1~Debye
 for $A_1$, $A_2$, $B_1$, $B_2$ and $C$, respectively.
@@ -727,16 +750,16 @@ on the methyl groups. We define the orientational order parameter
   S_\theta = \langle 3\sin^2\theta - 2\rangle,
 \end{align}
 where $\theta$ is the angle between the orientation of the alanine dipeptide
-and the direction of the electric field. The order parameter
-indicate if the molecule is perpendicular to the electric field.
-If the molecule is perfectly perpendicular to the electric field, then $S_\theta = 1$;
+and the direction of the EF. The order parameter
+indicate if the molecule is perpendicular to the EF.
+If the molecule is perfectly perpendicular to the EF, then $S_\theta = 1$;
 If the molecule has no directional
 preference at all, then $S_\theta = 0$;
-If the molecule is perfectly parallel to the electric field, then $S_\theta = -2$.
+If the molecule is perfectly parallel to the EF, then $S_\theta = -2$.
 From $t=0$ to roughly 10~ps, the orientational order parameter fastly
 decreases from 0 to $-0.15$, which means a weak alignment of the molecule to the external field.
 Then from $t=0$ to 500~ps, the molecule slowly changes to the orientation
-that is perpendicular to the electric field.
+that is perpendicular to the EF.
 
 % This indicate that when the EF is switched on, the alanine almost immediately
 % changes its conformation so that the molecular dipole is aligned to the
@@ -780,9 +803,9 @@ actually negligible in the system we used in the previous sections.
 
 
 \section{Example II:
-  periodically oscillating electric field}
+  periodically oscillating EF}
 
-We have tested the periodically oscillating electric field which has
+We have tested the periodically oscillating EF which has
 a $\sin$-wave shape:
 \begin{align}
   \vect E(t) = (E_0\sin(2\pi \omega t), 0, 0)
@@ -794,13 +817,13 @@ periods: 10, 40 and 200, which corresponding
 to frequency 100, 25 and 5~GHz.
 % The periods of the later two are
 % commensurate to the time scales discovered by the nonequilibrium MD
-% simulation of constant electric field. The first is to test the if the
+% simulation of constant EF. The first is to test the if the
 % period is further reduced to smaller than 20~ps, there is any other
 % timescale of interest would play a role. Although the periods are
 % chosen according to the discovered time scales in the constant
-% electric field simulation, the nonequilibrium phenonema of oscillating
-% electric field cannot be derived from the constant field system.
-% As far as the electric field changes, the internal time scale of the
+% EF simulation, the nonequilibrium phenonema of oscillating
+% EF cannot be derived from the constant field system.
+% As far as the EF changes, the internal time scale of the
 % system also changes, therefore, the nonequilibrium probabilities is a
 % complicated interplay of different internal time scales under
 % different EF.
@@ -819,7 +842,7 @@ to frequency 100, 25 and 5~GHz.
     orientation order parameter (b) of alanine dipeptide as a
     function of time. In plot (a),
     only the $x$-component of the dipole moment is
-    shown. The black line: the static electric field with turning on
+    shown. The black line: the static EF with turning on
     time $t_{init} = 10$~ps. The red line: oscillating field with period
     10~ps. The green line: period 40~ps. The blue line: period 200~ps.}
   \label{fig:tmp8}
@@ -830,19 +853,19 @@ Fig.~\ref{fig:tmp8} (a)
 presents the $x$-component of the molecular dipole moment as
 a function of time. The red, green and blue lines stands for the
 results of $T=10$~ps, 40~ps and 200~ps, respectively. The black lines
-shows the dipole moment under constant electric field
+shows the dipole moment under constant EF
 for reference.
 It demonstrates that the periods of the molecular dipole moment
 is the same as the periods of the oscillating EF. Therefore,
 the molecular dipole moment
 is able to response to the external EF almost immediately.
 At $T=200$~ps, the maximum magnitude of the molecular
-dipole moment is almost the same as the case of constant electric field, which
-means that the changing of the electric field is so slow that the
+dipole moment is almost the same as the case of constant EF, which
+means that the changing of the EF is so slow that the
 alanine have enough time to 
 relax its internal dipole (although not completely). However,
-for $T=10$ and 40~ps, as the electric field changes faster,
-although the alanine dipeptide can response to the electric field immediately,
+for $T=10$ and 40~ps, as the EF changes faster,
+although the alanine dipeptide can response to the EF immediately,
 it does not have enough time to fully relax the internal dipole, so we
 see the maximum alanine's dipole moment reached is smaller.
 % For even smaller period $T=10$~ps, the alanine does not have enough
@@ -872,7 +895,7 @@ weaker than the constant EF case.
   \includegraphics[width=0.32\textwidth]{fig.ala/fig-meta-mode2-0200.eps}
   % \includegraphics[width=0.49\textwidth]{fig.ala/fig-meta-mode2-2000.eps}
   \caption{ The probability of being in a certain metastable state for
-    periodically oscillating electric field. Different periods,
+    periodically oscillating EF. Different periods,
     i.e. $T=10$~ps, 40~ps and 200~ps, are presented here.  The
     probability of being in a certain metastable state $I$, which is
     denoted by $P_I$ in this paper, is plotted by colored lines against
@@ -948,7 +971,7 @@ weaker than the constant EF case.
 
 
 The Fig.~\ref{fig:tmp9} shows the probability of being in a certain
-metastable state for periodically oscillating electric field.  The
+metastable state for periodically oscillating EF.  The
 Fig.~\ref{fig:tmp10} presents the integrated probability flux among
 the metastable states. We do not show the probability flux itself,
 because the profiles are highly oscillating and no more
@@ -1105,8 +1128,8 @@ Comment on the limitation of the non-polarizable model.
 % defining how the subsystem is coupled into the universe: It is subject
 % to how the perturbation comes into the subsystem, and how the energy
 % of the system dissipates into the universe. In the case of switching on
-% electric field system, two limiting scenarios are considered by us: (1)
-% The subsystem is isolated from the universe: The electric field is
+% EF system, two limiting scenarios are considered by us: (1)
+% The subsystem is isolated from the universe: The EF is
 % applied to a system that conserves the energy, volume and number of
 % particle (i.e. a NVE subsystem in short).  The isolation here means
 % that the subsystem does not exchange energy, volume and number of
