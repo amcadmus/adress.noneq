@@ -40,7 +40,24 @@
 \author{Luigi Delle Site}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
 
+
 \begin{abstract}
+  In this paper, we investigate the conformational dynamics of alanine
+  dipeptide under an external electric field (EF) by the
+  nonequilibrium molecular dynamics (MD) simulation, which enables us
+  to calculate the nonequilibrium physical properties that are not
+  available for traditional equilibrium MD simulation.  We study both
+  the constant and oscillatory EF cases, and discuss the way to
+  implement the temperature control in the nonequilibrium MD
+  simulation, which removes the irrelevant thermal effect of the EF
+  from the system. In the constant EF case, different time-scales are
+  discovered in the conformational, dipole moment, and orientational
+  dynamics. Moreover, we prove that the solvent structure only
+  marginally changes when the external EF is switched on.  In the
+  oscillatory EF case, the conformational changes are shown to be as
+  strong as constant EF case, and non-trivial nonequilibrium
+  conformational circulations are presented by calculating the
+  integrated net probability fluxes.
 \end{abstract}
 
 \maketitle
@@ -194,7 +211,7 @@ Stochastic dynamics (Langevin) can be hadeled analogoursly.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.3\textwidth]{fig/thermostat.eps}
+  \includegraphics[width=0.3\textwidth]{thermostat.eps}
   \caption{Schematic plot of the nonequilibrium temperature control scheme.
     The white area is the region characterized by Hamiltonian dynamics without the direct action of an external thermostat.
     The gray area is the region where the external thermostat is used in order to keep the target temperature.
@@ -346,9 +363,9 @@ dynamics of the system.
 
 \begin{figure}
   \centering
-  \raisebox{0.2\height}{\includegraphics[width=0.22\textwidth]{fig.ala/ext.mode1.010.Ex.01.00.t1000ps.recheck.bk/c-2.eps}}
-  \includegraphics[width=0.37\textwidth]{fig.ala/ext.mode1.010.Ex.01.00.t1000ps.recheck.bk/fig-begin-1.eps}
-  \includegraphics[width=0.37\textwidth]{fig.ala/ext.mode1.010.Ex.01.00.t1000ps.recheck.bk/fig-end-1.eps}
+  \raisebox{0.2\height}{\includegraphics[width=0.22\textwidth]{c-2.eps}}
+  \includegraphics[width=0.37\textwidth]{fig-begin-1.eps}
+  \includegraphics[width=0.37\textwidth]{fig-end-1.eps}
   \caption{The probability of the conformations of the alanine dipeptide plotted on the Ramachandran histogram.
     (a): the
     equilibrium state at $t=0$~\textsf{ps}. (b): The new equilibrium
@@ -476,7 +493,7 @@ this expresses the average over time of the effects of the EF on the conformatio
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig.ala/fig-meta-npt.eps}
+  \includegraphics[]{fig-meta-npt.eps}
   \caption{The probability that the system is in the ranges of conformations when a constant EF is present.
     The warm-up time is $t_{warm} = 10$~ps. The red line refers to conformation $A_1$,
     green to $A_2$, dark blue to $B_1$, purple to $B_2$ and light blue
@@ -500,16 +517,16 @@ this expresses the average over time of the effects of the EF on the conformatio
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-3.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-4.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-flux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-flux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-flux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-flux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-flux-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-iflux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-iflux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-iflux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-iflux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-iflux-5.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-5.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-5.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-1.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-2.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-3.eps}
@@ -680,7 +697,7 @@ the EF was switched on ($t_{\textrm{warm}} = 10~\textsf{ps}$).
 \begin{figure}
   \centering
   % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
-  \includegraphics[width=0.45\textwidth]{fig.ala/field.dipole/fig-dipol-order-conf.eps}
+  \includegraphics[width=0.45\textwidth]{fig-dipol-order-conf.eps}
   % \\
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
   % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
@@ -771,8 +788,8 @@ time scale of the molecular conformational change.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.48\textwidth]{fig.ala/fig-rdf.eps}
-  \includegraphics[width=0.48\textwidth]{fig.ala/fig-hbond.eps}
+  \includegraphics[width=0.48\textwidth]{fig-rdf.eps}
+  \includegraphics[width=0.48\textwidth]{fig-hbond.eps}
   \caption{The solvent structure around the alanine dipeptide.  Plot
     (a): the radial distribution function (RDF) between the
     $\alpha$-carbon and the center-of-mass (COM) of the water molecules at
@@ -812,7 +829,7 @@ alanine does not change significantly or contribute significantly in determining
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig.ala/fig-meta-conv.eps}
+  \includegraphics[]{fig-meta-conv.eps}
   \caption{Testing the finite-size effect of the Hamiltonian dynamics and thermostated region.
     Probabilities of different ranges of conformations are presented as a function of time.
     See the text for more details.
@@ -871,8 +888,8 @@ to frequency of 100, 25 and 5~GHz, respectively.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.48\textwidth]{fig.ala/fig-mode2-dipol.eps}
-  \includegraphics[width=0.48\textwidth]{fig.ala/fig-mode2-order.eps}
+  \includegraphics[width=0.48\textwidth]{fig-mode2-dipol.eps}
+  \includegraphics[width=0.48\textwidth]{fig-mode2-order.eps}
   \caption{Illustration of the effect of the oscillatory EF:
     the dipole moment (a) and
     orientation order parameter (b) of alanine dipeptide as a
@@ -924,10 +941,10 @@ weaker than the case of constant EF.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.32\textwidth]{fig.ala/fig-meta-mode2-0010.eps}
-  \includegraphics[width=0.32\textwidth]{fig.ala/fig-meta-mode2-0040.eps}
-  \includegraphics[width=0.32\textwidth]{fig.ala/fig-meta-mode2-0200.eps}
-  % \includegraphics[width=0.49\textwidth]{fig.ala/fig-meta-mode2-2000.eps}
+  \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0010.eps}
+  \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0040.eps}
+  \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0200.eps}
+  % \includegraphics[width=0.49\textwidth]{fig-meta-mode2-2000.eps}
   \caption{ The probability of being in a certain range of conformations for
     periodically oscillatory EF. Different periods,
     i.e. $T=10$~ps, 40~ps and 200~ps, are presented here.  The
@@ -949,31 +966,31 @@ weaker than the case of constant EF.
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-3.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-4.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-iflux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-iflux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-iflux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-iflux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-iflux-5.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-5.eps}\\
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-1.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-2.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-3.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-4.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-iflux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-iflux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-iflux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-iflux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-iflux-5.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-5.eps}\\
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-1.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-2.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-3.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-4.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-iflux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-iflux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-iflux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-iflux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-iflux-5.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-1.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-5.eps}\\
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-1.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-2.eps}
   % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-3.eps}
@@ -1035,7 +1052,7 @@ for the $T=200$~ps case.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{fig.ala/graphs/graph-t0010-1.eps}
+  \includegraphics[width=0.5\textwidth]{graph-t0010-1.eps}
   \caption{Schematic plot of the main probability flux between conformations
     on the Ramachandran histogram
     for periodically oscillatory EF, $T=10$~ps. The thickness 
@@ -1215,9 +1232,169 @@ example the answer to the question of which is the slowest and the second slowes
 conformation to which conformation the system moves) are basically consistent for the alanine from the point of view of force fields.
 
 
+\begin{thebibliography}{10}
 
-\bibliography{ref}{}
-\bibliographystyle{unsrt}
+\bibitem{bohr2000microwave}
+Henrik Bohr and Jakob Bohr.
+\newblock Microwave-enhanced folding and denaturation of globular proteins.
+\newblock {\em Physical Review E}, 61(4):4310, 2000.
+
+\bibitem{bohr2000microwave-1}
+Henrik Bohr and Jakob Bohr.
+\newblock Microwave enhanced kinetics observed in ord studies of a protein.
+\newblock {\em Bioelectromagnetics}, 21(1):68--72, 2000.
+
+\bibitem{dePomerai2000cell}
+David de~Pomerai, Clare Daniells, Helen David, Joanna Allan, Ian Duce, Mohammed
+  Mutwakil, David Thomas, Phillip Sewell, John Tattersall, Don Jones, and Peter
+  Candido.
+\newblock Cell biology: Non-thermal heat-shock response to microwaves.
+\newblock {\em Nature}, 405:417--418, 2000.
+
+\bibitem{inskip2001cellular}
+Peter~D Inskip, Robert~E Tarone, Elizabeth~E Hatch, Timothy~C Wilcosky,
+  William~R Shapiro, Robert~G Selker, Howard~A Fine, Peter~M Black, Jay~S
+  Loeffler, and Martha~S Linet.
+\newblock Cellular-telephone use and brain tumors.
+\newblock {\em New England Journal of Medicine}, 344(2):79--86, 2001.
+
+\bibitem{mancinelli2004non}
+Fabrizio Mancinelli, Michele Caraglia, Alberto Abbruzzese, Guglielmo
+  d'Ambrosio, Rita Massa, and Ettore Bismuto.
+\newblock Non-thermal effects of electromagnetic fields at mobile phone
+  frequency on the refolding of an intracellular protein: Myoglobin.
+\newblock {\em Journal of cellular biochemistry}, 93(1):188--196, 2004.
+
+\bibitem{budi2005electric}
+A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
+\newblock Electric field effects on insulin chain-b conformation.
+\newblock {\em The Journal of Physical Chemistry B}, 109(47):22641--22648,
+  2005.
+
+\bibitem{budi2007effect}
+A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
+\newblock Effect of frequency on insulin response to electric field stress.
+\newblock {\em The Journal of Physical Chemistry B}, 111(20):5748--5756, 2007.
+
+\bibitem{budi2008comparative}
+Akin Budi, F~Sue Legge, Herbert Treutlein, and Irene Yarovsky.
+\newblock Comparative study of insulin chain-b in isolated and monomeric
+  environments under external stress.
+\newblock {\em The Journal of Physical Chemistry B}, 112(26):7916--7924, 2008.
+
+\bibitem{toschi2008effects}
+Francesca Toschi, Francesca Lugli, Fabio Biscarini, and Francesco Zerbetto.
+\newblock Effects of electric field stress on a $\beta$-amyloid peptide.
+\newblock {\em The Journal of Physical Chemistry B}, 113(1):369--376, 2008.
+
+\bibitem{astrakas2011electric}
+Loukas Astrakas, Christos Gousias, and Margaret Tzaphlidou.
+\newblock Electric field effects on chignolin conformation.
+\newblock {\em Journal of Applied Physics}, 109(9):094702--094702, 2011.
+
+\bibitem{astrakas2012structural}
+Loukas~G Astrakas, Christos Gousias, and Margaret Tzaphlidou.
+\newblock Structural destabilization of chignolin under the influence of
+  oscillating electric fields.
+\newblock {\em Journal of Applied Physics}, 111(7):074702--074702, 2012.
+
+\bibitem{damm2012can}
+Markus Damm, Christoph Nusshold, David Cantillo, Gerald~N Rechberger, Karl
+  Gruber, Wolfgang Sattler, and C~Oliver Kappe.
+\newblock Can electromagnetic fields influence the structure and enzymatic
+  digest of proteins? a critical evaluation of microwave-assisted proteomics
+  protocols.
+\newblock {\em Journal of proteomics}, 75:5533--5543, 2012.
+
+\bibitem{starzyk2013proteins}
+A.~Starzyk and M.~Cieplak.
+\newblock Proteins in the electric field near the surface of mica.
+\newblock {\em The Journal of Chemical Physics}, 139:045102, 2013.
+
+\bibitem{english2009nonequilibrium}
+N.J. English, G.Y. Solomentsev, and P.~O'Brien.
+\newblock Nonequilibrium molecular dynamics study of electric and low-frequency
+  microwave fields on hen egg white lysozyme.
+\newblock {\em The Journal of chemical physics}, 131:035106, 2009.
+
+\bibitem{solomentsev2012effects}
+G.Y. Solomentsev, N.J. English, and D.A. Mooney.
+\newblock Effects of external electromagnetic fields on the conformational
+  sampling of a short alanine peptide.
+\newblock {\em Journal of Computational Chemistry}, 33:917--923, 2012.
+
+\bibitem{ciccotti1975direct}
+G~Ciccotti and G~Jacucci.
+\newblock Direct computation of dynamical response by molecular dynamics: The
+  mobility of a charged lennard-jones particle.
+\newblock {\em Physical Review Letters}, 35(12):789, 1975.
+
+\bibitem{ciccotti1979thought}
+G.~Ciccotti, G.~Jacucci, and I.R. McDonald.
+\newblock "thought-experiments" by molecular dynamics.
+\newblock {\em Journal of Statistical Physics}, 21(1):1--22, 1979.
+
+\bibitem{orlandini2011hydrodynamics}
+S.~Orlandini, S.~Meloni, and G.~Ciccotti.
+\newblock Hydrodynamics from statistical mechanics: combined dynamical-nemd and
+  conditional sampling to relax an interface between two immiscible liquids.
+\newblock {\em Phys. Chem. Chem. Phys.}, 13:13177--13181, 2011.
+
+\bibitem{orlandini2011hydrodynamics-01}
+Sergio Orlandini, Simone Meloni, and Giovanni Ciccotti.
+\newblock Hydrodynamics from dynamical non-equilibrium md.
+\newblock In {\em AIP Conference Proceedings}, volume 1332, page~77, 2011.
+
+\bibitem{delaHoz2005microwaves}
+Antonio de~la Hoz, Angel Diaz-Ortiz, and Andres Moreno.
+\newblock Microwaves in organic synthesis. thermal and non-thermal microwave
+  effects.
+\newblock {\em Chemical Society Reviews}, 34(2):164--178, 2005.
+
+\bibitem{pronk2013gromacs}
+S.~Pronk, S.~P{\'a}ll, R.~Schulz, P.~Larsson, P.~Bjelkmar, R.~Apostolov, M.R.
+  Shirts, J.C. Smith, P.M. Kasson, D.~van~der Spoel, and Hess B.~Lindahl E.
+\newblock Gromacs 4.5: a high-throughput and highly parallel open source
+  molecular simulation toolkit.
+\newblock {\em Bioinformatics}, pages 1--10, 2013.
+
+\bibitem{schuette2011markov}
+C.~Sch{\"u}tte, F.~No{\'e}, J.~Lu, M.~Sarich, and E.~Vanden-Eijnden.
+\newblock Markov state models based on milestoning.
+\newblock {\em The Journal of Chemical Physics}, 134:204105, 2011.
+
+\bibitem{bohner2012algorithm}
+Matthias~U Bohner and Johannes K{\"a}stner.
+\newblock An algorithm to find minimum free-energy paths using umbrella
+  integration.
+\newblock {\em The Journal of Chemical Physics}, 137:034105, 2012.
+
+\bibitem{seifert2010fluctuation}
+U.~Seifert and T.~Speck.
+\newblock Fluctuation-dissipation theorem in nonequilibrium steady states.
+\newblock {\em EPL (Europhysics Letters)}, 89:10007, 2010.
+
+\bibitem{scovell2000phase}
+Dawn~L Scovell, Tim~D Pinkerton, Valentin~K Medvedev, and Eric~M Stuve.
+\newblock Phase transitions in vapor-deposited water under the influence of
+  high surface electric fields.
+\newblock {\em Surface science}, 457(3):365--376, 2000.
+
+\bibitem{vogel2008femtosecond}
+A.~Vogel, N.~Linz, S.~Freidank, and G.~Paltauf.
+\newblock Femtosecond-laser-induced nanocavitation in water: implications for
+  optical breakdown threshold and cell surgery.
+\newblock {\em Physical review letters}, 100(3):38102, 2008.
+
+\bibitem{vitalini2013speed}
+F.~Vitalini, A.S.J.S. Mey, F.~No\'e, and B.G. Keller.
+\newblock The speed of force fields.
+\newblock {\em unpublished}, 2013.
+
+\end{thebibliography}
+
+% \bibliography{ref}{}
+% \bibliographystyle{unsrt}
 
 
 
