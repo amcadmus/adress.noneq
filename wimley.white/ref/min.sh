@@ -3,8 +3,7 @@
 file=$1
 out=$2
 GROMPP=$3
-MPIRUN=$4
-MDRUN=$5
+MDRUN=$4
 
 cat > MIN.mdp <<EOF
 constraints         =  none
@@ -14,10 +13,10 @@ nstlist             =  10
 coulombtype         =  PME
 fourierspacing      =  0.12
 ns_type             =  grid  
-rlist               =  1.2   
-rcoulomb            =  1.2 
-vdw-type            = switch
-rvdw-switch         = 0.9
+rlist               =  1.4
+rcoulomb            =  1.4 
+vdw-type            =  switch
+rvdw-switch         =  0.9
 rvdw                =  1.1   
 pme_order           =  4     
 ewald_rtol          =  1e-6  
@@ -30,7 +29,7 @@ emstep              =  0.01
 pbc                 =  xyz   
 EOF
 np=8
-$GROMPP -f MIN.mdp -p ${file}.top  -po MINout.mdp -c ${file}.gro -o $out.tpr -maxwarn 3 
-$MPIRUN -np $np $MDRUN -np $np -deffnm $out  -cpi $out.cpt
+$GROMPP -f MIN.mdp -p ${file}.top  -po MINout.mdp -c ${file}.gro -o $out.tpr 
+$MDRUN -deffnm $out  -cpi $out.cpt
 
 
