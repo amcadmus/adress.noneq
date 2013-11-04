@@ -25,6 +25,12 @@ set style line 43 lc 3 lw 3 pt 2 lt 4
 set style line 44 lc 4 lw 3 pt 2 lt 4
 set style line 45 lc 5 lw 3 pt 2 lt 4
 
+set style line 51 lc 1 lw 3 pt 2 lt 5
+set style line 52 lc 2 lw 3 pt 2 lt 5
+set style line 53 lc 3 lw 3 pt 2 lt 5
+set style line 54 lc 4 lw 3 pt 2 lt 5
+set style line 55 lc 5 lw 3 pt 2 lt 5
+
 set style line 20 lc 0 lw 3 pt 2 lt 2
 
 set multiplot
@@ -49,6 +55,8 @@ pl \
 'ext.mode1.010.Ex.01.00.t1000ps.recheck/set/metastable.out'	u 1:2 every 4 w l ls 11 not, '' u 1:3 every 4 w l ls 12 not, '' u 1:4 every 4 w l ls 13  not, '' u 1:5 every 4 w l ls 14  not, '' u 1:6 every 4 w l ls 15 not,\
 'ext.mode1.010.Ex.01.00.t1000ps.box4.0.r1.0/set/metastable.out'	u 1:2 every 4 w l ls 21 not, '' u 1:3 every 4 w l ls 22 not, '' u 1:4 every 4 w l ls 23  not, '' u 1:5 every 4 w l ls 24  not, '' u 1:6 every 4 w l ls 25 not,\
 'ext.mode1.010.Ex.01.00.t1000ps.box4.0.r1.5/set/metastable.out'	u 1:2 every 4 w l ls 41 not, '' u 1:3 every 4 w l ls 42 not, '' u 1:4 every 4 w l ls 43  not, '' u 1:5 every 4 w l ls 44  not, '' u 1:6 every 4 w l ls 45 not
+
+# 'ext.mode1.010.Ex.01.00.t1000ps.fullSD/set/metastable.out'	u 1:2 every 4 w l ls 51 not, '' u 1:3 every 4 w l ls 52 not, '' u 1:4 every 4 w l ls 53  not, '' u 1:5 every 4 w l ls 54  not, '' u 1:6 every 4 w l ls 55 not,\
 
 # 'ext.mode1.010.Ex.01.00.t0600ps/set/metastable.out'	u 1:2 every 4 w l ls 11 not, '' u 1:3 every 4 w l ls 12 not, '' u 1:4 every 4 w l ls 13  not, '' u 1:5 every 4 w l ls 14  not, '' u 1:6 every 4 w l ls 15 not,\
 
@@ -81,6 +89,8 @@ pl \
 'ext.mode1.010.Ex.01.00.t1000ps.recheck/set/metastable.out'	u 1:2 every 48 w l ls 11 t 'L = 2.7 nm, R_{ex} = 1.0 nm', '' u 1:3 every 48 w l ls 12 not, '' u 1:4 every 48 w l ls 13  not, '' u 1:5 every 48 w l ls 14  not, '' u 1:6 every 48 w l ls 15 not,\
 'ext.mode1.010.Ex.01.00.t1000ps.box4.0.r1.0/set/metastable.out'	u 1:2 every 48 w l ls 21 t 'L = 4.0 nm, R_{ex} = 1.0 nm', '' u 1:3 every 48 w l ls 22 not, '' u 1:4 every 48 w l ls 23  not, '' u 1:5 every 48 w l ls 24  not, '' u 1:6 every 48 w l ls 25 not,\
 'ext.mode1.010.Ex.01.00.t1000ps.box4.0.r1.5/set/metastable.out'	u 1:2 every 48 w l ls 41 t 'L = 4.0 nm, R_{ex} = 1.5 nm', '' u 1:3 every 48 w l ls 42 not, '' u 1:4 every 48 w l ls 43  not, '' u 1:5 every 48 w l ls 44  not, '' u 1:6 every 48 w l ls 45 not
+
+# 'ext.mode1.010.Ex.01.00.t1000ps.fullSD/set/metastable.out'	u 1:2 every 48 w l ls 51 t 'L = 2.7 nm, R_{ex} = 1.0 nm', '' u 1:3 every 48 w l ls 52 not, '' u 1:4 every 48 w l ls 53  not, '' u 1:5 every 48 w l ls 54  not, '' u 1:6 every 48 w l ls 55 not,\
 
 # 'ext.mode1.010.Ex.01.00.t0600ps/set/metastable.out'		u 1:2 every 48 w l ls 11 t 'L = 2.7 nm, R_{ex} = 1.0 nm', '' u 1:3 every 48 w l ls 12 not, '' u 1:4 every 48 w l ls 13  not, '' u 1:5 every 48 w l ls 14  not, '' u 1:6 every 48 w l ls 15 not,\
 
