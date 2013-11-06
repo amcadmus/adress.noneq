@@ -84,70 +84,82 @@ proteins is a subject of increasing attention since it is linked to the problem 
 electromagnetic radiation. Despite its major relevance, a
 satisfactory understanding of how the EF influences the behaviour of proteins
 has not been reached so far although a considerable number of
-experimental~\cite{bohr2000microwave, bohr2000microwave-1,
+experimental e.g.~\cite{bohr2000microwave, bohr2000microwave-1,
   dePomerai2000cell, inskip2001cellular, mancinelli2004non} and
-theoretical~\cite{budi2005electric, budi2007effect,
+theoretical e.g.~\cite{budi2005electric, budi2007effect,
   budi2008comparative, toschi2008effects, astrakas2011electric,
   astrakas2012structural, damm2012can, starzyk2013proteins,
-  english2009nonequilibrium, solomentsev2012effects} studies have been devoted to this topic;
-where the references reported above represent only a minor sample of examples.
+  english2009nonequilibrium, solomentsev2012effects}
+studies have been devoted to this topic.
 
-
-In this perspective, molecular dynamics (MD) has been proved to be useful in
+In this perspective, molecular dynamics (MD) has been proven useful in
 understanding the behavior of a protein 
 in both static and oscillatory EF~\cite{budi2005electric, budi2007effect, budi2008comparative,
   toschi2008effects, astrakas2011electric, astrakas2012structural,
   damm2012can, starzyk2013proteins, english2009nonequilibrium,
   solomentsev2012effects}. In these studies, the initial
 configurations are usually taken from the Protein Data Bank (PDB),
-and then temperature controlled simulations are performed for a maximum extension of the order of 10-60 of nanoseconds.
+and then temperature controlled simulations are performed for a maximum
+time range of the order of 10-60 nanoseconds.
 During this simulation time 
 relevant conformational changes characterizing the solvated molecule can be observed. 
 Along the trajectories, various observable, such as the
 secondary structure, root mean square displacement (RMSD), the dipole
-moment, shape parameters are calculated as a function of time or taking its time average. This approach releases useful information on how the
+moment, shape parameters are calculated as a function of time, or
+in stationary condition, taking time averages.
+This approach releases useful information on how the
 secondary structure of the molecule is changed by external  EF.  However,
-by plotting some quantities against time, one may observe strong
-fluctuations; the entity of such fluctuations are such that a quantitative 
+the behavior of observables in time is characterized by 
+strong
+fluctuations. The entity of the fluctuations is such that a quantitative 
 analysis becomes difficult and does not allow for  a clear understanding of the rationale behind the conformational changes.
-Although the time average reduces the statistical uncertainty,
-however in this specific case, it is indeed not well defined;
-in fact we are in the presence of a nonequilibrium process
+A time average can reduce the statistical uncertainty,
+but in non-stationary conditions, it is a not-well-founded procedure.
+In fact, we are studying non-stationary nonequilibrium process
 (e.g. relaxing process to the new conformations under a static
 EF, or the dynamics from one conformation to the other under an oscillatory EF).
-
-In this perspective, if one wants to use MD, the proper way to do it would be that of treating a situation of nonequilibrium with algorithms that can explicitly describe it. This is the approach that will be followed in this work.
-
-The method we employ is the dynamical nonequilibrium molecular dynamics simulation (D-NEMD).
-The method was firstly developed by one of us (GC) and coworkers~\cite{ciccotti1975direct, ciccotti1979thought}.
-It has been recently applied, with success, to the study of
+In this perspective, if one wants to use MD, the proper way to do it would be that of treating a situation of nonequilibrium with algorithms that can explicitly describe it.
+This is the approach that will be followed in this work, using
+the dynamical nonequilibrium molecular dynamics simulation (D-NEMD).
+The method, firstly developed by one of us and coworkers~\cite{ciccotti1975direct, ciccotti1979thought}, 
+has been recently applied, to the study of
 hydrodynamics~\cite{orlandini2011hydrodynamics,
-  orlandini2011hydrodynamics-01}. The essential feature of D-NEMD is the following: It provides a way of evaluating
-nonequilibrium observables by using a properly determined ensemble of nonequilibrium MD
-simulations.  In this context, the method can be used for analyzing the
+  orlandini2011hydrodynamics-01}. The essential feature of D-NEMD is to
+provide a way of evaluating time-dependent
+nonequilibrium averages starting from a properly determined initial ensemble.
+In this context, the method can be used to analyze the
 conformational changes of a solvated molecule, subject to a time-dependent EF.
 In the present paper, we study a small peptide, alanine dipeptide, as a model for showing how the method can be used. 
 The choice of a small peptide, rather than a larger one, is done firstly because it
 is easier to draw clear conclusions on the nonequilibrium properties
-of a single peptide by excluding a possible interplay between
+of a single peptide by excluding the slow-going interplay between
 different peptide segments along a chain.
-Secondly, the computational cost required is rather massive and thus the testing of the various methodology developments proposed here would not be easy to accomplish for large molecules. Of course, given a positive outcome for such a model system, the aim is that of approaching systems of growing complexity.
+Secondly, the computational cost required is rather massive and thus  testing
+the various methodology proposed here would be hampered for large molecules,
+although they remain our goal.
+
 The paper is organized as follows:
 We firstly describe the idea of D-NEMD, then
 introduce the physical
-observables for analyzing the nonequilibrium properties. The numerical results of alanine
-dipeptide under static and sine-shaped oscillatory EF are
+observables chosen to analyze the nonequilibrium responses.
+The numerical results for the response of alanine
+dipeptide under static and oscillatory EF are
 finally presented. By calculating the nonequilibrium properties from D-NEMD
-simulations, we are able to address the question of how the peptide
-changes the conformation in an EF (conformational space), when do these changes happens (time scale),
+simulations, we are able to address
+a few relavant questions: (i)~How the conformation of the peptide
+changes in an EF (conformational space);
+(ii)~When do these changes happen (time scale),
 and how likely they are (probability). 
-To our knowledge, this study is one of the few (if not the first)  where nonequilibrium w.r.t. conformation is explicitly considered for a large molecule in solution subject to time-dependent EF.
+To our knowledge, this study is one of the few (if not the first)  where
+time-dependent nonequilibrium w.r.t. conformation
+is explicitly considered for a large molecule
+in solution subject to time-dependent EF.
 
 
 
 \section{Methodology}
 \subsection{Nonequilibrium molecular dynamics simulation}
-In this section we briefly review the approach for performing dynamical nonequilibrium
+In this section we briefly review the dynamical approach to nonequilibrium
 molecular dynamics (D-NEMD) \cite{ciccotti1975direct, ciccotti1979thought,
   orlandini2011hydrodynamics, orlandini2011hydrodynamics-01}.
 In the following we denote the macroscopic observable by $O(t)$. If at $t$
@@ -160,12 +172,14 @@ expressed by
 we refer to $\hat O (\vect x)$ as the microscopic observable, 
 which is measured at each point in the phase space $\vect x$.
 Here we always assume that the initial probability distribution
-$\rho(\vect x, 0)$ is known and is identical to the equilibrium distribution of the system
+$\rho(\vect x, 0)$ is known. In particular, in our case,
+it is identical to the equilibrium distribution of the system
 without EF.
 The bracket on the right hand side of Eq.~\eqref{eqn:tmp1} denotes, as usual, the inner product in the
 phase space.  We assume that he dynamics of the system is governed by the
 Hamiltonian equation, i.e. $\dot {\vect x} = J \cdot \nabla_{\vect x}
-\mathcal H(\vect x)$, where $\mathcal H$ is the Hamiltonian, and $J$ is
+\mathcal H(\vect x, t)$, where $\mathcal H$ is the time-dependent Hamiltonian,
+and $J$ is
 the symplectic matrix. The Liouville equation for the probability
 distribution writes:
 \begin{align}\label{eqn:tmp2}
@@ -173,33 +187,36 @@ distribution writes:
 \end{align}
 where $iL(t) = \{\cdot, \mathcal H\}$ is the Liouville operator.
 Eq.~\eqref{eqn:tmp2}
-can be formally solved by $\rho(\vect x, t) = e^{-iL(t)} \rho(\vect x, 0)$.
+can be formally solved by $\rho(\vect x, t) = U^\dagger(t,0) \rho(\vect x, 0)$,
+where $U^\dagger(t,0) = \exp\{-i \int_0^t d t' L(t')\}$.
 On the other hand
 \begin{align}
   \frac{d \hat O(\vect x(t))}{dt} = \nabla_{\vect x}\hat O\cdot \dot{\vect x}
   = \nabla_{\vect x}\hat O\cdot J\cdot \nabla_{\vect x}\mathcal H
   = iL(t) \hat O (\vect x(t))
 \end{align}
-This equation can be formally solved by $\hat O(\vect x(t)) = e^{iL(t)} \hat O(\vect x(0))$, therefore,
+This equation can be formally solved by
+$\hat O(\vect x(t)) = U(t,0)\,\hat O(\vect x(0))$, therefore,
 \begin{align}\nonumber
   O(t) & = \langle \hat O(\vect x), \rho(\vect x, t)\rangle
-  = \langle \hat O(\vect x), e^{-iL(t)} \rho(\vect x, 0)\rangle
-  = \langle e^{iL(t)}\hat O(\vect x), \rho(\vect x, 0)\rangle\\\label{eqn:tmp4}
+  = \langle \hat O(\vect x), U^\dagger(t,0)\, \rho(\vect x, 0)\rangle
+  = \langle U(t,0)\,\hat O(\vect x), \rho(\vect x, 0)\rangle\\\label{eqn:tmp4}
   &= \langle \hat O(\vect x(t)), \rho(\vect x, 0)\rangle
 \end{align}
 Since we assume that the system starts from the distribution of equilibrium (without EF)
  Eq.~\eqref{eqn:tmp4} expresses the fact that the 
 observable $O(t)$ calculated in a situation of nonequilibrium is equal to the ensemble average of
-the microscopic observable measured along trajectories, the
-initial configurations of which are subject to the \emph{equilibrium}
+the microscopic observable computed along trajectories, starting from
+initial configurations sampled from an \emph{equilibrium}
 distribution. In practical terms we proceed by first running an equilibrium MD simulation
 to generate a sample of configurations. Next we employ these configurations as
-initial configurations and, for each, the Hamiltonian dynamics is integrated until
-time $t$. These trajectories are also called \emph{branching
-  trajectories} in this paper (see Fig.\ref{branching} for a pictorial representation). 
+initial configurations and, for each, the full Hamiltonian dynamics is integrated until
+time $t$.
+In this paper, these trajectories are called \emph{branching
+  trajectories} (see Fig.\ref{branching} for a pictorial representation). 
 Finally, the value of the macroscopic observable at time $t$ is
 calculated by averaging the microscopic observable measured at each time $t$ along each branching trajectory.
-Stochastic dynamics (Langevin) can be hadeled analogoursly.
+Stochastic dynamics (e.g.~Langevin dynamics) can be handled analogoursly.
 
 %Being more generalized, if the microscopic observable depends not only on the end
 %configuration at time $t$, but also on the historical
@@ -219,18 +236,20 @@ Stochastic dynamics (Langevin) can be hadeled analogoursly.
 %dynamics rather than the Hamiltonian dynamics.
 
 
-\subsection{Control of temperature in Nonequilibrium MD}\label{sec:tmp2b}
+\subsection{Control of temperature in nonequilibrium MD}\label{sec:tmp2b}
 
 
 \begin{figure}
   \centering
   \includegraphics[width=0.3\textwidth]{thermostat.eps}
   \caption{Schematic plot of the nonequilibrium temperature control scheme.
-    The white area is the region characterized by Hamiltonian dynamics without the direct action of an external thermostat.
-    The gray area is the region where the external thermostat is used in order to keep the target temperature.
-    $R_{ex}$ denotes the size of the Hamiltonian dynamics region, which
-    is a sphere at the center of the box.
-    The whole system is subject to the periodic boundary conditions. }
+    The white area is the region characterized by pure dynamics without any direct action by the external thermostat.
+    The gray area is the region where the thermostat is used to keep the target temperature.
+    $R_{ex}$ denotes the size of the purely dynamical region, which
+    is a sphere around the molecule of interest (in our case it is the alanine
+    dipeptide).
+    % at the center of the box.
+    The whole system is subject to periodic boundary conditions. }
   \label{fig:tmp2}
 \end{figure}
 
@@ -246,7 +265,7 @@ nonthermal~\cite{delaHoz2005microwaves} effects of the EF
 on the configuration of the solvated alanine dipeptide.
 For this reason a proper control of the temperature in a nonequilibrium system
 becomes an important issue; in fact it was argued that  an
-accurate control of the internal reaction temperature is essential for being able to
+accurate control of the internal reaction temperature is essential to
 perform reproducible experiments~\cite{damm2012can}.
 A straightforward (and realistic) implementation of the temperature control consists in 
 embedding the alanine into an infinitely large solvent environment, and 
@@ -259,14 +278,16 @@ However, in practice, in most of the cases the computational cost of having larg
 Therefore, it is of interest to substitute the infinitely large
 solvent environment with a smaller affordable system and at the same time accurately reproduce the nonequilibrium
 physical properties of interest.
-
-As it is well known, in MD, for equilibrium situations, the solution is to couple
-the system to a an external thermostat, under which the desired ensemble
+In MD, for equilibrium situations, the solution is to couple
+the system to an external thermostat, under which the desired ensemble
 (canonical in this case) can be
 sampled by simulating a finite size system with periodic boundary
 conditions.
-However, coupling the system to a thermostat for nonequilibrium situations is a delicate issue.
-In fact, since a thermostat is explicitly designed to bring the system into equilibrium, any perturbation produced by the EF would be mostly adsorbed by the thermostat. This means that the physics of the original Hamiltonian dynamics with the EF would be lost and the response to the perturbation becomes unphysical. 
+However, coupling the system to a thermostat for nonequilibrium situations is a more delicate issue.
+In fact, since a thermostat is explicitly designed to bring the system into
+thermal equilibrium,
+the perturbation produced by the EF would be mostly adsorbed by the thermostat. This means that the physics of the original dynamics in presence of the EF
+would be lost and the response to the perturbation would be unphysical. 
 %will disturb the original Hamiltonian dynamics. This is
 %in general problematic, 
 %because the dynamics  under thermostating is artificial designed,
@@ -283,33 +304,38 @@ In fact, since a thermostat is explicitly designed to bring the system into equi
 % generated by the thermostat is artificial, and deviation from the
 % Hamiltonian dynamics under investigation will introduce artificial
 % a effects in the nonequilibrium observations.
+
 In this section we propose a procedure to solve the problem: we
-observe the Hamiltonian dynamics (without thermostat) of the alanine 
-itself and the water molecules in the closer solvation shells is
-crucial, in order to determine the response of the observable of interest
-under the perturbation of the EF (in this work, it is the conformational change of alanine).
+start observing that the dynamics without thermostat of the alanine, 
+and the water molecules in the closer solvation shells, is
+crucial to determine the response of the observable of interest
+under the EF perturbation
+(in this work, the observable is the conformational change of alanine).
 Instead the detailed dynamics of
-the water molecules far away is not of primary importance, that is the region beyond the first solvation shells plays the role of a thermodynamic bath only. 
+the water molecules far away is not of primary importance: the region beyond the first solvation shells plays mainly the role of a thermodynamic bath. 
 Therefore, instead of simulating an infinitely
-large system, we only simulate a finite size system with periodic
-boundary condition with the following characteristics. The simulating region is divided in two
-subregions: a spherically defined region around the alanine dipeptide, centered at the
-alpha-carbon of radius $R_{ex}$. Here the dynamics is
-Hamiltonian and molecules are not subject to a thermostat; we refer to such subregion as \emph{the Hamiltonian dynamics
-region}. Instead beyond $R_{ex}$, the dynamics of water is coupled
-to a Langevin thermostat, and this region is called \emph{the thermostated
-region} (see Fig.~\ref{fig:tmp2}). For technical convenience we
+large system, we simulate our finite size system with periodic
+boundary condition, and with the following characteristics:
+(i)~The simulating region is divided in two
+subregions, a spherical region around the alanine dipeptide of radius $R_{ex}$,
+centered at the alpha-carbon. Here the dynamics is
+not subject to a thermostat.
+We refer to such subregion as \emph{the  dynamical
+region}. (ii)~Beyond $R_{ex}$, the dynamics of the water molecules is coupled
+to a Langevin thermostat.  This region is called \emph{the thermostated
+region}. For technical convenience we
 fix the position of the alpha-carbon in space, so that the alanine is always
-located at the center of the simulation region.
-Therefore, a realistic nonequilibrium  dynamics is preserved in the Hamiltonian dynamics region (where the properties of interest are observed)
-and possible direct artificial effects of the thermostating process in the region outside are negligible because of the finite correlation
+located at the center of the simulation region (see Fig.~\ref{fig:tmp2}).
+In these conditions, the  dynamics is preserved in the dynamical region (where the properties of interest are observed), while 
+possible artificial effects of the thermostating process in the outside region
+are negligible due to the finite correlation
 range of liquid water.
 At the same time, the thermostated region works as a infinitely large
 environment that effectively absorbs the extra heat produced by the EF.
 The validity of the above
-statement will be later on carefully checked by a series of numerical tests where it is shown that
+statement will be checked by a series of numerical tests where it is shown that
 the response of observables in nonequilibrium (i.e. under the effect of the EF) does not depend on the size of the system
-and on the size of the Hamiltonian dynamics subregion, provided that they are
+and on the size of the  dynamical subregion, provided that they are
 reasonably large.
 
 
@@ -319,32 +345,17 @@ reasonably large.
 % but want to correctly calculate the nonequilibrium observable,
 % we 
 
-\section{Example I: Alanine dipeptide
+\section{Case I: Alanine dipeptide
   under a uniform  constant EF}
 
 \subsection{System settings and simulation protocol}
-At time $t=0$~ps, the system
-has been fully equilibriated without any EF. From $t=0$ to
-the warm-up time $t=t_{\textrm{warm}}$, the eclectic field is switched on linearly, while
-after $t=t_{\textrm{warm}}$, the field is kept constant in time at
-$E_{\infty}$.  In this work we consider $t_{\textrm{warm}} = 10$~ps,
-and $E_{\infty} = 1$~V/nm.
-The direction of the field is arbitrarily chosen along the
-$x$ direction, in fact the dipole of the equilibrium configurations of
-alanine can be along any direction.
-In this paper we denote the
-EF as a function of time $\vect E(t)$.
-Therefore, the constant EF is
-$\vect E(t) = (E_\infty\cdot t/t_{warm},0,0)$ as $0\leq t < t_{warm}$, and 
-$\vect E(t) = (E_\infty,0,0)$
-as $t \geq t_{warm}$.
 The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
-described by the CHARMM27 force field, and solved in 644 TIP3P
+described by the CHARMM27 force field, and dissolved in 644 TIP3P
 water molecules.
 %The EF exserts force $\vect F = q \vect E(t)$ on
 %the partial charge $q$ in the system.
-The size of the  Hamiltonian dynamics region is $R_{ex} = 1.0$~nm.
+The size of the  dynamical region is $R_{ex} = 1.0$~nm.
 All simulations are performed by a home-modified GROMACS 4.5~\cite{pronk2013gromacs}.
 First, an equilibrium NVT simulation of
 100~\textsf{ns} was performed with a Langevin thermostat (time-scale
@@ -362,11 +373,25 @@ interaction was smoothed from $0.8$ to $1.0~\textsf{nm}$ by the
 method was applied to calculate the electrostatic interaction in this
 periodic system. In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
-The whole system is also coupled to a Parrinello-Rahman barostat with $\tau_P = 2.0~\textsf{ps}$ to keep
-the pressure at the ambient condition (1~Bar). Since the
+The whole system is also coupled to a Parrinello-Rahman barostat~\cite{parrinello1981polymorphic} with $\tau_P = 2.0~\textsf{ps}$ to keep
+the pressure at ambient condition (1~Bar). Since the
 change of the system size is small and slow, the pressure control
 does not have an sizeable effect on the
 dynamics of the system.
+At time $t=0$~ps, the system
+has been fully equilibrated without any EF. From $t=0$ to
+the warm-up time $t=t_{\textrm{warm}}$, the EF is switched on linearly, while
+after $t=t_{\textrm{warm}}$, the field is kept constant in time at
+$E_{\infty}$.  In this work we consider $t_{\textrm{warm}} = 10$~ps,
+and $E_{\infty} = 1$~V/nm.
+The direction of the field is arbitrarily chosen along the
+$x$ direction.
+In this paper we denote the
+EF as a function of time $\vect E(t)$.
+Therefore, for the case of constant EF, we have
+$\vect E(t) = (E_\infty\cdot t/t_{warm},0,0)$ for $0\leq t < t_{warm}$, and 
+$\vect E(t) = (E_\infty,0,0)$
+for $t \geq t_{warm}$.
 
 
 %  (see also Fig.~\ref{fig:tmp3} for
@@ -383,7 +408,7 @@ dynamics of the system.
     (a): the
     equilibrium state at $t=0$~\textsf{ps}. (b): The new equilibrium
     state at $t=1000$~\textsf{ps}, i.e., fully relaxed under the
-    action of a constant EF of 1~V/nm. The darker color
+    action of a constant EF of 1~V/nm.  Darker color
     indicates higher probability.}
   \label{fig:tmp4}
 \end{figure}
@@ -1245,169 +1270,9 @@ example the answer to the question of which is the slowest and the second slowes
 conformation to which conformation the system moves) are basically consistent for the alanine from the point of view of force fields.
 
 
-\begin{thebibliography}{10}
 
-\bibitem{bohr2000microwave}
-Henrik Bohr and Jakob Bohr.
-\newblock Microwave-enhanced folding and denaturation of globular proteins.
-\newblock {\em Physical Review E}, 61(4):4310, 2000.
-
-\bibitem{bohr2000microwave-1}
-Henrik Bohr and Jakob Bohr.
-\newblock Microwave enhanced kinetics observed in ord studies of a protein.
-\newblock {\em Bioelectromagnetics}, 21(1):68--72, 2000.
-
-\bibitem{dePomerai2000cell}
-David de~Pomerai, Clare Daniells, Helen David, Joanna Allan, Ian Duce, Mohammed
-  Mutwakil, David Thomas, Phillip Sewell, John Tattersall, Don Jones, and Peter
-  Candido.
-\newblock Cell biology: Non-thermal heat-shock response to microwaves.
-\newblock {\em Nature}, 405:417--418, 2000.
-
-\bibitem{inskip2001cellular}
-Peter~D Inskip, Robert~E Tarone, Elizabeth~E Hatch, Timothy~C Wilcosky,
-  William~R Shapiro, Robert~G Selker, Howard~A Fine, Peter~M Black, Jay~S
-  Loeffler, and Martha~S Linet.
-\newblock Cellular-telephone use and brain tumors.
-\newblock {\em New England Journal of Medicine}, 344(2):79--86, 2001.
-
-\bibitem{mancinelli2004non}
-Fabrizio Mancinelli, Michele Caraglia, Alberto Abbruzzese, Guglielmo
-  d'Ambrosio, Rita Massa, and Ettore Bismuto.
-\newblock Non-thermal effects of electromagnetic fields at mobile phone
-  frequency on the refolding of an intracellular protein: Myoglobin.
-\newblock {\em Journal of cellular biochemistry}, 93(1):188--196, 2004.
-
-\bibitem{budi2005electric}
-A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
-\newblock Electric field effects on insulin chain-b conformation.
-\newblock {\em The Journal of Physical Chemistry B}, 109(47):22641--22648,
-  2005.
-
-\bibitem{budi2007effect}
-A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
-\newblock Effect of frequency on insulin response to electric field stress.
-\newblock {\em The Journal of Physical Chemistry B}, 111(20):5748--5756, 2007.
-
-\bibitem{budi2008comparative}
-Akin Budi, F~Sue Legge, Herbert Treutlein, and Irene Yarovsky.
-\newblock Comparative study of insulin chain-b in isolated and monomeric
-  environments under external stress.
-\newblock {\em The Journal of Physical Chemistry B}, 112(26):7916--7924, 2008.
-
-\bibitem{toschi2008effects}
-Francesca Toschi, Francesca Lugli, Fabio Biscarini, and Francesco Zerbetto.
-\newblock Effects of electric field stress on a $\beta$-amyloid peptide.
-\newblock {\em The Journal of Physical Chemistry B}, 113(1):369--376, 2008.
-
-\bibitem{astrakas2011electric}
-Loukas Astrakas, Christos Gousias, and Margaret Tzaphlidou.
-\newblock Electric field effects on chignolin conformation.
-\newblock {\em Journal of Applied Physics}, 109(9):094702--094702, 2011.
-
-\bibitem{astrakas2012structural}
-Loukas~G Astrakas, Christos Gousias, and Margaret Tzaphlidou.
-\newblock Structural destabilization of chignolin under the influence of
-  oscillating electric fields.
-\newblock {\em Journal of Applied Physics}, 111(7):074702--074702, 2012.
-
-\bibitem{damm2012can}
-Markus Damm, Christoph Nusshold, David Cantillo, Gerald~N Rechberger, Karl
-  Gruber, Wolfgang Sattler, and C~Oliver Kappe.
-\newblock Can electromagnetic fields influence the structure and enzymatic
-  digest of proteins? a critical evaluation of microwave-assisted proteomics
-  protocols.
-\newblock {\em Journal of proteomics}, 75:5533--5543, 2012.
-
-\bibitem{starzyk2013proteins}
-A.~Starzyk and M.~Cieplak.
-\newblock Proteins in the electric field near the surface of mica.
-\newblock {\em The Journal of Chemical Physics}, 139:045102, 2013.
-
-\bibitem{english2009nonequilibrium}
-N.J. English, G.Y. Solomentsev, and P.~O'Brien.
-\newblock Nonequilibrium molecular dynamics study of electric and low-frequency
-  microwave fields on hen egg white lysozyme.
-\newblock {\em The Journal of chemical physics}, 131:035106, 2009.
-
-\bibitem{solomentsev2012effects}
-G.Y. Solomentsev, N.J. English, and D.A. Mooney.
-\newblock Effects of external electromagnetic fields on the conformational
-  sampling of a short alanine peptide.
-\newblock {\em Journal of Computational Chemistry}, 33:917--923, 2012.
-
-\bibitem{ciccotti1975direct}
-G~Ciccotti and G~Jacucci.
-\newblock Direct computation of dynamical response by molecular dynamics: The
-  mobility of a charged lennard-jones particle.
-\newblock {\em Physical Review Letters}, 35(12):789, 1975.
-
-\bibitem{ciccotti1979thought}
-G.~Ciccotti, G.~Jacucci, and I.R. McDonald.
-\newblock "thought-experiments" by molecular dynamics.
-\newblock {\em Journal of Statistical Physics}, 21(1):1--22, 1979.
-
-\bibitem{orlandini2011hydrodynamics}
-S.~Orlandini, S.~Meloni, and G.~Ciccotti.
-\newblock Hydrodynamics from statistical mechanics: combined dynamical-nemd and
-  conditional sampling to relax an interface between two immiscible liquids.
-\newblock {\em Phys. Chem. Chem. Phys.}, 13:13177--13181, 2011.
-
-\bibitem{orlandini2011hydrodynamics-01}
-Sergio Orlandini, Simone Meloni, and Giovanni Ciccotti.
-\newblock Hydrodynamics from dynamical non-equilibrium md.
-\newblock In {\em AIP Conference Proceedings}, volume 1332, page~77, 2011.
-
-\bibitem{delaHoz2005microwaves}
-Antonio de~la Hoz, Angel Diaz-Ortiz, and Andres Moreno.
-\newblock Microwaves in organic synthesis. thermal and non-thermal microwave
-  effects.
-\newblock {\em Chemical Society Reviews}, 34(2):164--178, 2005.
-
-\bibitem{pronk2013gromacs}
-S.~Pronk, S.~P{\'a}ll, R.~Schulz, P.~Larsson, P.~Bjelkmar, R.~Apostolov, M.R.
-  Shirts, J.C. Smith, P.M. Kasson, D.~van~der Spoel, and Hess B.~Lindahl E.
-\newblock Gromacs 4.5: a high-throughput and highly parallel open source
-  molecular simulation toolkit.
-\newblock {\em Bioinformatics}, pages 1--10, 2013.
-
-\bibitem{schuette2011markov}
-C.~Sch{\"u}tte, F.~No{\'e}, J.~Lu, M.~Sarich, and E.~Vanden-Eijnden.
-\newblock Markov state models based on milestoning.
-\newblock {\em The Journal of Chemical Physics}, 134:204105, 2011.
-
-\bibitem{bohner2012algorithm}
-Matthias~U Bohner and Johannes K{\"a}stner.
-\newblock An algorithm to find minimum free-energy paths using umbrella
-  integration.
-\newblock {\em The Journal of Chemical Physics}, 137:034105, 2012.
-
-\bibitem{seifert2010fluctuation}
-U.~Seifert and T.~Speck.
-\newblock Fluctuation-dissipation theorem in nonequilibrium steady states.
-\newblock {\em EPL (Europhysics Letters)}, 89:10007, 2010.
-
-\bibitem{scovell2000phase}
-Dawn~L Scovell, Tim~D Pinkerton, Valentin~K Medvedev, and Eric~M Stuve.
-\newblock Phase transitions in vapor-deposited water under the influence of
-  high surface electric fields.
-\newblock {\em Surface science}, 457(3):365--376, 2000.
-
-\bibitem{vogel2008femtosecond}
-A.~Vogel, N.~Linz, S.~Freidank, and G.~Paltauf.
-\newblock Femtosecond-laser-induced nanocavitation in water: implications for
-  optical breakdown threshold and cell surgery.
-\newblock {\em Physical review letters}, 100(3):38102, 2008.
-
-\bibitem{vitalini2013speed}
-F.~Vitalini, A.S.J.S. Mey, F.~No\'e, and B.G. Keller.
-\newblock The speed of force fields.
-\newblock {\em unpublished}, 2013.
-
-\end{thebibliography}
-
-% \bibliography{ref}{}
-% \bibliographystyle{unsrt}
+\bibliography{ref}{}
+\bibliographystyle{unsrt}
 
 
 
