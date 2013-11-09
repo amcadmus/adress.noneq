@@ -42,7 +42,7 @@
    
 \begin{abstract}
 In this paper, we investigate the conformational dynamics of alanine
-   dipeptide under an external electric field by the
+   dipeptide under an external electric field by 
    nonequilibrium molecular dynamics simulation.  We consider
    the case of a constant and of an oscillatory field. In this context we
 propose a procedure to
@@ -55,30 +55,13 @@ effects of the field. For the constant field different time-scales are
    strong as the previous case, and non-trivial nonequilibrium
    circular paths in the conformation space are revealed by calculating the
    integrated net probability fluxes.
-  % In this paper, we investigate the conformational dynamics of alanine
-  % dipeptide under an external electric field (EF) by the
-  % nonequilibrium molecular dynamics (MD) simulation, which enables us
-  % to calculate the nonequilibrium physical properties that are not
-  % available for traditional equilibrium MD simulation.  We study both
-  % the constant and oscillatory EF cases, and discuss the way to
-  % implement the temperature control in the nonequilibrium MD
-  % simulation, which removes the irrelevant thermal effect of the EF
-  % from the system. In the constant EF case, different time-scales are
-  % discovered in the conformational, dipole moment, and orientational
-  % dynamics. Moreover, we prove that the solvent structure only
-  % marginally changes when the external EF is switched on.  In the
-  % oscillatory EF case, the conformational changes are shown to be as
-  % strong as constant EF case, and non-trivial nonequilibrium
-  % conformational circulations are presented by calculating the
-  % integrated net probability fluxes.
+  
 \end{abstract}
 
 \maketitle
 
 
 \section{Introduction}
-
-
 The possible effect of the electric field (EF) on the conformation of
 proteins is a subject of increasing attention since it is linked to the problem of exposing human tissues to
 electromagnetic radiation. Despite its major relevance, a
@@ -91,9 +74,8 @@ theoretical e.g.~\cite{budi2005electric, budi2007effect,
   astrakas2012structural, damm2012can, starzyk2013proteins,
   english2009nonequilibrium, solomentsev2012effects}
 studies have been devoted to this topic.
-
 In this perspective, molecular dynamics (MD) has been proven useful in
-understanding the behavior of a protein 
+understanding the behaviour of a protein 
 in both static and oscillatory EF~\cite{budi2005electric, budi2007effect, budi2008comparative,
   toschi2008effects, astrakas2011electric, astrakas2012structural,
   damm2012can, starzyk2013proteins, english2009nonequilibrium,
@@ -104,17 +86,17 @@ time range of the order of 10-60 nanoseconds.
 During this simulation time 
 relevant conformational changes characterizing the solvated molecule can be observed. 
 Along the trajectories, various observable, such as the
-secondary structure, root mean square displacement (RMSD), the dipole
+secondary structure, root mean square displacement (RMSD), dipole
 moment, shape parameters are calculated as a function of time, or
 in stationary condition, taking time averages.
 This approach releases useful information on how the
 secondary structure of the molecule is changed by external  EF.  However,
-the behavior of observables in time is characterized by 
+the behaviour of observables in time is characterized by 
 strong
 fluctuations. The entity of the fluctuations is such that a quantitative 
 analysis becomes difficult and does not allow for  a clear understanding of the rationale behind the conformational changes.
 A time average can reduce the statistical uncertainty,
-but in non-stationary conditions, it is a not-well-founded procedure.
+however in non-stationary conditions this would be a not-well-founded procedure.
 In fact, we are studying non-stationary nonequilibrium process
 (e.g. relaxing process to the new conformations under a static
 EF, or the dynamics from one conformation to the other under an oscillatory EF).
@@ -133,33 +115,26 @@ In the present paper, we study a small peptide, alanine dipeptide, as a model fo
 The choice of a small peptide, rather than a larger one, is done firstly because it
 is easier to draw clear conclusions on the nonequilibrium properties
 of a single peptide by excluding the slow-going interplay between
-different peptide segments along a chain.
+different peptide segments along a chain. 
 Secondly, the computational cost required is rather massive and thus  testing
 the various methodology proposed here would be hampered for large molecules,
-although they \bluec{remain (\textit{does Giovanni write ``remain''? I cannot read})} our goal.
-
+although they remain our goal.  \recheck{In any case, alanine dipeptide
+is large enough so that the conformational changes of its internal degrees of freedom represent valid observables for a test of validity and utility of our approach.}
 The paper is organized as follows:
 \recheck{
-  We firstly describe the idea of D-NEMD, and a local thermostating method
-for nonequilibrium temperature control.
-% Then
-% introduce the physical
-% observables chosen to analyze the nonequilibrium responses.
-Then
-after introducing the physical
+  We firstly describe the idea of D-NEMD, and propose a technical improvement consisting in the definition and application of a local thermostating process.
+Next, after introducing the physical
 observables chosen to analyze the nonequilibrium response,
-the numerical results for the response of alanine
-dipeptide under static and oscillatory EF are
-finally presented.} By calculating the nonequilibrium properties from D-NEMD
+the numerical results for the case of a static and oscillatory EF, respectively, are discussed.} By calculating the nonequilibrium properties from D-NEMD
 simulations, we are able to address
-a few relavant questions: (i)~How the conformation of the peptide
+a few relevant questions: (i)~How the conformation of the peptide
 changes in an EF (conformational space);
-(ii)~When do these changes happen (time scale),
+(ii)~When these changes happen (time scale),
 and how likely they are (probability). 
 To our knowledge, this study is one of the few (if not the first)  where
 time-dependent nonequilibrium w.r.t. conformation
-is explicitly considered for a \bluec{large molecule \textit{what does Giovanni write here? For me, the alanine dipeptide molecule is NOT large at all!}}
-in solution subject to time-dependent EF.
+is explicitly considered for a (relatively large) molecule
+in solution subject to an external time-dependent EF.
 
 
 
@@ -219,27 +194,12 @@ to generate a sample of configurations. Next we employ these configurations as
 initial configurations and, for each, the full Hamiltonian dynamics is integrated until
 time $t$.
 In this paper, these trajectories are called \emph{branching
-  trajectories} (see Fig.\ref{branching} for a pictorial representation). 
+  trajectories} {\bf EITHER WE PUT THE PICTURE OR REMOVE THIS SENTENCE {(see Fig.\ref{branching} for a pictorial representation)}}. 
 Finally, the value of the macroscopic observable at time $t$ is
 calculated by averaging the microscopic observable measured at each time $t$ along each branching trajectory.
-Stochastic dynamics (e.g.~Langevin dynamics) can be handled analogoursly.
+Stochastic dynamics (e.g.~Langevin dynamics) can be handled analogously.
 
-%Being more generalized, if the microscopic observable depends not only on the end
-%configuration at time $t$, but also on the historical
-%configurations along the trajectory, then expression~\eqref{eqn:tmp4} takes the generalized form:
-%\begin{align}
-%  O(t) = \int d\vect x\,\rho(\vect x, 0) \int_{\mathcal C\{\vect x, 0; t\}} \hat O[\vect x_s] \,d\mathcal P[\vect x_s] 
-%\end{align}
-%where the microscopic observable $ \hat O[\vect x_s] $ is now a
-%functional of the trajectory.  $\mathcal C\{\vect x, 0; t\}$ is the
-%set of all continuous trajectories starting at point $\vect x$ at time
-%0, and ending at time $t$. $\mathcal P[\vect x_s] $ is the measure of
-%the trajectory space $\mathcal C$.  In our case, it is the
-%$\delta$-function peaked around the trajectories governed by the
-%Hamiltonian dynamics. To be general, it can also be the measure of all
-%trajectories generated by, for example, a Langevin dynamics, then the
-%branching trajectories should be generated by the Langevin
-%dynamics rather than the Hamiltonian dynamics.
+
 
 
 \subsection{Control of temperature in nonequilibrium MD}\label{sec:tmp2b}
@@ -258,14 +218,6 @@ Stochastic dynamics (e.g.~Langevin dynamics) can be handled analogoursly.
     The whole system is subject to periodic boundary conditions. }
   \label{fig:tmp2}
 \end{figure}
-
-% The aforementioned D-NEMD simulation algorithm
-% does not describe how the boundary of the system should be set up.
-% The very naive idea of doing the simulation
-% is to simulate a infinitely large isolated system, or any large enough
-% isolated subsystem of it.
-% In practice, 
-% Therefore, we are interested in a 
 For this study, we are interested in 
 nonthermal~\cite{delaHoz2005microwaves} effects of the EF
 on the configuration of the solvated alanine dipeptide.
@@ -294,23 +246,6 @@ In fact, since a thermostat is explicitly designed to bring the system into
 thermal equilibrium,
 the perturbation produced by the EF would be mostly adsorbed by the thermostat. This means that the physics of the original dynamics in presence of the EF
 would be lost and the response to the perturbation would be unphysical. 
-%will disturb the original Hamiltonian dynamics. This is
-%in general problematic, 
-%because the dynamics  under thermostating is artificial designed,
-%so that the equilibrium distribution can be correctly produce, but not
-%the nonequilibrium properties of system.
-% dynamics of the system is no longer Hamiltonian, and is
-% artificial designed to reach the equilibrium probability distribution.
-% However, for a nonequilibrium system, the \emph{dynamics} properties
-% will be distrubed by the thermostat, because the
-% dynamics of the system is no longer Hamiltonian, and is
-% artificial designed to reach the equilibrium probability distribution.
-% For a nonequilibrium simulation, simply couple the system
-% to a thermostat may not be a good idea, because the \emph{dynamics}
-% generated by the thermostat is artificial, and deviation from the
-% Hamiltonian dynamics under investigation will introduce artificial
-% a effects in the nonequilibrium observations.
-
 In this section we propose a procedure to solve the problem: we
 start observing that the dynamics without thermostat of the alanine, 
 and the water molecules in the closer solvation shells, is
@@ -344,13 +279,6 @@ the response of observables in nonequilibrium (i.e. under the effect of the EF) 
 and on the size of the  dynamical subregion, provided that they are
 reasonably large.
 
-
-% Notice again we actually
-% do not want to precisely calculate each trajectory starting from the
-% initial configurations,
-% but want to correctly calculate the nonequilibrium observable,
-% we 
-
 \section{Case I: Alanine dipeptide
   under a uniform  constant EF}
 
@@ -368,21 +296,19 @@ First, an equilibrium NVT simulation of
 $\tau_T = 0.5~\textsf{ps}$).  Along the trajectory, configurations were taken every
 50~\textsf{ps} and we used 2000 initial configurations for each nonequilibrium
 MD simulation (if not stated otherwise for specific cases).
-% They server as starting point of the branching
-% trajectories.
 The branching trajectories were integrated by the
 Leap-frog scheme with the aforementioned nonequilibrium
 temperature control technique.  The
 time step was $\Delta t = 0.002~\textsf{ps}$. The short-range
 interaction was smoothed from $0.8$ to $1.0~\textsf{nm}$ by the
-``switch'' method provided by Gromacs.  An energy conserving PME
+``switch'' method provided by GROMACS.  An energy conserving PME
 method was applied to calculate the electrostatic interaction in this
 periodic system. In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
 The whole system is also coupled to a Parrinello-Rahman barostat~\cite{parrinello1981polymorphic} with $\tau_P = 2.0~\textsf{ps}$ to keep
 the pressure at ambient condition (1~Bar). Since the
 change of the system size is small and slow, the pressure control
-does not have an sizeable effect on the
+does not have an sizable effect on the
 dynamics of the system.
 At time $t=0$~ps, the system
 has been fully equilibrated without any EF. From $t=0$ to
@@ -400,38 +326,31 @@ $\vect E(t) = (E_\infty,0,0)$
 for $t \geq t_{warm}$.
 
 
-%  (see also Fig.~\ref{fig:tmp3} for
-%  the vanished initial dipole moment)
-
 \subsection{Molecular conformation and net probability flux}
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.00\textwidth]{fig-all-1.eps}
+  \includegraphics[width=1.00\textwidth]{fig-all.eps}
   % \raisebox{0.2\height}{\includegraphics[width=0.22\textwidth]{c-2.eps}}
   % \includegraphics[width=0.37\textwidth]{fig-begin-1.eps}
   % \includegraphics[width=0.37\textwidth]{fig-end-1.eps}
   \caption{
     \recheck{
     The probability density of the conformations of the alanine dipeptide plotted on the Ramachandran plot.
-    (a): An alanine dipeptide molecule.  Two dihedral angles
-    $\phi$ and $\psi$ that are used to define the Ramachandran plot
-    are shown with the molecule.
-    (b): The equilibrium probability density on Ramachandran plot
-    at $t=0$~\textsf{ps}. (c): The probability density of the new equilibrium
-    state at $t=1000$~\textsf{ps}, i.e., fully relaxed under the
-    action of a constant EF of 1~V/nm.  Darker color
+    (a): Two dihedral angles
+    $\phi$ and $\psi$ are used to represent the molecular conformations of the alanine dipeptide.
+    (b): The equilibrium probability density 
+    at $t=0$~\textsf{ps}. (c): The probability density of equilibrium at $t=1000$~\textsf{ps}, resulting from the application of a constant EF of 1~V/nm. Darker color
     indicates higher probability.
-    The Ramachandran plots are divided into 5 subregions corresponding
+    Plots are divided into 5 subregions corresponding
     to 5 molecular conformations:
-    $A_1 = \{(\phi, \psi) | -134 \leq \phi <  13, -125 \leq \psi < 74\}$,
-    $A_2 = \{(\phi, \psi) |  128 \leq \phi <-134, -125 \leq \psi < 74\}$,
-    $B_1 = \{(\phi, \psi) | -110 \leq \phi <  13,   74 \leq \psi <-125\}$,
-    $B_2 = \{(\phi, \psi) |  128 \leq \phi <-110,   74 \leq \psi <-125\}$,
-    $C   = \{(\phi, \psi) |   13 \leq \phi < 128, -180 \leq \psi < 180\}$.
-    Considering the periodic bondary condition, if we write, for example,
-    $128 \leq \phi <-134$, it means that $\phi$ is in either range
-    $128 \leq \phi < 180$ or in $-180 \leq \phi < -134$.
+    $A_1 = \{(\phi, \psi) | -134^\circ \leq \phi <  13^\circ, -125^\circ \leq \psi < 74^\circ\}$,
+    $A_2 = \{(\phi, \psi) |  128^\circ \leq \phi <-134^\circ, -125^\circ \leq \psi < 74^\circ\}$,
+    $B_1 = \{(\phi, \psi) | -110^\circ \leq \phi <  13^\circ,   74^\circ \leq \psi <-125^\circ\}$,
+    $B_2 = \{(\phi, \psi) |  128^\circ \leq \phi <-110^\circ,   74^\circ \leq \psi <-125^\circ\}$,
+    $C   = \{(\phi, \psi) |   13^\circ \leq \phi < 128^\circ, -180^\circ \leq \psi < 180^\circ\}$.
+    Considering the angular periodicity, if we write, for example,
+    $128^\circ \leq \phi <-134^\circ$, it implies that $\phi$ is in a range of $98$ degrees, between $128^\circ$ and $226^\circ$ ($226^\circ$ correspond to $-134^\circ$).
     This division is the same for both plot (b) and (c).
     }
   }
@@ -439,115 +358,63 @@ for $t \geq t_{warm}$.
 \end{figure}
 
 \recheck{
-The time-dependent molecular conformations of alanine dipeptide are
-investigated by estimate the probability density $p(\phi,\psi,t)$ on
-the Ramachandran plot at time $t$. The definition of dihedral
-angles $\phi$ and $\psi$ are given in Fig.~\ref{fig:tmp4}~(a).
-The equilibrium probability density of
-the conformations on the Ramachandran plot
-is given in Fig.~\ref{fig:tmp4}~(b), and the fully
-relaxed probability of conformations under
-the action of $E_{\infty} = 1$~V/nm is
-given in Fig.~\ref{fig:tmp4}~(c).  It is evident from the plot that
-the probability density of conformations are grouped in several clusters,
-% {\bf LUIGI COMMENT: HAN below is really not clear}\\
-% This means that only few of the total of conformations are likely to be visited,
-% in the nonequilibrium process.
-% These conformations are called ``metastable states''.
-% The strict definition of the
-% metastability is not exactly the same as those conformations that are likely to be observed.
-% Since in this paper we do not focus on the discussion of the definition for the metastability of the system,
-% we do not distinguish the definations, and assume they have the same meaning.
-% {\bf END COMMENT}\\
-therefore, for the sake of clarity, we divide the
+The change of conformation in time of the alanine dipeptide is
+investigated by analyzing the probability density $p(\phi,\psi,t)$ on
+the Ramachandran plot at time $t$. The definition of the dihedral
+angles $\phi$ and $\psi$ is given in Fig.~\ref{fig:tmp4}~(a).
+The probability density of conformations of equilibrium in absence of external field is shown in Fig.~\ref{fig:tmp4}~(b), while the same quantity, resulting from the molecular relaxation to the action of $E_{\infty} = 1$~V/nm is
+given in Fig.~\ref{fig:tmp4}~(c). In the plot one can identify several clusters
+in which conformations are grouped.
+Therefore, in order to simplify the analysis, we divide the
 Ramachandran histogram into 5 subregions $\{A_1, A_2, B_1, B_2, C\}$
-(see the caption of Fig.~\ref{fig:tmp4} for definition), and
-call each subregion, in short, a conformation of the alanine dipeptide. 
-These conformations
+(see caption of Fig.~\ref{fig:tmp4} for the corresponding definition).
+It is worth to notice that these conformations
 are found in different secondary structures of a peptide chain:
 $A_1$ and $A_2$ are
 corresponding to the $\alpha$-helix. $B_1$ and $B_2$ are
 corresponding to the $\beta$-sheet. $C$ is corresponding to the
 left-handed $\alpha$-helix.
 }
-% In the end,
-% the analysis of conformations on the Ramachandran plot is
-% reduced to the analysis of the 5 conformations.
 
 
-From Fig.~\ref{fig:tmp4}, it is obvious that the probability of
-conformations changes when the external EF is applied.
-For instance, the probability of conformation $C$ vanishes in equilibrium,
-but plays an important role when the EF is applied. We
-therefore want to study how the alanine changes from one conformation
-to the other, how fast the change is, and the relations to the 
-the EF. 
-Firstly, we calculate the probability
-of each conformation:
+
+\recheck{From Fig.~\ref{fig:tmp4}, it is evident that the probability with which a
+conformation occurs changes when the external EF is applied.
+The most evident case is conformation $C$; in fact it is not present at all before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
+The starting point is the calculation of the probability
+of each conformation}:
 \begin{align}
   P_I(t) = \mathbb P (\vect x_t \in I), \quad  I \in \{A_1, A_2, B_1, B_2, C\},
 \end{align}
 Notice that the probability is time dependent, being an observable in nonequilibrium situation.
-% which is the time dependent probability of the alanine being in metastable
-% state $I$.
-% Secondly, we study the
-% forward and backward transition probability of the metastable conformations, which is defined by
-% \begin{align}
-%   P^{\fwd}_{J,I}(t) & = \mathbb P( \vect x_{t+\Delta t} \in J | \vect x_t \in I) \\
-%   P^{\bwd}_{J,I}(t) & = \mathbb P( \vect x_{t-\Delta t} \in J | \vect x_t \in I) 
-%   % \qquad I, J \in \{A_1, A_2, B_1, B_2, C\},
-% \end{align}
-% where $\Delta t$ is the time-scale of the observation.
-% For a revserible and homogeneous Markov process, it is easy to show
-% that $P^{\fwd}_{J,I} = P^{\bwd}_{J,I}$, and both of them are time independent. For a general nonequilibrium
-% process considered by the present work, this relation is genarlly not guarenteed.
-Secondly,
-we study the net probability flux from conformation $I$ to $J$, defined by:
+Next,
+we consider the net probability flux from conformation $I$ to $J$, defined by:
 \begin{align}\nonumber
   F_{J,I}(t) & = \frac1{\Delta t}\, [\mathbb P( \vect x_{t-\Delta t} \in J, \vect x_t \in I) - \mathbb P( \vect x_{t-\Delta t} \in I, \vect x_t \in J)], \\\label{eqn:tmp7}
   & J,I \in \{A_1, A_2, B_1, B_2, C\}.
 \end{align}
 \recheck{Where $\mathbb P( \vect x_{t-\Delta t} \in J, \vect x_t \in I)$
-is joint probability of the alanine being of conformation $J$ at
-time $(t-\Delta t)$ \emph{and} being of conformation $I$ at time $t$.
-A similar definition applies to $\mathbb P( \vect x_{t-\Delta t} \in I, \vect x_t \in J)$.}
-Here the time interval $\Delta t$ should be small enough comparing with the
+is the joint probability of the alanine being in conformation $J$ at
+time $(t-\Delta t)$ \emph{and} being in conformation $I$ at time $t$.
+The same definition applies to $\mathbb P( \vect x_{t-\Delta t} \in I, \vect x_t \in J)$.}
+Here the time interval $\Delta t$ should be small enough compared to the
 time scale of conformational dynamics,
 so that the changes in the conformation probabilities
-can be linearly approximated.
-In the meanwhile,  $\Delta t$ should also be  large enough comparing with
-the timestep of MD integrator, 
-so that the left hand of Eq.~\eqref{eqn:tmp7} is well-defined, and can be
-estimated with good statistical accuracy.
-See also the discussions in Ref.~\cite{schuette2011markov}.
-% \recheck{$F_{J,I}(t)$ is essentially the time-dependent rate of
-%   conformation change from $J$ to $I$.}
-A positive value \recheck{of $F_{J,I}(t)$} indicates the
-net flux from $J$ to $I$,
+can be treated in linear approximation.
+At the same time,  $\Delta t$ should be also large enough compared with
+the timestep of the MD integrator, 
+so that the quantities of Eq.~\eqref{eqn:tmp7} are well-defined, and can be
+estimated with sufficient numerical accuracy (see also Ref.~\cite{schuette2011markov}).
+A positive value \recheck{of $F_{J,I}(t)$} indicates that the
+net flux goes from $J$ to $I$,
 while a negative value indicates a net flux from $I$ to $J$.
-Through $F_{J,I}(t)$, the original overall nonequilibrium process $\vect x_t$
-is reduced to the probabilistic link between discretized conformations $\{A_1, A_2, B_1, B_2, C\}$.
-% If the resulting reduced process 
-% is time-reversible, then it is obvious that
-% $ F_{J,I}(t) = 0$. In an other word, the quantity $ F_{J,I}(t) $ represents
-% the irreversibility of the reduced process on
-% $\{A_1, A_2, B_1, B_2, C\}$.
-% In practice, to measure $ F_{J,I}(t)$, one needs first to approximate the limit
-% in Eq.~\eqref{eqn:tmp7} by the finite difference,
-% then calculate the joint probabilities on
-% the right-hand-side from the molecular trajectories.
-% In this context, for a precise finite difference approximation a smaller $\Delta t$ is
-% preferable although the statistical uncertainty of measuring the joint probabilities
-% is higher. In practice,
-% we use a $\Delta t$ that is small enough for a precise finite difference approximation,
-% and not small enough so that the joint probabilities can be calculated with acceptable accuracy.
-In the case of oscillatory EF, the net probability flux is also highly oscillatory,
-thus it is convenient to study the integrated net probability flux:
+Through $F_{J,I}(t)$, the analysis of the nonequilibrium process 
+is projected onto the analysis of the probabilistic link between discretized conformations $\{A_1, A_2, B_1, B_2, C\}$.
+\recheck{In the case of oscillatory EF, the behaviour of the net probability flux is also highly oscillatory, thus, in order to clearly identify the essential features of the molecular conformational changes, it is convenient to study the integrated net probability flux, defined as:
 \begin{align}\label{eqn:tmp7a}
   Q_{J,I} (t) = \int_0^t F_{J,I}(\tau)d \tau,
 \end{align}
-\redc{this expresses the cumulative effects of the EF
-on the conformations of the molecule.}
+which expresses the cumulative effects due to the action of EF on the conformations of the molecule.}
 
 
 
@@ -559,94 +426,35 @@ on the conformations of the molecule.}
 \begin{figure}
   \centering
   \includegraphics[]{fig-meta-npt.eps}
-  \caption{\recheck{The time-dependent probability of conformations $P_I(t)$} 
-    when a constant EF is present.
+  \caption{\recheck{The time-dependent probability of conformations $P_I(t)$ 
+    when a constant EF is present, where $\sum_I P_I(t) = 1, \forall t$.}
     The warm-up time is $t_{warm} = 10$~ps. The red line refers to conformation $I = A_1$,
     green to $A_2$, dark blue to $B_1$, purple to $B_2$ and light blue
-    to $C$. \recheck{Please notice that the summation of all conformational
-      probabilities
-    is identity, i.e.~$\sum_I P_I(t) = 1$.}
+    to $C$. 
   }
   \label{fig:tmp5}
 \end{figure}
 
 \begin{figure}
   \centering
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-fwd-5.eps}\\
-  % \caption{The populations of the metastable sets as a function of time.
-  %   The dashed vertical lines indicate the three different time scale of
-  % metastable set population at $t_{\textrm{warm}} = 10~\textsf{ps}$.}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-010-bwd-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-flux-5.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-1.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig-trans-010-iflux-5.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-iflux-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-500-iflux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-500-iflux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-500-iflux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-500-iflux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-500-iflux-5.eps}
-  \caption{
-    The net probability flux and its integral, for the constant EF case.
+  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-1.eps}
+  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-2.eps}
+  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-3.eps}
+  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-4.eps}
+  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-5.eps}
+  \caption{\recheck{
+    The net probability flux for the constant EF case.
     The warm-up time is $t_{warm} = 10$~ps.
-    The first row shows the probability flux $F_{J,I}(t)$ (defined by Eqn.~\eqref{eqn:tmp7}) in units of $\textrm{ps}^{-1}$, while the second
-    shows the integrated  probability flux denoted by $Q_{J,I}(t)$ (defined by Eqn.~\eqref{eqn:tmp7a}).
-    A constant $Q_{J,I}$ means vanishing net flux, while a increasing (decreasing)
-    $Q_{J,I}$ indicates positive (negative) net flux.
-    From left to right, the five
-    columns present $I = A_1$, $A_2$, $B_1$, $B_2$ and
+    The probability flux $F_{J,I}(t)$ (defined by Eqn.~\eqref{eqn:tmp7}) is reported in units of $\textrm{ps}^{-1}$.
+    From top, left to right we report $I = A_1$, $A_2$, $B_1$; bottom, left to right $B_2$ and
     $C$, respectively. In each plot, the red line stands for $J=A_1$,
     green for $J=A_2$, dark blue for $J=B_1$, purple for $J=B_2$ and light blue
-    for $J=C$. 
+    for $J=C$.} 
     }
   \label{fig:tmp6}
 \end{figure}
 
-% \begin{figure}
-%   \centering
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-fwd-1.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-fwd-2.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-fwd-3.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-fwd-4.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-fwd-5.eps}\\
-%   % \caption{The populations of the metastable sets as a function of time.
-%   %   The dashed vertical lines indicate the three different time scale of
-%   % metastable set population at $t_{\textrm{warm}} = 10~\textsf{ps}$.}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-bwd-1.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-bwd-2.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-bwd-3.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-bwd-4.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-bwd-5.eps}\\
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-flux-1.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-flux-2.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-flux-3.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-flux-4.eps}
-%   \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-100-flux-5.eps}
-%   \caption{Forward and backward nonequilibrium transition probability of the case $t_{warm} = 10$~ps.}
-%   \label{fig:tmp6}
-% \end{figure}
-
-
-The time-dependent probability density of \bluec{the system \textit{what does Giovanni add here?} in} a certain
+The time-dependent probability density of the system to stay in a certain
 conformation is given in
 Fig.~\ref{fig:tmp5}. The $\beta$-sheet conformations $B_1$ and $B_2$,
 which are present at the initial stage after EF is switched on,
@@ -663,19 +471,13 @@ equilibrium (at zero EF);  This is a nonequilibrium process.
 After a long enough time, the system
 is fully relaxed to the new equilibrium defined by the action of the constant EF,
 and stays there as long as the EF is kept.
-% \\
-% it gradually relaxes to the new equilibrium,
-% {\bf COMMENT LUIGI: Not clear, because some of the states may not be visited again. Anyway the choice of name and definition of ``metastable'' sound really not great}\\
-% For this reason we do not see any change
-% in the population density of the metastable states.\\
-% {\bf END COMMENT}\\
 \recheck{
-Even though the system is finally relaxed to the new equilibrium,
-the timescale of relaxation of each conformation is different. 
+An important point is that despite the system is finally relaxed to the new conformation of equilibrium,
+the relaxation timescales corresponding to each conformation are rather different. 
 From Fig.~\ref{fig:tmp5} and \ref{fig:tmp6}, we observe mainly
 three different timescales 10~ps, 100~ps and 500~ps,
-as summarized in Tab.~\ref{tab:tmp1}.
-}
+whose corresponding conformations are summarized in Tab.~\ref{tab:tmp1}.
+This is a relevant result because it shows the possibility of employing an external EF as a tool to identify relevant time scales in the conformational behaviour of a molecule in solution.}
 
 \begin{table}
   \centering
@@ -693,93 +495,12 @@ as summarized in Tab.~\ref{tab:tmp1}.
 \end{table}
 
 
-% Even though the system is finally relaxed to the new equilibrium,
-% the timescale of relaxation of each conformation is different. 
-% From Fig.~\ref{fig:tmp6}, we observe mainly
-% three different timescales, as summarized in Tab.~\ref{tab:tmp1}.
-% (1) From
-% $t=0$ to approximately 10~\textsf{ps}, a net flux from 
-% $A_1$ to $A_2$ establishes.
-% A similar flux is also observed from $B_1$ to $B_2$.
-% Afterwards, these two fluxes vanish and are finally reversed,
-% i.e. $A_2$ to $A_1$ and $B_2$ to $B_1$, respectively.
-% % the population of $A_1$ firstly decreases and then increases to the original value,
-% % while the population of $A_2$ increases sharply. The plot of the net probability flux shows that 
-% % there is firstly a fast probability flux (conformational change) from
-% % $A_1$ to $A_2$, and then follows a probability flux with the same maganitude in the opposite direction, i.e.  from
-% % $A_2$ to $A_1$.
-% Moreover, a net flux from all $\beta$-sheet conformations
-% ($B_1$ and $B_2$) into $\alpha$-helix conformations ($A_1$, $A_2$ and
-% $C$) has been established.
-% % Also in this time-scale, strong and increasing probability flux from $B_2$ to $B_1$ is observed from Fig.~\ref{fig:tmp6}.
-% % The population of $B_1$ remains almost unchanged,
-% % because it  at the same time loses population to $\alpha$-helix conformations.
-% % Since  $B_2$ conformations not only changes into $B_1$, but also into $\alpha$-helix conformations, we observe a charp
-% % decrease of $B_2$ population between 10 and 20~ps.
-% (2), From $t=10$ to
-% 100~\textsf{ps},
-% The net flux from  conformation $A_2$ to $A_1$ and from $B_2$ to $B_1$
-% gradually decays to 0. Conformational changes from $B_2$ to $A_1$, $A_2$ and $C$
-% vanishes in about 50~ps.
-% % The net flux from $B_1$  to $A_1$ and $C$ decay slower and 
-% % will be discussed later.
-% At this stage, the probability of $B_2$ decreases to almost 0,
-% while the probability of $A_2$
-% converge to a non-vanishing value of approximately 0.06.
-% % the population of $B_2$ decreases by 0.15, and this
-% % configuration almost disappears. Interestingly, the population of $A_1$
-% % increases by the same amount, and the population of $A_2$ goes back to
-% % the initial value. The populations of $B_1$ and $C$ start increasing
-% % and decreasing, correspondingly. The speed of these changes are much
-% % slower than that of $B_2$ and $A_1$.
-% (3) At the time scale of $
-% 500~\textsf{ps}$, the population of $A_1$, $B_1$ and $C$ converge to
-% the new equilibrium (system with $E(\infty) = 1~\textsf{V/m}$).
-% We observe a decaying probability flux from $B_1$ 
-% to $A_1$ and $C$.
-% The magnitude of the flux from $B_1$ to  $C$ is larger than that of $B_1$ to  $A_1$.
-% % It is interesting to see that at nonequilibrium steady state, $A_1$ exchange
-% % population with $A_2$, and $B_1$ exchange
-% % population with $B_2$. However, when the $C$ conformation hardly changes
-% % to any other conformation, as indicated by the almost 1 value of the forward
-% % transition probability of set $C$. This implies that at the left-handed $\alpha$-helix is
-% % acutally more stable than  other conformations.
-% This time-scale is actually 50 times slower than that, at which
-% the EF was switched on ($t_{\textrm{warm}} = 10~\textsf{ps}$).
-
-% After aligning to the external EF, the alanine slowly adjust its conformation,
-% and the new equilibrium is reached at slower time scales.
-
-% To further test the dynamics of metastable population, two simulations
-% of $t_{\textrm{warm}} = 100~\textsf{ps}$ and $t_{\textrm{warm}} =
-% 500~\textsf{ps}$ are performed. The first time scale of $t =
-% 20~\textsf{ps}$ disappears in both of the testing simulations. In the
-% simulation of $t_{\textrm{warm}} = 100~\textsf{ps}$, the population of
-% $A$, $B_1$ and $C$ converges to the non-equilibrium steady state at
-% around $500~\textsf{ps}$. This further verifies internal time scale of
-% $A_1$, $B_1$ and $C$ presented in the testing case of
-% $t_{\textrm{warm}} = 10~\textsf{ps}$.  The dynamics of $B_2$ is
-% faster: it decays to zero as soon as the external EF is fully
-% switched on. In the case of $t_{\textrm{warm}} = 500~\textsf{ps}$, the
-% growth of the external EF is comparable to the longest
-% internal time scale of system, which means that the changes of the
-% perturbation to the system is so slow that the system can catch up, so
-% the process can be treated as  quasi-equilibrium.
-% The numerical results show the same story: the relaxation
-% of all populations are around $500 \sim 600~\textsf{ps}$.
 
 \subsection{Molecular dipole response}
-
+\recheck{The fact that our external perturbation corresponds to the action of an electric field, naturally leads to the question of how the behaviour of the electric dipole moment of the molecule is influenced by the direct interaction with EF, and, in turn, how this is related to the overall conformational behaviour of the molecule reported in the previous section.}
 \begin{figure}
   \centering
-  % \includegraphics[width=0.3\textwidth]{fig.ala/ele.field/field.eps}
   \includegraphics[width=0.45\textwidth]{fig-dipol-order-conf.eps}
-  % \\
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a1-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/a2-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b1-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/b2-1.eps}
-  % \includegraphics[width=0.18\textwidth]{fig.ala/confs/ext.mode1.010.Ex.01.00.t1000ps.recheck/c-1.eps}
   \caption{The
     $x$-component of the molecular dipole moment, and the orientational order parameter
     of the alanine molecule as a
@@ -791,7 +512,7 @@ as summarized in Tab.~\ref{tab:tmp1}.
   \label{fig:tmp3}
 \end{figure}
 
-\redc{The dipole momenet of alanine dipeptide is defined by
+\redc{The dipole moment of the alanine dipeptide is defined by
 \begin{align}\label{eqn:tmp8}
   \boldsymbol\mu_{\textrm{alanine}}(t) =
   \bigg\langle
@@ -804,35 +525,28 @@ and the molecule is neutral, i.e.~$\sum_iq_i = 0$.
 $\vect r_i$ denotes the position of the atom $i$.}
 Fig.~\ref{fig:tmp3}
 shows that the $x$-component of the dipole moment 
-reaches 85\% of the maximum value in only 20~ps, which is comparable to
+reaches 85\% of its maximum value in only 20~ps, which is comparable to
 the warm-up time $t_{warm}$, and is 25 times
 smaller than the slowest time scale of the conformational relaxation.
-Then in the following 400~ps, the dipole slowly relaxes to the 
+Then in the following 400~ps, the dipole slowly relaxes to its 
 maximum value, that is, 
-6.8~Debye, and  corresponds to a dipole energy
+6.8~Debye, and  corresponds to an energy
 \redc{$\boldsymbol\mu_{\textrm{alanine}} \cdot \vect E$}
 of c.a.~$-13.6$~kJ/mol.
 We calculate the averaged dipole moment of different conformations
-\redc{(defined by taking averge in Eqn.~\eqref{eqn:tmp8}
+\redc{(defined by taking average in Eqn.~\eqref{eqn:tmp8}
 only for a certain conformation)}
 under the constant EF, and they are 6.8, 6.0, 5.1, 3.1 and 7.1~Debye
 for $A_1$, $A_2$, $B_1$, $B_2$ and $C$, respectively.
 The dipole energy difference between 3.1 and 7.1~Debye is roughly 8.0~kJ/mol.
-\recheck{NOTE by Han: \textit{
-    I removed the discussion of the free energy barrier.}}
-% The free energy barriers between the
-% conformations were reported to be of order $20\sim 40$~kJ/mol~\cite{bohner2012algorithm},
-% which is comparable to the dipole energy difference. 
-Therefore, under a constant EF, the system will be driven towards those
+\recheck{Under a constant EF, the system will be likely to be driven towards those
 conformations with higher dipole moment, because the
-energy of the system will be lowered.  This is the reason why
+energy of the system will be lowered.  We suggest that this energy difference may be the reason why
 we observe that the $\beta$-sheet conformations with lower dipole moment
 are driven towards $\alpha$-helix conformations, 
-and $A_1$ and $C$ are conformations with higher probability, because their dipole moments are the highest
+($A_1$ and $C$) whose dipole moments are the highest
 among all conformations. Moreover, the $B_2$ conformation vanishes because
-its dipole is significantly lower than other conformations.
-% This also explains the two-time scale behavior of the molecular dipole
-% moment.
+its dipole is significantly lower than other conformations.}
 From 0 to 20~ps, the probability of
 lowest dipole conformation $B_2$ quickly
 vanishes. We observe a sharp increment of the average molecular dipole and finally, approaching  500~ps, the conformation slowly migrates from
@@ -842,8 +556,8 @@ to the nonequilibrium steady value.
 
 
 \subsection{Response of the orientational order parameter}
-
-Let us define
+\recheck{As a complementary information to the behaviour of the molecular dipole moment it is of interest to describe the overall orientational behaviour of the molecules w.r.t. the EF. In fact while the dipole moment specifically expresses the rearrangement of charges within the molecule as a response to the EF, the overall direction of the molecule tells us about the interplay between the internal positional rearrangement of the atoms and their alignment w.r.t. the EF.   
+To this aim,} let us define
 the geometric direction of the alanine by the red vector in
 Fig.~\ref{fig:tmp3}, i.e.~by the angle bisector of the two black vectors,
 which connect the $\alpha$-carbon and the carbons
@@ -851,36 +565,25 @@ on the methyl groups.
 We considered the angle $\theta$ made by 
 the orientation of the alanine dipeptide in space w.r.t.~the direction of EF
 as a function of time.
-Then we defined the orientational order parameter 
+Then we defined an orientational order parameter 
 \begin{align}
   S_\theta = \langle 3\sin^2\theta - 2\rangle,
 \end{align}
-The ensemble average is taken over the trajectory ensemble, so it is
+\recheck{The ensemble average is made along the trajectories, so it is
 a time dependent observable.
 The order parameter
-indicates where lies \bluec{in time average \textit{(is it correct?)}} the molecule w.r.t.~the EF.
-If the molecule is perfectly perpendicular to the EF, then $S_\theta = 1$.
-If the molecule has no directional
-preference, then $S_\theta = 0$. \bluec{\textit{What does Giovanni's comment mean here?}}
-If the molecule lies perfectly parallel to the EF, then $S_\theta = -2$.
+indicates the (time dependent) average orientation of the molecule w.r.t. ~the direction of the EF.}
+If the molecule is perfectly perpendicular to the EF, then $S_\theta = 1$, if is perfectly parallel then $S_\theta = -2$, if it has no directional
+preference, then $S_\theta = 0$. 
 From $t=0$ to roughly 10~ps, the orientational order parameter rapidly
 decreases from 0 to $-0.15$, which means a weak alignment of the molecule to the external field.
 Then from $t=0$ to 500~ps, the molecule slowly changes to the orientation
-that is perpendicular to the EF. \bluec{\textit{I do not know how to explain here...}}
+that is perpendicular to the EF. \recheck{In fact the angle between the vector of the dipole moment and the vector of the geometric direction is always close to $\frac{\pi}{2}$; if one observes the correlation between the value of the dipole moment (which tends to be more parallel to the EF as its value increases) and the angle of the vector of the geometric direction, the result above can be easily explained.}  
 This orientational change is linked to the observed slowest
 time scale of the molecular conformational change.
-
+ 
 
 \subsection{Effects of EF on the solvent around the molecule}
-% This indicate that when the EF is switched on, the alanine almost immediately
-% changes its conformation so that the molecular dipole is aligned to the
-% external EF.
-% align itself to the
-% direction of the external EF without much conformational change.
-% And then, the conformation is slowly adjusted according to the
-% external field (now it is the same as the molecular dipole),
-% finally  the new equilibrium is reached at a much slower time scale
-% (approximately 500~ps).
 
 \begin{figure}
   \centering
@@ -900,7 +603,7 @@ time scale of the molecular conformational change.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % solvent effect
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-We study the solvent effect on the alanine dipeptide in the presence of the EF by investigating
+\recheck{While so far we have focused our attention on the behaviour of the alanine under the action of the EF, however it is important also to understand the effects of the EF on the solvating water molecules. Being water a polar molecule the electrostatic interaction with an EF can dramatically change its solvation structure around the alanine and thus, in turn, influence its conformational behaviour.For this reason, in this section we analyze the behaviour of the solvent around the alanine under the action of the EF by investigating}
 the radial distribution function (RDF) between $\alpha$-carbon and the
 center-of-mass (COM) of the water molecules
 (see Fig.~\ref{fig:tmp7a}). The average
@@ -908,12 +611,12 @@ RDF does not change significantly as a function of time
 (within the statistical error). 
 Fig.~\ref{fig:tmp7a}~(b) presents the number of hydrogen bonds between the
 alanine and water molecules, and between two water molecules.
-\recheck{The hydrogen bonds are calculated by standard GROMACS
+\recheck{The number of hydrogen bonds are calculated by standard GROMACS
 routine {\texttt {g\_hbond}}, with donor-acceptor distance cut-off 0.3~nm,
 and hydrogen-donor-acceptor angle cut-off $20^{\circ}$.}
-We see that the
-number of hydrogen bonds remains almost the same as the EF is turned on,
-although molecular dipoles tend to align with the direction of the EF (result
+We observe that the
+number of hydrogen bonds remains almost the same when the EF is turned on,
+although molecular dipoles tend to align along the direction of the EF (result
 not shown). 
 The EF-induced solvent effect on the alanine is also counted by calculating the
 difference of the water-alanine electrostatic interaction 
@@ -960,8 +663,6 @@ negligible.
 
 \section{Case II:
   periodically oscillatory EF}
-\bluec{\textit{what does he add besides the caption of the section?}}
-
 A step forward in our study is to consider a periodically oscillatory EF which has
 a $\sin$-wave shape:
 \begin{align}
@@ -971,41 +672,20 @@ where $E_0$ is the intensity of the field, which is chosen to be
 1.0~V/nm.  $T$ is the oscillating period.
 Here we tested three different
 periods 10, 40 and 200~ps.
-% The periods of the later two are
-% commensurate to the time scales discovered by the nonequilibrium MD
-% simulation of constant EF. The first is to test the if the
-% period is further reduced to smaller than 20~ps, there is any other
-% timescale of interest would play a role. Although the periods are
-% chosen according to the discovered time scales in the constant
-% EF simulation, the nonequilibrium phenonema of oscillating
-% EF cannot be derived from the constant field system.
-% As far as the EF changes, the internal time scale of the
-% system also changes, therefore, the nonequilibrium probabilities is a
-% complicated interplay of different internal time scales under
-% different EF.
-% We do not try to theoretically predict
-% what will happen under the oscillating EF by a series constant EF simulation
-% revealing the internal dynamics under different strength of EF, but just directly
-% do the nonequilibrium MD simulation for the oscillating EF, and discuss
-% the observed phenonema.
-
-
 \begin{figure}
   \centering
   \includegraphics[width=0.48\textwidth]{fig-mode2-dipol.eps}
   \includegraphics[width=0.48\textwidth]{fig-mode2-order.eps}
-  \caption{Illustration of the effect of the oscillatory EF:
+  \caption{Illustration of the effect of the oscillatory EF on the system:
     the dipole moment (a) and the
     orientational order parameter (b) of alanine dipeptide as a
     function of time. In (a),
     only the $x$-component of the dipole moment is
-    shown. The black line refers to the static EF with turning on
-    time $t_{warm} = 10$~ps. The red line refers to the oscillatory field with period of
+    shown. The black line refers to the static EF which is turned on
+    at time $t_{warm} = 10$~ps. The red line refers to the oscillatory field with period of
     10~ps. The green line is of 40~ps; and the blue of 200~ps.}
   \label{fig:tmp8}
 \end{figure}
-
-
 Fig.~\ref{fig:tmp8} (a)
 presents the $x$-component of the molecular dipole moment as
 a function of time. The red, green and blue lines report the
@@ -1021,28 +701,19 @@ dipole moment is close to the values obtained in the case of constant EF, which
 means that the variation of the oscillatory EF is so slow that the
 alanine has enough time to 
 relax its dipole. However,
-for $T=10$ and 40~ps, the EF oscillates faster,
-and although the alanine dipeptide can respond to the EF action immediately,
-it does not have enough time to fully relax the dipole, as a consequence the maximum dipole moment is smaller than the previous case.
-% For even smaller period $T=10$~ps, the alanine does not have enough
-% time  to properly align the molecular dipole according to the external
-% field, so we see the maximum dipole moment is only about one third of the
-% constant EF case.
+for $T=10$ and 40~ps, the EF oscillates faster and the molecule 
+does not have enough time to fully relax the dipole, as a consequence the maximum dipole moment is smaller than the previous case.
 Fig.~\ref{fig:tmp9}~(b) presents the orientational order
 parameter. The notations are the same as Fig~\ref{fig:tmp9}~(a).
-% From the constant
-% EF simulation, we see that the response of order parameter has
-% two time scales: In the fast time scale, the 
 For all cases the order parameter is much
 smaller than in the case of constant EF. One possible reason is that the
 relaxation of the order parameter is very slow, and the molecule in the case of oscillatory field is
 not exposed to a strong enough EF for a long enough.
-\bluec{\textit{I cannot read and understand Giovanni's comment referring here on the top of this page.}}
-For  $T=10$ and 40~ps, the orientation of the alanine is only weakly
-parallel to the EF. It is worth to notice that for constant EF,
-we also observe a quick alignment of molecular orientation to the EF
-on the time scale of 10~ps. For $T=200$~ps, the molecule periodically
-becomes \recheck{weakly} perpendicular to the EF, but this directional preference is much
+For  $T=10$ and 40~ps, the orientation of the alanine shows a weak tendency
+to be parallel to the EF. It is worth to notice that for constant EF,
+we also observe a quick alignment of the molecular orientation vector to the EF
+on the time scale of 10~ps. For $T=200$~ps, the molecule tends periodically
+to be perpendicular to the EF, but this directional preference is much
 weaker than the case of constant EF.
 
 \begin{figure}
@@ -1051,11 +722,8 @@ weaker than the case of constant EF.
   \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0040.eps}
   \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0200.eps}
   % \includegraphics[width=0.49\textwidth]{fig-meta-mode2-2000.eps}
-  \caption{
-    \bluec{\textit{what is the comment on the top of page 17?}}
-    The probability of being in a certain of conformation for
-    periodically oscillatory EF. Different periods,
-    i.e. $T=10$~ps, 40~ps and 200~ps, are presented here.  The
+  \caption{The probability of being in a certain of conformation for alanine in a   periodically oscillatory EF. Different periods,
+    i.e. $T=10$~ps, 40~ps and 200~ps, are considered here.  The
     probability of being in a certain conformation $I$, which is
     denoted by $P_I$ in this paper, is plotted by colored lines against
     time. Red line: $I = A_1$,  green line: $I = A_2$,  dark
@@ -1069,69 +737,40 @@ weaker than the case of constant EF.
 
 \begin{figure}
   \centering
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0010-flux-5.eps}\\
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-1.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-2.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-3.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-4.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0040-flux-5.eps}\\
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-1.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-2.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-3.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-4.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0040-iflux-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-0200-flux-5.eps}\\
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-1.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-2.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-3.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-4.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0200-iflux-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-flux-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-iflux-1.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-iflux-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-iflux-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-iflux-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig.ala/fig-trans-mode2-2000-iflux-5.eps}
   \caption{
-    Integrated probability flux $Q_{J,I}(t)$ of the periodically
-    oscillatory EF is plotted against time. The unit of the
-    time (horizontal axis) is picosecond.
+    Integrated probability flux $Q_{J,I}(t)$ for the periodically
+    oscillatory EF, is plotted against time (horizontal axis, in picoseconds).
     The integrated
     probability flux is defined by $Q_{J,I}(t) = \int_0^t F_{J,I}(\tau) d\tau$, where
     $F_{J,I}(t)$ is the net probability flux from conformation $J$ to $I$.
     See also Eqn.~\eqref{eqn:tmp7} and~\eqref{eqn:tmp7a} for definitions
     of $F_{J,I}(t)$ and $Q_{J,I}(t)$, respectively.
-    From up to down, rows report results with  period 10, 40 and 200~ps, respectively.
+    From top to bottom, rows report results with  period 10, 40 and 200~ps, respectively.
     From left to right, the five
-    columns show integrated flux $Q_{J,A_1}$, $Q_{J,A_2}$,
+    columns show the integrated flux $Q_{J,A_1}$, $Q_{J,A_2}$,
     $Q_{J,B_1}$, $Q_{J,B_2}$ and $Q_{J,C}$, respectively. In each plot,
     the red line stands for $J=A_1$, green for $J=A_2$, dark blue for $J=B_1$,
     purple for $J=B_2$ and light blue for $J=C$.
-    \recheck{An increaseing $Q_{J,I}$ indicates a net probability
+    \recheck{An increasing value of $Q_{J,I}$ indicates a net probability
       flux from conformation $J$ to $I$,
-      while a decreaseing $Q_{J,I}$ indicates a net probability
+      while a decreasing value of $Q_{J,I}$ indicates a net probability
       flux from $I$ to $J$.
     }
-    % In a certain time interval,
-    % if the integrated flux $Q_{J,I}$ increases, there exists a (time-averaged)
-    % non-zero net flux from conformation $I$ to $J$.
   }
   \label{fig:tmp10}
 \end{figure}
@@ -1139,7 +778,6 @@ weaker than the case of constant EF.
 
 Fig.~\ref{fig:tmp9} shows the probability of the
 conformations against time for periodically oscillatory EF,
-\bluec{\textit{what kind of comment does he want us to add here?}}
 while  
 Fig.~\ref{fig:tmp10} presents the integrated net probability fluxes
 (defined by Eqn.~\eqref{eqn:tmp7a}) between
@@ -1153,33 +791,24 @@ considerably w.r.t.~time.
 However, the probability in conformation $C$ significantly
 increases to approximately 0.17 for $T=10$~ps, 0.27 for  $T=40$~ps, and
 0.25 for $T=200$~ps.
-% \\
-% {\bf COMMENT LUIGI: sentence and context and reasoning of the part below not clear}
-% Note that in the case of constant EF, although the dipole moment is
-% larger than the  $T=40$~ps case (see Fig.~\ref{fig:tmp8} for comparison), the
-% probability of being in $C$ is indeed lower (only 0.22).\\
-% {\bf END COMMENT}\\
-% For the case of constant EF, the probability of conformation $A_1$
-% increases from 0.45 to 0.69, and that of $B_1$ almost vanishes.
 \recheck{The notable increment of probability of $A_1$ and
-  the vanish of $B_1$ in the constant EF case (see Fig.~\ref{fig:tmp5})}
+  the vanishing of $B_1$ in the constant EF case (see Fig.~\ref{fig:tmp5})}
 are not observed in the oscillatory EF case.
+\recheck{
 In the case of $T=10$ and $40$~ps, \recheck{the probability of conformation $C$}
 reaches the steady value in around 300~ps, while it requires about 1200~ps
-for the $T=200$~ps case.  \bluec{\textit{why does he say ``what is the interest?''. I do not understand...}}
-%This suggest that
-%the intrinsic time scales of the nonequilibrium processes are commensurate
-%for $T=10$ and $40$~ps, while they are much longer for $T=200$~ps.
-
+for the $T=200$~ps case. } \bluec{Here I do not agree with you to remove the above red discussion, because the time scales are
+the main results of the current paper, which should be discussed.}
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{graph-t0010-1.eps}
+  \includegraphics[width=0.5\textwidth]{graph-t0010-2.eps}
   \caption{Schematic plot of the main probability flux between conformations
     on the Ramachandran histogram
     for periodically oscillatory EF, $T=10$~ps. The thickness 
     of the arrows approximately presents the strength of the flux.
     The numbers near the arrows indicates the strength of the averaged
     probability flux, the unit of which is $10^{-3}\times\textrm{ps}^{-1}$.
+    % {\bf LUIGI COMMENT: THE PICTURE MUST BE MUCH MUCH LAREGER SO THAT ONE SEE THE DIFFERENCE IN THE STRUCTURES. mOREOVER, THEY HAVE AN INTEREST ONLY THEY CAN BE RELATED TO MORE GENERAL STRUCTURES. wHAT IS NEEDED IS THAT CLOSE TO EACH MOLECULE ONE SHOULD WRITE ``$\alpha$-helix-like'' ``$\beta$-sheet-like. THE REST, gIOVANNI IS RIGHT, DOES NOT NEED TO BE EXPALINED IN DETAIL BECAUSE IT IS NOT REALLY INTERESTING AND i CUT A LOT.}
   }
   \label{fig:tmp11}
 \end{figure}
@@ -1188,22 +817,16 @@ In comparison to the static EF case, where the probability flux
 vanishes when the system reaches steady state (Fig.~\ref{fig:tmp6}), 
 Fig.~\ref{fig:tmp10} shows increasing
 integrated probability net fluxes, which imply some lasting and directional
-fluxes among the conformations, even after the
-conformational probabilities reach steady value (see Fig.~\ref{fig:tmp9}).
+fluxes among the conformations (see Fig.~\ref{fig:tmp9}).
 }
 Fig.~\ref{fig:tmp11} presents
 a schematic plot of the main probability fluxes for $T=10$~ps.
 The thickness of the arrows and the numbers nearby indicates
 \recheck{the steady value of average net fluxes over periods}.
 % the average amount of the net fluxes.
-\recheck{This shows an interesting phenomenon: although
-the oscillatory EF vanishes by time-averaging over a period,
-it generates directional probability fluxes among the conformations.}
-% Moreover, we have identified some loops of the flux: e.g.~$A_1 \rightarrow B_1
-% \rightarrow B_2 \rightarrow A_2 \rightarrow A_1$, $A_1 \rightarrow B_1
-% \rightarrow B_2 \rightarrow A_1$,  $A_1 \rightarrow B_1
-% \rightarrow B_2 \rightarrow C \rightarrow A_1$ and $B_1
-% \rightarrow B_2 \rightarrow C \rightarrow B_1$.
+%\recheck{This shows an interesting phenomenon: although
+%the oscillatory EF vanishes by time-averaging over a period,
+%it generates directional probability fluxes among the conformations.}
 The probability flux of $T=40$~ps is quantitatively
 comparable to case $T=10$~ps, except that the probability fluxes
 going into conformation $C$ is stronger, which actually results in
@@ -1213,7 +836,7 @@ similar to $T=10$~ps and $T=40$~ps, however,
 the strength is much lower than the latter two cases.
 Moreover, \recheck{
   we see that the integrated fluxes $Q_{A_2,A_1}$ and $Q_{B_1,A_2}$ reach
-  a steadyly
+  a steadily
 increasing stage after about 3200~ps}, which is even longer than the time scale
 at which the probability of $C$ reaches its steady value. This indicates
 a longer intrinsic time scale in the $T=200$~ps case.
@@ -1224,17 +847,16 @@ the trend suggests that a longer period indicates even longer intrinsic time sca
 However, the long-period-limit case can be safely guessed: When
 the EF changes so slowly that
 at each time the system
-can be viewed as in equilibrium, and
-\recheck{each EF induced infiniesimal change of the system is reversible},
-then the process is a quasi-equilibrium
-process,
-and nonequilibrium phenomena will not appear. For example,
-the probability of being in a given conformation will change
-smoothly from equilibrium value to the new equilibrium of $E=1$~V/nm, as
-the EF increases.
-And then smoothly goes back to equilibrium, as the EF vanishes.
-The time-averaged net flux will be infinitely small,
-and the integrated flux will be \recheck{periodic.}
+can be viewed as in equilibrium and
+the process falls in the category of a quasi-equilibrium
+process. 
+%For example,
+%the probability of being in a given conformation will change
+%smoothly from equilibrium value to the new equilibrium of $E=1$~V/nm, as
+%the EF increases.
+%And then smoothly goes back to equilibrium, as the EF vanishes.
+%The time-averaged net flux will be infinitely small,
+%and the integrated flux will be \recheck{periodic.}
 
 
 % similar to $T=10$~ps. For $T=40$~ps, the probability
@@ -1266,85 +888,23 @@ and the integrated flux will be \recheck{periodic.}
 % this hypothesis is not further checked.
 
 
-\section{Conclusions and discussions}
-
+\section{Discussion and Conclusion}
 We have investigated the conformational
-dynamics of alanine dipeptide under the action of a constant and oscillatory electric
-field (EF) by the dynamical nonequilibrium molecular dynamics (D-NEMD) method.
+dynamics of \recheck{a solvated} alanine dipeptide under the action of a constant and oscillatory electric
+field (EF).
+\recheck{ We have employed the dynamical nonequilibrium molecular dynamics (D-NEMD) method. This allowed us to analyze the conformational changes of the molecule in terms of a response to an external perturbation which drives the system away from equilibrium. From the technical point of view, we have proposed a local thermostating procedure which does not introduce invalidating artifacts and at the same time avoids the necessity of considering large water bulk systems to solvate the molecule.}
 The conformations of the alanine dipeptide are
 firstly projected onto the Ramachandran plot, and
 then grouped in 5  conformations.
-% several conformations are identified by a manual
-% division of the Ramachandran histogram.
 These conformations
 correspond to different secondary structures in larger molecules
 (i.e.~proteins).
 Next, the time-dependent probability
 of being in a certain conformation and the net probability flux
 between them are calculated.
-\recheck{
-  We demonstrated the reliablity
-  of the local thermostating temperature control method
-  by showing that the finite size effects of the
-  dynamical region and the thermostated region are negligible.  
-  From the results obtained, we found differnet time scales of
-  conformational response with respect to both the constant  and
-  oscillatory EF, and the probability flux net work established
-  by the oscillatory EF. These phenonema can not be easily investigated
-  by traditional equilibrium MD methods, therefore the effectiveness of
-  the nonequilibrium MD method proposed by this paper
-  is a powerful to study the truely nonequilibrium systems.
-}
-
-
-% From the results obtained, we conclude that under a constant EF, several different time scales
-% of the conformational dynamics can be identified. The slowest time scale,
-% in the range of 500~ps, corresponds to a conformational change
-% from $B_1$ (corresponds to $\beta$-sheet) to $A_1$ and $C$ (right-handed
-% and left handed $\alpha$-helix, respectively).
-% Under the constant EF, the dipole moment of alanine aligns parallel to the direction of the EF, while the direction of the molecule lies perpendicular to the
-% EF. Moreover, the dipole moment response of the alanine is
-% shown to be much faster than the orientational response.
-% The solvation structure around the alanine is investigated
-% by calculating the solute-solvent radial distribution function and the average number of hydrogen
-% bond, and is proved to be preserved as the EF is turned on, though the
-% dipole moment of both solute and solvation molecules is aligned with the direction of the EF.
-% Then, we consider three oscillatory EF cases with different frequency:
-% 5, 25 and 100~GHz, respectively. The
-% probability of conformations are observed to be also oscillatory,
-% and the frequency of this oscillation is the same as the external EF.
-% After long enough time,
-% the system reaches a ``steady state'', and the probabilities oscillate only around
-% a time-independent value at the long time scale. Notice that, strictly speaking, this is not a  true ``steady state'' as defined in
-% literature~\cite{seifert2010fluctuation}, because at the
-% short time scale, the probabilities are still oscillating (with a period that is the same as the EF).
-% % they oscillate only around a time-invariant value,
-% % so we say the system reaches a steady state.
-% Although in a time-average process the EF vanishes, the probabilities of the conformations, as a matter of fact, changes due to the oscillatory EF. The most relevant phenomenon
-% is the increasing probability of conformation $C$ that corresponds to
-% the left-handed $\alpha$-helix.
-% The slowest time scale of 25 and 100~GHz systems is about 300~ps, while
-% that of the 5~GHz system is significantly higher: 1200~ps.
-% We further update the last number to 3200~ps by analyzing the net probability flux.
-% % We further present a updated slowest time scale of the  5~GHz system
-% % to 3200~ps from the net probability flux.
-% In comparison with the periods of the EF, these time scales are much
-% slower, which indicate a very strong time scale separation
-% in these nonequilibrium conformation dynamics.
-% Although the time-average of the oscillatory EF vanishes, we observed a
-% \emph{directional} net probability flux between the conformations, and several
-% loop structures are observed. This result is unexpected and shed
-% light on the phenomenon of nonequilibrium conformational circulations driven
-% by oscillatory EF.
-
-% To eliminate the thermal effect in the nonequilibrium process, 
-% we propose  a nonequilibrium
-% temperature control method, by which the Hamiltonian dynamics is kept
-% around the molecule of interest, while the solvent far from the
-% molecule is thermostated. We prove the effectiveness of this
-% temperature control technique for nonequilibrium MD by testing
-% the finite size effect of the Hamiltonian dynamics region and the
-% thermostated region.
+\recheck{We have compared the case of constant EF and that of oscillatory EF
+and reported the main differences.
+Worth to notice is the possibility of employing an EF in order to identify several time scales related to conformational changes, this would not be straightforward for standard equilibrium MD simulations and thus suggest that D-NEMD proposed here is a powerful tools to investigate the conformational properties of a large molecule in solution.}
 
 The intensity of the EF used in this paper is 1~V/nm for both constant
 and oscillatory cases. This intensity is 4-5 orders of magnitude
@@ -1353,20 +913,17 @@ instrument~\cite{damm2012can}. However, this intensity is achievable
 by a sharp electric field emitter tip~\cite{scovell2000phase}, near
 the surface of mica~\cite{starzyk2013proteins}, or by a modern laser
 equipment~\cite{vogel2008femtosecond}. The authors are fully aware
-that the EF investigated in the present paper is idealized
-\recheck{
-  in the sence that the field is spacially homogenous and
-  the time-dependency is well defined,} as pointed
+that the EFs investigated in the present paper are, \recheck{at this stage, still ideal, above all regarding their spatially homogeneity and
+  the fact that the time-dependency is always well defined (as pointed
 out by previous simulation studies~\cite{budi2005electric,
   budi2007effect, budi2008comparative, toschi2008effects,
   astrakas2011electric, astrakas2012structural, damm2012can,
   starzyk2013proteins, english2009nonequilibrium,
-  solomentsev2012effects}. However, the present work presents a way of
-studying the EF induced conformational dynamics, and opens the
+  solomentsev2012effects}). However, the present work is an attempt to understand how the use of D-NEMD as a simulation tool can be applied to the important case of an EF and which information one may extract that is not easily accessible to other MD procedures (e.g.  EF induced conformational changes and its related time scales which opens the
 possibility of conformational manipulation of the protein by applying
-an external EF.
+an external EF.)}
 
-To describe the system, we use a classical force field with TIP3P water model.
+\recheck{In order to sharply define the advantages and limitations of the approach used we must also clarify that in order} to describe the system, we use a classical force field with TIP3P water model.
 The EF is well know to be able to protonate the water molecule at the
 intensity we used in the paper. However, this happens at the time
 scale of femtoseconds, which is much shorter than the slowest time
@@ -1380,13 +937,10 @@ prefer a rigid water model is that it is computationally more
 efficient than any polarizable water model.  We also want to remind
 the reader that it has been reported recently that the physical scale of the slowest
 dynamics differs in a considerable way between different force
-fields~\cite{vitalini2013speed}. However, the qualitative conclusions (for
-example the answer to the question of which is the slowest and the second slowest process, from which
-conformation to which conformation the system moves)
-seem to be independent from the force field,
-at least for the alanine dipeptide.
+fields~\cite{vitalini2013speed}. \recheck{However, the main qualitative conclusions, for
+example those concerning the determination of time scales or the map of conformational changes, 
+are not likely to change significantly as a function of the force field.}
 
-% are basically consistent for the alanine from the point of view of force fields.
 
 
 
@@ -1398,4 +952,3 @@ at least for the alanine dipeptide.
 
 
 \end{document}
-
