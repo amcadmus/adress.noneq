@@ -35,7 +35,10 @@ set ytics 0.10
 set mytics 5
 set format y "%.2f"
 set origin 0.0,0.0
-set lmargin 5
+set format y "%.1f"
+set lmargin 5.6
+set tmargin 1.0
+set bmargin 2.7
 set rmargin 0
 set xtics 50
 set mxtics 5
@@ -50,6 +53,9 @@ set format y ""
 set xrange [100:600]
 set xtics 200
 set mxtics 2
+
+set label 't [ ps ]' at 150, -0.29
+
 pl 'ext.mode1.010.Ex.01.00.t0600ps/set/meta.flux.inte.out' u 1:7 ls 11 w l not, '' u 1:8 ls 12 w l not, '' u 1:9 ls 13 w l not, '' u 1:10 ls 14 w l not, '' u 1:11 ls 15 w l not
 unset multiplot
 

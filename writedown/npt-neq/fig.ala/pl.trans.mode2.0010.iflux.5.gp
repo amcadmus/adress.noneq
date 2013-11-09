@@ -41,6 +41,9 @@ set ytics 0.1
 set mytics 2
 set format y "%.1f"
 set grid
+set tmargin 1.0
+set bmargin 2.5
+set label 't [ ps ]' at 400,-0.35
 
 pl 'ext.mode2.010.Ex.01.00.shift0.t1000ps/set/meta.flux.inte.out' u 1:($22*2) ls 11 w l not, '' u 1:($23*2) ls 12 w l not, '' u 1:($24*2) ls 13 w l not, '' u 1:($25*2) ls 14 w l not, '' u 1:($26*2) ls 15 w l not
 

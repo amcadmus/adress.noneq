@@ -34,9 +34,12 @@ set size 0.4,1
 set yrange [-6e-3:3e-3]
 set ytics .002
 set mytics 2
-set format y "%.0t*10^{%L}"
+# set format y "%.0t*10^{%L}"
 set origin 0.0,0.0
-set lmargin 4
+set format y "%.3f"
+set lmargin 5.6
+set tmargin 0.4
+set bmargin 2.7
 set rmargin 0
 set xtics 50
 set mxtics 5
@@ -51,5 +54,8 @@ set format y ""
 set xrange [100:600]
 set xtics 200
 set mxtics 2
+
+set label 't [ ps ]' at 150, -0.008
+
 pl 'ext.mode1.010.Ex.01.00.t0600ps/set/meta.flux.smooth.out' u 1:17 ls 11 w l not, '' u 1:18 ls 12 w l not, '' u 1:19 ls 13 w l not, '' u 1:20 ls 14 w l not, '' u 1:21 ls 15 w l not
 unset multiplot
