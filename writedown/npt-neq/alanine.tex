@@ -111,6 +111,7 @@ provide a way of evaluating time-dependent
 nonequilibrium averages starting from a properly determined initial ensemble.
 In this context, the method can be used to analyze the
 conformational changes of a solvated molecule, subject to a time-dependent EF.
+
 In the present paper, we study a small peptide, alanine dipeptide, as a model for showing how the method can be used. 
 The choice of a small peptide, rather than a larger one, is done firstly because it
 is easier to draw clear conclusions on the nonequilibrium properties
@@ -170,11 +171,11 @@ where $iL(t) = \{\cdot, \mathcal H\}$ is the Liouville operator.
 Eq.~\eqref{eqn:tmp2}
 can be formally solved by $\rho(\vect x, t) = U^\dagger(t,0) \rho(\vect x, 0)$,
 where $U^\dagger(t,0) = \exp\{-i \int_0^t d t' L(t')\}$.
-On the other hand
+On the other hand,
 \begin{align}
   \frac{d \hat O(\vect x(t))}{dt} = \nabla_{\vect x}\hat O\cdot \dot{\vect x}
   = \nabla_{\vect x}\hat O\cdot J\cdot \nabla_{\vect x}\mathcal H
-  = iL(t) \hat O (\vect x(t))
+  = iL(t) \hat O (\vect x(t)).
 \end{align}
 This equation can be formally solved by
 $\hat O(\vect x(t)) = U(t,0)\,\hat O(\vect x(0))$, therefore,
@@ -182,7 +183,7 @@ $\hat O(\vect x(t)) = U(t,0)\,\hat O(\vect x(0))$, therefore,
   O(t) & = \langle \hat O(\vect x), \rho(\vect x, t)\rangle
   = \langle \hat O(\vect x), U^\dagger(t,0)\, \rho(\vect x, 0)\rangle
   = \langle U(t,0)\,\hat O(\vect x), \rho(\vect x, 0)\rangle\\\label{eqn:tmp4}
-  &= \langle \hat O(\vect x(t)), \rho(\vect x, 0)\rangle
+  &= \langle \hat O(\vect x(t)), \rho(\vect x, 0)\rangle.
 \end{align}
 Since we assume that the system starts from the distribution of equilibrium (without EF)
  Eq.~\eqref{eqn:tmp4} expresses the fact that the 
@@ -245,7 +246,8 @@ However, coupling the system to a thermostat for nonequilibrium situations is a 
 In fact, since a thermostat is explicitly designed to bring the system into
 thermal equilibrium,
 the perturbation produced by the EF would be mostly adsorbed by the thermostat. This means that the physics of the original dynamics in presence of the EF
-would be lost and the response to the perturbation would be unphysical. 
+would be lost and the response to the perturbation would be unphysical.
+
 In this section we propose a procedure to solve the problem: we
 start observing that the dynamics without thermostat of the alanine, 
 and the water molecules in the closer solvation shells, is
@@ -274,7 +276,7 @@ range of liquid water.
 At the same time, the thermostated region works as a infinitely large
 environment that effectively absorbs the extra heat produced by the EF.
 The validity of the above
-statement will be checked by a series of numerical tests where it is shown that
+statements will be checked by a series of numerical tests where it is shown that
 the response of observables in nonequilibrium (i.e. under the effect of the EF) does not depend on the size of the system
 and on the size of the  dynamical subregion, provided that they are
 reasonably large.
@@ -291,7 +293,7 @@ water molecules.
 %the partial charge $q$ in the system.
 The size of the  dynamical region is $R_{ex} = 1.0$~nm.
 All simulations are performed by a home-modified GROMACS 4.5~\cite{pronk2013gromacs}.
-First, an equilibrium NVT simulation of
+First, an equilibrium NVT simulation at 300~K of
 100~\textsf{ns} was performed with a Langevin thermostat (time-scale
 $\tau_T = 0.5~\textsf{ps}$).  Along the trajectory, configurations were taken every
 50~\textsf{ps} and we used 2000 initial configurations for each nonequilibrium
@@ -305,6 +307,12 @@ interaction was smoothed from $0.8$ to $1.0~\textsf{nm}$ by the
 method was applied to calculate the electrostatic interaction in this
 periodic system. In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
+\bluec{
+  In all testing cases, this local thermostat is able to control
+  the system at the desired temperature, i.e.~300~K (the results
+  are not presented in this paper).
+  \textit{NOTE: we should mention that the local thermostat works...}
+}
 The whole system is also coupled to a Parrinello-Rahman barostat~\cite{parrinello1981polymorphic} with $\tau_P = 2.0~\textsf{ps}$ to keep
 the pressure at ambient condition (1~Bar). Since the
 change of the system size is small and slow, the pressure control
@@ -366,7 +374,7 @@ The probability density of conformations of equilibrium in absence of external f
 given in Fig.~\ref{fig:tmp4}~(c). In the plot one can identify several clusters
 in which conformations are grouped.
 Therefore, in order to simplify the analysis, we divide the
-Ramachandran histogram into 5 subregions $\{A_1, A_2, B_1, B_2, C\}$
+Ramachandran plot into 5 subregions $\{A_1, A_2, B_1, B_2, C\}$
 (see caption of Fig.~\ref{fig:tmp4} for the corresponding definition).
 It is worth to notice that these conformations
 are found in different secondary structures of a peptide chain:
@@ -380,7 +388,7 @@ left-handed $\alpha$-helix.
 
 \recheck{From Fig.~\ref{fig:tmp4}, it is evident that the probability with which a
 conformation occurs changes when the external EF is applied.
-The most evident case is conformation $C$; in fact it is not present at all before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
+The most evident case is conformation $C$; in fact it is \bluec{almost} not present before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
 The starting point is the calculation of the probability
 of each conformation}:
 \begin{align}
@@ -462,7 +470,7 @@ fade away as the system relaxes to the new equilibrium. The
 probability of the $\alpha$-helix conformation $A_1$, grows from 0.45 to 0.69.
 The $\alpha$-helix $A_2$  does not change significantly  under the action of EF.
 The left-hand helix conformation $C$ noticeably grows from 0 to 0.22.
-We plot the net probability fluxes and their integration in Fig.~\ref{fig:tmp6}.
+We plot the net probability fluxes integration in Fig.~\ref{fig:tmp6}.
 Results show that for short $t$, the net fluxes are generally non-zero, however, 
 as $t$ goes to infinity,
 all fluxes converge to zero. This indicates
@@ -531,7 +539,7 @@ smaller than the slowest time scale of the conformational relaxation.
 Then in the following 400~ps, the dipole slowly relaxes to its 
 maximum value, that is, 
 6.8~Debye, and  corresponds to an energy
-\redc{$\boldsymbol\mu_{\textrm{alanine}} \cdot \vect E$}
+\redc{($\boldsymbol\mu_{\textrm{alanine}} \cdot \vect E$)}
 of c.a.~$-13.6$~kJ/mol.
 We calculate the averaged dipole moment of different conformations
 \redc{(defined by taking average in Eqn.~\eqref{eqn:tmp8}
@@ -543,16 +551,24 @@ The dipole energy difference between 3.1 and 7.1~Debye is roughly 8.0~kJ/mol.
 conformations with higher dipole moment, because the
 energy of the system will be lowered.  We suggest that this energy difference may be the reason why
 we observe that the $\beta$-sheet conformations with lower dipole moment
-are driven towards $\alpha$-helix conformations, 
-($A_1$ and $C$) whose dipole moments are the highest
+are driven towards $\alpha$-helix conformations
+$A_1$ and $C$, whose dipole moments are the highest
 among all conformations. Moreover, the $B_2$ conformation vanishes because
 its dipole is significantly lower than other conformations.}
-From 0 to 20~ps, the probability of
-lowest dipole conformation $B_2$ quickly
-vanishes. We observe a sharp increment of the average molecular dipole and finally, approaching  500~ps, the conformation slowly migrates from
-$B_1$ to $A_1$ and $C$. Moreover, since the dipole moment $A_1$ and $C$
-is higher than $B_1$, the average molecular dipole moment slowly increases
-to the nonequilibrium steady value.
+\bluec{Comparing Fig.~\ref{fig:tmp3} with~\ref{fig:tmp5},
+  the sharp increment of dipole moment before 20~ps is due to the quick vanishing of conformation
+  $B_2$, while the slow increment of dipole moment until 400~ps is due to
+  the slow migration from conformation $B_1$ to $A_1$ and $C$.
+  \textit{NOTE: here we want to discuss the relation between
+    the conformation and the dipole moment. I rewote this
+    sentence.}
+}
+% From 0 to 20~ps, the probability of
+% lowest dipole conformation $B_2$ quickly
+% vanishes. We observe a sharp increment of the average molecular dipole and finally, approaching  500~ps, the conformation slowly migrates from
+% $B_1$ to $A_1$ and $C$. Moreover, since the dipole moment $A_1$ and $C$
+% is higher than $B_1$, the average molecular dipole moment slowly increases
+% to the nonequilibrium steady value.
 
 
 \subsection{Response of the orientational order parameter}
@@ -567,7 +583,7 @@ the orientation of the alanine dipeptide in space w.r.t.~the direction of EF
 as a function of time.
 Then we defined an orientational order parameter 
 \begin{align}
-  S_\theta = \langle 3\sin^2\theta - 2\rangle,
+  S_\theta = \langle 3\sin^2\theta - 2\rangle.
 \end{align}
 \recheck{The ensemble average is made along the trajectories, so it is
 a time dependent observable.
@@ -578,7 +594,21 @@ preference, then $S_\theta = 0$.
 From $t=0$ to roughly 10~ps, the orientational order parameter rapidly
 decreases from 0 to $-0.15$, which means a weak alignment of the molecule to the external field.
 Then from $t=0$ to 500~ps, the molecule slowly changes to the orientation
-that is perpendicular to the EF. \recheck{In fact the angle between the vector of the dipole moment and the vector of the geometric direction is always close to $\frac{\pi}{2}$; if one observes the correlation between the value of the dipole moment (which tends to be more parallel to the EF as its value increases) and the angle of the vector of the geometric direction, the result above can be easily explained.}  
+that is perpendicular to the EF.
+\recheck{In fact,
+  \bluec{the vector of the geometric direction tends to be perpendicular
+    to the dipole moment,
+    \textit{NOTE: $\frac{\pi}{2}$ corresponds to $S_\theta = 1$, however,
+      we only have 0.4. So would should say a ``tendency of perpendicular''
+      rather than ``perfectly perpendicular'' ($\frac{\pi}{2}$).}
+  }  
+  % the angle between the vector of the dipole moment and
+  % the vector of the geometric direction is always close to
+  % $\frac{\pi}{2}$;
+  if one observes the correlation between the value
+  of the dipole moment (which tends to be more parallel to the EF as
+  its value increases) and the angle of the vector of the geometric
+  direction, the result above can be easily explained.}
 This orientational change is linked to the observed slowest
 time scale of the molecular conformational change.
  
@@ -603,10 +633,10 @@ time scale of the molecular conformational change.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % solvent effect
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\recheck{While so far we have focused our attention on the behaviour of the alanine under the action of the EF, however it is important also to understand the effects of the EF on the solvating water molecules. Being water a polar molecule the electrostatic interaction with an EF can dramatically change its solvation structure around the alanine and thus, in turn, influence its conformational behaviour.For this reason, in this section we analyze the behaviour of the solvent around the alanine under the action of the EF by investigating}
+\recheck{While so far we have focused our attention on the behaviour of the alanine under the action of the EF, however it is important also to understand the effects of the EF on the solvating water molecules. Being water a polar molecule the electrostatic interaction with an EF can dramatically change its solvation structure around the alanine and thus, in turn, influence its conformational behaviour. For this reason, in this section we analyze the behaviour of the solvent around the alanine under the action of the EF by investigating}
 the radial distribution function (RDF) between $\alpha$-carbon and the
 center-of-mass (COM) of the water molecules
-(see Fig.~\ref{fig:tmp7a}). The average
+(see Fig.~\ref{fig:tmp7a} (a)). The average
 RDF does not change significantly as a function of time
 (within the statistical error). 
 Fig.~\ref{fig:tmp7a}~(b) presents the number of hydrogen bonds between the
@@ -677,8 +707,8 @@ periods 10, 40 and 200~ps.
   \includegraphics[width=0.48\textwidth]{fig-mode2-dipol.eps}
   \includegraphics[width=0.48\textwidth]{fig-mode2-order.eps}
   \caption{Illustration of the effect of the oscillatory EF on the system:
-    the dipole moment (a) and the
-    orientational order parameter (b) of alanine dipeptide as a
+    (a) the dipole moment  and (b) the
+    orientational order parameter of alanine dipeptide as a
     function of time. In (a),
     only the $x$-component of the dipole moment is
     shown. The black line refers to the static EF which is turned on
@@ -697,7 +727,7 @@ is the same as the period of the oscillatory EF. Therefore,
 the molecular dipole moment
 is able to respond to the external EF almost immediately.
 At $T=200$~ps, the maximum magnitude of the molecular
-dipole moment is close to the values obtained in the case of constant EF, which
+dipole moment is close to the value obtained in the case of constant EF, which
 means that the variation of the oscillatory EF is so slow that the
 alanine has enough time to 
 relax its dipole. However,
@@ -783,7 +813,7 @@ Fig.~\ref{fig:tmp10} presents the integrated net probability fluxes
 (defined by Eqn.~\eqref{eqn:tmp7a}) between
 conformations. Here the probability fluxes are not reported
 because the profiles are highly oscillating and they would not offer 
-a better information of the one that can be obtained from the integrated probability flux.
+a better information than the one that can be obtained from the integrated probability flux.
 For all periods investigated,
 the observed time-dependent probabilities  in $A_1$, $A_2$, $B_1$ and $B_2$ are
 highly oscillating and the average value over time cycles does not change
@@ -791,19 +821,19 @@ considerably w.r.t.~time.
 However, the probability in conformation $C$ significantly
 increases to approximately 0.17 for $T=10$~ps, 0.27 for  $T=40$~ps, and
 0.25 for $T=200$~ps.
+\bluec{
+In the case of $T=10$ and $40$~ps, {the probability of conformation $C$}
+reaches the steady value in around 300~ps, while it requires about 1200~ps
+for the $T=200$~ps case. } \bluec{\textit{Here I do not agree with you to remove the above blue discussion,
+  because the time scales (also the oscillatory EF case) are
+  the main results of the current paper, which should be presented. It is only one sentence, no one would be panic.}}
 \recheck{The notable increment of probability of $A_1$ and
   the vanishing of $B_1$ in the constant EF case (see Fig.~\ref{fig:tmp5})}
 are not observed in the oscillatory EF case.
-\recheck{
-In the case of $T=10$ and $40$~ps, \recheck{the probability of conformation $C$}
-reaches the steady value in around 300~ps, while it requires about 1200~ps
-for the $T=200$~ps case. } \bluec{Here I do not agree with you to remove the above red discussion, because the time scales are
-the main results of the current paper, which should be discussed.}
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{graph-t0010-2.eps}
+  \includegraphics[width=0.7\textwidth]{graph-t0010-2.eps}
   \caption{Schematic plot of the main probability flux between conformations
-    on the Ramachandran histogram
     for periodically oscillatory EF, $T=10$~ps. The thickness 
     of the arrows approximately presents the strength of the flux.
     The numbers near the arrows indicates the strength of the averaged
@@ -821,7 +851,7 @@ fluxes among the conformations (see Fig.~\ref{fig:tmp9}).
 }
 Fig.~\ref{fig:tmp11} presents
 a schematic plot of the main probability fluxes for $T=10$~ps.
-The thickness of the arrows and the numbers nearby indicates
+The thickness of the arrows and the numbers nearby indicate
 \recheck{the steady value of average net fluxes over periods}.
 % the average amount of the net fluxes.
 %\recheck{This shows an interesting phenomenon: although
