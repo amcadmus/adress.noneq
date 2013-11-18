@@ -27,7 +27,7 @@
 
 \begin{document}
 
-\title{Exploring the conformational dynamics of a large molecule in solution using an external electric field: A nonequilibrium molecular dynamics simulation}
+\title{Exploring the conformational dynamics of alanine dipeptide in solution subjected to an external electric field: A nonequilibrium molecular dynamics simulation}
 % \title{The non-equilibrium molecular dynamics simulation of the alanine dipeptide under electric field}
 \author{Han Wang}
 \email{han.wang@fu-berlin.de}
@@ -52,7 +52,7 @@ effects of the field. For the constant field different time-scales are
    dynamics. Moreover, we prove that the solvent structure only
    marginally changes when the external field is switched on.  In the
    case of oscillatory field, the conformational changes are shown to be as
-   strong as the previous case, and non-trivial nonequilibrium
+   strong as in the previous case, and non-trivial nonequilibrium
    circular paths in the conformation space are revealed by calculating the
    integrated net probability fluxes.
   
@@ -158,7 +158,7 @@ $\rho(\vect x, 0)$ is known. In particular, in our case,
 it is identical to the equilibrium distribution of the system
 without EF.
 The bracket on the right hand side of Eq.~\eqref{eqn:tmp1} denotes, as usual, the inner product in the
-phase space.  We assume that he dynamics of the system is governed by the
+phase space.  We assume that the dynamics of the system is governed by the
 Hamiltonian equation, i.e. $\dot {\vect x} = J \cdot \nabla_{\vect x}
 \mathcal H(\vect x, t)$, where $\mathcal H$ is the time-dependent Hamiltonian,
 and $J$ is
@@ -170,7 +170,7 @@ distribution writes:
 where $iL(t) = \{\cdot, \mathcal H\}$ is the Liouville operator.
 Eq.~\eqref{eqn:tmp2}
 can be formally solved by $\rho(\vect x, t) = U^\dagger(t,0) \rho(\vect x, 0)$,
-where $U^\dagger(t,0) = \exp\{-i \int_0^t d t' L(t')\}$.
+where $U^\dagger(t,0) = \mathcal T\exp\{-i \int_0^t d t' L(t')\}$, and $\mathcal T$ is the time ordering operator.
 On the other hand,
 \begin{align}
   \frac{d \hat O(\vect x(t))}{dt} = \nabla_{\vect x}\hat O\cdot \dot{\vect x}
@@ -185,7 +185,7 @@ $\hat O(\vect x(t)) = U(t,0)\,\hat O(\vect x(0))$, therefore,
   = \langle U(t,0)\,\hat O(\vect x), \rho(\vect x, 0)\rangle\\\label{eqn:tmp4}
   &= \langle \hat O(\vect x(t)), \rho(\vect x, 0)\rangle.
 \end{align}
-Since we assume that the system starts from the distribution of equilibrium (without EF)
+Since we assume that the system starts from the equilibrium distribution (without EF)
  Eq.~\eqref{eqn:tmp4} expresses the fact that the 
 observable $O(t)$ calculated in a situation of nonequilibrium is equal to the ensemble average of
 the microscopic observable computed along trajectories, starting from
@@ -195,7 +195,8 @@ to generate a sample of configurations. Next we employ these configurations as
 initial configurations and, for each, the full Hamiltonian dynamics is integrated until
 time $t$.
 In this paper, these trajectories are called \emph{branching
-  trajectories} {\bf EITHER WE PUT THE PICTURE OR REMOVE THIS SENTENCE {(see Fig.\ref{branching} for a pictorial representation)}}. 
+  trajectories}.
+% {\bf EITHER WE PUT THE PICTURE OR REMOVE THIS SENTENCE {(see Fig.\ref{branching} for a pictorial representation)}}. 
 Finally, the value of the macroscopic observable at time $t$ is
 calculated by averaging the microscopic observable measured at each time $t$ along each branching trajectory.
 Stochastic dynamics (e.g.~Langevin dynamics) can be handled analogously.
@@ -307,11 +308,10 @@ interaction was smoothed from $0.8$ to $1.0~\textsf{nm}$ by the
 method was applied to calculate the electrostatic interaction in this
 periodic system. In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
-\bluec{
+\recheck{
   In all testing cases, this local thermostat is able to control
   the system at the desired temperature, i.e.~300~K (the results
   are not presented in this paper).
-  \textit{NOTE: we should mention that the local thermostat works...}
 }
 The whole system is also coupled to a Parrinello-Rahman barostat~\cite{parrinello1981polymorphic} with $\tau_P = 2.0~\textsf{ps}$ to keep
 the pressure at ambient condition (1~Bar). Since the
@@ -388,7 +388,7 @@ left-handed $\alpha$-helix.
 
 \recheck{From Fig.~\ref{fig:tmp4}, it is evident that the probability with which a
 conformation occurs changes when the external EF is applied.
-The most evident case is conformation $C$; in fact it is \bluec{almost} not present before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
+The most evident case is conformation $C$; in fact it is {almost} not present before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
 The starting point is the calculation of the probability
 of each conformation}:
 \begin{align}
@@ -555,13 +555,13 @@ are driven towards $\alpha$-helix conformations
 $A_1$ and $C$, whose dipole moments are the highest
 among all conformations. Moreover, the $B_2$ conformation vanishes because
 its dipole is significantly lower than other conformations.}
-\bluec{Comparing Fig.~\ref{fig:tmp3} with~\ref{fig:tmp5},
+\recheck{Comparing Fig.~\ref{fig:tmp3} with~\ref{fig:tmp5},
   the sharp increment of dipole moment before 20~ps is due to the quick vanishing of conformation
   $B_2$, while the slow increment of dipole moment until 400~ps is due to
   the slow migration from conformation $B_1$ to $A_1$ and $C$.
-  \textit{NOTE: here we want to discuss the relation between
-    the conformation and the dipole moment. I rewote this
-    sentence.}
+  % \textit{NOTE: here we want to discuss the relation between
+  %   the conformation and the dipole moment. I rewote this
+  %   sentence.}
 }
 % From 0 to 20~ps, the probability of
 % lowest dipole conformation $B_2$ quickly
@@ -596,11 +596,11 @@ decreases from 0 to $-0.15$, which means a weak alignment of the molecule to the
 Then from $t=0$ to 500~ps, the molecule slowly changes to the orientation
 that is perpendicular to the EF.
 \recheck{In fact,
-  \bluec{the vector of the geometric direction tends to be perpendicular
+  {the vector of the geometric direction tends to be perpendicular
     to the dipole moment,
-    \textit{NOTE: $\frac{\pi}{2}$ corresponds to $S_\theta = 1$, however,
-      we only have 0.4. So would should say a ``tendency of perpendicular''
-      rather than ``perfectly perpendicular'' ($\frac{\pi}{2}$).}
+    % \textit{NOTE: $\frac{\pi}{2}$ corresponds to $S_\theta = 1$, however,
+    %   we only have 0.4. So would should say a ``tendency of perpendicular''
+    %   rather than ``perfectly perpendicular'' ($\frac{\pi}{2}$).}
   }  
   % the angle between the vector of the dipole moment and
   % the vector of the geometric direction is always close to
@@ -696,7 +696,7 @@ negligible.
 A step forward in our study is to consider a periodically oscillatory EF which has
 a $\sin$-wave shape:
 \begin{align}
-  \vect E(t) = (E_0\sin(2\pi t / T), 0, 0)
+  \vect E(t) = (E_0\sin(2\pi t / T), 0, 0),
 \end{align}
 where $E_0$ is the intensity of the field, which is chosen to be
 1.0~V/nm.  $T$ is the oscillating period.
@@ -821,12 +821,13 @@ considerably w.r.t.~time.
 However, the probability in conformation $C$ significantly
 increases to approximately 0.17 for $T=10$~ps, 0.27 for  $T=40$~ps, and
 0.25 for $T=200$~ps.
-\bluec{
+\recheck{
 In the case of $T=10$ and $40$~ps, {the probability of conformation $C$}
 reaches the steady value in around 300~ps, while it requires about 1200~ps
-for the $T=200$~ps case. } \bluec{\textit{Here I do not agree with you to remove the above blue discussion,
-  because the time scales (also the oscillatory EF case) are
-  the main results of the current paper, which should be presented. It is only one sentence, no one would be panic.}}
+for the $T=200$~ps case. }
+% \bluec{\textit{Here I do not agree with you to remove the above blue discussion,
+%   because the time scales (also the oscillatory EF case) are
+%   the main results of the current paper, which should be presented. It is only one sentence, no one would be panic.}}
 \recheck{The notable increment of probability of $A_1$ and
   the vanishing of $B_1$ in the constant EF case (see Fig.~\ref{fig:tmp5})}
 are not observed in the oscillatory EF case.
