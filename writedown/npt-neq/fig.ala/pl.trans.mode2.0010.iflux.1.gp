@@ -1,9 +1,9 @@
-set label 'Q_{J,A_1}, T = 10 ps' at 50,1.0
+set label 'Q_{J,A_1}, T_P = 10 ps' at 50,1.0
 set lmargin 4.5
 set rmargin 2
 unset tmargin
 unset bmargin
-set label 'Q_{J,A_1}, T = 10 ps' at 50,1.0
+set label 'Q_{J,A_1}, T_P = 10 ps' at 50,1.0
 set term post eps enh color font 14 size 4.2cm,3cm
 
 set style line 11 lc 1 lw 3 pt 2 lt 1

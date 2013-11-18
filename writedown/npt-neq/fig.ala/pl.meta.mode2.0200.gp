@@ -35,7 +35,7 @@ set xtics 800
 set mxtics 4
 # set ylabel "P_I"
 set xlabel "t [ ps ]"
-set title "T = 200 ps"
+set title "T_P = 200 ps"
 
 set key at 1100, 0.5
 # set label 't_{init}=10 ps' at 10, 0.7

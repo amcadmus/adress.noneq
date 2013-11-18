@@ -62,7 +62,7 @@ set rmargin 3
 unset ylabel
 set format y ""
 set label 't [ ps ]' at 290, -.11
-set label 'T = 10 ps' at 290, .78
+set label 'T_P = 10 ps' at 290, .78
 
 set xrange [100:1000]
 set xtics 200

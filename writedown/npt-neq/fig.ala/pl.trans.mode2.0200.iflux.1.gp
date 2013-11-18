@@ -1,4 +1,4 @@
-set label 'Q_{J,A_1}, T = 200 ps' at 400,0.3
+set label 'Q_{J,A_1}, T_P = 200 ps' at 400,0.3
 set lmargin 4.5
 set rmargin 2
 unset tmargin
