@@ -29,7 +29,6 @@
 \begin{document}
 
 \title{Exploring the conformational dynamics of alanine dipeptide in solution subjected to an external electric field: A nonequilibrium molecular dynamics simulation}
-% \title{The non-equilibrium molecular dynamics simulation of the alanine dipeptide under electric field}
 \author{Han Wang}
 \email{han.wang@fu-berlin.de}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
@@ -39,7 +38,7 @@
 \author{Giovanni Ciccotti}
 % \affiliation{Department of Physics, University of Roma "La Sapienza", Italy}
 \affiliation{School of Physics, Room 302B UCD-EMSC, University College Dublin, Belfield, Dublin 4, Ireland}
-\affiliation{Dipartimento di Fisica, Università “La Sapienza” and CNISM, Piazzale Aldo Moro 5, 00185 Roma, Italy}
+\affiliation{Dipartimento di Fisica, Universit\`a ``La Sapienza'' and CNISM, Piazzale Aldo Moro 5, 00185 Roma, Italy}
 \author{Luigi Delle Site}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
    
@@ -58,7 +57,7 @@ effects of the field. For the constant field different time-scales are
    strong as in the previous case, and non-trivial nonequilibrium
    circular paths in the conformation space are revealed by calculating the
    integrated net probability fluxes.
-  
+  % In this paper, we investigate the conformational dynamics of alanine dipeptide under an external electric field by nonequilibrium molecular dynamics simulation.  We consider the case of a constant and of an oscillatory field. In this context we propose a procedure to implement the temperature control, which removes the irrelevant thermal effects of the field. For the constant field different time-scales are identified  in the conformational, dipole moment, and orientational dynamics. Moreover, we prove that the solvent structure only marginally changes when the external field is switched on.  In the case of oscillatory field, the conformational changes are shown to be as strong as in the previous case, and non-trivial nonequilibrium circular paths in the conformation space are revealed by calculating the integrated net probability fluxes.
 \end{abstract}
 
 \maketitle
@@ -172,7 +171,7 @@ distribution writes:
 where $iL(t) = \{\cdot, \mathcal H\}$ is the Liouville operator.
 Eq.~\eqref{eqn:tmp2}
 can be formally solved by $\rho(\vect x, t) = U^\dagger(t,0) \rho(\vect x, 0)$,
-\recheck{where $U^\dagger(t,0) = \mathcal T\exp\{-i \int_0^t d t' L(t')\}$, and $\mathcal T$ is the time ordering operator.}
+{where $U^\dagger(t,0) = \mathcal T\exp\{-i \int_0^t d t' L(t')\}$, and $\mathcal T$ is the time ordering operator.}
 On the other hand,
 \begin{align}
   \frac{d \hat O(\vect x(t))}{dt} = \nabla_{\vect x}\hat O\cdot \dot{\vect x}
@@ -356,8 +355,8 @@ for $t \geq t_{warm}$.
     $B_1 = \{(\phi, \psi) | -110^\circ \leq \phi <  13^\circ,   74^\circ \leq \psi < 235^\circ\}$,
     $B_2 = \{(\phi, \psi) |  128^\circ \leq \phi < 250^\circ,   74^\circ \leq \psi < 235^\circ\}$,
     $C   = \{(\phi, \psi) |   13^\circ \leq \phi < 128^\circ, -180^\circ \leq \psi < 180^\circ\}$.
-    \recheck{Considering the angular periodicity, The angle, for example, $226^\circ$ corresponds to $-134^\circ$
-    on the plot (b) and (c).}
+    Considering the angular periodicity, The angle, for example, $226^\circ$ corresponds to $-134^\circ$
+    on the plot (b) and (c).
     % Considering the angular periodicity, if we write, for example,
     % $128^\circ \leq \phi <-134^\circ$, it implies that $\phi$ is in a range of $98$ degrees, between $128^\circ$ and $226^\circ$ ($226^\circ$ correspond to $-134^\circ$).
     This division is the same for both plot (b) and (c).
@@ -389,15 +388,12 @@ conformation occurs changes when the external EF is applied.
 The most evident case is conformation $C$; in fact it is {almost} not present before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
 The starting point is the calculation of the probability
 of each conformation:
-\recheck{
 \begin{align}
   P_I(t) = \mathbb P ( (\phi_t,\psi_t) \in I), \quad  I \in \{A_1, A_2, B_1, B_2, C\},
 \end{align}
-}
 Notice that the probability is time dependent, being an observable in nonequilibrium situation.
 Next,
 we consider the net probability flux from conformation $I$ to $J$, defined by:
-\recheck{
 \begin{align}\nonumber
   F_{J,I}(t) & = \frac1{\Delta t}\,
   \bigg[\,
@@ -406,8 +402,8 @@ we consider the net probability flux from conformation $I$ to $J$, defined by:
   \mathbb P \big( (\phi_{t-\Delta t}, \psi_{t-\Delta t}) \in I,\, (\phi_t, \psi_t) \in J \,\big)
   \bigg], \\\label{eqn:tmp7}
   & J,I \in \{A_1, A_2, B_1, B_2, C\}.
-\end{align}}
-\recheck{\textit{I cannot read what Giovanni wrote on the top of page 9.}}
+\end{align}
+% {\bf Here for $\lim_{\Delta \to 0}$ is intended that in the simulation the time interval is taken large enough so that we have  enough events and thus stable numbers (see also Ref.~\cite{schuette2011markov})}.
 Where $\mathbb P\big( (\phi_{t-\Delta t}, \psi_{t-\Delta t}) \in J,\, (\phi_t, \psi_t) \in I\,\big)$
 is the joint probability of the alanine being in conformation $J$ at
 time $(t-\Delta t)$ \emph{and} being in conformation $I$ at time $t$.
@@ -519,8 +515,8 @@ The fact that our external perturbation corresponds to the action of an electric
   \caption{The
     $x$-component of the molecular dipole moment, and the orientational order parameter
     of the alanine molecule as a
-    function of time. \recheck{The solid line represents the dipole moment,
-    while the dashed line represents the orientational order parameter.}
+    function of time. The solid line represents the dipole moment,
+    while the dashed line represents the orientational order parameter.
     The left vertical axis is for the dipole moment, while
     the right is for the orientational order parameter.
   }
@@ -535,13 +531,13 @@ The dipole moment of the alanine dipeptide is defined by
   q_i\, \vect r_i(t)
   \bigg\rangle,
 \end{align}
-\recheck{where $q_i$ denotes the partial charge of any point particle $i$ defining our model of alnine,
-the molecule being neutral, i.e.~$\sum_iq_i = 0$.}
+where $q_i$ denotes the partial charge of any point particle $i$ defining our model of alanine,
+the molecule being neutral, i.e.~$\sum_iq_i = 0$.
 $\vect r_i$ denotes the position of the particle $i$.
 Fig.~\ref{fig:tmp3}
 shows that the $x$-component of the dipole moment 
 reaches 85\% of its maximum value in only 20~ps, which is comparable to
-the warm-up time $t_{warm}$, and is 25 times \recheck{\textit{25 time should be correct, isn't it?}}
+the warm-up time $t_{warm}$, and is 25 times
 smaller than the slowest time scale of the conformational relaxation.
 Then in the following 400~ps, the dipole slowly relaxes to its 
 maximum value, that is, 
@@ -835,21 +831,17 @@ increases to approximately 0.17 for $\period =10$~ps, 0.27 for  $\period =40$~ps
 In the case of $\period =10$ and $40$~ps, {the probability of conformation $C$}
 reaches the steady value in around 300~ps, while it requires about 1200~ps
 for the $\period =200$~ps case. 
-% \bluec{\textit{Here I do not agree with you to remove the above blue discussion,
-%   because the time scales (also the oscillatory EF case) are
-%   the main results of the current paper, which should be presented. It is only one sentence, no one would be panic.}}
 The notable increment of probability of $A_1$ and
   the vanishing of $B_1$ in the constant EF case (see Fig.~\ref{fig:tmp5})
 are not observed in the oscillatory EF case.
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{graph-t0010-2.eps}
+  \includegraphics[width=0.6\textwidth]{graph-t0010-2.eps}
   \caption{Schematic plot of the main probability flux between conformations
     for periodically oscillatory EF, $\period =10$~ps. The thickness 
     of the arrows approximately presents the strength of the flux.
     The numbers near the arrows indicates the strength of the averaged
     probability flux, the unit of which is $10^{-3}\times\textrm{ps}^{-1}$.
-    % {\bf LUIGI COMMENT: THE PICTURE MUST BE MUCH MUCH LAREGER SO THAT ONE SEE THE DIFFERENCE IN THE STRUCTURES. mOREOVER, THEY HAVE AN INTEREST ONLY THEY CAN BE RELATED TO MORE GENERAL STRUCTURES. wHAT IS NEEDED IS THAT CLOSE TO EACH MOLECULE ONE SHOULD WRITE ``$\alpha$-helix-like'' ``$\beta$-sheet-like. THE REST, gIOVANNI IS RIGHT, DOES NOT NEED TO BE EXPALINED IN DETAIL BECAUSE IT IS NOT REALLY INTERESTING AND i CUT A LOT.}
   }
   \label{fig:tmp11}
 \end{figure}
@@ -862,10 +854,12 @@ Fig.~\ref{fig:tmp11} presents
 a schematic plot of the main probability fluxes for $\period =10$~ps.
 The thickness of the arrows and the numbers nearby indicate
 the steady value of average net fluxes over periods.
-% the average amount of the net fluxes.
-%\recheck{This shows an interesting phenomenon: although
-%the oscillatory EF vanishes by time-averaging over a period,
-%it generates directional probability fluxes among the conformations.}
+{
+The relevance of Fig.~\ref{fig:tmp11} is in the fact that it suggests,
+in perspective, a general scenario common to all molecules
+characterized by $\beta$-sheet-like or $\alpha$-helix-like
+conformations and how an electric field is likely to modify it.
+}
 The probability flux of $\period =40$~ps is quantitatively
 comparable to the case $\period =10$~ps, except that the probability fluxes
 going into conformation $C$ is stronger, which actually results in
@@ -879,8 +873,6 @@ Moreover,
 increasing stage after about 3200~ps, which is even longer than the time scale
 at which the probability of $C$ reaches its steady value. This indicates
 a longer intrinsic time scale in the $\period =200$~ps case.
-\recheck{\textit{I think it is interesting because such directional probability
-  flux network is firstly reported by us. How to revise this part to convince Giovanni?}}
 
 We have not studied periods longer than $\period =200$~ps, because
 the trend suggests that a longer period indicates even longer intrinsic time scales.
@@ -891,43 +883,6 @@ at each time the system
 can be viewed as in equilibrium,
 the process falls in the category of a quasi-equilibrium
 process. 
-%For example,
-%the probability of being in a given conformation will change
-%smoothly from equilibrium value to the new equilibrium of $E=1$~V/nm, as
-%the EF increases.
-%And then smoothly goes back to equilibrium, as the EF vanishes.
-%The time-averaged net flux will be infinitely small,
-%and the integrated flux will be \recheck{periodic.}
-
-
-% similar to $T=10$~ps. For $T=40$~ps, the probability
-% flux is quantiatively comparable to the case $T=10$~ps, while
-% the strength of fluxex for $T=200$~ps is much weaker.
-
-% The time needed to reach a steady state is
-% roughly 400~ps that is the same as the
-% constant EF case.
-
-
-
-% When the period is $T=200$~ps, the phenonema are substentially different
-% from the high frequency cases ($T=10$ and 40~ps). Firstly, from Fig.~\ref{fig:tmp9}, the system reaches staedy state after around 2000~ps, while
-% Fig.~\ref{fig:tmp10} suggests an even long time scale, but we cannot draw
-% a very clear conclusion on it
-% due to the lack of computational power to perform even longer simulations. 
-% The steady probability of being in state $C$ is roughly the same as the
-% case of $T=40$~ps, although the maximum dipole moment is actually higher
-% than the latter. And the steady probability  of being in state $C$ is
-% also higher than the constant EF case, even the maximum dipole are roughly
-% the same. The time spend to reach the steady state is much longer than
-% the higher frequency cases, so this indicates a \emph{dynamically} longer time
-% scale in the system, comparing with the static EF case, in which all time scales
-% are actually decided by the \emph{static} external field. We also observe
-% a suden change in the probability flux from state $A_2$ to $A_1$ at
-% around 1600~ps, which may imply a \emph{dynamically} rare event.
-% Since we do not have the computer power to perform even longer simulations,
-% this hypothesis is not further checked.
-
 
 \section{Discussion and Conclusion}
 We have investigated the conformational
@@ -990,16 +945,188 @@ example those concerning the determination of time scales or the map of conforma
 are not likely to change significantly as a function of the force field.
 
 
-\section*{Acknowledgement}
-\recheck{
+\section*{Acknowledgment}
+  H.W. acknowledges the valuable discussions with Simone Meloni.
+  This work was partially supported by the Deutsche
+  Forschungsgemeinschaft (DFG), with the Heisenberg
+  Grant provided to L.D.S. (Grant No. DE 1140/5-1),
+  and with the support within the priority program ``Ionic Liquids'' SPP 1191
+  (H.W. and L.D.S.). 
   H.W.~and C.S.~thank the financial support by DFG research center MATHEON.
-  Funding from the IIT SEED project SIMBEDD and from the SFI Grant 08-IN.1-I1869 is acknowledged by G.C..  
-}
+  Funding from the IIT SEED project SIMBEDD and from the SFI Grant 08-IN.1-I1869 is acknowledged by G.C..
 
-\bibliography{ref}{}
-\bibliographystyle{unsrt}
+% \bibliography{ref}{}
+% \bibliographystyle{unsrt}
 
 
+\begin{thebibliography}{10}
+
+\bibitem{bohr2000microwave}
+Henrik Bohr and Jakob Bohr.
+\newblock Microwave-enhanced folding and denaturation of globular proteins.
+\newblock {\em Physical Review E}, 61(4):4310, 2000.
+
+\bibitem{bohr2000microwave-1}
+Henrik Bohr and Jakob Bohr.
+\newblock Microwave enhanced kinetics observed in ord studies of a protein.
+\newblock {\em Bioelectromagnetics}, 21(1):68--72, 2000.
+
+\bibitem{dePomerai2000cell}
+David de~Pomerai, Clare Daniells, Helen David, Joanna Allan, Ian Duce, Mohammed
+  Mutwakil, David Thomas, Phillip Sewell, John Tattersall, Don Jones, and Peter
+  Candido.
+\newblock Cell biology: Non-thermal heat-shock response to microwaves.
+\newblock {\em Nature}, 405:417--418, 2000.
+
+\bibitem{inskip2001cellular}
+Peter~D Inskip, Robert~E Tarone, Elizabeth~E Hatch, Timothy~C Wilcosky,
+  William~R Shapiro, Robert~G Selker, Howard~A Fine, Peter~M Black, Jay~S
+  Loeffler, and Martha~S Linet.
+\newblock Cellular-telephone use and brain tumors.
+\newblock {\em New England Journal of Medicine}, 344(2):79--86, 2001.
+
+\bibitem{mancinelli2004non}
+Fabrizio Mancinelli, Michele Caraglia, Alberto Abbruzzese, Guglielmo
+  d'Ambrosio, Rita Massa, and Ettore Bismuto.
+\newblock Non-thermal effects of electromagnetic fields at mobile phone
+  frequency on the refolding of an intracellular protein: Myoglobin.
+\newblock {\em Journal of cellular biochemistry}, 93(1):188--196, 2004.
+
+\bibitem{budi2005electric}
+A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
+\newblock Electric field effects on insulin chain-b conformation.
+\newblock {\em The Journal of Physical Chemistry B}, 109(47):22641--22648,
+  2005.
+
+\bibitem{budi2007effect}
+A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
+\newblock Effect of frequency on insulin response to electric field stress.
+\newblock {\em The Journal of Physical Chemistry B}, 111(20):5748--5756, 2007.
+
+\bibitem{budi2008comparative}
+Akin Budi, F~Sue Legge, Herbert Treutlein, and Irene Yarovsky.
+\newblock Comparative study of insulin chain-b in isolated and monomeric
+  environments under external stress.
+\newblock {\em The Journal of Physical Chemistry B}, 112(26):7916--7924, 2008.
+
+\bibitem{toschi2008effects}
+Francesca Toschi, Francesca Lugli, Fabio Biscarini, and Francesco Zerbetto.
+\newblock Effects of electric field stress on a $\beta$-amyloid peptide.
+\newblock {\em The Journal of Physical Chemistry B}, 113(1):369--376, 2008.
+
+\bibitem{astrakas2011electric}
+Loukas Astrakas, Christos Gousias, and Margaret Tzaphlidou.
+\newblock Electric field effects on chignolin conformation.
+\newblock {\em Journal of Applied Physics}, 109(9):094702--094702, 2011.
+
+\bibitem{astrakas2012structural}
+Loukas~G Astrakas, Christos Gousias, and Margaret Tzaphlidou.
+\newblock Structural destabilization of chignolin under the influence of
+  oscillating electric fields.
+\newblock {\em Journal of Applied Physics}, 111(7):074702--074702, 2012.
+
+\bibitem{damm2012can}
+Markus Damm, Christoph Nusshold, David Cantillo, Gerald~N Rechberger, Karl
+  Gruber, Wolfgang Sattler, and C~Oliver Kappe.
+\newblock Can electromagnetic fields influence the structure and enzymatic
+  digest of proteins? a critical evaluation of microwave-assisted proteomics
+  protocols.
+\newblock {\em Journal of proteomics}, 75:5533--5543, 2012.
+
+\bibitem{starzyk2013proteins}
+A.~Starzyk and M.~Cieplak.
+\newblock Proteins in the electric field near the surface of mica.
+\newblock {\em The Journal of Chemical Physics}, 139:045102, 2013.
+
+\bibitem{english2009nonequilibrium}
+N.J. English, G.Y. Solomentsev, and P.~O'Brien.
+\newblock Nonequilibrium molecular dynamics study of electric and low-frequency
+  microwave fields on hen egg white lysozyme.
+\newblock {\em The Journal of chemical physics}, 131:035106, 2009.
+
+\bibitem{solomentsev2012effects}
+G.Y. Solomentsev, N.J. English, and D.A. Mooney.
+\newblock Effects of external electromagnetic fields on the conformational
+  sampling of a short alanine peptide.
+\newblock {\em Journal of Computational Chemistry}, 33:917--923, 2012.
+
+\bibitem{ciccotti1975direct}
+G~Ciccotti and G~Jacucci.
+\newblock Direct computation of dynamical response by molecular dynamics: The
+  mobility of a charged lennard-jones particle.
+\newblock {\em Physical Review Letters}, 35(12):789, 1975.
+
+\bibitem{ciccotti1979thought}
+G.~Ciccotti, G.~Jacucci, and I.R. McDonald.
+\newblock "thought-experiments" by molecular dynamics.
+\newblock {\em Journal of Statistical Physics}, 21(1):1--22, 1979.
+
+\bibitem{ciccotti1993theoretical}
+G.~Ciccotti, C.~Pierleoni, and J.P. Ryckaert.
+\newblock Theoretical foundation and rheological application of non-equilibrium
+  molecular dynamics.
+\newblock In {\em Microscopic simulations of complex hydrodynamic phenomena},
+  pages 25--45. Plenum Press, 1993.
+
+\bibitem{palla2008bulk}
+P.L. Palla, C.~Pierleoni, and G.~Ciccotti.
+\newblock Bulk viscosity of the lennard-jones system at the triple point by
+  dynamical nonequilibrium molecular dynamics.
+\newblock {\em Physical Review E}, 78(2):021204, 2008.
+
+\bibitem{orlandini2011hydrodynamics}
+S.~Orlandini, S.~Meloni, and G.~Ciccotti.
+\newblock Hydrodynamics from statistical mechanics: combined dynamical-nemd and
+  conditional sampling to relax an interface between two immiscible liquids.
+\newblock {\em Phys. Chem. Chem. Phys.}, 13:13177--13181, 2011.
+
+\bibitem{orlandini2011hydrodynamics-01}
+Sergio Orlandini, Simone Meloni, and Giovanni Ciccotti.
+\newblock Hydrodynamics from dynamical non-equilibrium md.
+\newblock In {\em AIP Conference Proceedings}, volume 1332, page~77, 2011.
+
+\bibitem{delaHoz2005microwaves}
+Antonio de~la Hoz, Angel Diaz-Ortiz, and Andres Moreno.
+\newblock Microwaves in organic synthesis. thermal and non-thermal microwave
+  effects.
+\newblock {\em Chemical Society Reviews}, 34(2):164--178, 2005.
+
+\bibitem{pronk2013gromacs}
+S.~Pronk, S.~P{\'a}ll, R.~Schulz, P.~Larsson, P.~Bjelkmar, R.~Apostolov, M.R.
+  Shirts, J.C. Smith, P.M. Kasson, D.~van~der Spoel, and Hess B.~Lindahl E.
+\newblock Gromacs 4.5: a high-throughput and highly parallel open source
+  molecular simulation toolkit.
+\newblock {\em Bioinformatics}, pages 1--10, 2013.
+
+\bibitem{parrinello1981polymorphic}
+M.~Parrinello and A.~Rahman.
+\newblock Polymorphic transitions in single crystals: A new molecular dynamics
+  method.
+\newblock {\em Journal of Applied Physics}, 52:7182, 1981.
+
+\bibitem{schuette2011markov}
+C.~Sch{\"u}tte, F.~No{\'e}, J.~Lu, M.~Sarich, and E.~Vanden-Eijnden.
+\newblock Markov state models based on milestoning.
+\newblock {\em The Journal of Chemical Physics}, 134:204105, 2011.
+
+\bibitem{scovell2000phase}
+Dawn~L Scovell, Tim~D Pinkerton, Valentin~K Medvedev, and Eric~M Stuve.
+\newblock Phase transitions in vapor-deposited water under the influence of
+  high surface electric fields.
+\newblock {\em Surface science}, 457(3):365--376, 2000.
+
+\bibitem{vogel2008femtosecond}
+A.~Vogel, N.~Linz, S.~Freidank, and G.~Paltauf.
+\newblock Femtosecond-laser-induced nanocavitation in water: implications for
+  optical breakdown threshold and cell surgery.
+\newblock {\em Physical review letters}, 100(3):38102, 2008.
+
+\bibitem{vitalini2013speed}
+F.~Vitalini, A.S.J.S. Mey, F.~No\'e, and B.G. Keller.
+\newblock The speed of force fields.
+\newblock {\em unpublished}, 2013.
+
+\end{thebibliography}
 
 
 
