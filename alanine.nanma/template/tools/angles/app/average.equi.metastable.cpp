@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
   desc.add_options()
       ("help,h", "print this message")
       ("output,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
-      ("input,f",  po::value<std::string > (&itfile)->default_value ("traj.xtc"), "the file of trajectory");
+      ("input,f",  po::value<std::string > (&itfile)->default_value ("angle.dat"), "the file of trajectory");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -123,16 +123,14 @@ int main(int argc, char * argv[])
     std::cerr << "cannot open file " << itfile << std::endl;
     return 1;
   }
-  char nameline [MaxLineLength];
   float time;
   ValueType phi, psi;
   vector<double > counts;
-  unsigned countFile = 0;
 
   FILE *fp = fopen (itfile.c_str(), "r");
-  cout << "reading file " << nameline << endl;
+  cout << "reading file " << itfile << endl;
   if (fp == NULL){
-    std::cerr << "cannot open file " << nameline << std::endl;
+    std::cerr << "cannot open file " << itfile << std::endl;
     return 1;
   }
   unsigned countFrame = 0;
@@ -153,7 +151,7 @@ int main(int argc, char * argv[])
 
   FILE * fpo = fopen (ofile.c_str(), "w");
   for (unsigned dd = 0; dd < sets.size(); ++dd){
-    fprintf (fpo, "%f ", counts[dd] / double(countFile));
+    fprintf (fpo, "%f ", counts[dd] / double(countFrame));
   }
   fprintf (fpo, "\n");
   fclose (fpo);

@@ -63,12 +63,14 @@ int main(int argc, char * argv[])
   std::string ifile, sfile, tfile;
   float time_prec = .01;
   TopInfo info;
+  unsigned every;
   
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
       ("begin,b", po::value<float > (&begin)->default_value(0.f), "start time")
       ("end,e",   po::value<float > (&end  )->default_value(0.f), "end   time")
+      ("every",   po::value<unsigned > (&every)->default_value(1), "every frame")
       ("top-file,t",po::value<std::string > (&tfile)->default_value ("mytop"), "topolgy of the system")
       ("savefile,s",  po::value<std::string > (&sfile)->default_value ("angle.dat"), "the output of angle distribution")
       ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
@@ -97,6 +99,7 @@ int main(int argc, char * argv[])
   VectorType box = tjl.getBox();
  
   int countread = 0;
+  int realcountread = 0;
   AngleCalculator ac (box);
   ValueType phi, psi;
 
@@ -107,6 +110,8 @@ int main(int argc, char * argv[])
   }
   
   while (true == tjl.load()){
+    countread ++;
+    if ((countread-1) % every != 0) continue;
     float time = tjl.getTime();
     if (end != 0.f) {
       if (time < begin - time_prec){
@@ -119,7 +124,7 @@ int main(int argc, char * argv[])
     else {
       if (time < begin - time_prec) continue;
     }
-    if (countread++ % 100 == 0){
+    if ((realcountread++) % 100 == 0){
       printf ("# load frame at time: %.1f ps\r", time);
       fflush (stdout);
     }
@@ -129,6 +134,7 @@ int main(int argc, char * argv[])
   }
 
   cout << endl;
+  cout << "in total " << realcountread << " frames are read" << endl;
   fclose (fp);
   
   return 0;
