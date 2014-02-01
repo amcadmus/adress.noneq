@@ -129,7 +129,7 @@ int main(int argc, char * argv[])
     for (int ii = 0; ii < int(corrs.size()); ++ii){ // nset
       double tmp = equis[ii];
       for (int jj = 0; jj < int(corrs[ii].size()) - 1; ++jj){
-	tmp += beta * 0.5 * dt * (
+	tmp -= beta * 0.5 * dt * (
 	    fe(ctime - times[jj]) * corrs[ii][jj] + 
 	    fe(ctime - times[jj+1]) * corrs[ii][jj+1]);
       }
