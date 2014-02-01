@@ -123,12 +123,15 @@ int main(int argc, char * argv[])
 
   double beta = 1./2.4923;
   FILE * fp = fopen (ofile.c_str(), "w");
+  double dt = times[1] - times[0];
   for (double ctime = begin; ctime <= end; ctime+=step){
     fprintf (fp, "%f   ", ctime);
     for (int ii = 0; ii < int(corrs.size()); ++ii){ // nset
       double tmp = equis[ii];
-      for (int jj = 0; jj < int(corrs[ii].size()); ++jj){
-	tmp += beta * fe(ctime - times[jj]) * corrs[ii][jj];
+      for (int jj = 0; jj < int(corrs[ii].size()) - 1; ++jj){
+	tmp += beta * 0.5 * dt * (
+	    fe(ctime - times[jj]) * corrs[ii][jj] + 
+	    fe(ctime - times[jj+1]) * corrs[ii][jj+1]);
       }
       fprintf (fp, "%f   ", tmp);
     }
