@@ -72,6 +72,7 @@ void depositMetastable (const double & phi,
 int main(int argc, char * argv[])
 {
   std::string itfile, ofile;
+  unsigned every;
   // unsigned numBlock = 20;
   // double refh;
   // float time_prec = .01;
@@ -95,6 +96,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
+      ("every,e", po::value<unsigned > (&every)->default_value (1), "split every frame")
       ("output,o", po::value<std::string > (&ofile)->default_value ("equi.meta.out"), "the output of metastable propulation")
       ("input,f",  po::value<std::string > (&itfile)->default_value ("angle.dat"), "the file of trajectory");
 
@@ -135,6 +137,10 @@ int main(int argc, char * argv[])
   }
   unsigned countFrame = 0;
   while (myread(fp, time, phi, psi)){
+    if ((countFrame) % every != 0) {
+      countFrame ++;
+      continue;
+    }
     vector<double > tmpcount;
     depositMetastable (psi, phi, sets, tmpcount);
     if (countFrame == 0){
