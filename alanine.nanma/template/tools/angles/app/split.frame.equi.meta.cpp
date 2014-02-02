@@ -153,7 +153,8 @@ int main(int argc, char * argv[])
   vector <unsigned > countConf (5, 0);
   
   while (myread(fp, time, phi, psi)){
-    if (countFrame % every != 0) continue;
+    // cout << "time is " << time << endl;
+    if ((countFrame++) % every != 0) continue;
     vector<double > tmpcount;
     depositMetastable (psi, phi, sets, tmpcount);
     for (unsigned ii = 0; ii < 5; ++ii){
@@ -163,7 +164,6 @@ int main(int argc, char * argv[])
 	break;
       }
     }
-    countFrame ++;
   }
   fclose (fp);
   fclose (fps[0]);
