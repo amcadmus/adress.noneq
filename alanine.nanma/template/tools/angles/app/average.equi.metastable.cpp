@@ -158,7 +158,9 @@ int main(int argc, char * argv[])
   fclose (fp);
 
   FILE * fpo = fopen (ofile.c_str(), "w");
+  printf ("# calculated from %d frames\n", countCal);
   for (unsigned dd = 0; dd < sets.size(); ++dd){
+    printf ("%f ", counts[dd] / double(countCal));
     fprintf (fpo, "%f ", counts[dd] / double(countCal));
   }
   fprintf (fpo, "\n");
