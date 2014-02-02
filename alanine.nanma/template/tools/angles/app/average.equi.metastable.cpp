@@ -95,7 +95,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("output,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
+      ("output,o", po::value<std::string > (&ofile)->default_value ("equi.meta.out"), "the output of metastable propulation")
       ("input,f",  po::value<std::string > (&itfile)->default_value ("angle.dat"), "the file of trajectory");
 
   po::variables_map vm;
