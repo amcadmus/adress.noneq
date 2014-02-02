@@ -137,6 +137,7 @@ int main(int argc, char * argv[])
   }
   
   unsigned countFrame = 0;
+  unsigned countCal = 0;
   string tmpname;
   FILE **fps;
   fps = (FILE **) malloc (sizeof(FILE *) * 5);
@@ -155,12 +156,13 @@ int main(int argc, char * argv[])
   while (myread(fp, time, phi, psi)){
     // cout << "time is " << time << endl;
     if ((countFrame++) % every != 0) continue;
+    countCal ++;
     vector<double > tmpcount;
     depositMetastable (psi, phi, sets, tmpcount);
     for (unsigned ii = 0; ii < 5; ++ii){
       if (tmpcount[ii] == 1) {
 	countConf[ii] ++;
-	fprintf (fps[ii], "%06d %.10f\n", countConf[ii], time - 0.25);
+	fprintf (fps[ii], "%06d %.10f\n", countCal, time - 0.25);
 	break;
       }
     }
