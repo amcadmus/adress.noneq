@@ -136,6 +136,7 @@ int main(int argc, char * argv[])
     return 1;
   }
   unsigned countFrame = 0;
+  unsigned countCal = 0;
   while (myread(fp, time, phi, psi)){
     if ((countFrame) % every != 0) {
       countFrame ++;
@@ -152,12 +153,13 @@ int main(int argc, char * argv[])
       }
     }
     countFrame ++;
+    countCal ++;
   }
   fclose (fp);
 
   FILE * fpo = fopen (ofile.c_str(), "w");
   for (unsigned dd = 0; dd < sets.size(); ++dd){
-    fprintf (fpo, "%f ", counts[dd] / double(countFrame));
+    fprintf (fpo, "%f ", counts[dd] / double(countCal));
   }
   fprintf (fpo, "\n");
   fclose (fpo);
