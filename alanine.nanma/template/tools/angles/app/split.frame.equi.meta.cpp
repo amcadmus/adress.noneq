@@ -96,7 +96,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("every,e", po::value<unsigned > (&every)->default_value (1), "split every frame")      
+      ("every,e", po::value<unsigned > (&every)->default_value (1), "split every frame")
       ("output,o", po::value<std::string > (&ofile)->default_value ("equi.frame"), "the output of frames")
       ("input,f",  po::value<std::string > (&itfile)->default_value ("angle.dat"), "the file of trajectory");
 

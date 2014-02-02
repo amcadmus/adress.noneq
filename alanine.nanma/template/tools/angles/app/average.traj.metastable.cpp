@@ -72,6 +72,7 @@ void depositMetastable (const double & phi,
 int main(int argc, char * argv[])
 {
   std::string ifile, ofile;
+  unsigned every;
   // unsigned numBlock = 20;
   // double refh;
   // float time_prec = .01;
@@ -95,6 +96,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
+      ("every,e", po::value<unsigned > (&every)->default_value (1), "split every frame")
       ("output,o", po::value<std::string > (&ofile)->default_value ("metastable.out"), "the output of metastable propulation")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.name"), "the file of file names");
 
@@ -132,13 +134,13 @@ int main(int argc, char * argv[])
 
   while (fpname.getline(nameline, MaxLineLength)){
     if (nameline[0] == '#') continue;
+    if ((countFile++) % every != 0) continue;
     FILE *fp = fopen (nameline, "r");
     cout << "reading file " << nameline << endl;
     if (fp == NULL){
       std::cerr << "cannot open file " << nameline << std::endl;
       return 1;
     }
-    countFile ++;
     vector<double > tmpcount;
     if (countFile == 1){
       while (myread(fp, time, phi, psi)){
