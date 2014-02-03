@@ -162,7 +162,7 @@ int main(int argc, char * argv[])
     for (unsigned ii = 0; ii < 5; ++ii){
       if (tmpcount[ii] == 1) {
 	countConf[ii] ++;
-	fprintf (fps[ii], "%06d %.10f\n", countCal, time - 0.25);
+	fprintf (fps[ii], "%06d %.10f\n", countFrame, time - 0.5);
 	break;
       }
     }
