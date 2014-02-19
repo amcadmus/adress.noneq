@@ -152,6 +152,7 @@ int main(int argc, char * argv[])
   tmpname = ofile + ".c";
   fps[4] = fopen (tmpname.c_str(), "w");
   vector <unsigned > countConf (5, 0);
+  FILE * fpo = fopen (ofile.c_str(), "w");
   
   while (myread(fp, time, phi, psi)){
     // cout << "time is " << time << endl;
@@ -162,12 +163,16 @@ int main(int argc, char * argv[])
     for (unsigned ii = 0; ii < 5; ++ii){
       if (tmpcount[ii] == 1) {
 	countConf[ii] ++;
-	fprintf (fps[ii], "%06d %.10f\n", countFrame, time - 0.5);
+	if (countCal != 1){
+	  fprintf (fps[ii], "%06d %.10f\n", countCal-1, time - 2.5);
+	  fprintf (fpo, "%06d %.10f\n", countCal-1, time - 2.5);
+	}
 	break;
       }
     }
   }
   fclose (fp);
+  fclose (fpo);
   fclose (fps[0]);
   fclose (fps[1]);
   fclose (fps[2]);

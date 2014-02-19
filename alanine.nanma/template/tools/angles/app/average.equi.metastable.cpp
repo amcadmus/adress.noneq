@@ -163,6 +163,7 @@ int main(int argc, char * argv[])
     printf ("%f ", counts[dd] / double(countCal));
     fprintf (fpo, "%f ", counts[dd] / double(countCal));
   }
+  printf ("\n");
   fprintf (fpo, "\n");
   fclose (fpo);
   
