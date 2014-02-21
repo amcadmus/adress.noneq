@@ -14,6 +14,7 @@
 
 #include "Defines.h"
 #include "Distribution.h"
+#include "BlockAverage.h"
 #include <boost/program_options.hpp>
 namespace po = boost::program_options;
 using namespace std;
@@ -72,7 +73,7 @@ void depositMetastable (const double & phi,
 int main(int argc, char * argv[])
 {
   std::string itfile, ofile;
-  unsigned every;
+  unsigned every, numDataBlock;
   // unsigned numBlock = 20;
   // double refh;
   // float time_prec = .01;
@@ -97,6 +98,7 @@ int main(int argc, char * argv[])
   desc.add_options()
       ("help,h", "print this message")
       ("every,e", po::value<unsigned > (&every)->default_value (1), "split every frame")
+      ("numDataBlock,n", po::value<unsigned > (&numDataBlock)->default_value (1000), "number of data in each block")
       ("output,o", po::value<std::string > (&ofile)->default_value ("equi.meta.out"), "the output of metastable propulation")
       ("input,f",  po::value<std::string > (&itfile)->default_value ("angle.dat"), "the file of trajectory");
 
@@ -128,6 +130,7 @@ int main(int argc, char * argv[])
   float time;
   ValueType phi, psi;
   vector<double > counts;
+  vector<BlockAverage_acc> avgs;
 
   FILE *fp = fopen (itfile.c_str(), "r");
   cout << "reading file " << itfile << endl;
@@ -146,23 +149,37 @@ int main(int argc, char * argv[])
     depositMetastable (psi, phi, sets, tmpcount);
     if (countFrame == 0){
       counts = tmpcount;
+      avgs.resize (tmpcount.size());
+      for (unsigned dd = 0; dd < tmpcount.size(); ++dd){
+	avgs[dd].reinit (numDataBlock);
+      }
     }
     else {
       for (unsigned dd = 0; dd < tmpcount.size(); ++dd){
 	counts[dd] += tmpcount[dd];
       }
     }
+    for (unsigned dd = 0; dd < tmpcount.size(); ++dd){
+      avgs[dd].deposite (tmpcount[dd]);
+    }      
     countFrame ++;
     countCal ++;
   }
   fclose (fp);
 
   FILE * fpo = fopen (ofile.c_str(), "w");
-  printf ("# calculated from %d frames\n", countCal);
+  printf ("# calculated from %d %d (block avg) frames\n", countCal, avgs[0].getNumDataUsed());
+  printf ("# block average with %d data in each block, in total %d blocks\n", numDataBlock, avgs[0].getNumDataUsed() / numDataBlock);
+  printf ("# show estimated errors at 95 percent confidence level\n");
   for (unsigned dd = 0; dd < sets.size(); ++dd){
     printf ("%f ", counts[dd] / double(countCal));
     fprintf (fpo, "%f ", counts[dd] / double(countCal));
   }
+  printf ("\n");
+  for (unsigned dd = 0; dd < sets.size(); ++dd){
+    avgs[dd].calculate();
+    printf ("%f (%f)   ", avgs[dd].getAvg(), 2. * avgs[dd].getAvgError());
+  } 
   printf ("\n");
   fprintf (fpo, "\n");
   fclose (fpo);
