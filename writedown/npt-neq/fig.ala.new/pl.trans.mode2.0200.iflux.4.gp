@@ -1,4 +1,5 @@
-set label 'Q_{J,B_2}, T_P = 200 ps' at 400,0.5
+set label 'Q_{J,C5}, T_P = 200 ps' at 400,0.6
+# set label 'Q_{J,C5}, T_P = 200 ps' at 400,0.7
 set lmargin 4.5
 set rmargin 2
 unset tmargin
@@ -42,6 +43,7 @@ set format y "%.1f"
 set grid
 set tmargin 1.0
 set bmargin 2.5
+#set label 't [ ps ]' at 2400,-1.45
 set label 't [ ps ]' at 2400,-1.18
 
 pl 'ext.mode2.200.Ex.01.00.shift0.t6400ps/set/meta.flux.inte.out' u 1:17 ls 11 w l not, '' u 1:18 ls 12 w l not, '' u 1:19 ls 13 w l not, '' u 1:20 ls 14 w l not, '' u 1:21 ls 15 w l not

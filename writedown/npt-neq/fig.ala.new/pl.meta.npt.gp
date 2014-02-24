@@ -27,6 +27,19 @@ set style line 45 lc 5 lw 3 pt 2 lt 4
 
 set style line 20 lc 0 lw 3 pt 2 lt 2
 
+set style line 111 lt 1 lw 3 pt 7 linecolor rgb "#ffbbbb"
+set style line 112 lt 1 lw 3 pt 7 linecolor rgb "#ff0000"
+set style line 121 lt 1 lw 3 pt 7 linecolor rgb "#99ff99"
+set style line 122 lt 1 lw 3 pt 7 linecolor rgb "#33cc33"
+set style line 131 lt 1 lw 3 pt 7 linecolor rgb "#bbbbff"
+set style line 132 lt 1 lw 3 pt 7 linecolor rgb "#0000ff"
+set style line 141 lt 1 lw 3 pt 7 linecolor rgb "#ffccff"
+set style line 142 lt 1 lw 3 pt 7 linecolor rgb "#cc00ff"
+#set style line 151 lt 1 lw 3 pt 7 linecolor rgb "#bbffff"
+set style line 151 lt 1 lw 3 pt 7 linecolor rgb "#CEF6F5"
+set style line 152 lt 1 lw 3 pt 7 linecolor rgb "#00ffff"
+
+
 set multiplot
 set size 0.4,1
 
@@ -47,15 +60,19 @@ set grid
 
 set xrange [0:100]
 pl \
-'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out'		u 1:2 every 4 w l ls 11 not, '' u 1:3 every 4 w l ls 12 not, '' u 1:4 every 4 w l ls 13  not, '' u 1:5 every 4 w l ls 14  not, '' u 1:6 every 4 w l ls 15 not
+   'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out' u 1:($2-$7*2):($2+$7*2) every 4 w filledcu ls 111 not, \
+   '' u 1:($3-$8 *2):($3+$8 *2) every 4 w filledcu ls 121 not,\
+   '' u 1:($4-$9 *2):($4+$9 *2) every 4 w filledcu ls 131 not,\
+   '' u 1:($5-$10*2):($5+$10*2) every 4 w filledcu ls 141 not,\
+   '' u 1:($6-$11*2):($6+$11*2) every 4 w filledcu ls 151 not,\
+   'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out' u 1:2 every 4 w l ls 112 not,\
+   '' u 1:3 every 4 w l ls 122 not,\
+   '' u 1:4 every 4 w l ls 132 not,\
+   '' u 1:5 every 4 w l ls 142 not,\
+   '' u 1:6 every 4 w l ls 152 not
 
-# 'ext.mode1.100.Ex.01.00.t1200ps/set/metastable.out'		u 1:2 every 4 w l ls 21 not, '' u 1:3 every 4 w l ls 22 not, '' u 1:4 every 4 w l ls 23  not, '' u 1:5 every 4 w l ls 24  not, '' u 1:6 every 4 w l ls 25 not,\
-# 'ext.mode1.500.Ex.01.00.t1200ps/set/metastable.out'		u 1:2 every 4 w l ls 41 not, '' u 1:3 every 4 w l ls 42 not, '' u 1:4 every 4 w l ls 43  not, '' u 1:5 every 4 w l ls 44  not, '' u 1:6 every 4 w l ls 45 not
+   # 'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out'		u 1:2 every 4 w l ls 111 not, '' u 1:3 every 4 w l ls 112 not, '' u 1:4 every 4 w l ls 113  not, '' u 1:5 every 4 w l ls 114  not, '' u 1:6 every 4 w l ls 115 not
 
-# 'lines' w l ls 20 not,\
-
-# 'ext.mode1.000.Ex.01.00.t1000ps/set/metastable.out'		u 1:2 every 4 w l ls 41 not, '' u 1:3 every 4 w l ls 42 not, '' u 1:4 every 4 w l ls 43  not, '' u 1:5 every 4 w l ls 44  not, '' u 1:6 every 4 w l ls 45 not,\
-# 'ext.mode1.050.Ex.01.00.t0600ps/set/metastable.out'		u 1:2 every 4 w l ls 21 not, '' u 1:3 every 4 w l ls 22 not, '' u 1:4 every 4 w l ls 23  not, '' u 1:5 every 4 w l ls 24  not, '' u 1:6 every 4 w l ls 25 not,\
 
 
 set size 0.6,1
@@ -70,21 +87,30 @@ set xtics 200
 set mxtics 2
 
 set label 't [ ps ]' at 200, -0.11
-set label '{/Symbol a}_R' at 800,.60
-set label 'A_2' at 800,.085
-set label 'B_1' at 900,.045
-set label 'B_2' at 800,.01
-set label '{/Symbol a}_L' at 800,.28
-
+# set label '{/Symbol a}_R' at 800,.60
+# set label "{/Symbol a}'_R" at 800,.085
+# set label 'C7_{eq}' at 900,.045
+# set label 'C5' at 800,.01
+# set label '{/Symbol a}_L' at 800,.28
+set label '{/Symbol a}_R'	 at 400,.605	font ",16" front
+set label "{/Symbol a}'_R"	 at 100,.08	font ",16" front
+set label 'C7_{eq}'		 at 180,.135	font ",16" front
+set label 'C5'			 at 180,.025	font ",16" front
+set label '{/Symbol a}_L'	 at 400,.235	font ",16" front
 
 pl \
-'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out'		u 1:2 every 48 w l ls 11 t 't_{init}=10 ps', '' u 1:3 every 48 w l ls 12 not, '' u 1:4 every 48 w l ls 13  not, '' u 1:5 every 48 w l ls 14  not, '' u 1:6 every 48 w l ls 15 not
+   'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out' u 1:($2-$7*2):($2+$7*2) every 48 w filledcu ls 111 not, \
+   '' u 1:($3-$8 *2):($3+$8 *2) every 48 w filledcu ls 121 not,\
+   '' u 1:($4-$9 *2):($4+$9 *2) every 48 w filledcu ls 131 not,\
+   '' u 1:($5-$10*2):($5+$10*2) every 48 w filledcu ls 141 not,\
+   '' u 1:($6-$11*2):($6+$11*2) every 48 w filledcu ls 151 not,\
+   'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out' u 1:2 every 48 w l ls 112 not,\
+   '' u 1:3 every 48 w l ls 122 not,\
+   '' u 1:4 every 48 w l ls 132 not,\
+   '' u 1:5 every 48 w l ls 142 not,\
+   '' u 1:6 every 48 w l ls 152 not
 
-# 'ext.mode1.100.Ex.01.00.t1200ps/set/metastable.out'		u 1:2 every 48 w l ls 21 t 't_{init}=100 ps', '' u 1:3 every 48 w l ls 22 not, '' u 1:4 every 48 w l ls 23  not, '' u 1:5 every 48 w l ls 24  not, '' u 1:6 every 48 w l ls 25 not,\
-# 'ext.mode1.500.Ex.01.00.t1200ps/set/metastable.out'		u 1:2 every 48 w l ls 41 t 't_{init}=500 ps', '' u 1:3 every 48 w l ls 42 not, '' u 1:4 every 48 w l ls 43  not, '' u 1:5 every 48 w l ls 44  not, '' u 1:6 every 48 w l ls 45 not
 
-# 'lines.1' w l ls 20 not,\
-
-# 'ext.mode1.000.Ex.01.00.t1000ps/set/metastable.out'		u 1:2 every 48 w l ls 41 t 't_{init}=10 ps', '' u 1:3 every 48 w l ls 42 not, '' u 1:4 every 48 w l ls 43  not, '' u 1:5 every 48 w l ls 44  not, '' u 1:6 every 48 w l ls 45 not,\
-# 'ext.mode1.050.Ex.01.00.t0600ps/set/metastable.out'		u 1:2 every 48 w l ls 21 t 't_{init}=50 ps', '' u 1:3 every 48 w l ls 22 not, '' u 1:4 every 48 w l ls 23  not, '' u 1:5 every 48 w l ls 24  not, '' u 1:6 every 48 w l ls 25 not,\
+   # pl \
+# 'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out'		u 1:2 every 48 w l ls 111 t 't_{init}=10 ps', '' u 1:3 every 48 w l ls 112 not, '' u 1:4 every 48 w l ls 113  not, '' u 1:5 every 48 w l ls 114  not, '' u 1:6 every 48 w l ls 115 not
 

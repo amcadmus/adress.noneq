@@ -44,7 +44,7 @@ set xtics 50
 set mxtics 5
 set xrange [0:100]
 pl 'ext.mode1.010.Ex.01.00.t0600ps/set/meta.flux.inte.out' u 1:7 ls 11 w l not, '' u 1:8 ls 12 w l not, '' u 1:9 ls 13 w l not, '' u 1:10 ls 14 w l not, '' u 1:11 ls 15 w l not
-set label 'Q_{J,A_2}'  at 450,0.14
+set label 'Q_{J,{/Symbol a}'_R}'  at 450,0.14
 set size 0.6,1
 set origin 0.4,0.0
 set lmargin 0

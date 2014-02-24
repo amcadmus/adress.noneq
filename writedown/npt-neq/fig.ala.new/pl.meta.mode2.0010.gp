@@ -68,11 +68,11 @@ set xrange [100:1000]
 set xtics 200
 set mxtics 2
 
-# set label 'A_1' at 1000,.67
-# set label 'A_2' at 1000,.075
-# set label 'B_1' at 1100,.045
-# set label 'B_2' at 1000,.01
-# set label 'C' at 1000,.23
+# set label '{/Symbol a}_R' at 1000,.67
+# set label '{/Symbol a}'_R' at 1000,.075
+# set label 'C7_{eq}' at 1100,.045
+# set label 'C5' at 1000,.01
+# set label '{/Symbol a}_L' at 1000,.23
 
 
 pl \

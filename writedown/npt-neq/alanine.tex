@@ -24,6 +24,12 @@
 \newcommand{\bwd}[0]{\textrm{bwd}}
 \newcommand{\period}[0]{T_{\textrm{P}}}
 
+\newcommand{\confaa}[0]{{\alpha_{\textrm{R}}}}
+\newcommand{\confab}[0]{{\alpha_{\textrm{R}}'}}
+\newcommand{\confba}[0]{{\textrm{C}7_{\textrm{eq}}}}
+\newcommand{\confbb}[0]{{\textrm{C}5}}
+\newcommand{\confc}[0]{{\alpha_{\textrm{L}}}}
+
 
 
 \begin{document}
@@ -313,7 +319,7 @@ MD simulation (if not stated otherwise for specific cases).
 The branching trajectories were integrated by the
 Leap-frog scheme with the aforementioned nonequilibrium
 temperature control technique.  The
-time step was $\Delta t = 0.002~\textsf{ps}$.
+time step was $0.002~\textsf{ps}$.
 \recheck{The short-range
 interaction (van der Waals interaction)
 had the cut-off radius of 1.0~nm, and was smoothed from $0.8$ to $1.0$~nm by the
@@ -354,7 +360,7 @@ for $t \geq t_{warm}$.
 
 \begin{figure}
   \centering
-  \includegraphics[width=1.00\textwidth]{fig-all.eps}
+  \includegraphics[width=1.00\textwidth]{fig.ala.new/fig.all/fig-all.eps}
   % \raisebox{0.2\height}{\includegraphics[width=0.22\textwidth]{c-2.eps}}
   % \includegraphics[width=0.37\textwidth]{fig-begin-1.eps}
   % \includegraphics[width=0.37\textwidth]{fig-end-1.eps}
@@ -367,11 +373,11 @@ for $t \geq t_{warm}$.
     indicates higher probability.
     Plots are divided into 5 subregions corresponding
     to 5 molecular conformations:
-    $A_1 = \{(\phi, \psi) | -134^\circ \leq \phi <  13^\circ, -125^\circ \leq \psi < 74^\circ\}$,
-    $A_2 = \{(\phi, \psi) |  128^\circ \leq \phi < 226^\circ, -125^\circ \leq \psi < 74^\circ\}$,
-    $B_1 = \{(\phi, \psi) | -110^\circ \leq \phi <  13^\circ,   74^\circ \leq \psi < 235^\circ\}$,
-    $B_2 = \{(\phi, \psi) |  128^\circ \leq \phi < 250^\circ,   74^\circ \leq \psi < 235^\circ\}$,
-    $C   = \{(\phi, \psi) |   13^\circ \leq \phi < 128^\circ, -180^\circ \leq \psi < 180^\circ\}$.
+    $\confaa = \{(\phi, \psi) | -134^\circ \leq \phi <  13^\circ, -125^\circ \leq \psi < 74^\circ\}$,
+    $\confab = \{(\phi, \psi) |  128^\circ \leq \phi < 226^\circ, -125^\circ \leq \psi < 74^\circ\}$,
+    $\confba = \{(\phi, \psi) | -110^\circ \leq \phi <  13^\circ,   74^\circ \leq \psi < 235^\circ\}$,
+    $\confbb = \{(\phi, \psi) |  128^\circ \leq \phi < 250^\circ,   74^\circ \leq \psi < 235^\circ\}$,
+    $\confc   = \{(\phi, \psi) |   13^\circ \leq \phi < 128^\circ, -180^\circ \leq \psi < 180^\circ\}$.
     Considering the angular periodicity, the angle, for example, $226^\circ$ corresponds to $-134^\circ$
     on the plot (b) and (c).
     % Considering the angular periodicity, if we write, for example,
@@ -389,24 +395,24 @@ The probability density of conformations of equilibrium in absence of external f
 given in Fig.~\ref{fig:tmp4}~(c). In the plot one can identify several clusters
 in which conformations are grouped.
 Therefore, in order to simplify the analysis, we divide the
-Ramachandran plot into 5 subregions $\{A_1, A_2, B_1, B_2, C\}$
+Ramachandran plot into 5 subregions $\{\confaa, \confab, \confba, \confbb, \confc\}$
 (see caption of Fig.~\ref{fig:tmp4} for the corresponding definition).
 It is worth to notice that these conformations
 are found in different secondary structures of a peptide chain:
-$A_1$ and $A_2$ are
-corresponding to the $\alpha$-helix. $B_1$ and $B_2$ are
-corresponding to the $\beta$-sheet. $C$ is corresponding to the
+$\confaa$ and $\confab$ are
+corresponding to the $\alpha$-helix. $\confba$ and $\confbb$ are
+corresponding to the $\beta$-sheet. $\confc$ is corresponding to the
 left-handed $\alpha$-helix.
 
 
 
 From Fig.~\ref{fig:tmp4}, it is evident that the probability with which a
 conformation occurs changes when the external EF is applied.
-The most evident case is conformation $C$; in fact it is {almost} not present before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
+The most evident case is conformation $\confc$; in fact it is {almost} not present before the external field is applied but appears in a clear way as a response to the action of the EF. Following this line of thought, we are interested to study the change of conformation under the action of EF. Specifically, for each conformational change, we will analyze the relation between the structural relaxation of the molecule and its corresponding time scale. 
 The starting point is the calculation of the probability
 of each conformation:
 \begin{align}
-  P_I(t) = \mathbb P ( (\phi_t,\psi_t) \in I), \quad  I \in \{A_1, A_2, B_1, B_2, C\},
+  P_I(t) = \mathbb P ( (\phi_t,\psi_t) \in I), \quad  I \in \{\confaa, \confab, \confba, \confbb, \confc\},
 \end{align}
 Notice that the probability is time dependent, being an observable in nonequilibrium situation.
 Next,
@@ -418,7 +424,7 @@ we consider the net probability flux from conformation $I$ to $J$, defined by:
   -
   \mathbb P \big( (\phi_{t-\Delta t}, \psi_{t-\Delta t}) \in I,\, (\phi_t, \psi_t) \in J \,\big)
   \bigg], \\\label{eqn:tmp7}
-  & J,I \in \{A_1, A_2, B_1, B_2, C\}.
+  & J,I \in \{\confaa, \confab, \confba, \confbb, \confc\}.
 \end{align}
 % {\bf Here for $\lim_{\Delta \to 0}$ is intended that in the simulation the time interval is taken large enough so that we have  enough events and thus stable numbers (see also Ref.~\cite{schuette2011markov})}.
 Where $\mathbb P\big( (\phi_{t-\Delta t}, \psi_{t-\Delta t}) \in J,\, (\phi_t, \psi_t) \in I\,\big)$
@@ -434,40 +440,54 @@ At the same time,  $\Delta t$ should be also large enough compared with
 the timestep of the MD integrator, 
 so that the quantities of Eq.~\eqref{eqn:tmp7} are well-defined, and can be
 estimated with sufficient numerical accuracy (see also Ref.~\cite{schuette2011markov}).
+\recheck{In all the numerical examples of this work, $\Delta t = 1$~ps is used}.
 A positive value of $F_{J,I}(t)$ indicates that the
 net flux goes from $J$ to $I$,
 while a negative value indicates a net flux from $I$ to $J$.
 Through $F_{J,I}(t)$, the analysis of the nonequilibrium process 
-is projected onto the analysis of the probabilistic link between discretized conformations $\{A_1, A_2, B_1, B_2, C\}$.
+is projected onto the analysis of the probabilistic link between discretized conformations $\{\confaa, \confab, \confba, \confbb, \confc\}$.
+
+\recheck{ The definition of the probability flux is similar to the
+  kinetic rate.  However, we want to stress that, in general, the
+  probability flux should not be interpreted as a kinetic rate, and
+  one cannot replace the nonequilibrium molecular dynamics by a
+  kinetic analysis. The main reason is, firstly, that the nonequilibrium
+  nature of the problem asks for a small time interval $\Delta t$ so that the probability flux is well defined.
+  Secondly, within the small
+  time interval (we use 1~ps), the conformational
+  dynamics of alanine dipeptide is generally not Markovian~\cite{schuette2011markov, prinz2011markov},
+  therefore, a direct application of the kinetic
+  analysis is questionable.
+  % Since the main goal of our research is to propose a
+  % nonequilibrium molecular dynamics simulation method, the numerical
+  % results will not be compared with the kinetic analysis.
+}
+
 In the case of oscillatory EF, the behaviour of the net probability flux is also highly oscillatory, thus, in order to clearly identify the essential features of the molecular conformational changes, it is convenient to study the integrated net probability flux, defined as:
 \begin{align}\label{eqn:tmp7a}
   Q_{J,I} (t) = \int_0^t F_{J,I}(\tau)d \tau,
 \end{align}
 which expresses the cumulative effects due to the action of EF on the conformations of the molecule.
 
-\recheck{ The definition of the probability flux is similar to the
-  kinetic rate.  However, we want to stress that, in genarl, the
-  probability flux should not be interpreted as a kinetic rate, and
-  one cannot replace the nonequilibrium molecular dynamics by a
-  kinetic analysis. The main reason is that the conformational
-  dynamics of alanine dipeptide is generally not Markovian for a small
-  time interval $\Delta t$~\cite{prinz2011markov}, therefore, a direct application of the kinetic
-  analysis is questionable. Since the main goal of our research is to propose a
-  nonequilibrium molecular dynamics simulation method, the numerical
-  results will not be compared with a kinetic analysis.
-}
 
 \subsection{Conformational dynamics}
 
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig.ala.new/fig-meta-npt.eps}
+  \includegraphics[]{fig.ala.new/fig-meta-more.eps}
   \caption{The time-dependent probability of conformations $P_I(t)$ 
     when a constant EF is present, where $\sum_I P_I(t) = 1, \forall t$.
-    The warm-up time is $t_{warm} = 10$~ps. The red line refers to conformation $I = A_1$,
-    green to $A_2$, dark blue to $B_1$, purple to $B_2$ and light blue
-    to $C$. 
+    The warm-up time is $t_{warm} = 10$~ps. The red line refers to conformation $I = \confaa$,
+    green to $\confab$, dark blue to $\confba$, purple to $\confbb$ and light blue
+    to $\confc$. \recheck{
+      The solid lines denote the results of one branching trajectory
+      starting from each initial conformation, while the dashed lines denote
+      the results of four branching trajectories (different random seeds for the Langevin thermostat) starting from each initial
+      conformation.
+      The shadow region with each solid line denotes the
+      statistical uncertainty of the result at 95\% confidence level.
+    }
   }
   \label{fig:tmp5}
 \end{figure}
@@ -483,31 +503,51 @@ which expresses the cumulative effects due to the action of EF on the conformati
     The net probability flux for the constant EF case.
     The warm-up time is $t_{warm} = 10$~ps.
     The probability flux $F_{J,I}(t)$ (defined by Eqn.~\eqref{eqn:tmp7}) is reported in units of $\textrm{ps}^{-1}$.
-    From top, left to right we report $I = A_1$, $A_2$, $B_1$; bottom, left to right $B_2$ and
-    $C$, respectively. In each plot, the red line stands for $J=A_1$,
-    green for $J=A_2$, dark blue for $J=B_1$, purple for $J=B_2$ and light blue
-    for $J=C$.
+    From top, left to right we report $I = \confaa$, $\confab$, $\confba$; bottom, left to right $\confbb$ and
+    $\confc$, respectively. In each plot, the red line stands for $J=\confaa$,
+    green for $J=\confab$, dark blue for $J=\confba$, purple for $J=\confbb$ and light blue
+    for $J=\confc$.
     }
   \label{fig:tmp6}
 \end{figure}
 
 The time-dependent probability density of the system to stay in a certain
 conformation is given in
-Fig.~\ref{fig:tmp5}. The $\beta$-sheet conformations $B_1$ and $B_2$,
+Fig.~\ref{fig:tmp5}.
+\recheck{The simulation results of starting one branching trajectory
+  from each initial conformation are compared with those starting
+  four branching trajectories from each initial conformation (each with
+  different random seed for the Langevin thermostat).
+  They are consistent within the statistical uncertainty, which
+  means our simulation result is robust with respect to the randomness
+  introduced by the (local) Langevin thermostat.
+}
+The $\beta$-sheet conformations $\confba$ and $\confbb$,
 which are present at the initial stage after EF is switched on,
-fade away as the system relaxes to the new equilibrium. The
-probability of the $\alpha$-helix conformation $A_1$, grows from 0.45 to 0.69.
-The $\alpha$-helix $A_2$  does not change significantly  under the action of EF.
-The left-hand helix conformation $C$ noticeably grows from 0 to 0.22.
+\recheck{fade away as the system relaxes}. The
+probability of the $\alpha$-helix conformation $\confaa$, grows from 0.45 to 0.69.
+The $\alpha$-helix $\confab$  does not change significantly  under the action of EF.
+The left-hand helix conformation $\confc$ noticeably grows from 0 to 0.22.
 We plot the net probability fluxes in Fig.~\ref{fig:tmp6}.
-Results show that for short $t$, the net fluxes are generally non-zero, however, 
+Results show that for short $t$, the net fluxes are generally non-zero,
+however, 
 as $t$ goes to infinity,
 all fluxes converge to zero. This indicates
 that as the EF is switched on, the system first is driven away from the initial
 equilibrium (at zero EF);  This is a nonequilibrium process.
-After a time long enough, the system
-is fully relaxed to the new equilibrium defined by the action of the constant EF,
-and stays there as long as the EF is kept.
+\recheck{After a time long enough, the system
+is fully relaxed to the new conformations,
+and stays there as long as the EF is kept. However, whether the new conformations
+are in the new equilibrium defined the constant EF is not clear, because
+there may exist very slow nonequilibrium processes, for example as long as 1~$\mu$s,
+which cannot be discovered by our nonequilibrium simulation of only 1~ns.
+What we can do by the proposed nonequilibrium simulation
+method is to study time-dependent behaviours that are no longer than
+the simulation time. 
+}
+% After a time long enough, the system
+% is fully relaxed to the new equilibrium defined by the action of the constant EF,
+% and stays there as long as the EF is kept.
 An important point is that despite the system is finally relaxed to the new conformation,
 the relaxation timescales corresponding to each conformation are rather different. 
 From Fig.~\ref{fig:tmp5} and \ref{fig:tmp6}, we observe mainly
@@ -519,12 +559,12 @@ This is a relevant result because it shows the possibility of employing an exter
   \centering
   \begin{tabular*}{0.4\textwidth}{@{\extracolsep{\fill}}lc}\hline\hline
     Direction        & time scale [ ps ] \\\hline
-    $A_1\rightarrow A_2$        &       $\sim 10$      \\
-    % $B_1\rightarrow B_2$        &       $\sim 10$      \\    
-    $B_2\rightarrow A_1,\ A_2,\ C$        &       $\sim 50$      \\    
-    $A_2\rightarrow A_1$        &       $\sim 100$      \\
-    $B_2\rightarrow B_1$        &       $\sim 100$      \\    
-    $B_1\rightarrow A_1,\ C$        &       $\sim 500$      \\    \hline\hline
+    $\confaa\rightarrow \confab$        &       $\sim 10$      \\
+    % $\confba\rightarrow \confbb$        &       $\sim 10$      \\    
+    $\confbb\rightarrow \confaa,\ \confab,\ \confc$        &       $\sim 50$      \\    
+    $\confab\rightarrow \confaa$        &       $\sim 100$      \\
+    $\confbb\rightarrow \confba$        &       $\sim 100$      \\    
+    $\confba\rightarrow \confaa,\ \confc$        &       $\sim 500$      \\    \hline\hline
   \end{tabular*}
   \caption{A list of the main probability fluxes and the corresponding time scales observed in the constant EF case.}
   \label{tab:tmp1}
@@ -578,28 +618,28 @@ We calculate the averaged dipole moment of different conformations
 (defined by taking average in Eqn.~\eqref{eqn:tmp8}
 only for a certain conformation)
 under the constant EF, and they are 6.8, 6.0, 5.1, 3.1 and 7.1~Debye
-for $A_1$, $A_2$, $B_1$, $B_2$ and $C$, respectively.
+for $\confaa$, $\confab$, $\confba$, $\confbb$ and $\confc$, respectively.
 The dipole energy difference between 3.1 and 7.1~Debye is roughly 8.0~kJ/mol.
 Under a constant EF, the system will be likely to be driven towards those
 conformations with higher dipole moment, because the
 energy of the system will be lowered.  We suggest that this energy difference may be the reason why
 we observe that the $\beta$-sheet conformations with lower dipole moment
 are driven towards $\alpha$-helix conformations
-$A_1$ and $C$, whose dipole moments are the highest
-among all conformations. Moreover, the $B_2$ conformation vanishes because
+$\confaa$ and $\confc$, whose dipole moments are the highest
+among all conformations. Moreover, the $\confbb$ conformation vanishes because
 its dipole is significantly lower than other conformations.
 Comparing Fig.~\ref{fig:tmp3} with~\ref{fig:tmp5},
   the sharp increment of dipole moment before 20~ps is due to the quick vanishing of conformation
-  $B_2$, while the slow increment of dipole moment until 400~ps is due to
-  the slow migration from conformation $B_1$ to $A_1$ and $C$.
+  $\confbb$, while the slow increment of dipole moment until 400~ps is due to
+  the slow migration from conformation $\confba$ to $\confaa$ and $\confc$.
   % \textit{NOTE: here we want to discuss the relation between
   %   the conformation and the dipole moment. I rewote this
   %   sentence.}
 % From 0 to 20~ps, the probability of
-% lowest dipole conformation $B_2$ quickly
+% lowest dipole conformation $\confbb$ quickly
 % vanishes. We observe a sharp increment of the average molecular dipole and finally, approaching  500~ps, the conformation slowly migrates from
-% $B_1$ to $A_1$ and $C$. Moreover, since the dipole moment $A_1$ and $C$
-% is higher than $B_1$, the average molecular dipole moment slowly increases
+% $\confba$ to $\confaa$ and $\confc$. Moreover, since the dipole moment $\confaa$ and $\confc$
+% is higher than $\confba$, the average molecular dipole moment slowly increases
 % to the nonequilibrium steady value.
 
 
@@ -707,6 +747,9 @@ alanine does not change or contribute significantly in determining the conformat
   \caption{Testing the finite-size effect on the dynamical and thermostated region.
     Probabilities of different conformations are presented versus time.
     See the text for more details.
+    \recheck{The shadow region denotes the
+      statistical uncertainty of the $L=2.7$~nm $R_{ex}=1.0$~nm case at 95\% confidence level.
+    }
   }
   \label{fig:tmp7}
 \end{figure}
@@ -794,9 +837,9 @@ weaker than in the case of constant EF.
     i.e. $\period =10$~ps, 40~ps and 200~ps, are considered here.  The
     probability of being in a certain conformation $I$, which is
     denoted by $P_I$ in this paper, is plotted by colored lines against
-    time. Red line: $I = A_1$,  green line: $I = A_2$,  dark
-    blue line: $I = B_1$,  pink line: $I = B_2$ and  light blue
-    line: $I = C$. For $\period =10$~ps and 40~ps, the nonequilibrium
+    time. Red line: $I = \confaa$,  green line: $I = \confab$,  dark
+    blue line: $I = \confba$,  pink line: $I = \confbb$ and  light blue
+    line: $I = \confc$. For $\period =10$~ps and 40~ps, the nonequilibrium
     simulations last 1000~ps, while for $\period =200$~ps,
     they last 6400~ps.  }
   \label{fig:tmp9}
@@ -830,10 +873,10 @@ weaker than in the case of constant EF.
     of $F_{J,I}(t)$ and $Q_{J,I}(t)$, respectively.
     From top to bottom, rows report results with  period 10, 40 and 200~ps, respectively.
     From left to right, the five
-    columns show the integrated flux $Q_{J,A_1}$, $Q_{J,A_2}$,
-    $Q_{J,B_1}$, $Q_{J,B_2}$ and $Q_{J,C}$, respectively. In each plot,
-    the red line stands for $J=A_1$, green for $J=A_2$, dark blue for $J=B_1$,
-    purple for $J=B_2$ and light blue for $J=C$.
+    columns show the integrated flux $Q_{J,\confaa}$, $Q_{J,\confab}$,
+    $Q_{J,\confba}$, $Q_{J,\confbb}$ and $Q_{J,\confc}$, respectively. In each plot,
+    the red line stands for $J=\confaa$, green for $J=\confab$, dark blue for $J=\confba$,
+    purple for $J=\confbb$ and light blue for $J=\confc$.
     An increasing value of $Q_{J,I}$ indicates a net probability
       flux from conformation $J$ to $I$,
       while a decreasing value of $Q_{J,I}$ indicates a net probability
@@ -852,21 +895,21 @@ conformations. Here the probability fluxes are not reported
 because the profiles are highly oscillating and they would not offer 
 a better information than the one that can be obtained from the integrated probability flux.
 Coming back to Fig.~\ref{fig:tmp9}, for all periods investigated,
-the observed time-dependent probabilities  in $A_1$, $A_2$, $B_1$ and $B_2$ are
+the observed time-dependent probabilities  in $\confaa$, $\confab$, $\confba$ and $\confbb$ are
 highly oscillating and the average value over time cycles does not change
 considerably w.r.t.~time.
-However, the probability in conformation $C$ significantly
+However, the probability in conformation $\confc$ significantly
 increases to approximately 0.17 for $\period =10$~ps, 0.27 for  $\period =40$~ps, and
 0.26 for $\period =200$~ps.
-In the case of $\period =10$ and $40$~ps, {the probability of conformation $C$}
+In the case of $\period =10$ and $40$~ps, {the probability of conformation $\confc$}
 reaches the steady value in around 300~ps, while it requires about 1200~ps
 for the $\period =200$~ps case. 
-The notable increment of probability of $A_1$ and
-  the vanishing of $B_1$ in the constant EF case (see Fig.~\ref{fig:tmp5})
+The notable increment of probability of $\confaa$ and
+  the vanishing of $\confba$ in the constant EF case (see Fig.~\ref{fig:tmp5})
 are not observed in the oscillatory EF case.
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{graph-t0010-2.eps}
+  \includegraphics[width=0.6\textwidth]{fig.ala.new/graphs/graph-t0010-2.eps}
   \caption{Schematic plot of the main probability flux between conformations
     for periodically oscillatory EF, $\period =10$~ps. The thickness 
     of the arrows approximately presents the strength of the flux.
@@ -884,24 +927,27 @@ Fig.~\ref{fig:tmp11} presents
 a schematic plot of the main probability fluxes for $\period =10$~ps.
 The thickness of the arrows and the numbers nearby indicate
 the steady value of average net fluxes over periods.
-{
 The relevance of Fig.~\ref{fig:tmp11} is in the fact that it suggests,
 in perspective, a general scenario common to all molecules
 characterized by $\beta$-sheet-like or $\alpha$-helix-like
 conformations and how an electric field is likely to modify it.
+\recheck{
+  Although the conformational transitions presented Fig.~\ref{fig:tmp11} are studied under
+  the nonequilibrium scenario, it is actually qualitatively similar to those
+  discovered in the equilibrium studies, e.g.~\cite{apostolakis1999calculation, gfeller2007complex}.
 }
 The probability flux of $\period =40$~ps is quantitatively
 comparable to the case $\period =10$~ps, except that the probability fluxes
-going into conformation $C$ is stronger, which actually results in
-a higher steady probability in $C$.
+going into conformation $\confc$ is stronger, which actually results in
+a higher steady probability in $\confc$.
 The probability flux of case $\period =200$~ps is qualitatively
 similar to $\period =10$~ps and $\period =40$~ps, however,
 the strength is much lower than the latter two cases.
 Moreover, 
-  we see that the integrated fluxes $Q_{A_2,A_1}$ and $Q_{B_1,A_2}$ reach
+  we see that the integrated fluxes reach
   a steadily
 increasing stage after about 3200~ps, which is even longer than the time scale
-at which the probability of $C$ reaches its steady value. This indicates
+at which the probability of $\confc$ reaches its steady value. This indicates
 a longer intrinsic time scale in the $\period =200$~ps case.
 
 We have not studied periods longer than $\period =200$~ps, because
@@ -945,7 +991,11 @@ higher than that reachable in a standard laboratory microwave
 instrument~\cite{damm2012can}. However, this intensity is achievable
 by a sharp electric field emitter tip~\cite{scovell2000phase}, near
 the surface of mica~\cite{starzyk2013proteins}, or by a modern laser
-equipment~\cite{vogel2008femtosecond}. The authors are fully aware
+equipment~\cite{vogel2008femtosecond}.
+\recheck{The minimal frequency investigated here (5.00~GHz, i.e.~$\period = 200$~ps)
+is of the same order of magnitude as the microwave
+irradiation available in laboratory (2.45~GHz). }
+The authors are fully aware
 that the EFs investigated in the present paper are, at this stage, still ideal, above all regarding their spatially homogeneity and
   the fact that the time-dependency is always well defined (as pointed
 out by previous simulation studies~\cite{budi2005electric,
@@ -976,7 +1026,7 @@ are not likely to change significantly as a function of the force field.
 
 
 \section*{Acknowledgment}
-  H.W. acknowledges the valuable discussions with Simone Meloni.
+  H.W. acknowledges the valuable discussions with Simone Meloni and Burkhard Schmidt.
   This work was partially supported by the Deutsche
   Forschungsgemeinschaft (DFG), with the Heisenberg
   Grant provided to L.D.S. (Grant No. DE 1140/5-1),

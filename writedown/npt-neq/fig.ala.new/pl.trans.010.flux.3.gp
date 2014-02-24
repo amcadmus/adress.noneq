@@ -44,7 +44,7 @@ set xtics 50
 set mxtics 5
 set xrange [0:100]
 pl 'ext.mode1.010.Ex.01.00.t1000ps.more/set/meta.flux.smooth.out' u 1:12 ls 11 w l not, '' u 1:13 ls 12 w l not, '' u 1:14 ls 13 w l not, '' u 1:15 ls 14 w l not, '' u 1:16 ls 15 w l not
-set label 'F_{J,B_1}'  at 450,0.003
+set label 'F_{J,C7_{eq}}'  at 430,0.003
 set size 0.6,1
 set origin 0.4,0.0
 set lmargin 0
