@@ -138,7 +138,12 @@ simulations, we are able to address
 a few relevant questions: (i)~How the conformation of the peptide
 changes in an EF (conformational space);
 (ii)~When these changes happen (time scale),
-and how likely they are (probability). 
+and how likely they are (probability).
+\recheck{
+  In the appendix of the paper, we also compare our nonequilibrium method with
+  the equilibrium linear response theory,
+  which is able to study the nonequilibrium properties
+  by only calculating equilibrium correlation functions.}
 To our knowledge, this study is one of the few (if not the first)  where
 time-dependent nonequilibrium w.r.t. conformation
 is explicitly considered for a (relatively large) molecule
@@ -517,7 +522,7 @@ Fig.~\ref{fig:tmp5}.
 \recheck{The simulation results of starting one branching trajectory
   from each initial conformation are compared with those starting
   four branching trajectories from each initial conformation (each with
-  different random seed for the Langevin thermostat).
+  different random seed for the Langevin thermostat in the thermostated region).
   They are consistent within the statistical uncertainty, which
   means our simulation result is robust with respect to the randomness
   introduced by the (local) Langevin thermostat.
@@ -932,9 +937,16 @@ in perspective, a general scenario common to all molecules
 characterized by $\beta$-sheet-like or $\alpha$-helix-like
 conformations and how an electric field is likely to modify it.
 \recheck{
-  Although the conformational transitions presented Fig.~\ref{fig:tmp11} are studied under
-  the nonequilibrium scenario, it is actually qualitatively similar to those
-  discovered in the equilibrium studies, e.g.~\cite{apostolakis1999calculation, gfeller2007complex}.
+  Although the network presented Fig.~\ref{fig:tmp11} is similar to those
+  discovered in the equilibrium studies, e.g.~\cite{apostolakis1999calculation, gfeller2007complex}
+  in the sense of the steady conformations and connections among them,
+  the physical meaning is quit different in our study:
+  The system is under the nonequilibrium condition, and
+  the fluxes are lasting. In contrast,
+  such probability fluxes do not exist in the equilibrium case.
+  % Although the conformational transitions presented Fig.~\ref{fig:tmp11} are studied under
+  % the nonequilibrium scenario, it is actually qualitatively similar to those
+  % discovered in the equilibrium studies, e.g.~\cite{apostolakis1999calculation, gfeller2007complex}.
 }
 The probability flux of $\period =40$~ps is quantitatively
 comparable to the case $\period =10$~ps, except that the probability fluxes
@@ -1034,6 +1046,68 @@ are not likely to change significantly as a function of the force field.
   (H.W. and L.D.S.). 
   H.W.~and C.S.~thank the financial support by DFG research center MATHEON.
   Funding from the IIT SEED project SIMBEDD and from the SFI Grant 08-IN.1-I1869 is acknowledged by G.C..
+
+  \appendix
+\section{Comparison with the linear response theory}  
+\recheck{
+A commenly used equilibrium method that is able to study the nonequilibrium
+responses is the linear responses thoery (Green-Kubo relation~\cite{green1954markoff,kubo1957statistical}).
+We also use it to test the
+conformational dynamics of alanine dipeptide under the EF.
+The response function, take the time-dependent probability of
+left-handed $\alpha$-helix for example, is defined as~\cite{tuckeman2010statistical}
+\begin{align}\label{eqn:appdx1}
+  P_\confc(t) = \langle\chi_{\confc}(t)\rangle = \langle \chi_{\confc} \rangle_0 -
+  \beta \int_0^t ds\; M_e(t - s)\langle j(0)\cdot \chi_{\confc}(t) \rangle_0,
+\end{align}
+where $\chi_{\confc}$ is the characteristic function of set $\confc$ that takes
+the value of 1 for $(\phi,\psi)\in \confc$, and takes value 0
+otherwise. $M_e(t)$ is the relative magnitude of the EF. Take the case of
+constant EF for example, $M_e(t) = t/t_{warm}$ for $0\leq t<t_{warm}$, and
+$M_e(t) = 1$ for $t\geq t_{warm}$.
+$j$ is the dissipative flux that is defined by
+\begin{align}
+  j = - \sum_{i=1}^N E_\infty q_i v_{i,x},
+\end{align}
+where $q_i$ is the partial charge of the $i$th atom, and $v_{i,x}$ is
+the $x$ component of the velocity of the $i$th atom.  The notation
+$\langle\cdot\rangle_0$ denotes the equilibrium ensemble average.
+We plot the correlation function
+$\langle j(0)\cdot \chi_{\confc}(t) \rangle_0$ against corrlation time $t$
+in Fig.~\ref{fig:appdx1}. The value of the function is estimated from
+two independent 1~$\mu$s equilibrium simulations.
+Please notice that the total length of the equilibrium
+trajactories is the same as the nonequilibrium simulation (2000
+trajactories, each 1000~ps long).
+% With the knowledge of
+% nonequilibrium simulation, the correlation function is expected to
+% vanish at roughly 500~ps, however, it does not vanish even at
+% 1000~ps. This is not surprising, because
+We find that the statistical error is even larger than the value of
+corrlation function.  Therefore, the
+overwhelming statistical uncertainty does not allow us to use it 
+in Eq.~\eqref{eqn:tmp1} to calculate the
+nonequilibrium averages. 
+% , and we actually do not know when the
+% corrlation function vanish .
+Since the total computational effort of
+the equilibrium simulation is the same as the nonequilibrium
+simulation, we conclude that nonequilibrium simulatoin is more
+precise than the conventional equilibrium approach (linear response) at the same computational cost.
+A similar
+observation has already been reported by Ciccotti and Jacucci~\cite{ciccotti1975direct}.
+}
+
+\begin{figure}
+  \centering
+  \includegraphics{fig.ala.new/fig-corr-meta.eps}
+  \caption{The corrlation function $\langle j(0)\cdot \chi_{\confc}(t)
+    \rangle_0$ against time $t$. The error bars in the figure denote
+    the statistical uncertainty at 95\% confidence level. }
+  \label{fig:appdx1}
+\end{figure}
+
+
 
 \bibliography{ref}{}
 \bibliographystyle{unsrt}

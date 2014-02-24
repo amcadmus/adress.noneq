@@ -1,0 +1,17 @@
+set term post eps enh color solid size 8.5cm,6cm
+set out 'fig-corr-meta.eps'
+
+set ls 1 lc 1 lw 3 pt 5
+set xzeroaxis lt -1
+set mxtics 2
+set mytics 5
+set xrange [0:1000]
+set yrange [-0.2:0.1]
+set format y "%.2f"
+set xlabel 't [ps]'
+set ylabel '< j(0) {/Symbol c}_{{/Symbol a}_L}(t) >   [ {/Symbol b}^{-1}ps^{-1} ]'
+
+p 'comb.12.corr.meta.out' u 1:(($10+$20)*0.5):(2*sqrt(($11**2 + $21**2) * 0.5)) every 20 w e ls 1 not, '' u 1:(($10+$20)*0.5) every 20 w l ls 1 not
+
+
+
