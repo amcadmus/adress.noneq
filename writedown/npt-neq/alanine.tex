@@ -43,7 +43,7 @@
 \affiliation{Zuse Institute Berlin, Germany}
 \author{Giovanni Ciccotti}
 % \affiliation{Department of Physics, University of Roma "La Sapienza", Italy}
-\affiliation{School of Physics, Room 302B UCD-EMSC, University College Dublin, Belfield, Dublin 4, Ireland}
+\affiliation{School of Physics, University College Dublin, Belfield, Dublin 4, Ireland}
 \affiliation{Dipartimento di Fisica, Universit\`a ``La Sapienza'' and CNISM, Piazzale Aldo Moro 5, 00185 Roma, Italy}
 \author{Luigi Delle Site}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
@@ -139,11 +139,10 @@ a few relevant questions: (i)~How the conformation of the peptide
 changes in an EF (conformational space);
 (ii)~When these changes happen (time scale),
 and how likely they are (probability).
-\recheck{
-  In the appendix of the paper, we also compare our nonequilibrium method with
-  the equilibrium linear response theory,
-  which is able to study the nonequilibrium properties
-  by only calculating equilibrium correlation functions.}
+\recheck{One may wonder whether the information extracted from the D-NEMD simulation could have been
+extracted just as well from conventional equilibrium simulations.
+  In the appendix we show that in this case the D-NEMD approach shall be preferred to the equilibrium approach. The argument is provided by the comparison between the results of the nonequilibrium method and
+  those from equilibrium simulations, within the linear response theory, based on the analysis of correlation functions.}
 To our knowledge, this study is one of the few (if not the first)  where
 time-dependent nonequilibrium w.r.t. conformation
 is explicitly considered for a (relatively large) molecule
@@ -293,13 +292,10 @@ statements will be checked by a series of numerical tests where it is shown that
 the response of observables in nonequilibrium (i.e. under the effect of the EF) does not depend on the size of the system
 and on the size of the  dynamical subregion, provided that they are
 reasonably large.
-
-\recheck{ The proposed temperature control method is very similar to
-  the stochastic boundary condition proposed by Brooks~III and Karplus~\cite{brooks1983deformable}.
-  The only difference is that we do not explicitly consider a boundary
-  region: The system that is divided into a dynamical region (reaction region in their paper) and
-  a thermostated regoin (stochastic buffer region in their paper)
-  is put into a 3-D cubic periodic simulation box.
+\recheck{ The proposed temperature control method has similarities with 
+  the stochastic boundary condition proposed by Brooks and Karplus~\cite{brooks1983deformable}.
+  However, differently from their approach, we do not explicitly consider a boundary region: The system is instead divided into a dynamical region (corresponding to the reaction region of \cite{brooks1983deformable}) and
+  a thermostated region (corresponding to the stochastic buffer region in \cite{brooks1983deformable}) in a 3-D cubic periodic simulation box.
 } 
 
 \section{Case I: Alanine dipeptide
@@ -310,7 +306,7 @@ The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
 described by the CHARMM27 force field~\cite{foloppe2000all}, and dissolved in 644 TIP3P~\cite{jorgensen1983comparison}
 water molecules.  \recheck{The grid-based energy correction map (CMAP)~\cite{mackerell2004extending}
-for the backbone dihedral angles is also taken into consider.}
+for the backbone dihedral angles is also used.}
 %The EF exserts force $\vect F = q \vect E(t)$ on
 %the partial charge $q$ in the system.
 The size of the  dynamical region is $R_{ex} = 1.0$~nm.
@@ -327,14 +323,13 @@ temperature control technique.  The
 time step was $0.002~\textsf{ps}$.
 \recheck{The short-range
 interaction (van der Waals interaction)
-had the cut-off radius of 1.0~nm, and was smoothed from $0.8$ to $1.0$~nm by the
-``switch'' method provided by GROMACS.
+have a cut-off radius of 1.0~nm, and has been smoothed from $0.8$ to $1.0$~nm by the
+``switch'' method provided by the GROMACS code.
 A energy conserving particle mesh Ewald method (PME)~\cite{darden1993pme, essmann1995spm}
 method was applied to calculate the electrostatic interaction in this
-periodic system. The the direct space part of PME was cut-offed and smoothed in the
-same way as the van der Waals interaction.}
-\recheck {All hydrogen involving bonds are constrained by LINCS~\cite{hess1997lincs}, expect that
-  the TIP3P water molecules are constrained by SETTLE algorithm~\cite{miyamoto2004settle}.}
+periodic system. For the direct space part of PME the cut-off and smoothing follow the same principles as those applied to the van der Waals interaction.}
+\recheck {All hydrogen involving bonds are constrained by LINCS~\cite{hess1997lincs}, except 
+  the TIP3P water molecules which are constrained by the SETTLE algorithm~\cite{miyamoto2004settle}.}
 In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
   In all testing cases, this local thermostat is able to control
@@ -442,7 +437,7 @@ time scale of conformational dynamics,
 so that the changes in the conformation probabilities
 can be treated in linear approximation.
 At the same time,  $\Delta t$ should be also large enough compared with
-the timestep of the MD integrator, 
+the time step of the MD integrator, 
 so that the quantities of Eq.~\eqref{eqn:tmp7} are well-defined, and can be
 estimated with sufficient numerical accuracy (see also Ref.~\cite{schuette2011markov}).
 \recheck{In all the numerical examples of this work, $\Delta t = 1$~ps is used}.
@@ -451,23 +446,17 @@ net flux goes from $J$ to $I$,
 while a negative value indicates a net flux from $I$ to $J$.
 Through $F_{J,I}(t)$, the analysis of the nonequilibrium process 
 is projected onto the analysis of the probabilistic link between discretized conformations $\{\confaa, \confab, \confba, \confbb, \confc\}$.
-
-\recheck{ The definition of the probability flux is similar to the
-  kinetic rate.  However, we want to stress that, in general, the
-  probability flux should not be interpreted as a kinetic rate, and
-  one cannot replace the nonequilibrium molecular dynamics by a
-  kinetic analysis. The main reason is, firstly, that the nonequilibrium
-  nature of the problem asks for a small time interval $\Delta t$ so that the probability flux is well defined.
+\recheck{ The concept of net probability flux employed by us is similar to the
+  concept of kinetic rate.  However, it must be underlined that, in general, the
+  probability flux should not be interpreted as a kinetic rate.
+  Nonequilibrium molecular dynamics cannot be replaced by 
+  kinetic analysis, the main reason is, firstly, that the nonequilibrium
+  nature of the problem requires the use of a small time interval $\Delta t$ so that the probability flux is well defined.
   Secondly, within the small
   time interval (we use 1~ps), the conformational
   dynamics of alanine dipeptide is generally not Markovian~\cite{schuette2011markov, prinz2011markov},
   therefore, a direct application of the kinetic
-  analysis is questionable.
-  % Since the main goal of our research is to propose a
-  % nonequilibrium molecular dynamics simulation method, the numerical
-  % results will not be compared with the kinetic analysis.
-}
-
+  analysis may be questionable.}
 In the case of oscillatory EF, the behaviour of the net probability flux is also highly oscillatory, thus, in order to clearly identify the essential features of the molecular conformational changes, it is convenient to study the integrated net probability flux, defined as:
 \begin{align}\label{eqn:tmp7a}
   Q_{J,I} (t) = \int_0^t F_{J,I}(\tau)d \tau,
@@ -490,7 +479,7 @@ which expresses the cumulative effects due to the action of EF on the conformati
       starting from each initial conformation, while the dashed lines denote
       the results of four branching trajectories (different random seeds for the Langevin thermostat) starting from each initial
       conformation.
-      The shadow region with each solid line denotes the
+      The shadowed region with each solid line denotes the
       statistical uncertainty of the result at 95\% confidence level.
     }
   }
@@ -515,17 +504,13 @@ which expresses the cumulative effects due to the action of EF on the conformati
     }
   \label{fig:tmp6}
 \end{figure}
-
 The time-dependent probability density of the system to stay in a certain
 conformation is given in
 Fig.~\ref{fig:tmp5}.
-\recheck{The simulation results of starting one branching trajectory
-  from each initial conformation are compared with those starting
-  four branching trajectories from each initial conformation (each with
+\recheck{In order to show that  our simulation results are robust with respect to the randomness introduced by the (local) Langevin thermostat, we have tested the effects of changing random seeds for the thermostat in the thermostated region. We compared simulation results obtained by starting a branching trajectory
+  from each initial conformation with those obtained from four different branching trajectories from each initial conformation (each of four with
   different random seed for the Langevin thermostat in the thermostated region).
-  They are consistent within the statistical uncertainty, which
-  means our simulation result is robust with respect to the randomness
-  introduced by the (local) Langevin thermostat.
+  Results are consistent within the statistical uncertainty (see Fig.\ref{fig:tmp5}).
 }
 The $\beta$-sheet conformations $\confba$ and $\confbb$,
 which are present at the initial stage after EF is switched on,
@@ -540,14 +525,13 @@ as $t$ goes to infinity,
 all fluxes converge to zero. This indicates
 that as the EF is switched on, the system first is driven away from the initial
 equilibrium (at zero EF);  This is a nonequilibrium process.
-\recheck{After a time long enough, the system
+\recheck{After sufficiently long time, the system
 is fully relaxed to the new conformations,
-and stays there as long as the EF is kept. However, whether the new conformations
-are in the new equilibrium defined the constant EF is not clear, because
-there may exist very slow nonequilibrium processes, for example as long as 1~$\mu$s,
-which cannot be discovered by our nonequilibrium simulation of only 1~ns.
-What we can do by the proposed nonequilibrium simulation
-method is to study time-dependent behaviours that are no longer than
+and remains in such a state as long as the EF is switched on. However, on the very long time scale,
+there may exist very slow nonequilibrium processes, for example within an 1~$\mu$s range,
+which cannot be captured by the duration of our nonequilibrium simulation (1~ns).
+Obviously, the proposed nonequilibrium simulation
+method can study time-dependent behaviours that are no longer than
 the simulation time. 
 }
 % After a time long enough, the system
@@ -579,9 +563,9 @@ This is a relevant result because it shows the possibility of employing an exter
 
 \subsection{Molecular dipole response}
 The fact that our external perturbation corresponds to the action of
-an electric field, naturally leads to the question of how
+an electric field, naturally leads to the question 
 \recheck{
-  the molecular dipole aligns along the direction of external EF}, and, in turn, how this is related
+  about the alignment of the molecular dipole vector along the direction of external EF}, and, in turn, how this is related
 to the overall \recheck{conformational selection} of the molecule reported in
 the previous section.
 \begin{figure}
@@ -752,7 +736,7 @@ alanine does not change or contribute significantly in determining the conformat
   \caption{Testing the finite-size effect on the dynamical and thermostated region.
     Probabilities of different conformations are presented versus time.
     See the text for more details.
-    \recheck{The shadow region denotes the
+    \recheck{The shadowed region denotes the
       statistical uncertainty of the $L=2.7$~nm $R_{ex}=1.0$~nm case at 95\% confidence level.
     }
   }
@@ -937,16 +921,13 @@ in perspective, a general scenario common to all molecules
 characterized by $\beta$-sheet-like or $\alpha$-helix-like
 conformations and how an electric field is likely to modify it.
 \recheck{
-  Although the network presented Fig.~\ref{fig:tmp11} is similar to those
-  discovered in the equilibrium studies, e.g.~\cite{apostolakis1999calculation, gfeller2007complex}
-  in the sense of the steady conformations and connections among them,
-  the physical meaning is quit different in our study:
-  The system is under the nonequilibrium condition, and
-  the fluxes are lasting. In contrast,
-  such probability fluxes do not exist in the equilibrium case.
-  % Although the conformational transitions presented Fig.~\ref{fig:tmp11} are studied under
-  % the nonequilibrium scenario, it is actually qualitatively similar to those
-  % discovered in the equilibrium studies, e.g.~\cite{apostolakis1999calculation, gfeller2007complex}.
+  Although the network presented in Fig.~\ref{fig:tmp11} is similar to those
+  discovered in the equilibrium studies 
+  in the sense of the steady conformations and connections among them (e.g.~in Ref.~\cite{apostolakis1999calculation, gfeller2007complex}),
+  the physical meaning is quite different in our study:
+  The system is under nonequilibrium conditions due to a controlled physical external perturbation, and
+  the related net probability fluxes are based on trajectories generated by such a perturbation. In contrast, in the equilibrium studies,
+  such net probability fluxes do not explicitly exist.
 }
 The probability flux of $\period =40$~ps is quantitatively
 comparable to the case $\period =10$~ps, except that the probability fluxes
@@ -1006,7 +987,11 @@ the surface of mica~\cite{starzyk2013proteins}, or by a modern laser
 equipment~\cite{vogel2008femtosecond}.
 \recheck{The minimal frequency investigated here (5.00~GHz, i.e.~$\period = 200$~ps)
 is of the same order of magnitude as the microwave
-irradiation available in laboratory (2.45~GHz). }
+radiation available in laboratory (2.45~GHz)~\cite{damm2012can}.
+The highest frequency (100~GHz, i.e.~$\period = 10$~ps) is
+one order of magnitude lower than the tetrahertz spectroscopy experiments~\cite{plusquellic2007applications, born2009terahertz},
+so our results cannot be directly connected to these experimental results.}
+% {\bf REFERENCE HERE, AND WHAT ABOUT TETRAHERTS SPECTROSCOPY?????}}
 The authors are fully aware
 that the EFs investigated in the present paper are, at this stage, still ideal, above all regarding their spatially homogeneity and
   the fact that the time-dependency is always well defined (as pointed
@@ -1050,20 +1035,20 @@ are not likely to change significantly as a function of the force field.
   \appendix
 \section{Comparison with the linear response theory}  
 \recheck{
-A commenly used equilibrium method that is able to study the nonequilibrium
-responses is the linear responses thoery (Green-Kubo relation~\cite{green1954markoff,kubo1957statistical}).
-We also use it to test the
+A commonly used equilibrium approach that can describe the nonequilibrium
+response is the linear response theory (Green-Kubo relation~\cite{green1954markoff,kubo1957statistical}).
+We employed such a method to test the
 conformational dynamics of alanine dipeptide under the EF.
-The response function, take the time-dependent probability of
-left-handed $\alpha$-helix for example, is defined as~\cite{tuckeman2010statistical}
+The response function, for example the time-dependent probability of
+left-handed $\alpha$-helix, is defined as~\cite{tuckeman2010statistical}
 \begin{align}\label{eqn:appdx1}
   P_\confc(t) = \langle\chi_{\confc}(t)\rangle = \langle \chi_{\confc} \rangle_0 -
   \beta \int_0^t ds\; M_e(t - s)\langle j(0)\cdot \chi_{\confc}(t) \rangle_0,
 \end{align}
 where $\chi_{\confc}$ is the characteristic function of set $\confc$ that takes
 the value of 1 for $(\phi,\psi)\in \confc$, and takes value 0
-otherwise. $M_e(t)$ is the relative magnitude of the EF. Take the case of
-constant EF for example, $M_e(t) = t/t_{warm}$ for $0\leq t<t_{warm}$, and
+otherwise. $M_e(t)$ is the relative magnitude of the EF. For the case of
+constant EF, for example, $M_e(t) = t/t_{warm}$ for $0\leq t<t_{warm}$, and
 $M_e(t) = 1$ for $t\geq t_{warm}$.
 $j$ is the dissipative flux that is defined by
 \begin{align}
@@ -1072,36 +1057,30 @@ $j$ is the dissipative flux that is defined by
 where $q_i$ is the partial charge of the $i$th atom, and $v_{i,x}$ is
 the $x$ component of the velocity of the $i$th atom.  The notation
 $\langle\cdot\rangle_0$ denotes the equilibrium ensemble average.
-We plot the correlation function
-$\langle j(0)\cdot \chi_{\confc}(t) \rangle_0$ against corrlation time $t$
+We report the correlation function
+$\langle j(0)\cdot \chi_{\confc}(t) \rangle_0$ as a function of correlation time $t$
 in Fig.~\ref{fig:appdx1}. The value of the function is estimated from
 two independent 1~$\mu$s equilibrium simulations.
-Please notice that the total length of the equilibrium
-trajactories is the same as the nonequilibrium simulation (2000
-trajactories, each 1000~ps long).
-% With the knowledge of
-% nonequilibrium simulation, the correlation function is expected to
-% vanish at roughly 500~ps, however, it does not vanish even at
-% 1000~ps. This is not surprising, because
-We find that the statistical error is even larger than the value of
-corrlation function.  Therefore, the
-overwhelming statistical uncertainty does not allow us to use it 
+It must be noticed that the total length of the equilibrium
+trajectories is the same as the nonequilibrium simulation (2000
+trajectories, each 1000~ps long).
+Results show that the statistical error is much larger than the value of
+correlation function itself.  Therefore, the
+overwhelming statistical uncertainty does not allow us to use such a quantity
 in Eq.~\eqref{eqn:tmp1} to calculate the
 nonequilibrium averages. 
-% , and we actually do not know when the
-% corrlation function vanish .
 Since the total computational effort of
 the equilibrium simulation is the same as the nonequilibrium
-simulation, we conclude that nonequilibrium simulatoin is more
-precise than the conventional equilibrium approach (linear response) at the same computational cost.
+simulation, we conclude that nonequilibrium simulation is more
+accurate than the conventional equilibrium approach (linear response) at the same computational cost.
 A similar
-observation has already been reported by Ciccotti and Jacucci~\cite{ciccotti1975direct}.
+observation has already been reported in ~\cite{ciccotti1975direct}.
 }
 
 \begin{figure}
   \centering
   \includegraphics{fig.ala.new/fig-corr-meta.eps}
-  \caption{The corrlation function $\langle j(0)\cdot \chi_{\confc}(t)
+  \caption{The correlation function $\langle j(0)\cdot \chi_{\confc}(t)
     \rangle_0$ against time $t$. The error bars in the figure denote
     the statistical uncertainty at 95\% confidence level. }
   \label{fig:appdx1}
@@ -1111,176 +1090,6 @@ observation has already been reported by Ciccotti and Jacucci~\cite{ciccotti1975
 
 \bibliography{ref}{}
 \bibliographystyle{unsrt}
-
-
-% \begin{thebibliography}{10}
-
-% \bibitem{bohr2000microwave}
-% Henrik Bohr and Jakob Bohr.
-% \newblock Microwave-enhanced folding and denaturation of globular proteins.
-% \newblock {\em Physical Review E}, 61(4):4310, 2000.
-
-% \bibitem{bohr2000microwave-1}
-% Henrik Bohr and Jakob Bohr.
-% \newblock Microwave enhanced kinetics observed in ord studies of a protein.
-% \newblock {\em Bioelectromagnetics}, 21(1):68--72, 2000.
-
-% \bibitem{dePomerai2000cell}
-% David de~Pomerai, Clare Daniells, Helen David, Joanna Allan, Ian Duce, Mohammed
-%   Mutwakil, David Thomas, Phillip Sewell, John Tattersall, Don Jones, and Peter
-%   Candido.
-% \newblock Cell biology: Non-thermal heat-shock response to microwaves.
-% \newblock {\em Nature}, 405:417--418, 2000.
-
-% \bibitem{inskip2001cellular}
-% Peter~D Inskip, Robert~E Tarone, Elizabeth~E Hatch, Timothy~C Wilcosky,
-%   William~R Shapiro, Robert~G Selker, Howard~A Fine, Peter~M Black, Jay~S
-%   Loeffler, and Martha~S Linet.
-% \newblock Cellular-telephone use and brain tumors.
-% \newblock {\em New England Journal of Medicine}, 344(2):79--86, 2001.
-
-% \bibitem{mancinelli2004non}
-% Fabrizio Mancinelli, Michele Caraglia, Alberto Abbruzzese, Guglielmo
-%   d'Ambrosio, Rita Massa, and Ettore Bismuto.
-% \newblock Non-thermal effects of electromagnetic fields at mobile phone
-%   frequency on the refolding of an intracellular protein: Myoglobin.
-% \newblock {\em Journal of cellular biochemistry}, 93(1):188--196, 2004.
-
-% \bibitem{budi2005electric}
-% A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
-% \newblock Electric field effects on insulin chain-b conformation.
-% \newblock {\em The Journal of Physical Chemistry B}, 109(47):22641--22648,
-%   2005.
-
-% \bibitem{budi2007effect}
-% A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
-% \newblock Effect of frequency on insulin response to electric field stress.
-% \newblock {\em The Journal of Physical Chemistry B}, 111(20):5748--5756, 2007.
-
-% \bibitem{budi2008comparative}
-% Akin Budi, F~Sue Legge, Herbert Treutlein, and Irene Yarovsky.
-% \newblock Comparative study of insulin chain-b in isolated and monomeric
-%   environments under external stress.
-% \newblock {\em The Journal of Physical Chemistry B}, 112(26):7916--7924, 2008.
-
-% \bibitem{toschi2008effects}
-% Francesca Toschi, Francesca Lugli, Fabio Biscarini, and Francesco Zerbetto.
-% \newblock Effects of electric field stress on a $\beta$-amyloid peptide.
-% \newblock {\em The Journal of Physical Chemistry B}, 113(1):369--376, 2008.
-
-% \bibitem{astrakas2011electric}
-% Loukas Astrakas, Christos Gousias, and Margaret Tzaphlidou.
-% \newblock Electric field effects on chignolin conformation.
-% \newblock {\em Journal of Applied Physics}, 109(9):094702--094702, 2011.
-
-% \bibitem{astrakas2012structural}
-% Loukas~G Astrakas, Christos Gousias, and Margaret Tzaphlidou.
-% \newblock Structural destabilization of chignolin under the influence of
-%   oscillating electric fields.
-% \newblock {\em Journal of Applied Physics}, 111(7):074702--074702, 2012.
-
-% \bibitem{damm2012can}
-% Markus Damm, Christoph Nusshold, David Cantillo, Gerald~N Rechberger, Karl
-%   Gruber, Wolfgang Sattler, and C~Oliver Kappe.
-% \newblock Can electromagnetic fields influence the structure and enzymatic
-%   digest of proteins? a critical evaluation of microwave-assisted proteomics
-%   protocols.
-% \newblock {\em Journal of proteomics}, 75:5533--5543, 2012.
-
-% \bibitem{starzyk2013proteins}
-% A.~Starzyk and M.~Cieplak.
-% \newblock Proteins in the electric field near the surface of mica.
-% \newblock {\em The Journal of Chemical Physics}, 139:045102, 2013.
-
-% \bibitem{english2009nonequilibrium}
-% N.J. English, G.Y. Solomentsev, and P.~O'Brien.
-% \newblock Nonequilibrium molecular dynamics study of electric and low-frequency
-%   microwave fields on hen egg white lysozyme.
-% \newblock {\em The Journal of chemical physics}, 131:035106, 2009.
-
-% \bibitem{solomentsev2012effects}
-% G.Y. Solomentsev, N.J. English, and D.A. Mooney.
-% \newblock Effects of external electromagnetic fields on the conformational
-%   sampling of a short alanine peptide.
-% \newblock {\em Journal of Computational Chemistry}, 33:917--923, 2012.
-
-% \bibitem{ciccotti1975direct}
-% G~Ciccotti and G~Jacucci.
-% \newblock Direct computation of dynamical response by molecular dynamics: The
-%   mobility of a charged lennard-jones particle.
-% \newblock {\em Physical Review Letters}, 35(12):789, 1975.
-
-% \bibitem{ciccotti1979thought}
-% G.~Ciccotti, G.~Jacucci, and I.R. McDonald.
-% \newblock "thought-experiments" by molecular dynamics.
-% \newblock {\em Journal of Statistical Physics}, 21(1):1--22, 1979.
-
-% \bibitem{ciccotti1993theoretical}
-% G.~Ciccotti, C.~Pierleoni, and J.P. Ryckaert.
-% \newblock Theoretical foundation and rheological application of non-equilibrium
-%   molecular dynamics.
-% \newblock In {\em Microscopic simulations of complex hydrodynamic phenomena},
-%   pages 25--45. Plenum Press, 1993.
-
-% \bibitem{palla2008bulk}
-% P.L. Palla, C.~Pierleoni, and G.~Ciccotti.
-% \newblock Bulk viscosity of the lennard-jones system at the triple point by
-%   dynamical nonequilibrium molecular dynamics.
-% \newblock {\em Physical Review E}, 78(2):021204, 2008.
-
-% \bibitem{orlandini2011hydrodynamics}
-% S.~Orlandini, S.~Meloni, and G.~Ciccotti.
-% \newblock Hydrodynamics from statistical mechanics: combined dynamical-nemd and
-%   conditional sampling to relax an interface between two immiscible liquids.
-% \newblock {\em Phys. Chem. Chem. Phys.}, 13:13177--13181, 2011.
-
-% \bibitem{orlandini2011hydrodynamics-01}
-% Sergio Orlandini, Simone Meloni, and Giovanni Ciccotti.
-% \newblock Hydrodynamics from dynamical non-equilibrium md.
-% \newblock In {\em AIP Conference Proceedings}, volume 1332, page~77, 2011.
-
-% \bibitem{delaHoz2005microwaves}
-% Antonio de~la Hoz, Angel Diaz-Ortiz, and Andres Moreno.
-% \newblock Microwaves in organic synthesis. thermal and non-thermal microwave
-%   effects.
-% \newblock {\em Chemical Society Reviews}, 34(2):164--178, 2005.
-
-% \bibitem{pronk2013gromacs}
-% S.~Pronk, S.~P{\'a}ll, R.~Schulz, P.~Larsson, P.~Bjelkmar, R.~Apostolov, M.R.
-%   Shirts, J.C. Smith, P.M. Kasson, D.~van~der Spoel, and Hess B.~Lindahl E.
-% \newblock Gromacs 4.5: a high-throughput and highly parallel open source
-%   molecular simulation toolkit.
-% \newblock {\em Bioinformatics}, pages 1--10, 2013.
-
-% \bibitem{parrinello1981polymorphic}
-% M.~Parrinello and A.~Rahman.
-% \newblock Polymorphic transitions in single crystals: A new molecular dynamics
-%   method.
-% \newblock {\em Journal of Applied Physics}, 52:7182, 1981.
-
-% \bibitem{schuette2011markov}
-% C.~Sch{\"u}tte, F.~No{\'e}, J.~Lu, M.~Sarich, and E.~Vanden-Eijnden.
-% \newblock Markov state models based on milestoning.
-% \newblock {\em The Journal of Chemical Physics}, 134:204105, 2011.
-
-% \bibitem{scovell2000phase}
-% Dawn~L Scovell, Tim~D Pinkerton, Valentin~K Medvedev, and Eric~M Stuve.
-% \newblock Phase transitions in vapor-deposited water under the influence of
-%   high surface electric fields.
-% \newblock {\em Surface science}, 457(3):365--376, 2000.
-
-% \bibitem{vogel2008femtosecond}
-% A.~Vogel, N.~Linz, S.~Freidank, and G.~Paltauf.
-% \newblock Femtosecond-laser-induced nanocavitation in water: implications for
-%   optical breakdown threshold and cell surgery.
-% \newblock {\em Physical review letters}, 100(3):38102, 2008.
-
-% \bibitem{vitalini2013speed}
-% F.~Vitalini, A.S.J.S. Mey, F.~No\'e, and B.G. Keller.
-% \newblock The speed of force fields.
-% \newblock {\em private communication}, 2013.
-
-% \end{thebibliography}
 
 
 

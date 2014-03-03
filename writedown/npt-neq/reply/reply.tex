@@ -18,7 +18,16 @@
 
 \begin{document}
 
-\section*{The scientific issues from referee 1}
+
+Dear Editor,\\
+
+Below you find our reply to the the referees. We apologize for the long time needed for the reply due to the holiday of one of the authors.  The request of the referees implied a rather massive additional computational effort. The result of such effort is highly satisfactory and the validity of the paper is now much higher. We are now confident that the paper can be accepted for publication.\\
+
+Best Regards\\
+
+
+Han Wang (on behalf of all authors) 
+\section*{Reply to referee 1}
 
 \emph{On a principle level I am not sure that the relevant scientific
   question is really the non-equilibrium response since the response
@@ -28,31 +37,13 @@
   conventional equilibrium simulations (conformational shifts,
   kinetics).}\\
 
-The non-equilibrium responses in the paper are discussed in two
-different senses: 1, the perturbation to the system is
-time-independent.
-The relaxation of the system to the new equilibrium
-defined by the constant perturbation is non-equilibrium.
-% However,
-% after the new equilibrium is established, there is no non-equilibrium
-% process in the system.
-The first example of the manuscript is in this sense.  2, the
-perturbation is time-dependent.  The second example in the manuscript
-is in this sense.  The first sense is only a special case of the
-sencond sense.  In the first sense, the system can be studied by
-equilibrium methods such as the Markov state model (MSM). However, the
-equilibrium methods are NOT applicable in the second sense.  The
-present paper develops a non-equilibrium molecular dynamics simulation
-method that is more general in the sense that it is applicable to the
-aformentioned two senses. Therefore, the proposed method cannot be replaced
-by the equilibrium methods such as MSM.
+We understand the concern of the referee and in the revised version of our manuscript have performed a numerical test.
 
-Another commenly used equilibrium method that is able to study the non-equilibrium
-responses is the linear responses thoery (Green-Kubo relation).
-We also use it to test the
-conformational shift of alanine dipeptide under the electric field
-(EF). The response function, take the time-dependent probability of
-left-handed $\alpha$-helix (Conformation $C$ in the old manuscript. The notation has been changed to $\alpha_L$ in the updated manuscript.) for example, is defined as
+We have employed equilibrium simulations to obtain the non-equilibrium
+responses within the framework of linear responses theory (Green-Kubo relation).
+With this approach we studied the conformational shift of alanine dipeptide under the electric field
+(EF). As response function we have considered the time-dependent probability of
+left-handed $\alpha$-helix (Conformation $C$ in the old manuscript. The notation has been changed to $\alpha_L$ in the updated manuscript.) This is defined as
 \begin{align}\label{eqn:tmp1}
   P_C(t) = \langle\chi_{_C}(t)\rangle = \langle \chi_{_C} \rangle_0 -
   \beta \int_0^t ds\; M_e(t - s)\langle j(0)\cdot \chi_{_C}(t) \rangle_0
@@ -69,47 +60,32 @@ $j$ is the dissipative flux that is defined by
 where $q_i$ is the partial charge of the $i$th atom, and $v_{i,x}$ is
 the $x$ component of the velocity of the $i$th atom.  The notation
 $\langle\cdot\rangle_0$ denotes the equilibrium ensemble average.
-Eq.~\eqref{eqn:tmp1} can be found in the text books of statistical
-mechanics (e.g.~M.~Tuckerman \emph{Statistical Mechanics: Theory and
-  Molecular Simulation}, pp.~499).  We plot the correlation function
-$\langle j(0)\cdot \chi_{_C}(t) \rangle_0$ against corrlation time $t$
+ We then plot the correlation function
+$\langle j(0)\cdot \chi_{_C}(t) \rangle_0$ against correlation time $t$
 in Fig.~\ref{fig:tmp1} of this reply. The value of the function is estimated from
-two independent equilibrium simulations, and the trajactory of each is
-of 1~$\mu$s. Please note that the total length of the equilibrium
-trajactories is the same as the non-equilibrium simulation (2000
-trajactories, each 1000~ps long).
-% With the knowledge of
-% non-equilibrium simulation, the correlation function is expected to
-% vanish at roughly 500~ps, however, it does not vanish even at
-% 1000~ps. This is not surprising, because
+two independent equilibrium simulations, and the trajectory of each is
+of 1~$\mu$s. The total length of the equilibrium
+trajectories is the same as the non-equilibrium simulation (2000
+trajectories, each 1000~ps long).
+
 We find that the statistical error is even larger than the value of
-corrlation function.  Therefore, the
-overwhelming statistical uncertainty does not allow us to use it 
+correlation function.  Therefore, the
+overwhelming statistical uncertainty does not allow us to use the equilibrium approach 
 in Eq.~\eqref{eqn:tmp1} to calculate the
 non-equilibrium averages. 
 % , and we actually do not know when the
 % corrlation function vanish .
 Since the total computational effort of
 the equilibrium simulation is the same as the non-equilibrium
-simulation, we conclude that non-equilibrium simulatoin is more
-precise than the conventional equilibrium approach (linear response) at the same computational cost.
-A similar
-observation has already been reported by Ciccotti and Jacucci, PRL
-1975. We have added the comparison between our non-equilibrium
-simulation and the linear response thoery to an appendix of the manuscript.
+simulation, we conclude that non-equilibrium simulation is more
+accurate and efficient than the conventional equilibrium approach  at the same computational cost.
+It must be noticed that a similar
+observation has already been reported by Ciccotti and Jacucci, (Phys.~Rev.~Lett.~35, 789, 1975). We report the description above in the appendix of the manuscript.
 \\
-% Another limit of the linear response theory is that it can only be
-% used to calculate the non-equilibrium properties when the
-% non-equilibrium purturbation to the system is small, and it is also
-% impossible to tell \emph{a priori} if the purturbation is small enough
-% that the response theory is valid. This issue also does not exist in
-% our non-equilibrium simulation method.
-
-
 \begin{figure}
   \centering
   \includegraphics{figs/fig-corr-meta.eps}
-  \caption{The corrlation function $\langle j(0)\cdot \chi_{_C}(t)
+  \caption{The correlation function $\langle j(0)\cdot \chi_{_C}(t)
     \rangle_0$ against time $t$. The error bars in the figure denote
     the statistical uncertainty at 95\% confidence level. }
   \label{fig:tmp1}
@@ -132,55 +108,41 @@ short I am concerned that the resulting initial bias affects the
 non-equilibrium results.
 }\\
 
-We have done an equilibrium simulation of 1~$\mu$s.  On the
-trajactory, molecular conformations are recored every 500~ps,
-therefore, in total 2000 equilibrium conformations are recoreded.  The
+We have done an equilibrium simulation of 1~$\mu$s.  Along the
+trajectory, molecular conformations are recorded every 500~ps,
+therefore, in total 2000 equilibrium conformations are extracted.  The
 equilibrium probabilities of the conformations $A_1$, $A_2$, $B_1$,
 $B_2$ and $C$ are 0.426 ($\pm 0.029$), 0.076 ($\pm 0.010$), 0.265
 ($\pm 0.013$), 0.182 ($\pm 0.019$) and 0.051 ($\pm 0.021$),
-respectively.  We have run two addtional equilibrium simulations of
+respectively.  We run two additional equilibrium simulations of
 1~$\mu$s, and the probabilities of conformations are consistent with
-the values listed above, which means that our new equilibrium
+the values listed above, which means that our ``new'' equilibrium
 simulation is fully converged.  Comparing with our previous
 equilibrium simulation (only 0.1~$\mu$s long),
 % in which the
 % probability of left-handed $\alpha$-helix is only 0.008,
 the precision
 of initial configuration sampling is substantially improved. All
-simulations in the manuscript are reperformed according to the new set
-of initial conformations, however, the strand of all time-dependent
-observables are the same as the old simulation, and no change to the
-conclusions is made.
-% The difference between the new and the old
-% results is no more than 0.05, which is basically within the
-% statistical uncertainty (given in the new manuscript).
+simulations in the manuscript are re-performed according to the new set
+of initial conformations, however nothing substantially changed compared to the original results.\\
 
-We also test the convergence of simulation result with respect to the
-number of branching trajactories.  The time-dependent probabilities of
-each conformation calculated from one branching trajactory is compared
-with four braching trajactories (each of them is simulated with
-different random seed for Langevin thermostat) in
-Fig.~\ref{fig:tmp2} of this reply. The results are consistent, which means that the
-sampling of the non-equilibrium trajactories is fully converged. In
-summary, since the our non-equilibrium simulation includes the
+We have also tested the convergence of simulation results with respect to the
+number of branching trajectories.  The time-dependent probabilities of
+each conformation calculated from one branching trajectory is compared
+with four branching trajectories (each of them is simulated with
+different random seeds for Langevin thermostat) in
+Fig.~\ref{fig:tmp2} of this reply. The results are consistent with the original ones, which means that the
+sampling of the non-equilibrium trajectories is fully converged. In
+summary, since our non-equilibrium simulation includes the
 sampling of both initial configurations and non-equilibrium
-trajactories, the convergence of both aspects implies the convergence
-of our simulation results.
+trajectories, the convergence of both  implies the convergence
+of our simulation results. 
+The updated results are added in the paper.\\
 
-The question on whether our non-equilibrium braching trajactories are
+The question on whether our non-equilibrium branching trajectories are
 long enough so that the results are fully converged is a very subtle
-question. There may exists an intrisic time-scale of 1 microsecond
-long, so we cannot discover it by braching trajactories of only a few
-nanoseconds.  What we can do by the proposed non-equilibrium simulation
-method is to study time-dependent behaviours that are no longer than
-the simulation time. We have modified the manuscript according to
-make this point clear. A similar difficulty actualy exists for all equilibrium
-simulations: how do we know whether an equilibrium simulation is fully converged,
-especially when some rare events cannot be observed during the limited simualtion time.
+question. There may exists an intrinsic time-scale longer than our simulation time, however this is obvious and implicitly imply that the validity of our results is restricted to the time scale simulated. 
 \\
-% We want to stress that the target of the non-equilibrium simulation is
-% to test how the populations of conformations evolve under the external
-% electric field
 
 \begin{figure}
   \centering
@@ -213,7 +175,7 @@ We compared the simulation results of two different $R_{ex}$ values:
 $R_{ex}=1.0$~nm case was simulated in periodic cubic simulation box
 of length $L=2.7$~nm and 4.0~nm.  The $R_{ex}=1.5$~nm case was
 simulated in cubic box of length $L=4.0$~nm. Fig.~7 of the
-manuscript demonstrates that all of the results are consistent. That
+manuscript demonstrates that all the results are consistent. This
 means $R_{ex}=1.0$~nm is already large enough, and a larger $R_{ex}$
 would not change the results.\\
 
@@ -225,11 +187,11 @@ The periods 10, 40~ps are roughly the same as the first two shortest
 time scales of probability fluxes observed in the constant EF case,
 see Table~I of the manuscript. We tried to simulation with period of
 500~ps, which is the same as the longest timescales of the constant EF
-case, however, the required simulation time is so long that exceed our
-computational capability. Therefore, we made a compromise that only
-the period of 200~ps is studied. The typical frequency of the microwave
+case, however, the required simulation time is prohibitive at this stage. Therefore, we made a reasonable compromise and considered only
+a period of 200~ps. The typical frequency of the microwave
 irradiation is 2450~MHz, which corresponds to period of 400~ps. It is
 the same order of magnitude as the $T_P=200$~ps studied by us.
+We have added a comment along these lines in the revised manuscript.
 \\
 
 \emph{ The analysis of ``probability fluxes'' seems to be nothing else
@@ -238,27 +200,27 @@ the same order of magnitude as the $T_P=200$~ps studied by us.
 
 Yes, the definition of the probability fluxes is similar to the
 kinetic rate (we use joint probabilities in (6) rather than
-conditional probabilities). However, we want to stress that, in genarl,
+conditional probabilities). However, we want to stress out that, in general,
 the probability fluxes calculated in the manuscript should not be
 interpreted as a kinetic rate, and one cannot replace the
 non-equilibrium molecular dynamics by a kinetic analysis. The main
-reason is two folds:
+reasons are:
 Firstly, for a non-equilibrium system, the probability fluxes are
 time-dependent, therefore, the lag-time $\Delta t$ in the definition (Eq.~(6))
-should be small comparing with the typical time-scale of conformation change.
+should be small compared with the typical time-scale of conformation change.\\
 Secondly, for a small lag time $\Delta t$ (1~ps in the manuscript), the conformational
 dynamics of biomolecules is generally not
 Markovian (see e.g.~C.~Sch\"utte et.~al.~JCP 2011 and J.-H.~Prinz et.~al.~JCP 2011).
 Since the basic assumption -- Markovianity -- of the kinetic analysis
 may not be satisfied, a direct
 application of the kinetic analysis in the non-equilibrium cases is questionable. Although one may
-gain usefuly information from the kinetic analysis, the reliability
+gain useful information from the kinetic analysis, the reliability
 and the effectiveness of this approach should be carefully checked case
 by case.  Since the main goal of our research is to propose a
 non-equilibrium molecular dynamics simulation method, the numerical
-results are not compared with a kinetic analysis.
+results are not compared with a kinetic analysis.\\
 
-A comment on this direction has been added to the end of section III.B.
+A comment along this direction has been added to the end of section III.B.
 \\
 
 \emph{Finally, given the apparent convergence issues with alanine
@@ -267,10 +229,10 @@ A comment on this direction has been added to the end of section III.B.
   comments to that extent would be helpful.  }\\
 
 
-Please see the reply to the seocond question concerning the convergence
-of our simulation results. We believe that the better initial
+The referee is invited to look at the reply to the second question concerning the convergence
+of our simulation results. We believe that a better initial
 state sampling and the new convergence check with respect to the
-number of branching trajectories will strengthen the reliablity
+number of branching trajectories will strengthen the reliability
 of our method.
 % manuscript and
 
@@ -282,7 +244,7 @@ of our method.
 
 
 
-\section*{The scientific issues from referee 2}
+\section*{Reply to referee 2}
 
 \emph{
 It would be useful if the authors would briefly comment on the
@@ -292,11 +254,9 @@ directly to the results reported here. See work by Plusquellic et al
 (ChemPhysChem 2007), Havenith et al. (Faraday 2009) and others.
 }\\
 
-The frequency investigated in our manuscript is from 5~GHz to 100~GHz,
-the largest of which is still one order of magnitude smaller than the
-terahertz spectroscopy. Therefore, we find our simulation results
-cannot be directly compared with the terahertz experiments.
-\recheck{please say something here}.
+The frequencies investigated in our manuscript span from 5~GHz to 100~GHz,
+the largest of which is still one order of magnitude smaller than those normally used in  terahertz spectroscopy. Therefore, we find our simulation results, at this stage, cannot be directly compared with the terahertz experiments.
+{To make fully aware the readers about the current limitation of our study, with respect to experimental connections, we have added the comment above in the manuscript.}
 \\
 
 \emph{ The procedure for controlling the temperature under neq
@@ -305,7 +265,7 @@ cannot be directly compared with the terahertz experiments.
   a more formal description of their procedure and touch on
   similarities/dissimilarities with the Brooks/Karplus approach?  }\\
 
-Yes, a comment and comparison on this direction has been added to the
+Yes, a comment and comparison along this direction has been added to the
 manuscript.\\
 
 \emph{ In the methods sections the treatment of H-involving bonds is
@@ -318,11 +278,11 @@ The asked details has been added to the manuscript.\\
 
 \emph{
 It is suggested to adapt the labeling of the conformational substates
-of alanine dipeptide to that used in the literature ($C_7^{eq}$, $\alpha_L$,
-$C_7^{ax}$, etc.) - see e.g. Caflisch et al., JCP 1999.
+of alanine dipeptide to that used in the literature ($C7_{eq}$, $\alpha_L$,
+$C7_{ax}$, etc.) - see e.g. Caflisch et al., JCP 1999.
 }\\
 
-We have changed the labelling of conformations.\\
+We have changed the labeling of conformations.\\
 
 \emph{
 The sentence ``..how the behaviour of the electric dipole moment of the
@@ -345,16 +305,16 @@ We have made corresponding changes to the manuscript.\\
 This is indeed a very interesting point.
 Although the network presented Fig.11 is similar to those
 discovered in the mentioned equilibrium studies,
-in the sense of the steady conformations and connections among them,
-the physical meaning is quit different in our study:
-The system is under the nonequilibrium condition, and
-the fluxes are directional and lasting (although the averged population of the steady conformations do not change). In contrast,
-such probability fluxes do not exist in the equilibrium case.
-A short comment has been added to the
-manuscript.
+regarding the map of the steady conformations and connections among them,
+the physical meaning is instead quite different in our study:
+The system is under the nonequilibrium conditions, and
+the fluxes are explicitly induced by a physically realistic control, i.e.~EF, although the averaged population of the steady conformations do not change. In contrast,
+such probability fluxes do not exist, as a result of an explicit physical action, in the equilibrium case.
+A comment along such direction has been added to the
+manuscript.\\
 
-The transition fluxes can be used to calculate the free energy only in
-the equilibrium case. In the non-equilibrium cased, especially the
+It must be also added that the transition fluxes can be used to calculate the free energy only in
+the equilibrium case. In the non-equilibrium case, especially for the
 oscillatory EF case, the conformational kinetics of the system is generally
 not Markovian. Therefore, the standard kinetic analysis cannot be used
 here.
