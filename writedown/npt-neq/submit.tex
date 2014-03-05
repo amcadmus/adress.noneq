@@ -1,23 +1,43 @@
-% \documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolum]{revtex4-1}
-\documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
-% \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
-% \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% This is a (brief) model paper using the achemso class
+%% The document class accepts keyval options, which should include
+%% the target journal and optionally the manuscript type.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[journal=jctcce,manuscript=manuscript]{achemso}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Place any additional packages needed here.  Only include packages
+%% which are essential, to avoid problems later. Do NOT use any
+%% packages which require e-TeX (for example etoolbox): the e-TeX
+%% extensions are not currently available on the ACS conversion
+%% servers.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \usepackage[version=3]{mhchem} % Formula subscripts using \ce{}
 \usepackage[fleqn]{amsmath}
 \usepackage{amssymb}
-\usepackage[dvips]{graphicx}
-\usepackage{color}
-\usepackage{tabularx}
-\usepackage{algorithm}
-\usepackage{algorithmic}
+% \usepackage[dvips]{graphicx}
+% \usepackage{color}
+% \usepackage{tabularx}
+% \usepackage{algorithm}
+% \usepackage{algorithmic}
 
-\makeatletter
-\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% If issues arise when submitting your manuscript, you may want to
+%% un-comment the next line.  This provides information on the
+%% version of every file you have used.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%\listfiles
 
-\newcommand{\recheck}[1]{{\color{red} #1}}
-\newcommand{\redc}[1]{{\color{red} #1}}
-\newcommand{\bluec}[1]{{\color{blue} #1}}
-\newcommand{\greenc}[1]{{\color{green} #1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Place any additional macros here.  Please use \newcommand* where
+%% possible, and avoid layout-changing macros (which are not used
+%% when typesetting).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \newcommand{\recheck}[1]{{\color{red} #1}}
+% \newcommand{\redc}[1]{{\color{red} #1}}
+% \newcommand{\bluec}[1]{{\color{blue} #1}}
+% \newcommand{\greenc}[1]{{\color{green} #1}}
 \newcommand{\vect}[1]{\textbf{\textit{#1}}}
 \newcommand{\dd}[1]{\textsf{#1}}
 \newcommand{\fwd}[0]{\textrm{fwd}}
@@ -30,24 +50,90 @@
 \newcommand{\confbb}[0]{{\textrm{C}5}}
 \newcommand{\confc}[0]{{\alpha_{\textrm{L}}}}
 
-
-
-\begin{document}
-
-\title{Exploring the conformational dynamics of alanine dipeptide in solution subjected to an external electric field: A nonequilibrium molecular dynamics simulation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Meta-data block
+%% ---------------
+%% Each author should be given as a separate \author command.
+%%
+%% Corresponding authors should have an e-mail given after the author
+%% name as an \email command. Phone and fax numbers can be given
+%% using \phone and \fax, respectively; this information is optional.
+%%
+%% The affiliation of authors is given after the authors; each
+%% \affiliation command applies to all preceding authors not already
+%% assigned an affiliation.
+%%
+%% The affiliation takes an option argument for the short name.  This
+%% will typically be something like "University of Somewhere".
+%%
+%% The \altaffiliation macro should be used for new address, etc.
+%% On the other hand, \alsoaffiliation is used on a per author basis
+%% when authors are associated with multiple institutions.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \author{Han Wang}
-\email{han.wang@fu-berlin.de}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+\email{han.wang@fu-berlin.de}
 \author{Christof Sch\"utte}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
-\affiliation{Zuse Institute Berlin, Germany}
+\alsoaffiliation{Zuse Institute Berlin, Germany}
 \author{Giovanni Ciccotti}
 % \affiliation{Department of Physics, University of Roma "La Sapienza", Italy}
 \affiliation{School of Physics, University College Dublin, Belfield, Dublin 4, Ireland}
-\affiliation{Dipartimento di Fisica, Universit\`a ``La Sapienza'' and CNISM, Piazzale Aldo Moro 5, 00185 Roma, Italy}
+\alsoaffiliation{Dipartimento di Fisica, Universit\`a ``La Sapienza'' and CNISM, Piazzale Aldo Moro 5, 00185 Roma, Italy}
 \author{Luigi Delle Site}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
-   
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The document title should be given as usual. Some journals require
+%% a running title from the author: this should be supplied as an
+%% optional argument to \title.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Exploring the conformational dynamics of alanine dipeptide in solution subjected to an external electric field: A nonequilibrium molecular dynamics simulation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Some journals require a list of abbreviations or keywords to be
+%% supplied. These should be set up here, and will be printed after
+%% the title and author information, if needed.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \abbreviations{IR,NMR,UV}
+% \keywords{American Chemical Society, \LaTeX}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The manuscript does not need to include \maketitle, which is
+%% executed automatically.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The "tocentry" environment can be used to create an entry for the
+%% graphical table of contents. It is given here as some journals
+%% require that it is printed as part of the abstract page. It will
+%% be automatically moved as appropriate.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{tocentry}
+\includegraphics[height=3.6cm]{fig.ala.new/graphs/final-3.eps}
+% Some journals require a graphical entry for the Table of Contents.
+% This should be laid out ``print ready'' so that the sizing of the
+% text is correct.
+
+% Inside the \texttt{tocentry} environment, the font used is Helvetica
+% 8\,pt, as required by \emph{Journal of the American Chemical
+% Society}.
+
+% The surrounding frame is 9\,cm by 3.5\,cm, which is the maximum
+% permitted for  \emph{Journal of the American Chemical Society}
+% graphical table of content entries. The box will not resize if the
+% content is too big: instead it will overflow the edge of the box.
+
+% This box and the associated title will always be printed on a
+% separate page at the end of the document.
+
+\end{tocentry}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The abstract environment will automatically gobble the contents
+%% if an abstract is not used by the target journal.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{abstract}
 In this paper, we investigate the conformational dynamics of alanine
    dipeptide under an external electric field by 
@@ -63,10 +149,11 @@ effects of the field. For the constant field different time-scales are
    strong as in the previous case, and non-trivial nonequilibrium
    circular paths in the conformation space are revealed by calculating the
    integrated net probability fluxes.
-  % In this paper, we investigate the conformational dynamics of alanine dipeptide under an external electric field by nonequilibrium molecular dynamics simulation.  We consider the case of a constant and of an oscillatory field. In this context we propose a procedure to implement the temperature control, which removes the irrelevant thermal effects of the field. For the constant field different time-scales are identified  in the conformational, dipole moment, and orientational dynamics. Moreover, we prove that the solvent structure only marginally changes when the external field is switched on.  In the case of oscillatory field, the conformational changes are shown to be as strong as in the previous case, and non-trivial nonequilibrium circular paths in the conformation space are revealed by calculating the integrated net probability fluxes.
 \end{abstract}
 
-\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Start the main part of the manuscript here.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \section{Introduction}
@@ -139,7 +226,7 @@ a few relevant questions: (i)~How the conformation of the peptide
 changes in an EF (conformational space);
 (ii)~When these changes happen (time scale),
 and how likely they are (probability).
-\recheck{One may wonder whether the information extracted from the D-NEMD simulation could have been
+{One may wonder whether the information extracted from the D-NEMD simulation could have been
 extracted just as well from conventional equilibrium simulations.
   In the appendix we show that in this case the D-NEMD approach shall be preferred to the equilibrium approach. The argument is provided by the comparison between the results of the nonequilibrium method and
   those from equilibrium simulations, within the linear response theory, based on the analysis of correlation functions.}
@@ -301,7 +388,7 @@ statements will be checked by a series of numerical tests where it is shown that
 the response of observables in nonequilibrium (i.e. under the effect of the EF) does not depend on the size of the system
 and on the size of the  dynamical subregion, provided that they are
 reasonably large.
-\recheck{ The proposed temperature control method has similarities with 
+{ The proposed temperature control method has similarities with 
   the stochastic boundary condition proposed by Brooks and Karplus~\cite{brooks1983deformable}.
   However, differently from their approach, we do not explicitly consider a boundary region: The system is instead divided into a dynamical region (corresponding to the reaction region of \cite{brooks1983deformable}) and
   a thermostated region (corresponding to the stochastic buffer region in \cite{brooks1983deformable}) in a 3-D cubic periodic simulation box.
@@ -314,8 +401,8 @@ reasonably large.
 The system is set up in a $2.7\times 2.7\times
 2.7\, \textsf{nm}^3$ periodic simulation region, with one alanine dipeptide
 described by the CHARMM27 force field~\cite{foloppe2000all}, and dissolved in 644 TIP3P~\cite{jorgensen1983comparison}
-water molecules.  \recheck{The grid-based energy correction map (CMAP)~\cite{mackerell2004extending}
-for the backbone dihedral angles is also used.}
+water molecules. The grid-based energy correction map (CMAP)~\cite{mackerell2004extending}
+for the backbone dihedral angles is also used.
 %The EF exserts force $\vect F = q \vect E(t)$ on
 %the partial charge $q$ in the system.
 The size of the  dynamical region is $R_{ex} = 1.0$~nm.
@@ -327,29 +414,29 @@ $\tau_T = 0.5~\textsf{ps}$).  Along the trajectory, configurations were taken ev
 50~\textsf{ps} and we used 2000 initial configurations for each nonequilibrium
 MD simulation (if not stated otherwise for specific cases).
 The branching trajectories were integrated by the
-Leap-frog scheme \bluec{(standard Gromacs implementation)} with the aforementioned nonequilibrium
+Leap-frog scheme (standard Gromacs implementation) with the aforementioned nonequilibrium
 temperature control technique.  The
 time step was $0.002~\textsf{ps}$.
-\recheck{The short-range
+The short-range
 interaction (van der Waals interaction)
 have a cut-off radius of 1.0~nm, and has been smoothed from $0.8$ to $1.0$~nm by the
 ``switch'' method provided by the GROMACS code.
 A energy conserving Particle Mesh Ewald (PME)~\cite{darden1993pme, essmann1995spm}
 method was applied to calculate the electrostatic interaction in this
-periodic system. For the direct space part of PME the cut-off and smoothing follow the same principles as those applied to the van der Waals interaction.}
-\recheck {All hydrogen involving bonds are constrained by LINCS~\cite{hess1997lincs}, except 
-  the TIP3P water molecules which are constrained by the SETTLE algorithm~\cite{miyamoto2004settle}.}
+periodic system. For the direct space part of PME the cut-off and smoothing follow the same principles as those applied to the van der Waals interaction.
+All hydrogen involving bonds are constrained by LINCS~\cite{hess1997lincs}, except 
+the TIP3P water molecules which are constrained by the SETTLE algorithm~\cite{miyamoto2004settle}.
 In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
-  In all testing cases, this local thermostat is able to control
-  the system at the desired temperature, i.e.~300~K (the results
-  are not presented in this paper).
-The whole system is also coupled to a Parrinello-Rahman barostat~\cite{parrinello1981polymorphic}~\bluec{(in standard Gromacs implementation)} with $\tau_P = 2.0~\textsf{ps}$ to keep
+In all testing cases, this local thermostat is able to control
+the system at the desired temperature, i.e.~300~K (the results
+are not presented in this paper).
+The whole system is also coupled to a Parrinello-Rahman barostat~\cite{parrinello1981polymorphic}~(in standard Gromacs implementation) with $\tau_P = 2.0~\textsf{ps}$ to keep
 the pressure at ambient condition (1~Bar). Since the
 change of the system size is small and slow, the pressure control
 does not have an sizable effect on the
 dynamics of the system.
-% \bluec{The use of leap-frog scheme and Parrinello-Rahman barostat
+% {The use of leap-frog scheme and Parrinello-Rahman barostat
 % was not our choice, but the default one of Gromacs.}
 At time $t=0$~ps, the system
 has been fully equilibrated without any EF. From $t=0$ to
@@ -451,15 +538,15 @@ At the same time,  $\Delta t$ should be also large enough compared with
 the time step of the MD integrator, 
 so that the quantities of Eq.~\eqref{eqn:tmp7} are well-defined, and can be
 estimated with sufficient numerical accuracy (see also Ref.~\cite{schuette2011markov}).
-\recheck{In all the numerical examples of this work, $\Delta t = 1$~ps is used}.
+{In all the numerical examples of this work, $\Delta t = 1$~ps is used}.
 A positive value of $F_{J,I}(t)$ indicates that the
 net flux goes from $J$ to $I$,
 while a negative value indicates a net flux from $I$ to $J$.
 Through $F_{J,I}(t)$, the analysis of the nonequilibrium process 
 is projected onto the analysis of the probabilistic link between discretized conformations $\{\confaa, \confab, \confba, \confbb, \confc\}$.
-\recheck{ The concept of net probability flux employed by us is very close to the
+The concept of net probability flux employed by us is very close to the
   concept of kinetic rate.  However, we prefer to stick to our definition which
-is mathematically simpler and univocal.}
+is mathematically simpler and univocal.
 In the case of oscillatory EF, the behaviour of the net probability flux is also highly oscillatory, thus, in order to clearly identify the essential features of the molecular conformational changes, it is convenient to study the integrated net probability flux, defined as:
 \begin{align}\label{eqn:tmp7a}
   Q_{J,I} (t) = \int_0^t F_{J,I}(\tau)d \tau,
@@ -477,7 +564,7 @@ which expresses the cumulative effects due to the action of EF on the conformati
     when a constant EF is present, where $\sum_I P_I(t) = 1, \forall t$.
     The warm-up time is $t_{warm} = 10$~ps. The red line refers to conformation $I = \confaa$,
     green to $\confab$, dark blue to $\confba$, purple to $\confbb$ and light blue
-    to $\confc$. \recheck{
+    to $\confc$. {
       The solid lines denote the results of one branching trajectory
       starting from each initial conformation, while the dashed lines denote
       the average of the four branching trajectories (different random seeds for the Langevin thermostat, see text) starting from each initial
@@ -504,32 +591,31 @@ which expresses the cumulative effects due to the action of EF on the conformati
     $\confc$, respectively. In each plot, the red line stands for $J=\confaa$,
     green for $J=\confab$, dark blue for $J=\confba$, purple for $J=\confbb$ and light blue
     for $J=\confc$.
-    \bluec{This plot is drawn from the four-branching-trajectories case (see the text).}
+    {This plot is drawn from the four-branching-trajectories case (see the text).}
     }
   \label{fig:tmp6}
 \end{figure}
 The time-dependent probability density of the system to stay in a certain
 conformation is given in
 Fig.~\ref{fig:tmp5}.
-\recheck{In order to show that  our simulation results are robust with respect to the randomness introduced by the (local) Langevin thermostat, we have tested the effects of changing random seeds for the thermostat in the thermostated region. We compared simulation results obtained by starting a branching trajectory
-  from each initial conformation with those obtained from four different branching trajectories from each initial conformation (each of four with
-  different random seed for the Langevin thermostat in the thermostated region).
-  Results are consistent within the statistical uncertainty (see Fig.\ref{fig:tmp5}).
-}
+In order to show that  our simulation results are robust with respect to the randomness introduced by the (local) Langevin thermostat, we have tested the effects of changing random seeds for the thermostat in the thermostated region. We compared simulation results obtained by starting a branching trajectory
+from each initial conformation with those obtained from four different branching trajectories from each initial conformation (each of four with
+different random seed for the Langevin thermostat in the thermostated region).
+Results are consistent within the statistical uncertainty (see Fig.\ref{fig:tmp5}).
 The $\beta$-sheet conformations $\confba$ and $\confbb$,
 which are present at the initial stage after EF is switched on,
-\recheck{fade away as the system relaxes}. The
+{fade away as the system relaxes}. The
 probability of the $\alpha$-helix conformation $\confaa$, grows from 0.45 to 0.69.
 The $\alpha$-helix $\confab$  does not change significantly  under the action of EF.
 The left-hand helix conformation $\confc$ noticeably grows from 0 to 0.22.
-We plot the net probability fluxes \bluec{of the four-branching-trajectories case} in Fig.~\ref{fig:tmp6}.
+We plot the net probability fluxes {of the four-branching-trajectories case} in Fig.~\ref{fig:tmp6}.
 Results show that for short $t$, the net fluxes are generally non-zero,
 however, 
 as $t$ goes to infinity,
 all fluxes converge to zero. This indicates
 that as the EF is switched on, the system is driven away from the initial
 equilibrium (at zero EF),  starting a dynamical nonequilibrium process.
-\recheck{After sufficiently long time, the system
+After sufficiently long time, the system
 is fully relaxed to the new stationary state, in
 which it remains as long as the EF is switched on.
 Of course we cannot exclude very slow nonequilibrium processes,
@@ -538,7 +624,6 @@ our nonequilibrium simulation (1~ns), since it is
 obviously that the proposed nonequilibrium approach
 can only study time-dependent behaviours that are shorter than
 the total time of the branching trajectories. 
-}
 % After a time long enough, the system
 % is fully relaxed to the new equilibrium defined by the action of the constant EF,
 % and stays there as long as the EF is kept.
@@ -569,9 +654,8 @@ This is a relevant result because it shows the possibility of employing an exter
 \subsection{Molecular dipole response}
 The fact that our external perturbation corresponds to the action of
 an electric field, naturally leads to the question 
-\recheck{
-  of the alignment of the molecular dipole vector along the direction of external EF}, and, in turn, of how this is related
-to the overall \recheck{conformational change} of the molecule as reported in
+  of the alignment of the molecular dipole vector along the direction of external EF, and, in turn, of how this is related
+to the overall conformational change of the molecule as reported in
 the previous section.
 \begin{figure}
   \centering
@@ -741,7 +825,7 @@ alanine does not change or contribute significantly in determining the conformat
   \caption{Testing the finite-size effect on the dynamical and thermostated region.
     Probabilities of different conformations are presented versus time.
     See the text for more details.
-    \recheck{The shadowed region denotes the
+    {The shadowed region denotes the
       statistical uncertainty of the $L=2.7$~nm $R_{ex}=1.0$~nm case at 95\% confidence level.
     }
   }
@@ -814,7 +898,7 @@ For all cases the order parameter is much
 smaller than in the case of constant EF. One possible reason is that the
 relaxation of the order parameter is very slow, and the molecule in the case of oscillatory field is
 not exposed to a strong enough EF for a time long enough.
-For  $\period =10$ and 40~ps, the orientation of the alanine shows a \bluec{very} weak tendency
+For  $\period =10$ and 40~ps, the orientation of the alanine shows a {very} weak tendency
 to be parallel to the EF. It is worth to notice that for constant EF,
 we also observe a quick alignment of the molecular orientation vector to the EF
 on the time scale of 10~ps. For $\period =200$~ps, the molecule tends periodically
@@ -916,7 +1000,7 @@ In comparison to the static EF case, where the probability flux
 vanishes when the system reaches steady state (Fig.~\ref{fig:tmp6}), 
 Fig.~\ref{fig:tmp10} shows increasing
 integrated probability net fluxes, which imply some lasting and directional
-fluxes among the conformations \bluec{in steady state}.
+fluxes among the conformations {in steady state}.
 Fig.~\ref{fig:tmp11} presents
 a schematic plot of the main probability fluxes for $\period =10$~ps.
 The thickness of the arrows and the numbers nearby indicate
@@ -925,7 +1009,6 @@ The relevance of Fig.~\ref{fig:tmp11} is in the fact that it suggests,
 in perspective, a general scenario common to all molecules
 characterized by $\beta$-sheet-like or $\alpha$-helix-like
 conformations and how an electric field is likely to modify it.
-\recheck{
   Although the network presented in Fig.~\ref{fig:tmp11} is similar to those
   discovered in the equilibrium studies 
   in the sense of the steady conformations and connections among them (e.g.~in Ref.~\cite{apostolakis1999calculation, gfeller2007complex}),
@@ -933,7 +1016,6 @@ conformations and how an electric field is likely to modify it.
   The system is under nonequilibrium conditions due to a controlled physical external perturbation, and
   the related net probability fluxes are based on trajectories generated by such a perturbation. In contrast, in the equilibrium studies,
   such net probability fluxes do not explicitly exist.
-}
 The probability flux of $\period =40$~ps is quantitatively
 comparable to the case $\period =10$~ps, except that the probability fluxes
 going into conformation $\confc$ is stronger, which actually results in
@@ -990,7 +1072,7 @@ instrument~\cite{damm2012can}. However, this intensity is achievable
 by a sharp electric field emitter tip~\cite{scovell2000phase}, near
 the surface of mica~\cite{starzyk2013proteins}, or by a modern laser
 equipment~\cite{vogel2008femtosecond}.
-\recheck{The minimal frequency investigated here (5.00~GHz, i.e.~$\period = 200$~ps)
+{The minimal frequency investigated here (5.00~GHz, i.e.~$\period = 200$~ps)
 is of the same order of magnitude as the microwave
 radiation available in laboratory (2.45~GHz)~\cite{damm2012can}.
 The highest frequency (100~GHz, i.e.~$\period = 10$~ps) is
@@ -1026,20 +1108,8 @@ fields~\cite{vitalini2013speed}. However, the main qualitative conclusions, for
 example those concerning the determination of time scales or the map of conformational changes, 
 are not likely to change significantly as a function of the force field.
 
-
-\section*{Acknowledgment}
-  H.W. acknowledges the valuable discussions with Simone Meloni and Burkhard Schmidt.
-  This work was partially supported by the Deutsche
-  Forschungsgemeinschaft (DFG), with the Heisenberg
-  Grant provided to L.D.S. (Grant No. DE 1140/5-1),
-  and with the support within the priority program ``Ionic Liquids'' SPP 1191
-  (H.W. and L.D.S.). 
-  H.W.~and C.S.~thank the financial support by DFG research center MATHEON.
-  Funding from the IIT SEED project SIMBEDD and from the SFI Grant 08-IN.1-I1869 is acknowledged by G.C..
-
   \appendix
 \section{Comparison with the linear response theory}  
-\recheck{
 A commonly used equilibrium approach that can describe the nonequilibrium
 response is the linear response theory (Green-Kubo relation~\cite{green1954markoff,kubo1957statistical}).
 We employed such a method to test the
@@ -1071,7 +1141,6 @@ trajectories is the same as the nonequilibrium simulation (2000
 trajectories, each 1000~ps long).
 Results show that the statistical error is much larger than the value of
 correlation function itself.
-\bluec{
   In Fig.~\ref{fig:appdx1}~(b),
   the probability of conformation $\confc$ calculated from
   the linear response theory~\eqref{eqn:appdx1} is compared with that
@@ -1082,21 +1151,20 @@ correlation function itself.
 Therefore, the
 overwhelming statistical uncertainty suggest to prefer
 D-NEMD~Eq.~\eqref{eqn:tmp1} to calculate the
-nonequilibrium averages. }
+nonequilibrium averages. 
 In fact, since the total computational effort of
 the equilibrium simulation is the same as the nonequilibrium
 simulation, the nonequilibrium simulation is more
 accurate than the conventional equilibrium approach (linear response) at the same computational cost.
 A similar
 observation has already been reported in Ref.~\cite{ciccotti1975direct}.
-}
 
 \begin{figure}
   \centering
   \includegraphics{fig.ala.new/fig-corr-meta.eps}
   \includegraphics{fig.ala.new/fig-corr-meta-c.eps}
   \caption{
-    \bluec{The numerical result of the linear response theory.
+    {The numerical result of the linear response theory.
     (a): The correlation function $\langle j(0)\cdot \chi_{\confc}(t)
     \rangle_0$ against time $t$.
     The error bars in the figure denote
@@ -1110,9 +1178,40 @@ observation has already been reported in Ref.~\cite{ciccotti1975direct}.
 
 
 
-\bibliography{ref}{}
-\bibliographystyle{unsrt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The "Acknowledgement" section can be given in all manuscript
+%% classes.  This should be given within the "acknowledgement"
+%% environment, which will make the correct section or running title.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{acknowledgement}
 
+  H.W. acknowledges the valuable discussions with Simone Meloni and Burkhard Schmidt.
+  This work was partially supported by the Deutsche
+  Forschungsgemeinschaft (DFG), with the Heisenberg
+  Grant provided to L.D.S. (Grant No. DE 1140/5-1),
+  and with the support within the priority program ``Ionic Liquids'' SPP 1191
+  (H.W. and L.D.S.). 
+  H.W.~and C.S.~thank the financial support by DFG research center MATHEON.
+  Funding from the IIT SEED project SIMBEDD and from the SFI Grant 08-IN.1-I1869 is acknowledged by G.C..
+\end{acknowledgement}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The same is true for Supporting Information, which should use the
+%% suppinfo environment.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{suppinfo}
+
+% This will usually read something like: ``Experimental procedures and
+% characterization data for all new compounds. The class will
+% automatically add a sentence pointing to the information on-line:
+
+\end{suppinfo}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The appropriate \bibliography command should be placed here.
+%% Notice that the class file automatically sets \bibliographystyle
+%% and also names the section correctly.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bibliography{ref}
 
 \end{document}
