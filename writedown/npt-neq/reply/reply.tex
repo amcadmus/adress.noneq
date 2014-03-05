@@ -62,15 +62,22 @@ the $x$ component of the velocity of the $i$th atom.  The notation
 $\langle\cdot\rangle_0$ denotes the equilibrium ensemble average.
  We then plot the correlation function
 $\langle j(0)\cdot \chi_{_C}(t) \rangle_0$ against correlation time $t$
-in Fig.~\ref{fig:tmp1} of this reply. The value of the function is estimated from
+in Fig.~\ref{fig:tmp1}~(a) of this reply. The value of the function is estimated from
 two independent equilibrium simulations, and the trajectory of each is
 of 1~$\mu$s. The total length of the equilibrium
 trajectories is the same as the non-equilibrium simulation (2000
 trajectories, each 1000~ps long).
-
 We find that the statistical error is even larger than the value of
-correlation function.  Therefore, the
-overwhelming statistical uncertainty does not allow us to use the equilibrium approach 
+correlation function.
+In Fig.~\ref{fig:tmp1}~(b),
+  the probability of conformation $C$ calculated from
+  the linear response theory is compared with that
+  computed from non-equilibrium simulation.
+  The linear response result follows the non-equilibrium result only in the very first
+  15~ps, then it diverges. Since it is meaningless for a probability
+  being larger than 1, the linear response result is qualitatively wrong.
+Therefore, the
+overwhelming statistical uncertainty does not suggest to use the equilibrium approach 
 in Eq.~\eqref{eqn:tmp1} to calculate the
 non-equilibrium averages. 
 % , and we actually do not know when the
@@ -85,9 +92,16 @@ observation has already been reported by Ciccotti and Jacucci, (Phys.~Rev.~Lett.
 \begin{figure}
   \centering
   \includegraphics{figs/fig-corr-meta.eps}
-  \caption{The correlation function $\langle j(0)\cdot \chi_{_C}(t)
-    \rangle_0$ against time $t$. The error bars in the figure denote
-    the statistical uncertainty at 95\% confidence level. }
+  \includegraphics{figs/fig-corr-meta-c.eps}
+  \caption{
+    The numerical result of the linear response theory.
+    (a): The correlation function $\langle j(0)\cdot \chi_{C}(t)
+    \rangle_0$ against time $t$.
+    The error bars in the figure denote
+    the statistical uncertainty at 95\% confidence level. 
+    (b): The probability of conformation $C$ computed from the
+    linear response theory versus that
+    computed from non-equilibrium simulation (D-NEMD).}
   \label{fig:tmp1}
 \end{figure}
 
@@ -140,8 +154,7 @@ of our simulation results.
 The updated results are added in the paper.\\
 
 The question on whether our non-equilibrium branching trajectories are
-long enough so that the results are fully converged is a very subtle
-question. There may exists an intrinsic time-scale longer than our simulation time, however this is obvious and implicitly imply that the validity of our results is restricted to the time scale simulated. 
+long enough so that the results are fully converged is an always present problem. There may exists an intrinsic time-scale longer than our simulation time, however this is obvious and implicitly imply that the validity of our results is restricted to the time scale simulated. 
 \\
 
 \begin{figure}
@@ -185,7 +198,7 @@ would not change the results.\\
 
 The periods 10, 40~ps are roughly the same as the first two shortest
 time scales of probability fluxes observed in the constant EF case,
-see Table~I of the manuscript. We tried to simulation with period of
+see Table~I of the manuscript. We tried to do a simulation with period of
 500~ps, which is the same as the longest timescales of the constant EF
 case, however, the required simulation time is prohibitive at this stage. Therefore, we made a reasonable compromise and considered only
 a period of 200~ps. The typical frequency of the microwave
@@ -200,28 +213,31 @@ We have added a comment along these lines in the revised manuscript.
 
 Yes, the definition of the probability fluxes is similar to the
 kinetic rate (we use joint probabilities in (6) rather than
-conditional probabilities). However, we want to stress out that, in general,
-the probability fluxes calculated in the manuscript should not be
-interpreted as a kinetic rate, and one cannot replace the
-non-equilibrium molecular dynamics by a kinetic analysis. The main
-reasons are:
-Firstly, for a non-equilibrium system, the probability fluxes are
-time-dependent, therefore, the lag-time $\Delta t$ in the definition (Eq.~(6))
-should be small compared with the typical time-scale of conformation change.\\
-Secondly, for a small lag time $\Delta t$ (1~ps in the manuscript), the conformational
-dynamics of biomolecules is generally not
-Markovian (see e.g.~C.~Sch\"utte et.~al.~JCP 2011 and J.-H.~Prinz et.~al.~JCP 2011).
-Since the basic assumption -- Markovianity -- of the kinetic analysis
-may not be satisfied, a direct
-application of the kinetic analysis in the non-equilibrium cases is questionable. Although one may
-gain useful information from the kinetic analysis, the reliability
-and the effectiveness of this approach should be carefully checked case
-by case.  Since the main goal of our research is to propose a
-non-equilibrium molecular dynamics simulation method, the numerical
-results are not compared with a kinetic analysis.\\
-
+conditional probabilities).
+However, we prefer to stick to our definition which
+is mathematically simpler and univocal.
 A comment along this direction has been added to the end of section III.B.
 \\
+% However, we want to stress out that, in general,
+% the probability fluxes calculated in the manuscript should not be
+% interpreted as a kinetic rate, and one cannot replace the
+% non-equilibrium molecular dynamics by a kinetic analysis. The main
+% reasons are:
+% Firstly, for a non-equilibrium system, the probability fluxes are
+% time-dependent, therefore, the lag-time $\Delta t$ in the definition (Eq.~(6))
+% should be small compared with the typical time-scale of conformation change.\\
+% Secondly, for a small lag time $\Delta t$ (1~ps in the manuscript), the conformational
+% dynamics of biomolecules is generally not
+% Markovian (see e.g.~C.~Sch\"utte et.~al.~JCP 2011 and J.-H.~Prinz et.~al.~JCP 2011).
+% Since the basic assumption -- Markovianity -- of the kinetic analysis
+% may not be satisfied, a direct
+% application of the kinetic analysis in the non-equilibrium cases is questionable. Although one may
+% gain useful information from the kinetic analysis, the reliability
+% and the effectiveness of this approach should be carefully checked case
+% by case.  Since the main goal of our research is to propose a
+% non-equilibrium molecular dynamics simulation method, the numerical
+% results are not compared with a kinetic analysis.\\
+
 
 \emph{Finally, given the apparent convergence issues with alanine
   dipeptide I have difficulties seeing how this method could be
@@ -255,8 +271,8 @@ directly to the results reported here. See work by Plusquellic et al
 }\\
 
 The frequencies investigated in our manuscript span from 5~GHz to 100~GHz,
-the largest of which is still one order of magnitude smaller than those normally used in  terahertz spectroscopy. Therefore, we find our simulation results, at this stage, cannot be directly compared with the terahertz experiments.
-{To make fully aware the readers about the current limitation of our study, with respect to experimental connections, we have added the comment above in the manuscript.}
+the largest of which is still one order of magnitude smaller than those normally used in  terahertz spectroscopy. Therefore, we find that our simulation results, at this stage, cannot be directly compared with the terahertz experiments.
+{To make fully aware the readers about the current limitation of our study, with respect to experimental connections, we have added the comment above and the experimental references in the manuscript.}
 \\
 
 \emph{ The procedure for controlling the temperature under neq
@@ -303,20 +319,20 @@ We have made corresponding changes to the manuscript.\\
   to free energy differences.}\\
 
 This is indeed a very interesting point.
-Although the network presented Fig.11 is similar to those
+Although the network presented in Fig.11 is similar to those
 discovered in the mentioned equilibrium studies,
 regarding the map of the steady conformations and connections among them,
 the physical meaning is instead quite different in our study:
-The system is under the nonequilibrium conditions, and
+The system is under nonequilibrium conditions, and
 the fluxes are explicitly induced by a physically realistic control, i.e.~EF, although the averaged population of the steady conformations do not change. In contrast,
 such probability fluxes do not exist, as a result of an explicit physical action, in the equilibrium case.
 A comment along such direction has been added to the
 manuscript.\\
 
-It must be also added that the transition fluxes can be used to calculate the free energy only in
-the equilibrium case. In the non-equilibrium case, especially for the
-oscillatory EF case, the conformational kinetics of the system is generally
-not Markovian. Therefore, the standard kinetic analysis cannot be used
-here.
+% It must be also added that the transition fluxes can be used to calculate the free energy only in
+% the equilibrium case. In the non-equilibrium case, especially for the
+% oscillatory EF case, the conformational kinetics of the system is generally
+% not Markovian. Therefore, the standard kinetic analysis cannot be used
+% here.
 
 \end{document}
