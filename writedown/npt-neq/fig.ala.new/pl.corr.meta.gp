@@ -26,4 +26,4 @@ set label '(b)' at 10, 0.9 font "Helvetica,25"
 set ylabel 'P_{{/Symbol a}_L}'
 set key spacing 1.5
 
-p  'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out' u 1:6 w l lc 1 t'D-NEMD', 'avg.resp.meta.out' u 1:($6-0.) w l lc 2 t 'Linear response theory'
+p  'ext.mode1.010.Ex.01.00.t1000ps/set/metastable.out' u 1:6 w l lc 1 lw 3 t'D-NEMD', 'avg.resp.meta.out' u 1:($6-0.) w l lc 2 lw 3 t 'Linear response theory'
