@@ -3,23 +3,15 @@
 source env.sh
 source parameters.sh
 
-SOL_ratio=1.0
-
 mylog=`pwd`/gen.tf.log
 makelog=`pwd`/make.log
 rm -f $mylog
+make -C ./tools/gen.pot/ clean
+make -C ./tools/gen.pot/ -j8 &> /dev/null
 make -C ./tools/gen.conf/ clean
 make -C ./tools/gen.conf/ -j8 &> /dev/null
-make -C ./tools/gen.wca/ clean
-make -C ./tools/gen.wca/ -j8 &> /dev/null
-
-# prepare potentials
-echo "# prepare potentials"
-cd ./tools/gen.wca
-./gen.wca --sigma $poten_SOL_sigma -o table_CMW_CMW.xvg
-rm -f ../tf.template/table_CMW_CMW.xvg
-mv -f table_CMW_CMW.xvg ../../
-cd ../..
+make -C ./tools/parse.top/ clean
+make -C ./tools/parse.top/ -j8 &> /dev/null
 
 # prepare conf.gro
 echo "# prepare conf.gro"
@@ -36,6 +28,27 @@ half_boxx=`echo "$boxx/2.0" | bc -l`
 half_boxy=`echo "$boxy/2.0" | bc -l`
 half_boxz=`echo "$boxz/2.0" | bc -l`
 
+# prepare potentials
+echo "# prepare potentials"
+cd ./tools/gen.pot
+./gen.wca --sigma $SOL_poten_sigma --epsilon $SOL_poten_eps -o table_CMW_CMW.xvg
+./gen.wca --sigma $K_poten_sigma --epsilon $K_poten_eps -o table_CMK_CMK.xvg
+./gen.wca --sigma $CL_poten_sigma --epsilon $CL_poten_eps -o table_CML_CML.xvg
+tmp_sigma=`echo "$SOL_poten_sigma + $K_poten_sigma" | bc -l`
+tmp_eps=`echo "sqrt($SOL_poten_eps * $K_poten_eps)" | bc -l`
+./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CMK.xvg
+tmp_sigma=`echo "$SOL_poten_sigma + $CL_poten_sigma" | bc -l`
+tmp_eps=`echo "sqrt($SOL_poten_eps * $CL_poten_eps)" | bc -l`
+./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CML.xvg
+tmp_sigma=`echo "$K_poten_sigma + $CL_poten_sigma" | bc -l`
+tmp_eps=`echo "sqrt($K_poten_eps * $CL_poten_eps)" | bc -l`
+./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMK_CML.xvg
+
+./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_K_value --ouput tabletf_CMK.xvg
+./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_CL_value --ouput tabletf_CML.xvg
+mv -f table_*_*.xvg tabletf_*.xvg ../../
+cd ../..
+
 # prepare dens.SOL.xvg
 echo "# prepare dens.SOL.xvg"
 rm -f dens.SOL.xvg
@@ -46,20 +59,23 @@ done
 
 # copy dir
 echo "# copy dir"
-rm -fr tf
+if test -d tf; then
+    mv tf tf.`date +%s`
+fi
 cp -a tools/tf.template ./tf
 
 # prepare grompp.mdp
 echo "# prepare grompp.mdp"
 rm -fr grompp.mdp
 cp tf/grompp.mdp .
-sed -e "/^adress_ex_width/s/=.*/= $ex_region_r/g" grompp.mdp |\
-sed -e "/^adress_hy_width/s/=.*/= $hy_region_r/g" |\
+sed -e "/^adress_ex_width/s/=.*/= $gmx_ex_region_r/g" grompp.mdp |\
+sed -e "/^adress_hy_width/s/=.*/= $gmx_hy_region_r/g" |\
 sed -e "/^adress /s/=.*/= yes/g" |\
 sed -e "/^dt/s/=.*/= $gmx_dt/g" |\
 sed -e "/^tau_t/s/=.*/= $gmx_tau_t/g" |\
 sed -e "/^nsteps/s/=.*/= $gmx_nsteps/g" |\
 sed -e "/^nstenergy/s/=.*/= $gmx_nstenergy/g" |\
+sed -e "/^nstcomm/s/=.*/= $gmx_nstenergy/g" |\
 sed -e "/^nstxtcout/s/=.*/= $gmx_nstxtcout/g" |\
 sed -e "/^epsilon_rf/s/=.*/= $gmx_epsilon_rf/g" |\
 sed -e "/^adress_reference_coords/s/=.*/= $half_boxx $half_boxy $half_boxz/g" > grompp.mdp.tmp
@@ -69,10 +85,10 @@ mv -f grompp.mdp.tmp grompp.mdp
 echo "# prepare settings.xml"
 rm -fr settings.xml
 cp tf/settings.xml .
-tf_min=`echo "$ex_region_r - $tf_extension" | bc -l`
-tf_max=`echo "$ex_region_r + $hy_region_r + $tf_extension" | bc -l`
-tf_spline_start=`echo "$ex_region_r - $tf_spline_extension" | bc -l`
-tf_spline_end=`  echo "$ex_region_r + $hy_region_r + $tf_spline_extension" | bc -l`
+tf_min=`echo "$gmx_ex_region_r - $tf_extension" | bc -l`
+tf_max=`echo "$gmx_ex_region_r + $gmx_hy_region_r + $tf_extension" | bc -l`
+tf_spline_start=`echo "$gmx_ex_region_r - $tf_spline_extension" | bc -l`
+tf_spline_end=`  echo "$gmx_ex_region_r + $gmx_hy_region_r + $tf_spline_extension" | bc -l`
 half_boxx_1=`echo "$half_boxx + 1." | bc -l`
 prefactor_l2=`grep -n prefactor settings.xml | tail -n 1 | cut -f 1 -d ":"`
 sed -e "s/<min>.*<\/min>/<min>$tf_min<\/min>/g" settings.xml |\
@@ -82,8 +98,8 @@ sed -e "s/<spline_start>.*<\/spline_start>/<spline_start>$tf_spline_start<\/spli
 sed -e "s/<spline_end>.*<\/spline_end>/<spline_end>$tf_spline_end<\/spline_end>/g" |\
 sed -e "s/<spline_step>.*<\/spline_step>/<spline_step>$tf_spline_step<\/spline_step>/g" |\
 sed -e "s/<table_end>.*<\/table_end>/<table_end>$half_boxx_1<\/table_end>/g" |\
-sed -e "${prefactor_l2}s/<prefactor>.*<\/prefactor>/<prefactor>$SOL_tf_prefactor<\/prefactor>/g" |\
-sed -e "s/<equi_time>.*<\/equi_time>/<equi_time>$equi_time_discard<\/equi_time>/g" |\
+sed -e "${prefactor_l2}s/<prefactor>.*<\/prefactor>/<prefactor>$tf_SOL_prefactor<\/prefactor>/g" |\
+sed -e "s/<equi_time>.*<\/equi_time>/<equi_time>$tf_equi_time_discard<\/equi_time>/g" |\
 sed -e "s/<iterations_max>.*<\/iterations_max>/<iterations_max>$tf_iterations_max<\/iterations_max>/g" > settings.xml.tmp
 mv -f settings.xml.tmp settings.xml
 
@@ -94,14 +110,6 @@ rm -fr topol.top topol.atom.top
 cp tf/topol.top .
 sed "s/^SOL.*/SOL $nSOL/g" topol.top > tmp.top
 mv -f tmp.top topol.top
-cp tf/topol.atom.top .
-sed "s/^SOL.*/SOL $nSOL/g" topol.atom.top > tmp.top
-mv -f tmp.top topol.atom.top
-
-# prepare table of cg
-echo "# prepare table of cg"
-rm -f tf/table_CMW_CMW.xvg
-cp -L table_CMW_CMW.xvg ./tf/
 
 # prepare initial guess
 echo "# prepare initial guess"
@@ -111,18 +119,18 @@ fi
 
 # copy all file to tf
 echo "# copy files to tf"
-rm -fr tf/conf.gro tf/dens.SOL.xvg tf/grompp.mdp tf/index.ndx tf/settings.xml tf/topol.top
-mv -f conf.gro dens.SOL.xvg grompp.mdp settings.xml topol.top topol.atom.top tf/
+mv -f conf.gro dens.SOL.xvg grompp.mdp settings.xml topol.top table_*_*.xvg tabletf_*.xvg tf/
 
 # prepare index file
 cd tf/
-gmxdump -p topol.top > tmp.top
-../tools/gen.conf/adress.ndx -p tmp.top --ex-name EXW --cg-name CMW -o index.ndx
-# prepare conf
-gmxdump -p topol.atom.top > tmp.top
-../tools/gen.conf/add.com -f conf.gro -o out.gro -p tmp.top --cg-name CMW
-mv -f out.gro conf.gro
-rm -f tmp.top
+echo 'q' > command
+cat command > make_ndx -f conf.gro
+rm -f command
+echo "[ FIX ]" >> index.ndx
+echo "$gmx_fix_ndx" >> index.ndx
+../tools/parse.top/make.idx --cg-key CM --ex-key EXW -o add.ndx
+cat add.ndx >> index.ndx
+rm -f add.ndx
 cd ..
 
 # calculate tf
