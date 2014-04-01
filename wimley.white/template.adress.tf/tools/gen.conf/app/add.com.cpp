@@ -76,7 +76,7 @@ int main (int argc, char * argv[])
   
   for (int ii = 0; ii < int(posi.size()); ++ii){
     // find new correct mol
-    cout << ii << endl;
+    // cout << ii << endl;
     if (savedResdIdx != resdindex[ii] && resdNameString == resdname[ii]){
       savedResdIdx = resdindex[ii];
       vector<double > sum_p (3, 0.);
@@ -122,7 +122,7 @@ int main (int argc, char * argv[])
     }
   }
 
-  cout << "finished" << endl;
+  // cout << "finished" << endl;
   
   GroFileManager::write (ofilename,
   			 resdindex1, resdname1,
