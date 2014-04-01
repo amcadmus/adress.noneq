@@ -49,7 +49,16 @@ ifKeyWord (const string & in_,
   char tmpin [MAX_LINE_LENGTH];
   strncpy (tmpin, in_.c_str(), MAX_LINE_LENGTH);
   normalizeLine (tmpin);
-  string in (tmpin);
+  string in_tmp (tmpin);
+  string in;
+  int ii = 0;
+  while (isblank(in_tmp.c_str()[ii])){
+    ii ++;
+  }
+  for (; ii < int(in_tmp.size()); ++ii){
+    in.push_back (in_tmp.c_str()[ii]);
+  }
+  
   
   if (!(in[0] == '[')){
     return false;
@@ -255,6 +264,19 @@ print (FILE * fp) const
   fprintf (fp, "\n");
 }
 
+void GmxTop::gmx_virtual_sites3_item::
+print (FILE * fp) const
+{
+  fprintf (fp, "%d\t%d\t%d\t%d\t%d\t%.10e\t%.10e\n", ii, jj, kk, ll, funct, a, b);
+}
+
+void GmxTop::gmx_settles_item::
+print (FILE * fp) const
+{
+  fprintf (fp, "%d\t%d\t%.10e\t%.10e\n", ii, funct, doh, dhh);
+}
+    
+
 GmxTop::gmx_cmap_item::
 gmx_cmap_item ()
     : funct (0), ngrid0(0), ngrid1(0)
@@ -307,13 +329,6 @@ print (FILE * fp) const
     }
     fprintf (fp, "\n");
   }
-  if (exclusions.size() > 0) {
-    fprintf (fp, "[ exclusions ]\n");
-    for (unsigned ii = 0; ii < exclusions.size(); ++ii){
-      exclusions[ii].print (fp);
-    }
-    fprintf (fp, "\n");
-  }
   if (angles.size() > 0) {
     fprintf (fp, "[ angles ]\n");
     for (unsigned ii = 0; ii < angles.size(); ++ii){
@@ -334,7 +349,28 @@ print (FILE * fp) const
       cmap[ii].print (fp);
     }
     fprintf (fp, "\n");
-  }  
+  }
+  if (vsite3.size() > 0){
+    fprintf (fp, "[ virtual_sites3 ]\n");
+    for (unsigned ii = 0; ii < vsite3.size(); ++ii){
+      vsite3[ii].print (fp);
+    }
+    fprintf (fp, "\n");
+  }
+  if (settles.size() > 0){
+    fprintf (fp, "[ settles ]\n");
+    for (unsigned ii = 0; ii < settles.size(); ++ii){
+      settles[ii].print (fp);
+    }
+    fprintf (fp, "\n");
+  }
+  if (exclusions.size() > 0) {
+    fprintf (fp, "[ exclusions ]\n");
+    for (unsigned ii = 0; ii < exclusions.size(); ++ii){
+      exclusions[ii].print (fp);
+    }
+    fprintf (fp, "\n");
+  }
 }
 
 void GmxTop::gmx_sys_top::
@@ -387,6 +423,13 @@ print (FILE * fp) const
     }
     fprintf (fp, "\n");
   }
+  if (constrainttypes.size() > 0){
+    fprintf (fp, "[ constrainttypes ]\n");
+    for (unsigned ii = 0; ii < constrainttypes.size(); ++ii){
+      constrainttypes[ii].print (fp);
+    }
+    fprintf (fp, "\n");
+  }
   if (angletypes.size() > 0){  
     fprintf (fp, "[ angletypes ]\n");
     for (unsigned ii = 0; ii < angletypes.size(); ++ii){
@@ -427,14 +470,14 @@ parseTop (const string & fname,
   readBlocks (file, keys, lines);
   vector<string > words;
 
-  // cout << "n. keys " << keys.size() << endl;
-  // cout << "n. lines " << lines.size() << endl;
-  // for (unsigned ii = 0; ii < keys.size(); ++ii){
-  //   cout << "key " << ii << ": " << keys[ii] << endl;
-  //   for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
-  //     cout << lines[ii][jj] << endl;
-  //   }
-  // }
+  cout << "n. keys " << keys.size() << endl;
+  cout << "n. lines " << lines.size() << endl;
+  for (unsigned ii = 0; ii < keys.size(); ++ii){
+    cout << "key " << ii << ": " << keys[ii] << endl;
+    for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
+      cout << lines[ii][jj] << endl;
+    }
+  }
   
   for (unsigned ii = 0; ii < keys.size(); ++ii){
     if (keys[ii] == "system"){
@@ -583,6 +626,33 @@ parseTop (const string & fname,
 	    tmpmol.cmap.push_back(tmp);
 	  } 
 	}
+	if (keys[kk] == "virtual_sites3"){
+	  for (unsigned ll = 0; ll < lines[kk].size(); ++ll){
+	    StringOperation::split (lines[kk][ll], words);
+	    gmx_virtual_sites3_item tmp;
+	    if (words.size () != 7) die_wrong_format (__FILE__, __LINE__);
+	    tmp.ii = atoi(words[0].c_str());
+	    tmp.jj = atoi(words[1].c_str());
+	    tmp.kk = atoi(words[2].c_str());
+	    tmp.ll = atoi(words[3].c_str());
+	    tmp.funct = atoi(words[4].c_str());
+	    tmp.a = atof(words[5].c_str());
+	    tmp.b = atof(words[6].c_str());
+	    tmpmol.vsite3.push_back(tmp);
+	  }
+	}
+	if (keys[kk] == "settles"){
+	  for (unsigned ll = 0; ll < lines[kk].size(); ++ll){
+	    StringOperation::split (lines[kk][ll], words);
+	    gmx_settles_item tmp;
+	    if (words.size () != 4) die_wrong_format (__FILE__, __LINE__);
+	    tmp.ii = atoi(words[0].c_str());
+	    tmp.funct = atoi(words[1].c_str());
+	    tmp.doh = atof(words[2].c_str());
+	    tmp.dhh = atof(words[3].c_str());
+	    tmpmol.settles.push_back(tmp);
+	  } 
+	}
       }
       top.moles.push_back (tmpmol);
       top.numMol.push_back (0);
@@ -655,6 +725,7 @@ parseType (const string & fname,
 	if (words.size() < 8) die_wrong_format (__FILE__, __LINE__);
 	gmx_atomtypes_item tmp;
 	tmp.name = words[0];
+	tmp.alias = words[1];
 	tmp.atom_num = atoi(words[2].c_str());
 	tmp.mass = atof(words[3].c_str());
 	tmp.charge = atof(words[4].c_str());
@@ -679,6 +750,21 @@ parseType (const string & fname,
 	  tmp.params.push_back (atof(words[ii].c_str()));
 	}
 	type.bondtypes.push_back (tmp);
+      }
+    }
+  }
+
+  for (unsigned ii = 0; ii < keys.size(); ++ii){
+    if (keys[ii] == "constrainttypes"){
+      for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
+	StringOperation::split (lines[ii][jj], words);
+	if (words.size() != 4) die_wrong_format (__FILE__, __LINE__);
+	gmx_constrainttypes_item tmp;
+	tmp.name0 = words[0];
+	tmp.name1 = words[1];
+	tmp.funct = atoi(words[2].c_str());
+	tmp.dist = atof(words[3].c_str());
+	type.constrainttypes.push_back (tmp);
       }
     }
   }
@@ -735,46 +821,46 @@ parseType (const string & fname,
     }
   }
 
-  // for (unsigned ii = 0; ii < keys.size(); ++ii){
-  //   if (keys[ii] == "dihedraltypes"){
-  //     for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
-  // 	StringOperation::split (lines[ii][jj], words);
-  // 	if (words.size() < 5) die_wrong_format (__FILE__, __LINE__);
-  // 	gmx_dihedraltypes_item tmp;
-  // 	tmp.name0 = words[0];
-  // 	tmp.name1 = words[1];
-  // 	tmp.name2 = words[2];
-  // 	tmp.name3 = words[3];
-  // 	tmp.funct = atoi(words[4].c_str());
-  // 	for (unsigned ii = 5; ii < words.size(); ++ii){
-  // 	  tmp.params.push_back (atof(words[ii].c_str()));
-  // 	}
-  // 	type.dihedraltypes.push_back (tmp);
-  //     }
-  //   }
-  // }
+  for (unsigned ii = 0; ii < keys.size(); ++ii){
+    if (keys[ii] == "dihedraltypes"){
+      for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
+  	StringOperation::split (lines[ii][jj], words);
+  	if (words.size() < 5) die_wrong_format (__FILE__, __LINE__);
+  	gmx_dihedraltypes_item tmp;
+  	tmp.name0 = words[0];
+  	tmp.name1 = words[1];
+  	tmp.name2 = words[2];
+  	tmp.name3 = words[3];
+  	tmp.funct = atoi(words[4].c_str());
+  	for (unsigned ii = 5; ii < words.size(); ++ii){
+  	  tmp.params.push_back (atof(words[ii].c_str()));
+  	}
+  	type.dihedraltypes.push_back (tmp);
+      }
+    }
+  }
 
-  // for (unsigned ii = 0; ii < keys.size(); ++ii){
-  //   if (keys[ii] == "cmaptypes"){
-  //     for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
-  // 	StringOperation::split (lines[ii][jj], words);
-  // 	if (words.size() < 8) die_wrong_format (__FILE__, __LINE__);
-  // 	gmx_cmaptypes_item tmp;
-  // 	tmp.name0 = words[0];
-  // 	tmp.name1 = words[1];
-  // 	tmp.name2 = words[2];
-  // 	tmp.name3 = words[3];
-  // 	tmp.name4 = words[4];
-  // 	tmp.funct = atoi(words[5].c_str());
-  // 	tmp.ngrid0 = atoi(words[6].c_str());
-  // 	tmp.ngrid1 = atoi(words[7].c_str());
-  // 	for (unsigned ii = 8; ii < words.size(); ++ii){
-  // 	  tmp.params.push_back (atof(words[ii].c_str()));
-  // 	}
-  // 	type.cmaptypes.push_back (tmp);
-  //     }
-  //   }
-  // }
+  for (unsigned ii = 0; ii < keys.size(); ++ii){
+    if (keys[ii] == "cmaptypes"){
+      for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
+  	StringOperation::split (lines[ii][jj], words);
+  	if (words.size() < 8) die_wrong_format (__FILE__, __LINE__);
+  	gmx_cmaptypes_item tmp;
+  	tmp.name0 = words[0];
+  	tmp.name1 = words[1];
+  	tmp.name2 = words[2];
+  	tmp.name3 = words[3];
+  	tmp.name4 = words[4];
+  	tmp.funct = atoi(words[5].c_str());
+  	tmp.ngrid0 = atoi(words[6].c_str());
+  	tmp.ngrid1 = atoi(words[7].c_str());
+  	for (unsigned ii = 8; ii < words.size(); ++ii){
+  	  tmp.params.push_back (atof(words[ii].c_str()));
+  	}
+  	type.cmaptypes.push_back (tmp);
+      }
+    }
+  }
 }
 
 static void

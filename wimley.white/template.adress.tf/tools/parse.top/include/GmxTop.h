@@ -111,6 +111,29 @@ namespace GmxTop {
     int			atom_idx_mm () const {return mm-1;}
   }
       ;
+
+  struct gmx_virtual_sites3_item
+  {
+    int			ii;
+    int			jj;
+    int			kk;
+    int			ll;
+    int			funct;
+    double		a;
+    double		b;
+    void		print (FILE * fp) const;    
+  }
+      ;
+
+  struct gmx_settles_item
+  {
+    int			ii;
+    int			funct;
+    double		doh;
+    double		dhh;    
+    void		print (FILE * fp) const;    
+  }
+      ;
   
   struct gmx_mol
   {
@@ -123,6 +146,8 @@ namespace GmxTop {
     vector<gmx_angles_item>	angles;
     vector<gmx_dihedrals_item>	dihedrals;
     vector<gmx_cmap_item>	cmap;
+    vector<gmx_virtual_sites3_item> vsite3;
+    vector<gmx_settles_item>	settles;
     void		print (FILE * fp) const;
   }
       ;

@@ -16,8 +16,8 @@ print (FILE * fp) const
 void GmxTop::gmx_atomtypes_item::
 print (FILE * fp) const
 {
-  fprintf (fp, "%s\t%d\t%f\t%f\t%s\t%.10e\t%.10e\n",
-	   name.c_str(), atom_num, mass, charge, ptype.c_str(), c6, c12);
+  fprintf (fp, "%s\t%s\t%d\t%f\t%f\t%s\t%.10e\t%.10e\n",
+	   name.c_str(), alias.c_str(), atom_num, mass, charge, ptype.c_str(), c6, c12);
 }
 
 void GmxTop::gmx_nonbond_params_item::
@@ -52,7 +52,16 @@ print (FILE * fp) const
   }
   fprintf (fp, "\n");
 }
+
+void GmxTop::gmx_constrainttypes_item::
+print (FILE * fp) const
+{
+  fprintf (fp, "%s\t%s\t%d\t%.10e",
+	   name0.c_str(), name1.c_str(), funct, dist);
+  fprintf (fp, "\n");
+}
   
+
 void GmxTop::gmx_angletypes_item::
 print (FILE * fp) const
 {

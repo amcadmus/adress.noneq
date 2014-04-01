@@ -27,6 +27,7 @@ namespace GmxTop {
   struct gmx_atomtypes_item
   {
     string	name;
+    string	alias;
     int		atom_num;
     double	mass;
     double	charge;
@@ -66,6 +67,17 @@ namespace GmxTop {
     void		print (FILE * fp) const;
   }
       ;
+
+  struct gmx_constrainttypes_item
+  {
+    string		name0;
+    string		name1;
+    int			funct;
+    double		dist;
+    void		print (FILE * fp) const;    
+  }
+      ;
+  
 
   struct gmx_angletypes_item
   {
@@ -112,6 +124,7 @@ namespace GmxTop {
     vector<gmx_pairtypes_item>		pairtypes;
     vector<gmx_nonbond_params_item>	nonbond_params;
     vector<gmx_bondtypes_item>		bondtypes;
+    vector<gmx_constrainttypes_item>	constrainttypes;
     vector<gmx_angletypes_item>		angletypes;
     vector<gmx_dihedraltypes_item>	dihedraltypes;
     vector<gmx_cmaptypes_item>		cmaptypes;
