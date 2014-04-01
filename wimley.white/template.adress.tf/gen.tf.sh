@@ -34,18 +34,18 @@ cd ./tools/gen.pot
 ./gen.wca --sigma $SOL_poten_sigma --epsilon $SOL_poten_eps -o table_CMW_CMW.xvg
 ./gen.wca --sigma $K_poten_sigma --epsilon $K_poten_eps -o table_CMK_CMK.xvg
 ./gen.wca --sigma $CL_poten_sigma --epsilon $CL_poten_eps -o table_CML_CML.xvg
-tmp_sigma=`echo "$SOL_poten_sigma + $K_poten_sigma" | bc -l`
+tmp_sigma=`echo "0.5 * ($SOL_poten_sigma + $K_poten_sigma)" | bc -l`
 tmp_eps=`echo "sqrt($SOL_poten_eps * $K_poten_eps)" | bc -l`
 ./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CMK.xvg
-tmp_sigma=`echo "$SOL_poten_sigma + $CL_poten_sigma" | bc -l`
+tmp_sigma=`echo "0.5 * ($SOL_poten_sigma + $CL_poten_sigma)" | bc -l`
 tmp_eps=`echo "sqrt($SOL_poten_eps * $CL_poten_eps)" | bc -l`
 ./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CML.xvg
-tmp_sigma=`echo "$K_poten_sigma + $CL_poten_sigma" | bc -l`
+tmp_sigma=`echo "0.5 * ($K_poten_sigma + $CL_poten_sigma)" | bc -l`
 tmp_eps=`echo "sqrt($K_poten_eps * $CL_poten_eps)" | bc -l`
 ./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMK_CML.xvg
 
-./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_K_value --ouput tabletf_CMK.xvg
-./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_CL_value --ouput tabletf_CML.xvg
+./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_K_value --output tabletf_CMK.xvg
+./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_CL_value --output tabletf_CML.xvg
 mv -f table_*_*.xvg tabletf_*.xvg ../../
 cd ../..
 
@@ -106,15 +106,15 @@ mv -f settings.xml.tmp settings.xml
 # prepare topol.top
 echo "# prepare topol.top"
 nSOL=`./tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
-rm -fr topol.top topol.atom.top
+rm -fr topol.top 
 cp tf/topol.top .
 sed "s/^SOL.*/SOL $nSOL/g" topol.top > tmp.top
 mv -f tmp.top topol.top
 
 # prepare initial guess
 echo "# prepare initial guess"
-if test -f $init_guess_CMW_tf; then
-    cp $init_guess_CMW_tf ./tf/SOL.pot.in
+if test -f $tf_init_guess_CMW; then
+    cp $tf_init_guess_CMW ./tf/SOL.pot.in
 fi
 
 # copy all file to tf
@@ -123,9 +123,7 @@ mv -f conf.gro dens.SOL.xvg grompp.mdp settings.xml topol.top table_*_*.xvg tabl
 
 # prepare index file
 cd tf/
-echo 'q' > command
-cat command > make_ndx -f conf.gro
-rm -f command
+echo 'q' | make_ndx -f conf.gro
 echo "[ FIX ]" >> index.ndx
 echo "$gmx_fix_ndx" >> index.ndx
 ../tools/parse.top/make.idx --cg-key CM --ex-key EXW -o add.ndx

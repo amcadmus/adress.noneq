@@ -24,10 +24,10 @@ tf_K_value=500
 tf_CL_value=500
 
 SOL_poten_eps=0.6
-SOL_poten_sigma=0.3
-K_poten_eps=0.6
-K_poten_sigma=0.3
-CL_poten_eps=0.6
-CL_poten_sigma=0.3
+SOL_poten_sigma=0.31
+K_poten_eps=0.014
+K_poten_sigma=0.49
+CL_poten_eps=0.49
+CL_poten_sigma=0.44
 
 
