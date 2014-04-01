@@ -51,8 +51,10 @@ int main(int argc, char * argv[])
     return 1;
   }
   
-  newtype.print(stdout);
-  systop.print (stdout);
+  newtype.print(fp);
+  systop.print (fp);
 
+  fclose (fp);
+  
   return 0;
 }
