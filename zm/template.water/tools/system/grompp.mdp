@@ -56,21 +56,21 @@ ns_type                  = grid
 ; or full (infinite systems only)
 pbc                      = xyz
 ; nblist cut-off        
-rlist                    = 1.7
+rlist                    = 1.5
 domain-decomposition     = no
 
 ; OPTIONS FOR ELECTROSTATICS AND VDW
 ; Method for doing electrostatics
 coulombtype              = user
 rcoulomb-switch          = 0
-rcoulomb                 = 1.4
+rcoulomb                 = 1.2
 ; Dielectric constant (DC) for cut-off or DC of reaction field
 epsilon-r                = 1
 ; Method for doing Van der Waals
-vdw-type                 = switch
+vdw-type                 = shift
 ; cut-off lengths       
-rvdw-switch              = 1.2
-rvdw                     = 1.4
+rvdw-switch              = 1.0
+rvdw                     = 1.2
 ; Apply long range dispersion corrections for Energy and Pressure
 DispCorr                 = no
 ; Extension of the potential lookup tables beyond the cut-off
