@@ -20,7 +20,7 @@ init_step                = 0
 ; mode for center of mass motion removal
 comm-mode                = Linear
 ; number of steps for center of mass motion removal
-nstcomm                  = 10000
+nstcomm                  = 1000
 ; group(s) for center of mass motion removal
 comm-grps                = 
 
