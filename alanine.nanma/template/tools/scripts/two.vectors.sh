@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bin_dir=/home/cocktail/wanghan/study/adress.noneq/alanine.nanma/template/tools/angles/
+bin_dir=$HOME/study/adress.noneq/alanine.nanma/template/tools/angles/
 bin=$bin_dir/two.vectors
 make -C $bin_dir/ -j 8
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
-make -C /home/cocktail/wanghan/study/adress.noneq/alanine.nanma/template/tools/angles/ -j
+make -C ~/study/adress.noneq/alanine.nanma/template/tools/angles/ -j
 
-/home/cocktail/wanghan/study/adress.noneq/alanine.nanma/template/tools/angles/average.traj.corr -c 1
+~/study/adress.noneq/alanine.nanma/template/tools/angles/average.traj.corr -c 1
+~/study/adress.noneq/alanine.nanma/template/tools/average/integrate.file -f meta.flux.out -o meta.flux.inte.out

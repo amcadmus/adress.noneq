@@ -196,7 +196,7 @@ int main(int argc, char * argv[])
     }
     for (int jj = 0; jj < int(sets.size()); ++jj){
       for (int kk = 0; kk < ncorr; ++kk){
-	corrs[jj][kk].deposite (counts[ii][jj] * fluxes[ii-kk*every]);
+	corrs[jj][kk].deposite (counts[ii][jj] * fluxes[ii-kk*every] * 96.485309);
       }
     }
   }
