@@ -1,7 +1,7 @@
 #!/bin/bash
 
-source parameters.sh
 source env.sh
+source parameters.sh
 
 if echo "$gmx_ele_method" | grep pme &> /dev/null ; then
     echo "# run with ele method pme"
@@ -25,11 +25,13 @@ gmx_nsteps=`echo "($gmx_time + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstenergy=`echo "($gmx_energy_feq + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstxtcout=`echo "($gmx_conf_feq   + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_seed=`date +%s`
-if test $gmx_ele_method_ind -eq 0; then
-    gmx_nstlist=-1
+if test $gmx_ele_method_ind -eq 0; then # zm
+    gmx_nstlist=$gmx_nstlist
+    gmx_rcut_ele_switch=$gmx_rcut_ele
 fi
-if test $gmx_ele_method_ind -eq 1; then
+if test $gmx_ele_method_ind -eq 1; then # pme
     gmx_rcut_ele=$gmx_rlist
+    gmx_rcut_ele_switch=$gmx_rcut_ele
 fi
 sed -e "/^dt /s/=.*/= $gmx_dt/g" grompp.mdp |\
 sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g" |\
