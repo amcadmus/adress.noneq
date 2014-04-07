@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/bash
 
 file=$1
 out=$2
@@ -30,6 +30,6 @@ pbc                 =  xyz
 EOF
 np=8
 $GROMPP -f MIN.mdp -p ${file}.top  -po MINout.mdp -c ${file}.gro -o $out.tpr 
-$MDRUN -deffnm $out  -cpi $out.cpt
+$MDRUN -deffnm $out  -cpi $out.cpt -v
 
 

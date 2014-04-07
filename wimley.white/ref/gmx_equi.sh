@@ -2,13 +2,12 @@
 temp=$1
 file=$2
 GROMPP=$3
-MPIRUN=$4
-MDRUN=$5
-TPBCONV=$6
+MDRUN=$4
+TPBCONV=$5
 fact=100000
 start=1
 stop=1
-let nsteps=$fact*$start
+nsteps=`echo "$fact*$start" | bc`
 
 cat > SIMXX.mdp <<EOF
 title               =  protein with solv          ; a string
@@ -56,7 +55,7 @@ pbc                 =   xyz
 EOF
 
 
-np=24
+np=8
 out=EQUI1
 while [ $start -le $stop ]
 do
@@ -65,21 +64,24 @@ do
     then
         echo " generating tpr for first time: filename is $out"
         $GROMPP -f SIMXX.mdp -p ${file}.top -po ${file}out.mdp -c MIN0.gro -o $out.tpr  -maxwarn 2
+	echo " nsteps is $nsteps"
+        $TPBCONV -s $out.tpr -nsteps $nsteps -o tmp.tmp.tpr
+	mv -f tmp.tmp.tpr $out.tpr
     else
-        let prev=$start-1
+        prev=$(($start-1))
         old=${out}${prev}
         if [ -e $old.cpt ]
         then
             cp -f $old.cpt $out.cpt
         fi
-        let nsteps=$fact*$start
+        nsteps=`echo "$fact*$start" | bc`
         echo "start-> $start running tpbconv with $nsteps using tprfile $old"
         $TPBCONV -s $old.tpr -nsteps $nsteps -o $out.tpr
     fi
-    $MPIRUN -np $np $MDRUN -np $np -deffnm $out  -cpi $out.cpt 
+    $MDRUN -v -deffnm $out  -cpi $out.cpt 
     mv -f $out.cpt $new.cpt
     mv -f $out.tpr $new.tpr
-    let start=$start+1
+    start=$(($start+1))
 done
 
 

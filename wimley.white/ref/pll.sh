@@ -23,6 +23,6 @@ TPBCONV=`which tpbconv`
 MDRUN=`which mdrun`
 
 echo "USING $MDRUN On $HOSTNAME" 
-./min.sh xa MIN0 $GROMPP $MDRUN 
-./gmx_equi.sh 300 xa $GROMPP $MDRUN $TPBCONV
+#./min.sh xa MIN0 $GROMPP $MDRUN 
+#./gmx_equi.sh 300 xa $GROMPP $MDRUN $TPBCONV
 ./gmx_sim.sh 300 1 6 xa $GROMPP $TPBCONV $MDRUN

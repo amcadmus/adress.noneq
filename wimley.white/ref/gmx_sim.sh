@@ -5,22 +5,21 @@ stop=$3
 file=$4
 GROMPP=$5
 TPBCONV=$6
-MPIRUN=$7
-MDRUN=$8
+MDRUN=$7
 
 
 fact=50000000
-let nsteps=$fact*$start
+nsteps=`echo "$fact*$start" | bc`
 cat > SIMXX.mdp <<EOF
 title               =  protein with solv          ; a string
 integrator          =  md
 dt                  =  0.002                    ; time step
-nsteps              =  $nsteps                      ; number of steps
+nsteps              =  "$nsteps"                      ; number of steps
 nstcomm             =  1                        ; reset c.o.m. motion
 comm_mode           =  linear
-nstxout             =  $nsteps                       ; write coords
+nstxout             =  "$nsteps"                       ; write coords
 nstxtcout           =  1000
-nstvout             =  $nsteps                    ; write velocities
+nstvout             =  "$nsteps"                    ; write velocities
 nstlog              =  1000                     ; print to logfile
 nstenergy           =  1000                      ; print energies
 nstlist             =  10                        ; update pairlist
@@ -55,6 +54,8 @@ pbc                 =   xyz
 
 EOF
 
+sed -e 's/"//g' SIMXX.mdp > tmp.tmp.mdp
+mv -f tmp.tmp.mdp SIMXX.mdp
 
 np=24
 
@@ -68,7 +69,7 @@ do
         $GROMPP -f SIMXX.mdp -p ${file}.top -po ${file}out.mdp -c EQUI1.gro -o $out.tpr  -maxwarn 2
         #$GROMPP -f SIMXX.mdp -p ${file}.top -po ${file}out.mdp -c MIN1.gro -o $out.tpr -n $file.ndx -maxwarn 2
     else
-        let prev=$start-1
+        prev=$(($start-1))
         old=${out}${prev}
         if [ -e $old.cpt ]
         then
@@ -76,14 +77,14 @@ do
         else
     	    cp -f sim_prev.cpt $out.cpt
         fi
-        let nsteps=$fact*$start
+        nsteps=`echo "$fact*$start" | bc`
         echo "start-> $start running tpbconv with $nsteps using tprfile $old"
         $TPBCONV -s $old.tpr -nsteps $nsteps -o $out.tpr
     fi
-    $MPIRUN -np $np $MDRUN -np $np -deffnm $out  -cpi $out.cpt  -noappend
+    $MDRUN -deffnm $out  -cpi $out.cpt  -noappend -v
     mv -f $out.cpt $new.cpt
     mv -f $out.tpr $new.tpr
-    let start=$start+1
+    start=$(($start+1))
 done
 
 
