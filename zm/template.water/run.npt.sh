@@ -48,6 +48,8 @@ sed -e "/^rlist /s/=.*/= $gmx_rlist/g"|\
 sed -e "/^coulombtype /s/=.*/= $gmx_ele_method_gromacs/g"|\
 sed -e "/^rcoulomb-switch /s/=.*/= $gmx_rcut_ele_switch/g"|\
 sed -e "/^rcoulomb /s/=.*/= $gmx_rcut_ele/g"|\
+sed -e "/^fourierspacing /s/=.*/= $gmx_pme_F_spacing/g"|\
+sed -e "/^pme_order /s/=.*/= $gmx_pme_order/g"|\
 sed -e "/^vdwtype /s/=.*/= shift/g"|\
 sed -e "/^rvdw-switch /s/=.*/= $gmx_rcut_vdw_switch/g"|\
 sed -e "/^rvdw /s/=.*/= $gmx_rcut_vdw/g"|\
