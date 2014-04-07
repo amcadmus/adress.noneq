@@ -173,7 +173,7 @@ calCoefficients (const int & ll,
       invrc4 = invrc2 * invrc2;
       coeff[0] = 1./384. * b4 * rc2 * rc2 - 7./192. * b3 * rc2 * rc + 29./128. * b2 * rc2 - 93./128. * b1 * rc + b0;
       coeff[1] = 35./32. * b1 * invrc - 19./32. * b2 - 1./96. * b4 * rc2 + M_inv8 * b3 * rc;
-      coeff[2] = 1./64. * b4 - 35./64. * b1 * invrc3 + 35./64. * b2/invrc2 - 5./32. * b3 * invrc;
+      coeff[2] = 1./64. * b4 - 35./64. * b1 * invrc3 + 35./64. * b2 * invrc2 - 5./32. * b3 * invrc;
       coeff[3] = 7./32. * b1 * invrc4 * invrc - 7./32. * b2 * invrc4 + 1./12. * b3 * invrc3 - 1./96. * b4 * invrc2;
       coeff[4] = 5./128. * b2 * invrc4 * invrc2 - 5./128. * b1 * invrc4 * invrc3 - 1./64. * b3 * invrc4 * invrc + 1./384 * b4 * invrc4;
       break;
@@ -215,6 +215,7 @@ pot (const double & rr)
 {
   if (rr > rc) return 0.;
   double tmp0 = funcV (alpha, rr);
+  // double tmp0 = 0.;
   double tmp1 = coeff.back();
   for (int ii = ll-1; ii >= 0; --ii){
     tmp1 = tmp1 * rr * rr + coeff[ii];
