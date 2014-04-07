@@ -48,6 +48,8 @@ xtc-grps                 =
 energygrps               = 
 
 ; NEIGHBORSEARCHING PARAMETERS
+; cut-off scheme (group: using charge groups, Verlet: particle based cut-offs)
+cutoff-scheme            = Verlet
 ; nblist update frequency
 nstlist                  = -1
 ; ns algorithm (simple or grid)
@@ -55,6 +57,9 @@ ns_type                  = grid
 ; Periodic boundary conditions: xyz, no, xy
 pbc                      = xyz
 periodic_molecules       = no
+; Allowed energy drift due to the Verlet buffer in kJ/mol/ps per atom,
+; a value of -1 means: use rlist
+verlet-buffer-drift      = -1
 ; nblist cut-off        
 rlist                    = 1.5
 
@@ -67,7 +72,7 @@ rcoulomb                 = 1.2
 epsilon-r                = 1
 epsilon_rf               = 1
 ; Method for doing Van der Waals
-vdw-type                 = shift
+vdw-type                 = cut-off
 ; cut-off lengths       
 rvdw-switch              = 1.0
 rvdw                     = 1.2
@@ -105,8 +110,6 @@ Pcoupltype               = isotropic
 tau_p                    = 0.5
 compressibility          = 4.5e-5
 ref_p                    = 1.0
-; Random seed for Andersen thermostat
-andersen_seed            = 815131
 
 ; GENERATE VELOCITIES FOR STARTUP RUN
 gen_vel                  = yes

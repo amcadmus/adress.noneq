@@ -25,12 +25,12 @@ gmx_nsteps=`echo "($gmx_time + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstenergy=`echo "($gmx_energy_feq + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstxtcout=`echo "($gmx_conf_feq   + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_seed=`date +%s`
-if test $gmx_ele_method_ind -eq 0; then
-    gmx_nstlist=-1
-fi
-if test $gmx_ele_method_ind -eq 1; then
-    gmx_rcut_ele=$gmx_rlist
-fi
+# if test $gmx_ele_method_ind -eq 0; then
+#     gmx_nstlist=$gmx_nstlist
+# fi
+# if test $gmx_ele_method_ind -eq 1; then
+#     gmx_rcut_ele=$gmx_rlist
+# fi
 sed -e "/^dt /s/=.*/= $gmx_dt/g" grompp.mdp |\
 sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g" |\
 sed -e "/^ld-seed /s/=.*/= $gmx_seed/g" |\
@@ -41,12 +41,14 @@ sed -e "/^nstvout /s/=.*/= 0/g"|\
 sed -e "/^nstfout /s/=.*/= 0/g"|\
 sed -e "/^nstlog /s/=.*/= 0/g"|\
 sed -e "/^nstxtcout /s/=.*/= $gmx_nstxtcout/g"|\
+sed -e "/^cutoff-scheme /s/=.*/= Verlet/g"|\
 sed -e "/^nstlist /s/=.*/= $gmx_nstlist/g"|\
+sed -e "/^verlet-buffer-drift /s/=.*/= -1/g"|\
 sed -e "/^rlist /s/=.*/= $gmx_rlist/g"|\
 sed -e "/^coulombtype /s/=.*/= $gmx_ele_method_gromacs/g"|\
 sed -e "/^rcoulomb-switch /s/=.*/= $gmx_rcut_ele_switch/g"|\
 sed -e "/^rcoulomb /s/=.*/= $gmx_rcut_ele/g"|\
-sed -e "/^vdwtype /s/=.*/= shift/g"|\
+sed -e "/^vdwtype /s/=.*/= cut-off/g"|\
 sed -e "/^rvdw-switch /s/=.*/= $gmx_rcut_vdw_switch/g"|\
 sed -e "/^rvdw /s/=.*/= $gmx_rcut_vdw/g"|\
 sed -e "/^tau_t /s/=.*/= $gmx_taut/g"|\
