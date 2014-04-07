@@ -9,9 +9,12 @@ gmx_equi_skip=1000		# in ps
 gmx_conf_feq=20			# in ps
 gmx_energy_feq=1		# in ps
 gmx_ele_method=pme		# pme or zm
-gmx_rlist=1.8			# 
-gmx_nstlist=10			# Verlet list is used! the nstlist value is enforced by setting verlet-buffer-drift=-1
-gmx_rcut=1.5
+gmx_rlist=1.5			# 
+gmx_nstlist=5			# if pme is used, set this value, otherwise, set -1
+gmx_rcut_ele=1.2		# if pme is used, set this value to rlist
+gmx_rcut_ele_switch=1.15
+gmx_rcut_vdw=1.2
+gmx_rcut_vdw_switch=1.15
 gmx_tab_ext=0.5
 gmx_taut=0.1
 gmx_taup=0.5
