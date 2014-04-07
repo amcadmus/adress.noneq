@@ -1,7 +1,13 @@
 #!/bin/bash
 
-source parameters.sh
 source env.sh
+source parameters.sh
+
+# since cut-off scheme verlet is used, all rcut are set to the same
+gmx_rcut_ele=$gmx_rcut		
+gmx_rcut_ele_switch=$gmx_rcut
+gmx_rcut_vdw=$gmx_rcut
+gmx_rcut_vdw_switch=$gmx_rcut
 
 if echo "$gmx_ele_method" | grep pme &> /dev/null ; then
     echo "# run with ele method pme"
