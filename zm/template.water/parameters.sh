@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# cal volumn
+# simulation result from spme.tune
+nvt_num_density=32.90917546138462644658
+
 gmx_init_conf=./tools/confs/conf.013k.gro
 gmx_sys_tempalte_dir=./tools/system
 gmx_dt=0.001
