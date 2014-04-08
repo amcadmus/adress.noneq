@@ -18,8 +18,8 @@ function do_rdf () {
 
 if test -d npt; then
     do_rdf npt
-else if test -d nvt; then
-    do_rdf nvt
 fi
+if test -d nvt; then
+    do_rdf nvt
 fi
 
