@@ -7,10 +7,16 @@ if echo "$gmx_ele_method" | grep pme &> /dev/null ; then
     echo "# run with ele method pme"
     gmx_ele_method_gromacs=pme
     gmx_ele_method_ind=1
-else
+else if echo "$gmx_ele_method" | grep zm &> /dev/null ; then
     echo "# run with ele method zm"
     gmx_ele_method_gromacs=user
     gmx_ele_method_ind=0
+else if echo "$gmx_ele_method" | grep rf &> /dev/null ; then
+    echo "# run with ele method rf"
+    gmx_ele_method_gromacs=reaction-field
+    gmx_ele_method_ind=2
+fi
+fi
 fi
 
 echo "# copy files"
@@ -30,6 +36,10 @@ if test $gmx_ele_method_ind -eq 0; then # zm
     gmx_rcut_ele_switch=$gmx_rcut_ele
 fi
 if test $gmx_ele_method_ind -eq 1; then # pme
+    gmx_rcut_ele=$gmx_rlist
+    gmx_rcut_ele_switch=$gmx_rcut_ele
+fi
+if test $gmx_ele_method_ind -eq 2; then # rf
     gmx_rcut_ele=$gmx_rlist
     gmx_rcut_ele_switch=$gmx_rcut_ele
 fi
@@ -56,6 +66,7 @@ sed -e "/^rvdw /s/=.*/= $gmx_rcut_vdw/g"|\
 sed -e "/^tau_t /s/=.*/= $gmx_taut/g"|\
 sed -e "/^tau_p /s/=.*/= $gmx_taup/g"|\
 sed -e "/^Pcoupl /s/=.*/= no/g"|\
+sed -e "/^epsilon_rf /s/=.*/= $gmx_e_rf/g"|\
 sed -e "/^gen_vel /s/=.*/= no/g"|\
 sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmp.mdp
 mv -f tmp.mdp grompp.mdp
