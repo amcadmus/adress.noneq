@@ -90,7 +90,7 @@ tf_min=`echo "$gmx_ex_region_r - $tf_extension" | bc -l`
 tf_max=`echo "$gmx_ex_region_r + $gmx_hy_region_r + $tf_extension" | bc -l`
 tf_spline_start=`echo "$gmx_ex_region_r - $tf_spline_extension" | bc -l`
 tf_spline_end=`  echo "$gmx_ex_region_r + $gmx_hy_region_r + $tf_spline_extension" | bc -l`
-half_boxx_1=`echo "$half_boxx + 1." | bc -l`
+half_boxx_1=`echo "$half_boxx * 1.733 + 1." | bc -l`
 prefactor_l2=`grep -n prefactor settings.xml | tail -n 1 | cut -f 1 -d ":"`
 sed -e "s/<min>.*<\/min>/<min>$tf_min<\/min>/g" settings.xml |\
 sed -e "s/<max>.*<\/max>/<max>$tf_max<\/max>/g" |\
