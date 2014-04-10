@@ -5,3 +5,6 @@ source $gmx_dir/bin/GMXRC
 
 zm_gen_dir=$WORK/study/adress.noneq/zm/tools/gen.pot
 
+gmx_grompp_command="grompp"
+gmx_mdrun_command="aprun -B mdrun"
+
