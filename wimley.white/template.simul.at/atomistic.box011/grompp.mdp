@@ -116,8 +116,6 @@ compressibility          = 4.5e-5
 ref_p                    = 1
 ; Scaling of reference coordinates, No, All or COM
 refcoord_scaling         = No
-; Random seed for Andersen thermostat
-andersen_seed            = 815131
 
 freezegrps		 = FIX
 freezedim		 = Y Y Y
@@ -128,7 +126,7 @@ gen-temp                 = 300
 gen-seed                 = 173529
 
 ; OPTIONS FOR BONDS    
-constraints              = all-bonds
+constraints              = h-bonds
 ; Type of constraint algorithm
 constraint_algorithm     = lincs
 ; Do not constrain the start configuration
