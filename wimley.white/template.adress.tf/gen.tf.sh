@@ -108,8 +108,11 @@ echo "# prepare topol.top"
 nSOL=`./tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 rm -fr topol.top 
 cp tf/topol.top .
-sed "s/^SOL.*/SOL $nSOL/g" topol.top > tmp.top
-mv -f tmp.top topol.top
+nline_top=`wc topol.top | awk '{print $1}'`
+nline_4_top=`echo $nline_top -4 | bc`
+head -n $nline_4_top topol.top > new.top
+tail -n 4 topol.top | sed "s/^SOL.*/SOL $nSOL/g" >> new.top
+mv -f new.top topol.top
 
 # prepare initial guess
 echo "# prepare initial guess"

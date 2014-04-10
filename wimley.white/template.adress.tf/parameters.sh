@@ -2,10 +2,10 @@
 
 input_conf=confs/conf.011.gro
 
-gmx_dt=0.002
-gmx_nsteps=50000
-gmx_nstenergy=50
-gmx_nstxtcout=50
+gmx_dt=0.001
+gmx_nsteps=100000
+gmx_nstenergy=100
+gmx_nstxtcout=100
 gmx_tau_t=0.1
 gmx_epsilon_rf=60
 gmx_ex_region_r=1.5
@@ -20,8 +20,8 @@ tf_iterations_max=20
 tf_equi_time_discard=20
 tf_init_guess_CMW=./tabletf_CMW.xvg
 tf_SOL_prefactor=0.04
-tf_K_value=500
-tf_CL_value=500
+tf_K_value=100
+tf_CL_value=100
 
 SOL_poten_eps=0.6
 SOL_poten_sigma=0.31
