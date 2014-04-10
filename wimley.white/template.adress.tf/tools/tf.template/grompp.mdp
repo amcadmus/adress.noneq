@@ -98,7 +98,7 @@ constraints              = h-bonds
 
 ; AdResS parameters
 adress = yes
-adress_type              = xsplit
+adress_type              = sphere
 adress_const_wf          = 1
 adress_ex_width          = 0.5
 adress_hy_width          = 2.75

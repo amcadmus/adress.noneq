@@ -70,6 +70,7 @@ rm -fr grompp.mdp
 cp tf/grompp.mdp .
 sed -e "/^adress_ex_width/s/=.*/= $gmx_ex_region_r/g" grompp.mdp |\
 sed -e "/^adress_hy_width/s/=.*/= $gmx_hy_region_r/g" |\
+sed -e "/^adress_type/s/=.*/= sphere/g" |\
 sed -e "/^adress /s/=.*/= yes/g" |\
 sed -e "/^dt/s/=.*/= $gmx_dt/g" |\
 sed -e "/^tau_t/s/=.*/= $gmx_tau_t/g" |\
