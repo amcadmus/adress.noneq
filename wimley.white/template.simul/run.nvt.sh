@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -f done
+
 source env.sh
 source parameters.sh
 
@@ -20,17 +22,17 @@ fi
 fi
 
 echo "# copy files"
-if test -d nvt; then
-    mv -f nvt nvt.`date +%s`
+if test -d gromacs.traj; then
+    mv -f gromacs.traj gromacs.traj.`date +%s`
 fi
-cp -a $gmx_sys_tempalte_dir ./nvt
+cp -a $gmx_sys_tempalte_dir ./gromacs.traj
 
 echo "# copy conf"
-rm -f nvt/conf.gro
-cp $gmx_init_conf ./nvt/conf.gro
+rm -f gromacs.traj/conf.gro
+cp $gmx_init_conf ./gromacs.traj/conf.gro
 
 echo "# revise grompp"
-cd nvt
+cd gromacs.traj
 gmx_nsteps=`echo "($gmx_time + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstenergy=`echo "($gmx_energy_feq + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstxtcout=`echo "($gmx_conf_feq   + 0.5 * $gmx_dt) / $gmx_dt" | bc`
@@ -47,10 +49,13 @@ if test $gmx_ele_method_ind -eq 2; then # rf
     gmx_rcut_ele=$gmx_rlist
     gmx_rcut_ele_switch=$gmx_rcut_ele
 fi
+gmx_nstcalce=`echo "$gmx_nstenergy" | bc`
+gmx_nstcomm=`echo "$gmx_nstenergy" | bc`
 sed -e "/^dt /s/=.*/= $gmx_dt/g" grompp.mdp |\
 sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g" |\
 sed -e "/^ld-seed /s/=.*/= -1/g" |\
-sed -e "/^nstcalenergy /s/=.*/= $gmx_nstenergy/g"|\
+sed -e "/^nstcalcenergy /s/=.*/= $gmx_nstcalce/g"|\
+sed -e "/^nstcomm /s/=.*/= $gmx_nstcomm/g"|\
 sed -e "/^nstenergy /s/=.*/= $gmx_nstenergy/g"|\
 sed -e "/^nstxout /s/=.*/= 0/g"|\
 sed -e "/^nstvout /s/=.*/= 0/g"|\
@@ -102,11 +107,11 @@ cd ..
 
 if test -f $gmx_init_index; then
     echo "# copy index"
-    cp $gmx_init_index ./nvt/index.ndx
+    cp $gmx_init_index ./gromacs.traj/index.ndx
 fi
 
 echo "# revise top"
-cd nvt 
+cd gromacs.traj 
 echo "# prepare topol.top"
 nSOL=`../tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 nline_top=`wc topol.top | awk '{print $1}'`
@@ -116,14 +121,14 @@ tail -n 4 topol.top | sed "s/^SOL.*/SOL $nSOL/g" >> new.top
 mv -f new.top topol.top
 cd ..
 
-# cd nvt
+# cd gromacs.traj
 # nmol=`../tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 # sed -e "s/SOL.*/SOL $nmol/g" topol.top > tmp.top
 # mv -f tmp.top topol.top
 # cd ..
 
 echo "# rescale conf"
-cd nvt
+cd gromacs.traj
 # volumn=`echo "$nmol/$nvt_num_density" | bc -l`
 # t_boxsize=`echo "e ( l($volumn) * (1./3.) )" | bc -l`
 # r_boxsize=`tail -n 1 conf.gro | awk '{print $1}'`
@@ -134,7 +139,7 @@ cd ..
 
 if test $gmx_ele_method_ind -eq 0; then
     echo "# gen pot"
-    cd nvt
+    cd gromacs.traj
     zm_xup=`echo $gmx_rlist + $gmx_tab_ext + .1 | bc -l`
     make -C $zm_gen_dir &> /dev/null
     $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
@@ -142,15 +147,24 @@ if test $gmx_ele_method_ind -eq 0; then
 fi
 
 echo "# call grompp"
-cd nvt
+cd gromacs.traj
 if test -f index.ndx; then
     $gmx_grompp_command -n index.ndx > /dev/null
 else
     $gmx_grompp_command
 fi
+if [ $? -ne 0 ]; then
+    echo "# failed at $gmx_grompp_command, return"
+    exit
+fi
+
 if test $gmx_ele_method_ind -eq 1; then
     echo "# tune pme parameter"
-    g_pme_error -tune yes -self 1e-4 -seed $gmx_seed -nice 0
+    $gmx_tune_command -tune yes -self 1e-4 -seed $gmx_seed -nice 0
+    if [ $? -ne 0 ]; then
+	echo "# failed at $gmx_tune_command, return"
+	exit
+    fi    
     mv -f tuned.tpr topol.tpr
 fi
 cd ..
@@ -158,8 +172,14 @@ cd ..
 echo "# call mdrun"
 echo "## run with `which mdrun`"
 echo "## run with $gmx_mdrun_command"
-cd nvt
+cd gromacs.traj
 $gmx_mdrun_command
+if [ $? -ne 0 ]; then
+    echo "# failed at $gmx_mdrun_command, return"
+    exit
+fi
 cd ..
+
+touch done
 
 
