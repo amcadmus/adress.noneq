@@ -5,6 +5,12 @@ rm -f done
 source env.sh
 source parameters.sh
 
+if echo "$gmx_npt" | grep yes &> /dev/null ; then
+    job_dir=gromacs.traj.npt
+else
+    job_dir=gromacs.traj.nvt
+fi
+
 if echo "$gmx_ele_method" | grep pme &> /dev/null ; then
     echo "# run with ele method pme"
     gmx_ele_method_gromacs=pme
@@ -22,17 +28,17 @@ fi
 fi
 
 echo "# copy files"
-if test -d gromacs.traj; then
-    mv -f gromacs.traj gromacs.traj.`date +%s`
+if test -d $job_dir; then
+    mv -f $job_dir $job_dir.`date +%s`
 fi
-cp -a $gmx_sys_tempalte_dir ./gromacs.traj
+cp -a $gmx_sys_tempalte_dir ./$job_dir
 
 echo "# copy conf"
-rm -f gromacs.traj/conf.gro
-cp $gmx_init_conf ./gromacs.traj/conf.gro
+rm -f $job_dir/conf.gro
+cp $gmx_init_conf ./$job_dir/conf.gro
 
 echo "# revise grompp"
-cd gromacs.traj
+cd $job_dir
 gmx_nsteps=`echo "($gmx_time + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstenergy=`echo "($gmx_energy_feq + 0.5 * $gmx_dt) / $gmx_dt" | bc`
 gmx_nstxtcout=`echo "($gmx_conf_feq   + 0.5 * $gmx_dt) / $gmx_dt" | bc`
@@ -103,15 +109,21 @@ if grep "^adress " grompp.mdp | grep yes &> /dev/null; then
     sed -e "/^adress_reference_coords /s/=.*/= $hboxx $hboxy $hboxz/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
 fi
+if echo "$gmx_npt" | grep yes &> /dev/null ; then
+    cat grompp.mdp |\
+    sed -e "/^Pcoupl /s/=.*/= parrinello-rahman/g" |\
+    sed -e "/^DispCorr /s/=.*/= EnerPres/g" > tmp.mdp
+    mv -f tmp.mdp grompp.mdp
+fi
 cd ..
 
 if test -f $gmx_init_index; then
     echo "# copy index"
-    cp $gmx_init_index ./gromacs.traj/index.ndx
+    cp $gmx_init_index ./$job_dir/index.ndx
 fi
 
 echo "# revise top"
-cd gromacs.traj 
+cd $job_dir 
 echo "# prepare topol.top"
 nSOL=`../tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 nline_top=`wc topol.top | awk '{print $1}'`
@@ -121,14 +133,14 @@ tail -n 4 topol.top | sed "s/^SOL.*/SOL $nSOL/g" >> new.top
 mv -f new.top topol.top
 cd ..
 
-# cd gromacs.traj
+# cd $job_dir
 # nmol=`../tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 # sed -e "s/SOL.*/SOL $nmol/g" topol.top > tmp.top
 # mv -f tmp.top topol.top
 # cd ..
 
 echo "# rescale conf"
-cd gromacs.traj
+cd $job_dir
 # volumn=`echo "$nmol/$nvt_num_density" | bc -l`
 # t_boxsize=`echo "e ( l($volumn) * (1./3.) )" | bc -l`
 # r_boxsize=`tail -n 1 conf.gro | awk '{print $1}'`
@@ -139,7 +151,7 @@ cd ..
 
 if test $gmx_ele_method_ind -eq 0; then
     echo "# gen pot"
-    cd gromacs.traj
+    cd $job_dir
     zm_xup=`echo $gmx_rlist + $gmx_tab_ext + .1 | bc -l`
     make -C $zm_gen_dir &> /dev/null
     $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
@@ -147,7 +159,7 @@ if test $gmx_ele_method_ind -eq 0; then
 fi
 
 echo "# call grompp"
-cd gromacs.traj
+cd $job_dir
 if test -f index.ndx; then
     $gmx_grompp_command -n index.ndx > /dev/null
 else
@@ -172,7 +184,7 @@ cd ..
 echo "# call mdrun"
 echo "## run with `which mdrun`"
 echo "## run with $gmx_mdrun_command"
-cd gromacs.traj
+cd $job_dir
 $gmx_mdrun_command
 if [ $? -ne 0 ]; then
     echo "# failed at $gmx_mdrun_command, return"
