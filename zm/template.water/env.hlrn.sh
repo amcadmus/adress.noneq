@@ -1,7 +1,11 @@
-nnodes=6
+# nnodes=6
 
 gmx_dir=$WORK/local/gromacs/4.6.5
 source $gmx_dir/bin/GMXRC
 
 zm_gen_dir=$WORK/study/adress.noneq/zm/tools/gen.pot
+
+gmx_grompp_command="grompp"
+gmx_tune_command="aprun -B g_pme_error"
+gmx_mdrun_command="aprun -B mdrun"
 

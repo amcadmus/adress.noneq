@@ -27,5 +27,3 @@ gmx_e_rf=60.0
 zm_l=2
 zm_alpha=0.1
 
-gmx_grompp_command="grompp"
-gmx_mdrun_command="mdrun -nt $nnodes"
