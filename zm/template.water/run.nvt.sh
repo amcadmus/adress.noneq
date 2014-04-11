@@ -109,7 +109,7 @@ cd nvt
 $gmx_grompp_command > /dev/null
 if test $gmx_ele_method_ind -eq 1; then
     echo "# tune pme parameter"
-    g_pme_error -tune yes -self 1e-4 -seed $gmx_seed -nice 0
+    $gmx_tune_command -tune yes -self 1e-4 -seed $gmx_seed -nice 0
     mv -f tuned.tpr topol.tpr
 fi
 cd ..
