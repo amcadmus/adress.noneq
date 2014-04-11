@@ -30,19 +30,20 @@ half_boxz=`echo "$boxz/2.0" | bc -l`
 
 # prepare potentials
 echo "# prepare potentials"
+gmx_table_up=`echo "$gmx_hy_region_r * 2 + 1.0" | bc -l`
 cd ./tools/gen.pot
-./gen.wca --sigma $SOL_poten_sigma --epsilon $SOL_poten_eps -o table_CMW_CMW.xvg
-./gen.wca --sigma $K_poten_sigma --epsilon $K_poten_eps -o table_CMK_CMK.xvg
-./gen.wca --sigma $CL_poten_sigma --epsilon $CL_poten_eps -o table_CML_CML.xvg
+./gen.wca --sigma $SOL_poten_sigma --epsilon $SOL_poten_eps -o table_CMW_CMW.xvg --xup $gmx_table_up
+./gen.wca --sigma $K_poten_sigma --epsilon $K_poten_eps -o table_CMK_CMK.xvg --xup $gmx_table_up
+./gen.wca --sigma $CL_poten_sigma --epsilon $CL_poten_eps -o table_CML_CML.xvg --xup $gmx_table_up
 tmp_sigma=`echo "0.5 * ($SOL_poten_sigma + $K_poten_sigma)" | bc -l`
 tmp_eps=`echo "sqrt($SOL_poten_eps * $K_poten_eps)" | bc -l`
-./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CMK.xvg
+./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CMK.xvg --xup $gmx_table_up
 tmp_sigma=`echo "0.5 * ($SOL_poten_sigma + $CL_poten_sigma)" | bc -l`
 tmp_eps=`echo "sqrt($SOL_poten_eps * $CL_poten_eps)" | bc -l`
-./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CML.xvg
+./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMW_CML.xvg --xup $gmx_table_up
 tmp_sigma=`echo "0.5 * ($K_poten_sigma + $CL_poten_sigma)" | bc -l`
 tmp_eps=`echo "sqrt($K_poten_eps * $CL_poten_eps)" | bc -l`
-./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMK_CML.xvg
+./gen.wca --sigma $tmp_sigma --epsilon $tmp_eps -o table_CMK_CML.xvg --xup $gmx_table_up
 
 ./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_K_value --output tabletf_CMK.xvg
 ./gen.simp.tf --xex $gmx_ex_region_r --xhy $gmx_hy_region_r --xup $boxx --pot0 $tf_CL_value --output tabletf_CML.xvg
