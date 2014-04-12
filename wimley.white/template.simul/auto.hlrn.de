@@ -24,7 +24,7 @@ echo "aprun -B mdrun -cpi state.cpt"		>> submit.sh
 echo "cd .."					>> submit.sh
 echo "else"					>> submit.sh
 echo "echo new start"				>> submit.sh
-echo "./run.nvt.sh"				>> submit.sh
+echo "./run.sh"					>> submit.sh
 echo "fi"					>> submit.sh
 
 msub submit.sh &> jobid
