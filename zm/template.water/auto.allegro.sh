@@ -20,7 +20,7 @@ echo "cd $cwd"					>> submit.sh
 echo "hostname"					>> submit.sh
 echo "date"					>> submit.sh
 echo "pwd"					>> submit.sh
-echo "./assign.param.sh"			>> submit.sh
+#echo "./assign.param.sh"			>> submit.sh
 echo "./run.npt.sh"				>> submit.sh
 
 qsub submit.sh &> jobid

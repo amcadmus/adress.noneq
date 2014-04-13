@@ -7,6 +7,11 @@ if echo "$gmx_ele_method" | grep pme &> /dev/null ; then
     echo "# run with ele method pme"
     gmx_ele_method_gromacs=pme
     gmx_ele_method_ind=1
+    if echo "$gmx_ele_method" | grep pme-switch &> /dev/null ; then
+	echo "# run with ele method pme-switch"
+	gmx_ele_method_gromacs=pme-switch
+	gmx_ele_method_ind=11
+    fi
 else if echo "$gmx_ele_method" | grep zm &> /dev/null ; then
     echo "# run with ele method zm"
     gmx_ele_method_gromacs=user
@@ -96,7 +101,7 @@ fi
 echo "# call grompp"
 cd npt
 $gmx_grompp_command > /dev/null
-if test $gmx_ele_method_ind -eq 1; then
+if [ $gmx_ele_method_ind -eq 1 ] || [ $gmx_ele_method_ind -eq 11 ]; then
     echo "# tune pme parameter"
     $gmx_tune_command -tune yes -self 1e-4 -seed $gmx_seed -nice 0
     mv -f tuned.tpr topol.tpr

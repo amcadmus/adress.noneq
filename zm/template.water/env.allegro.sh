@@ -1,4 +1,4 @@
-nnodes=6
+nnodes=64
 
 gmx_dir=$HOME/local/gromacs/4.6.5/
 source $gmx_dir/bin/GMXRC
