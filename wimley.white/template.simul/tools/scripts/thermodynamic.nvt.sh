@@ -6,7 +6,7 @@ source parameters.sh
 items="Temperature Pressure"
 idx_list=""
 
-cd nvt
+cd gromacs.traj.nvt
 echo "" | g_energy &> tmp.out
 for ii in `echo $items`;
 do
@@ -23,7 +23,7 @@ mv -f tmp.out energy.xvg
 cd ..
 
 #grep Temperature tmp.out | sed "s/.* \([0-9]\+  Temperature\) .*/\1/g"
-# cd nvt
+# cd gromacs.traj.nvt
 # echo 8 10 11 12 13 14 15 | g_energy -b $gmx_equi_skip &> energy.out
 # grep -v \# energy.xvg | grep -v  '@' > tmp.out
 # mv -f tmp.out energy.xvg

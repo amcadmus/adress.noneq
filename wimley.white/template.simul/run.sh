@@ -86,6 +86,7 @@ sed -e "/^tau_p /s/=.*/= $gmx_taup/g"|\
 sed -e "/^Pcoupl /s/=.*/= no/g"|\
 sed -e "/^epsilon_rf /s/=.*/= $gmx_e_rf/g"|\
 sed -e "/^gen_vel /s/=.*/= no/g"|\
+sed -e "/^DispCorr /s/=.*/= EnerPres/g"|\
 sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmp.mdp
 mv -f tmp.mdp grompp.mdp
 
@@ -98,6 +99,7 @@ if grep "^adress " grompp.mdp | grep yes &> /dev/null; then
     hboxy=`echo "$boxy * 0.5" | bc -l`
     hboxz=`echo "$boxz * 0.5" | bc -l`
     cat grompp.mdp |\
+    sed -e "/^DispCorr /s/=.*/= no/g"|\
     sed -e "/^adress_type /s/=.*/= $adress_type/g" |\
     sed -e "/^adress_interface_correction /s/=.*/= thermoforce/g" |\
     sed -e "/^adress_site /s/=.*/= com/g" |\
