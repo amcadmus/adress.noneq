@@ -22,7 +22,7 @@ gmx_rcut_vdw_switch=1.15
 gmx_tab_ext=0.5
 gmx_taut=0.1
 gmx_taup=0.5
-gmx_e_rf=60.0
+gmx_e_rf=80.0
 
 zm_l=2
 zm_alpha=0.1
