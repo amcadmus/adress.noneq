@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # simulation result from spme.tune
-nvt_num_density=32.90917546138462644658
+# nvt_num_density=32.90917546138462644658
+nvt_num_density=32.89612818883934967912
 
 gmx_init_conf=./tools/confs/conf.013k.gro
 gmx_sys_tempalte_dir=./tools/system
