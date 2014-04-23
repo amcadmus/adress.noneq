@@ -6,7 +6,7 @@ source parameters.sh
 items="Temperature Pressure Box-X Box-Y Box-Z Volume Density"
 idx_list=""
 
-cd npt
+cd gromacs.traj.npt
 echo "" | g_energy &> tmp.out
 for ii in `echo $items`;
 do
