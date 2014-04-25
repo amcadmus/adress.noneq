@@ -127,7 +127,6 @@ fi
 echo "# revise top"
 cd $job_dir 
 echo "# prepare topol.top"
-make -C ../tools/gen.conf/ &> /dev/null
 nSOL=`../tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 nline_top=`wc topol.top | awk '{print $1}'`
 nline_4_top=`echo $nline_top -4 | bc`
