@@ -47,6 +47,7 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
 	 iNeighborCellIndex < neighborCellIndex.size();
 	 ++iNeighborCellIndex){
       unsigned jCellIndex = neighborCellIndex[iNeighborCellIndex];
+      if (jCellIndex < iCellIndex) continue;
       for (unsigned ii = 0; ii < clist.getList()[iCellIndex].size(); ++ii){
 	VectorType icoord;
 	icoord.x = coord[clist.getList()[iCellIndex][ii]][0];
@@ -59,6 +60,7 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
 	dipoleMi = sqrt(dipoleMi);	
 	bool sameCell (iCellIndex == jCellIndex);
 	for (unsigned jj = 0; jj < clist.getList()[jCellIndex].size(); ++jj){
+	  if (sameCell && jj < ii) continue;
 	  // if (sameCell && ii == jj) continue;	    
 	  VectorType jcoord;
 	  jcoord.x = coord[clist.getList()[jCellIndex][jj]][0];
@@ -94,7 +96,9 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
 	    // }
 	    // hist[index] += 1.;
 	    for (unsigned ll = index+1; ll < hist.size(); ++ll){
-	      tmphist[ll] += (dipoleCorr * myNatomi);
+	      double scale = 2.;
+	      if (sameCell && ii == jj) scale = 1.;
+	      tmphist[ll] += scale * (dipoleCorr * myNatomi);
 	    }
 	  }
 	}
