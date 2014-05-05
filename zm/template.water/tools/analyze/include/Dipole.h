@@ -38,6 +38,7 @@ public:
   void calculate	 ();
   double getAvg		 (const unsigned & ii) const;
   double getAvgError	 (const unsigned & ii) const;
+  unsigned getN		 () const {return hist.size();}
 }
     ;
 

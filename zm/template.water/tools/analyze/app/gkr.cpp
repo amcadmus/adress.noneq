@@ -24,7 +24,7 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-  std::string ifile;
+  std::string ifile, ofile;
   double qh, qo;
   double mh, mo;
   float begin, end;
@@ -45,7 +45,8 @@ int main(int argc, char * argv[])
       ("rup,u",   po::value<double > (&rup)->default_value(3.f), "max r to make rdf")
       ("refh",  po::value<double > (&refh)->default_value(0.01f), "bin size")
       ("cell-size,c", po::value<double > (&cellSize)->default_value(1.f), "cell list radius")
-      ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
+      ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file")
+      ("output,o",  po::value<std::string > (&ofile)->default_value ("gkr.out"), "the output file");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -141,6 +142,17 @@ int main(int argc, char * argv[])
 
   gkr.calculate ();
 
+  FILE *fout = fopen (ofile.c_str(), "w");
+  if (fout == NULL){
+    std::cerr << "cannot open file " << ofile << std::endl;
+    exit (1);
+  }
+
+  for (unsigned i = 1; i < gkr.getN(); ++i){
+    fprintf (fout, "%f %f %e\n", (i) * refh, gkr.getAvg(i), gkr.getAvgError(i));
+  }
+
+  fclose (fout);
 
   return 0;
 }
