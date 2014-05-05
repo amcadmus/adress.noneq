@@ -113,11 +113,11 @@ int main(int argc, char * argv[])
 
   printf ("# num data used: %d with %d blocks, %d data in each block. 60 percent confidence level\n",
 	  ba.getNumDataUsed(), ba.getNumDataUsed() / nDataBlock, nDataBlock);
-  printf ("# avg_M2 \t avg_M2_error\n");
-  printf ("%e \t %e \n", ba.getAvg(), ba.getAvgError());
-  printf ("# eps \t eps_error\n");
+  printf ("# eps \t\t eps_error\n");
   printf ("%e \t %e \n",
 	  1 + factor * ba.getAvg(), factor * ba.getAvgError());
+  printf ("# avg_M2 \t avg_M2_error\n");
+  printf ("%e \t %e \n", ba.getAvg(), ba.getAvgError());
   printf ("# avg_M\n");
   printf ("%e \t %e \t %e\n",
 	  bamx.getAvg(),
