@@ -57,6 +57,9 @@ int main(int argc, char * argv[])
   int realcountread = 0;
 
   XtcLoader tjl (ifile.c_str());
+  double factor = 1.0 / (3. * tjl.getBox()[0] * tjl.getBox()[1] * tjl.getBox()[2] * kB * TT * e0) * ee * ee;
+  printf ("# factor is %e\n", factor);
+
   BlockAverage_acc ba (nDataBlock);
   BlockAverage_acc bamx (nDataBlock);
   BlockAverage_acc bamy (nDataBlock);
@@ -107,7 +110,6 @@ int main(int argc, char * argv[])
   bamy.calculate ();
   bamz.calculate ();
   ba.calculate ();
-  double factor = 1.0 / (3. * tjl.getBox()[0] * tjl.getBox()[1] * tjl.getBox()[2] * kB * TT * e0) * ee * ee;
 
   printf ("# num data used: %d with %d blocks, %d data in each block. 60 percent confidence level\n",
 	  ba.getNumDataUsed(), ba.getNumDataUsed() / nDataBlock, nDataBlock);
