@@ -27,6 +27,10 @@ int main(int argc, char * argv[])
   float begin, end;
   float time_prec = .01;
   unsigned every, nDataBlock;
+  double TT;
+  double kB = 1.3806488e-23;
+  double e0 = 8.854187817e-21;
+  double ee = 1.602176565e-19;
   
   po::options_description desc ("Program of calculating the dielectric constant.\nAllow options");
   desc.add_options()
@@ -35,6 +39,7 @@ int main(int argc, char * argv[])
       ("begin,b", po::value<float > (&begin)->default_value(0.f), "start time")
       ("end,e",   po::value<float > (&end  )->default_value(0.f), "end   time")
       ("every",   po::value<unsigned > (&every)->default_value(1), "every frame")
+      ("temperature", po::value<double > (&TT)->default_value(300.), "Temperature")
       ("num-data-block",   po::value<unsigned > (&nDataBlock)->default_value(1), "number of data in each block")
       ("input,f",   po::value<std::string > (&ifile)->default_value ("traj.xtc"), "the input .xtc file");
 
@@ -102,11 +107,15 @@ int main(int argc, char * argv[])
   bamy.calculate ();
   bamz.calculate ();
   ba.calculate ();
+  double factor = 1.0 / (3. * tjl.getBox()[0] * tjl.getBox()[1] * tjl.getBox()[2] * kB * TT * e0) * ee * ee;
 
   printf ("# num data used: %d with %d blocks, %d data in each block. 60 percent confidence level\n",
 	  ba.getNumDataUsed(), ba.getNumDataUsed() / nDataBlock, nDataBlock);
   printf ("# avg_M2 \t avg_M2_error\n");
   printf ("%e \t %e \n", ba.getAvg(), ba.getAvgError());
+  printf ("# eps \t eps_error\n");
+  printf ("%e \t %e \n",
+	  1 + factor * ba.getAvg(), factor * ba.getAvgError());
   printf ("# avg_M\n");
   printf ("%e \t %e \t %e\n",
 	  bamx.getAvg(),
