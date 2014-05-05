@@ -107,12 +107,12 @@ int main(int argc, char * argv[])
 	  ba.getNumDataUsed(), ba.getNumDataUsed() / nDataBlock, nDataBlock);
   printf ("# avg_M2 \t avg_M2_error\n");
   printf ("%e \t %e \n", ba.getAvg(), ba.getAvgError());
-  printf ("# avg_M");
+  printf ("# avg_M\n");
   printf ("%e \t %e \t %e\n",
 	  bamx.getAvg(),
 	  bamy.getAvg(),
 	  bamz.getAvg());
-  printf ("# avg_M_error");
+  printf ("# avg_M_error\n");
   printf ("%e \t %e \t %e\n",
 	  bamx.getAvgError(),
 	  bamy.getAvgError(),
