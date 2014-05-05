@@ -36,6 +36,7 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
     myNatom += clist.getList()[ii].size();
   }
   double myNatomi = 1./myNatom;
+  std::vector<double > tmphist (nbins, 0.0);
   
   for (unsigned iCellIndex = 0;
        iCellIndex < unsigned(nCell.x * nCell.y * nCell.z);
@@ -53,12 +54,12 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
 	icoord.z = coord[clist.getList()[iCellIndex][ii]][2];
 	double dipoleMi = 0;
 	for (int dd = 0; dd < 3; ++dd){
-	  dipoleMi += dipole[ii][dd] * dipole[ii][dd];
+	  dipoleMi += dipole[clist.getList()[iCellIndex][ii]][dd] * dipole[clist.getList()[iCellIndex][ii]][dd];
 	}
 	dipoleMi = sqrt(dipoleMi);	
 	bool sameCell (iCellIndex == jCellIndex);
 	for (unsigned jj = 0; jj < clist.getList()[jCellIndex].size(); ++jj){
-	  if (sameCell && ii == jj) continue;	    
+	  // if (sameCell && ii == jj) continue;	    
 	  VectorType jcoord;
 	  jcoord.x = coord[clist.getList()[jCellIndex][jj]][0];
 	  jcoord.y = coord[clist.getList()[jCellIndex][jj]][1];
@@ -81,8 +82,8 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
 	    double dipoleCorr = 0;
 	    double dipoleMj = 0;
 	    for (int dd = 0; dd < 3; ++dd){
-	      dipoleCorr += dipole[ii][dd] * dipole[jj][dd];
-	      dipoleMj += dipole[jj][dd] * dipole[jj][dd];
+	      dipoleCorr += dipole[clist.getList()[iCellIndex][ii]][dd] * dipole[clist.getList()[jCellIndex][jj]][dd];
+	      dipoleMj += dipole[clist.getList()[jCellIndex][jj]][dd] * dipole[clist.getList()[jCellIndex][jj]][dd];
 	    }
 	    dipoleMj = sqrt(dipoleMj);
 	    dipoleCorr /= (dipoleMi * dipoleMj);
@@ -93,12 +94,16 @@ deposit (const std::vector<std::vector<ValueType> > & coord,
 	    // }
 	    // hist[index] += 1.;
 	    for (unsigned ll = index+1; ll < hist.size(); ++ll){
-	      hist[ll].deposite (dipoleCorr * myNatomi);
+	      tmphist[ll] += (dipoleCorr * myNatomi);
 	    }
 	  }
 	}
       }
     }
+  }
+
+  for (unsigned ii = 0; ii < hist.size(); ++ii){
+    hist[ii].deposite (tmphist[ii]);
   }
 }
 

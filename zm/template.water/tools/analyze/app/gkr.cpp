@@ -99,7 +99,7 @@ int main(int argc, char * argv[])
     else {
       if (time < begin - time_prec) continue;
     }
-    if ((realcountread++) % 100 == 0){
+    if ((realcountread++) % 1 == 0){
       printf ("# load frame at time: %.1f ps\r", time);
       fflush (stdout);
     }
@@ -121,14 +121,15 @@ int main(int argc, char * argv[])
 	// com[dd] += frame[ii*3+2][dd] * mh * totmi;
       }
       for (int dd = 0; dd < 3; ++dd){
-	ValueType dx1, dx2;
-	dx1 = frame[ii*3+1][dd] - frame[ii*3+0][dd];
-	dx2 = frame[ii*3+2][dd] - frame[ii*3+0][dd];
-	if (dx1 > 0.5 * tjl.getBox()[dd]) {dx1 -= tjl.getBox()[dd]; printf ("hit\n");}
-	if (dx1 <-0.5 * tjl.getBox()[dd]) {dx1 += tjl.getBox()[dd]; printf ("hit\n");}
-	if (dx2 > 0.5 * tjl.getBox()[dd]) {dx2 -= tjl.getBox()[dd]; printf ("hit\n");}
-	if (dx2 <-0.5 * tjl.getBox()[dd]) {dx2 += tjl.getBox()[dd]; printf ("hit\n");}
-	com[dd] = mo * totmi * frame[ii*3+0][dd] + mh * totmi * (frame[ii*3+0][dd] + dx1) + mh * totmi * (frame[ii*3+0][dd] + dx2);
+	// ValueType dx1, dx2;
+	// dx1 = frame[ii*3+1][dd] - frame[ii*3+0][dd];
+	// dx2 = frame[ii*3+2][dd] - frame[ii*3+0][dd];
+	// if (dx1 > 0.5 * tjl.getBox()[dd]) {dx1 -= tjl.getBox()[dd]; printf ("hit\n");}
+	// if (dx1 <-0.5 * tjl.getBox()[dd]) {dx1 += tjl.getBox()[dd]; printf ("hit\n");}
+	// if (dx2 > 0.5 * tjl.getBox()[dd]) {dx2 -= tjl.getBox()[dd]; printf ("hit\n");}
+	// if (dx2 <-0.5 * tjl.getBox()[dd]) {dx2 += tjl.getBox()[dd]; printf ("hit\n");}
+	// com[dd] = mo * totmi * frame[ii*3+0][dd] + mh * totmi * (frame[ii*3+0][dd] + dx1) + mh * totmi * (frame[ii*3+0][dd] + dx2);
+	com[dd] = frame[ii*3+0][dd];
 	if      (com[dd] <  0               ) com[dd] += tjl.getBox()[dd];
 	else if (com[dd] >= tjl.getBox()[dd]) com[dd] -= tjl.getBox()[dd];
       }
@@ -139,6 +140,7 @@ int main(int argc, char * argv[])
     clist.rebuild (coms);
     gkr.deposit (coms, clist, dipoles, vbox);
   }
+  printf ("\n");
 
   gkr.calculate ();
 
