@@ -115,9 +115,21 @@ int main(int argc, char * argv[])
 	moment[dd] += frame[ii*3+0][dd] * qo;
 	moment[dd] += frame[ii*3+1][dd] * qh;
 	moment[dd] += frame[ii*3+2][dd] * qh;	
-	com[dd] += frame[ii*3+0][dd] * mo * totmi;
-	com[dd] += frame[ii*3+1][dd] * mh * totmi;
-	com[dd] += frame[ii*3+2][dd] * mh * totmi;
+	// com[dd] += frame[ii*3+0][dd] * mo * totmi;
+	// com[dd] += frame[ii*3+1][dd] * mh * totmi;
+	// com[dd] += frame[ii*3+2][dd] * mh * totmi;
+      }
+      for (int dd = 0; dd < 3; ++dd){
+	ValueType dx1, dx2;
+	dx1 = frame[ii*3+1][dd] - frame[ii*3+0][dd];
+	dx2 = frame[ii*3+2][dd] - frame[ii*3+0][dd];
+	if (dx1 > 0.5 * tjl.getBox()[dd]) {dx1 -= tjl.getBox()[dd]; printf ("hit\n");}
+	if (dx1 <-0.5 * tjl.getBox()[dd]) {dx1 += tjl.getBox()[dd]; printf ("hit\n");}
+	if (dx2 > 0.5 * tjl.getBox()[dd]) {dx2 -= tjl.getBox()[dd]; printf ("hit\n");}
+	if (dx2 <-0.5 * tjl.getBox()[dd]) {dx2 += tjl.getBox()[dd]; printf ("hit\n");}
+	com[dd] = mo * totmi * frame[ii*3+0][dd] + mh * totmi * (frame[ii*3+0][dd] + dx1) + mh * totmi * (frame[ii*3+0][dd] + dx2);
+	if      (com[dd] <  0               ) com[dd] += tjl.getBox()[dd];
+	else if (com[dd] >= tjl.getBox()[dd]) com[dd] -= tjl.getBox()[dd];
       }
       coms[ii] = com;
       dipoles[ii] = moment;
