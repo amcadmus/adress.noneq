@@ -1,13 +1,13 @@
 #tmp_sources =	mk_mem.cpp main.cpp norm_var.cpp rhs.cpp pub_func.cpp solution.cpp
 #tmp_sources :=	$(wildcard *.cpp)
-#MKL_INCLUDE=	/home/wang/intel/mkl/8.0.1/include
-#MKL_LINK= 	-L/home/wang/intel/mkl/8.0.1/lib/32 -lmkl_lapack -lmkl_ia32 -lguide -lpthread 
-# boost-include-path=	/people/thnfs/homes/wanghan/local/include/boost-1_36
-# boost-lib-path=		/people/thnfs/homes/wanghan/local/lib
-boost-lib-option=       -lboost_program_options
+#MKL_INCLUDE=    -I /opt//intel/mkl/include
+#MKL_LINK=       -L /opt/intel/mkl/lib/intel64  -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_sequential -lm
+#boost-include-path=	/people/thnfs/homes/wanghan/local/include/boost-1_36
+#boost-lib-path=		/people/thnfs/homes/wanghan/local/lib
+boost-lib-option=	-lboost_program_options
 link-options=           ~/local/lib/libxdrfile.a $(boost-lib-option)
 
-include_dirs = 	./include $(MKL_INCLUDE) $(boost-include-path)
+include_dirs = 	./include ~/local/include/ $(MKL_INCLUDE)
 
 sources_dir =		src
 application_dir=	app
