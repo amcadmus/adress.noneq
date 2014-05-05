@@ -29,6 +29,7 @@ public:
 public:
   const vector<double > & getBox () const {return box;}
   float getTime () const {return time;}
+  int getNAtom () const {return natoms;}
 public:
   void getFrame (vector<vector<double > > & frame);
 }
@@ -57,6 +58,7 @@ public:
 public:
   const vector<double > & getBox () const {return box;}
   float getTime () const {return time;}
+  int getNAtom () const {return natoms;}
 public:
   void getFrame (vector<vector<double > > & xx,
 		 vector<vector<double > > & vv,
