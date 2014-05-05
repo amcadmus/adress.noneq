@@ -78,10 +78,10 @@ int main(int argc, char * argv[])
   gkr.reinit (rup, refh, nDataBlock);
   
   std::vector<std::vector<ValueType > > coms;
-  coms.reserve (nmols);
+  coms.resize (nmols);
 
   std::vector<std::vector<ValueType > > dipoles;
-  dipoles.reserve (nmols);
+  dipoles.resize (nmols);
 
   while (true == tjl.load()){
     countread ++;
