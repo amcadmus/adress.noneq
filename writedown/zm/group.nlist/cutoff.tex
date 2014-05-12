@@ -1,0 +1,148 @@
+\documentclass[aps,pre,preprint]{revtex4-1}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\newcommand{\gromacs}[0]{\texttt{Gromacs}}
+\newcommand{\rlist}[0]{\texttt{rlist}}
+\newcommand{\rcoulomb}[0]{\texttt{rcoulomb}}
+
+\begin{document}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{fig/cutoff.eps}
+  \caption{The schematic plot of gromacs cut-off method. The two molecules
+  in the plot are considered to be neighbors.}
+  \label{fig:tmp1}
+\end{figure}
+
+For simplicity, in this instruction we only consider a system of water
+molecules. In \gromacs, there are two steps of finding a pair of interacting atoms:
+\begin{enumerate}
+\item Building a neighbor list
+\item Finding a pair of interacting atoms out of the neighbor list.
+\end{enumerate}
+The neighbor list may not be updated every timestep of MD
+simulation. When a neighbor list is built, it may be used for several
+following time-steps, so the computational cost of building neighbor
+list can be saved.  \gromacs{} builds the neighbor list by using the
+``group'' method.  The range of building
+neighbor list is called \rlist{}, see the Fig.~\ref{fig:tmp1}.
+The ``group'' method means that all pair of water
+molecules, whoes center-of-geometry (COG) distance is shorter than
+\rlist, will be recoreded by the neighbor list.
+% In fact, all pair of
+% atoms on the pair of molecules are built into the neighbor list.
+
+Whether the a pair of molecules in the neighbor list interacts
+depends on the cut-off of the interaction. We only consider the
+Coulomb interaction, the cut-off of which is denoted by \rcoulomb, see
+Fig~\ref{fig:tmp1}. \gromacs{} actually allows $\rcoulomb = \rlist$,
+then the molecules are interacting in a ``group'' fashion:
+when the neighbor list is built, all pairs of molecules in the neighbor list
+interact as long as the neighbor list is considered valid.
+However, when \rcoulomb{} is shorter than \rlist{}, then the interaction
+fashion is different.
+At this point I was confused: I thought that the interaction between two
+molecules in the neighbor list that is built in the ``group'' fashion is also
+cut-offed in a ``group'' fashion, however, in fact, the interaction is 
+cut-offed in an atomistic fashion. 
+
+I confirm the atomistic cut-off fashion by doing simulation in the
+following two cases in Tab.~\ref{tab:tmp1} and~\ref{tab:tmp2}. In both cases, $\rcoulomb
+= 1.2$~nm and $\rlist=1.5$~nm. The system contains only 2 water molecules.
+The van der Waals interaction is switched off.
+In the 1st case, the COG distance between the molecules is shorter than
+the \rcoulomb, while it is langer than \rcoulomb{} in the 2nd case.
+It is obvious that whether two atoms interact depends only on the atomistic
+distance, and is independent with the COG distance. This confirms the
+atomistic cut-off fashion.
+% \begin{enumerate}
+% \item $\rcoulomb = 1.2$~nm, $rlist=1.5$~nm. 
+% \item $\rcoulomb = 1.2$~nm, $rlist=1.5$~nm.
+% \end{enumerate}
+\begin{table}
+  \centering
+  \caption{The 1st testing cases of the cut-off scheme. First two columns: the atom pairs recoreded in the neighbor list.
+    They are from two neighboring molecules.
+    COG is the center of geometry. H1 means the first hydrogen and the H2 means the second hydrogen.
+    If the two atoms are interacting, we write ``y'' in the fourth column, otherwise, we write ``n''.
+  }
+  \label{tab:tmp1}
+  \begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}cccc}\hline\hline
+    1st atom  & 2nd atom & Distance [nm] & Interacting \\\hline
+    COG & COG &  1.1413 & --\\
+    O	&O	&1.0940	&y \\
+    O	&H1	&1.1890	&y \\
+    O	&H2	&1.0740	&y \\
+    H1	&H1 	&1.2840	&n \\
+    H1	&H2 	&1.1687	&y \\
+    H2	&H2	&1.0460	&y \\
+    \hline\hline
+  \end{tabular*}
+\end{table}
+
+\begin{table}
+  \centering
+  \caption{The 2nd testing cases of the cut-off scheme. }
+  \label{tab:tmp2}
+  \begin{tabular*}{0.8\textwidth}{@{\extracolsep{\fill}}cccc}\hline\hline
+    1st atom  & 2nd atom & Distance [nm] & Interacting \\\hline
+    COG & COG &  1.2413 & --\\
+    O	&O	&1.1940	&y \\
+    O	&H1	&1.2890	&n \\
+    O	&H2	&1.1740	&y \\
+    H1	&H1 	&1.3840	&n \\
+    H1	&H2 	&1.2687	&n \\
+    H2	&H2	&1.1460	&y \\
+    \hline\hline
+  \end{tabular*}
+\end{table}
+
+If we assume \rlist{} is sufficiently larger than \rcoulomb{}, then
+the ``group'' neighbor searching method can mimic the atomistic
+neighbor searching method, in total we use the \gromacs{}
+implementation of the ZM method is in an atomistic cut-off way.
+Here ``sufficiently'' means that
+\begin{align}
+  d_{COG} + r_{COG,H} < \frac12 (\rlist - \rcoulomb),
+\end{align}
+where $d_{COG}$ is the COG displacement with respect to the COG position
+when the neighbor list was built, and $r_{COG,H}$ is the distance between
+the COG and the hydrogen atom (notice that  $r_{COG,H} >  r_{COG,O}$).
+For TIP3P, $r_{COG,H}\approx 0.078$~nm, then
+in the case of $\rlist - \rcoulomb = 0.3$~nm, we have
+\begin{align}\label{eqn:tmp2}
+  d_{COG} < 0.072\ \textrm{nm}.
+\end{align}
+In the numerical tests, the maximum velocity found in our simulation
+of TIP3P water at 300~K was bounded by 8~nm/ps. The time step was
+0.001~ps, and the neighbor list was updated every 5 time-steps, so
+$d_{COG}$ is estimated to be bounded by $0.001 \times 5 \times 8 = 0.04$~nm,
+which satisfies Eq.~\eqref{eqn:tmp2}.
+
+Since all of our simulations had $\rlist - \rcoulomb = 0.3$~nm, the ZM
+interaction was indeed treated in an atomistic way.
+
+
+
+% when the \rlist{} is sufficiently larger than \rcoulomb{}
+% (the region between them is called the buffer region), the atoms are
+% interacting in an atomistic fashion.
+
+
+% however, when we use $\rcoulomb < \rlist$,
+% the region between \rcoulomb and \rlist is called the buffer region.
+% If the size of the buffer region is large enough, then
+
+
+
+
+
+\end{document}
