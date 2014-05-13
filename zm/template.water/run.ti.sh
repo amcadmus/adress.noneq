@@ -11,6 +11,7 @@ if test ! -d $target; then
     exit
 fi
 
+cwd=`pwd`
 source env.sh
 source parameters.sh
 
@@ -45,13 +46,13 @@ if [ $gmx_ele_method_ind -eq 1 ] || [ $gmx_ele_method_ind -eq 11 ]; then
     $gmx_tune_command -tune yes -self 1e-4 -seed $gmx_seed -nice 0
     mv -f tuned.tpr topol.tpr
 fi
-cd ..
+cd $cwd
 
 echo "# call mdrun"
 echo "## run with `which mdrun`"
 echo "## run with $gmx_mdrun_command"
 cd $target
 $gmx_mdrun_command
-cd ..
+cd $cwd
 
 
