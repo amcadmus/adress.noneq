@@ -28,3 +28,6 @@ gmx_e_rf=80.0
 zm_l=2
 zm_alpha=0.1
 
+gmx_lambda_start=0
+gmx_lambda_step=0.05
+gmx_lambda_end=1

@@ -135,10 +135,17 @@ morse                    = no
 
 ; Free energy control stuff
 free-energy              = no
-init-lambda              = 0
-delta-lambda             = 0
-sc-alpha                 = 0
-sc-sigma                 = 0.3
+init_lambda              = 0.00
+delta_lambda             = 0.00
+foreign_lambda           = 0.00 
+sc-alpha                 = 0.5
+sc-power                 = 1.0
+sc-sigma                 = 0.3 
+couple-moltype           = INS		; name of moleculetype to decouple
+couple-lambda0           = vdw		; only van der Waals interactions
+couple-lambda1           = none		; turn off everything, in this case only vdW
+couple-intramol          = no
+nstdhdl                  = 10
 
 ; Non-equilibrium MD stuff
 acc-grps                 = 
