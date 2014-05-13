@@ -9,8 +9,8 @@ function do_epsilon () {
     source parameters.sh
     echo "# find $folder, cal epsilon"
     cd $folder
-    echo "# command: $command -b $gmx_equi_skip"
-    $command -b $gmx_equi_skip | head -n 4 > epsilon.out
+    echo "# command: $command -b $gmx_equi_skip --num-data-block 32"
+    $command -b $gmx_equi_skip --num-data-block 32 | head -n 4 > epsilon.out
     cd ..
 }
 

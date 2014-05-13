@@ -126,6 +126,7 @@ do
     fi
     fi
     sed -e "/^free-energy /s/=.*/= yes/g" grompp.mdp |\
+    sed -e "/^constraints /s/=.*/= h-bonds/g" |\
     sed -e "/^init_lambda /s/=.*/= $i/g" |\
     sed -e "/^delta_lambda /s/=.*/= 0/g" |\
     sed -e "/^foreign_lambda /s/=.*/= $tmp_foreign/g" |\
