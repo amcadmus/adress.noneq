@@ -1,0 +1,30 @@
+#!/bin/bash
+
+if [ $# -ne 1 ] ; then
+    echo useage:
+    echo auto.hlrn.ti.de TARGET
+    exit
+fi
+target=$1
+
+cwd=`pwd`
+tmpname=$cwd/$target
+jobname=${tmpname##*/}
+
+echo "#!/bin/bash"				>  submit.$jobname.sh
+echo "#PBS -N $jobname"				>> submit.$jobname.sh
+echo "#PBS -j oe"				>> submit.$jobname.sh
+echo "#PBS -q mpp1q"				>> submit.$jobname.sh
+#echo "#PBS -q testq"				>> submit.$jobname.sh
+echo "#PBS -M han.wang@fu-berlin.de"		>> submit.$jobname.sh
+echo "#PBS -l walltime=02:00:00"		>> submit.$jobname.sh
+echo "#PBS -l nodes=2:ppn=24"			>> submit.$jobname.sh
+#echo "#PBS -l mem=1000mb"			>> submit.$jobname.sh
+
+echo "hostname"					>> submit.$jobname.sh
+echo "date"					>> submit.$jobname.sh
+echo "pwd"					>> submit.$jobname.sh
+echo "./run.ti.sh $target"			>> submit.$jobname.sh
+
+msub submit.$jobname.sh &> jobid
+
