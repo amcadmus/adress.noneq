@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source env.sh
 source parameters.sh
 
 targets=`ls | grep "^ti"`
@@ -41,7 +42,18 @@ do
     cd $cwd
 done
 
+if echo $gmx_ele_method | grep zm &> /dev/null; then    
+    energy_corr=`$zm_gen_dir/energy.corr -l $zm_l --alpha $zm_alpha --rc $gmx_rcut_ele `
+else
+    energy_corr=0.0
+fi
+
+# energy should be minus
+sum_value=`echo "- $sum_value + $energy_corr" | bc -l`
+sum_value=`printf %.2f $sum_value`
 sum_error=`echo "sqrt($sum_error)" | bc -l`
 sum_error=`printf %.2f $sum_error`
+
+echo energy_corr: $energy_corr
 echo total: $sum_value $sum_error
 
