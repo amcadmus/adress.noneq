@@ -36,9 +36,10 @@ public:
 		 const double & rc);
     double pot (const double & rr);
     double mpotp (const double & rr);
+public:
+    double energyCorr (const vector<double > & charges);
   }
       ;
-  
 }
 
 

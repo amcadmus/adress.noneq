@@ -235,6 +235,17 @@ mpotp (const double & rr) {
 }
 
 
+double ZeroMultipole::Potential::
+energyCorr (const vector<double > & charges)
+{
+  double sum = 0.;
+  for (unsigned ii = 0; ii < charges.size(); ++ii){
+    sum += charges[ii] * charges[ii];
+  }
+  
+  return - (coeff[0] * 0.5 + alpha / sqrt(M_PI)) * sum;
+}
+
 
 
 

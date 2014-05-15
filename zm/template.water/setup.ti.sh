@@ -105,11 +105,19 @@ editconf -scale $box_scale -f conf.gro -o out.gro &> /dev/null
 mv -f out.gro conf.gro
 cd ../..
 
+if test $gmx_ele_method_ind -eq 0; then
+    echo "# gen pot"
+    cd ti/seed/
+    zm_xup=`echo $gmx_rlist + $gmx_tab_ext + .1 | bc -l`
+    make -C $zm_gen_dir &> /dev/null
+    $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
+    cd ../..
+fi
 
 echo "# build up stage 1: vdw + ele -> vdw"
 for i in `seq $gmx_lambda_start $gmx_lambda_step $gmx_lambda_end`;
 do
-    pi=`printf %.2f $i`
+    pi=`printf %.3f $i`
     free_energy_dir=ti/stage.1.lambda.$pi
     echo "## making $free_energy_dir"
     test -d $free_energy_dir && mv -f $free_energy_dir $free_energy_dir.`date +%s`
@@ -140,7 +148,7 @@ done
 echo "# build up stage 2: vdw -> none"
 for i in `seq $gmx_lambda_start $gmx_lambda_step $gmx_lambda_end`;
 do
-    pi=`printf %.2f $i`
+    pi=`printf %.3f $i`
     free_energy_dir=ti/stage.2.lambda.$pi
     echo "## making $free_energy_dir"
     test -d $free_energy_dir && mv -f $free_energy_dir $free_energy_dir.`date +%s`
@@ -167,14 +175,6 @@ do
     cd ../..
 done
 
-if test $gmx_ele_method_ind -eq 0; then
-    echo "# gen pot"
-    cd ti/seed/
-    zm_xup=`echo $gmx_rlist + $gmx_tab_ext + .1 | bc -l`
-    make -C $zm_gen_dir &> /dev/null
-    $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
-    cd ../..
-fi
 
 
 # echo "# call grompp"
