@@ -106,7 +106,6 @@ sed -e "/^gen_vel /s/=.*/= no/g"|\
 sed -e "/^couple-moltype /s/=.*/= /g"|\
 sed -e "/^integrator /s/=.*/= $gmx_integrator/g"|\
 sed -e "/^Tcoupl /s/=.*/= $gmx_tcouple/g"|\
-
 sed -e "/^DispCorr /s/=.*/= EnerPres/g"|\
 sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmp.mdp
 mv -f tmp.mdp grompp.mdp
