@@ -15,6 +15,11 @@ if echo "$gmx_ele_method" | grep pme &> /dev/null ; then
     echo "# run with ele method pme"
     gmx_ele_method_gromacs=pme
     gmx_ele_method_ind=1
+    if echo "$gmx_ele_method" | grep pme-switch &> /dev/null ; then
+	echo "# run with ele method pme-switch"
+	gmx_ele_method_gromacs=pme-switch
+	gmx_ele_method_ind=11
+    fi
 else if echo "$gmx_ele_method" | grep zm &> /dev/null ; then
     echo "# run with ele method zm"
     gmx_ele_method_gromacs=user
@@ -24,6 +29,16 @@ else if echo "$gmx_ele_method" | grep rf &> /dev/null ; then
     gmx_ele_method_gromacs=reaction-field
     gmx_ele_method_ind=2
 fi
+fi
+fi
+
+
+if echo "$gmx_thermostat" | grep sd &> /dev/null; then
+    gmx_integrator=sd
+    gmx_tcouple=no
+else if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
+    gmx_integrator=md
+    gmx_tcouple=nose-hoover
 fi
 fi
 
@@ -86,6 +101,10 @@ sed -e "/^tau_p /s/=.*/= $gmx_taup/g"|\
 sed -e "/^Pcoupl /s/=.*/= no/g"|\
 sed -e "/^epsilon_rf /s/=.*/= $gmx_e_rf/g"|\
 sed -e "/^gen_vel /s/=.*/= no/g"|\
+sed -e "/^couple-moltype /s/=.*/= /g"|\
+sed -e "/^integrator /s/=.*/= $gmx_integrator/g"|\
+sed -e "/^Tcoupl /s/=.*/= $gmx_tcouple/g"|\
+
 sed -e "/^DispCorr /s/=.*/= EnerPres/g"|\
 sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmp.mdp
 mv -f tmp.mdp grompp.mdp
@@ -172,7 +191,7 @@ if [ $? -ne 0 ]; then
     exit
 fi
 
-if test $gmx_ele_method_ind -eq 1; then
+if [ $gmx_ele_method_ind -eq 1 ] || [ $gmx_ele_method_ind -eq 11 ]; then
     echo "# tune pme parameter"
     $gmx_tune_command -tune yes -self 1e-4 -seed $gmx_seed -nice 0
     if [ $? -ne 0 ]; then
