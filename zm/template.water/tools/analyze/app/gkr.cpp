@@ -66,7 +66,7 @@ int main(int argc, char * argv[])
     cerr << "to large rup, set to half box size" << endl;
     rup = 0.5 * tjl.getBox()[0];
   }
-  int nmols = tjl.getNAtom()/3;
+  int nmols = tjl.getNAtoms()/3;
 
   VectorType vbox;
   vbox.x = tjl.getBox()[0];
