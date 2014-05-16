@@ -4,8 +4,8 @@
 #MKL_LINK=       -L /opt/intel/mkl/lib/intel64  -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lmkl_sequential -lm
 #boost-include-path=	/people/thnfs/homes/wanghan/local/include/boost-1_36
 #boost-lib-path=		/people/thnfs/homes/wanghan/local/lib
-boost-lib-option=	-L ~//local/lib/ -lboost_program_options
-link-options=           ~//local/lib/libxdrfile.a $(boost-lib-option)
+boost-lib-option=	-L ~/work/local/lib/ -lboost_program_options
+link-options=           ~/work/local/lib/libxdrfile.a $(boost-lib-option)
 
 include_dirs = 	./include ~/local/include/ $(MKL_INCLUDE) ~/work/local/include/
 

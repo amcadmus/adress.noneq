@@ -176,6 +176,8 @@ if test $gmx_ele_method_ind -eq 0; then
     zm_xup=`echo $gmx_rlist + $gmx_tab_ext + .1 | bc -l`
     make -C $zm_gen_dir &> /dev/null
     $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
+    rm -f tablep.xvg
+    cp table.xvg tablep.xvg
     cd $wwd
 fi
 
@@ -184,7 +186,7 @@ if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
     echo "# gen inital config for nose-hoover"
     cd $job_dir
     sed -e "/^gen_vel /s/=.*/= yes/g" grompp.mdp |\
-    sed -e "/^nsteps /s/=.*/= 10000/g" |\
+    sed -e "/^nsteps /s/=.*/= 20000/g" |\
     sed -e "/^gen_seed /s/=.*/= $gmx_seed/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
     if echo "$gmx_npt" | grep yes &>/dev/null; then
