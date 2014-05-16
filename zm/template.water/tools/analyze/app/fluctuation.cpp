@@ -22,8 +22,9 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-  std::string ofile, ifile;
+  std::string ifile;
   unsigned column, nBlock;
+  double avg_corr;
   
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -31,7 +32,7 @@ int main(int argc, char * argv[])
       ("input,f", po::value<std::string > (&ifile)->default_value ("data"), "the input file.")
       ("column,c", po::value<unsigned > (&column)->default_value (1), "the column used.")
       ("num-block,n", po::value<unsigned > (&nBlock)->default_value (20), "number of blocks.")
-      ("output,o", po::value<std::string > (&ofile)->default_value ("table.xvg"), "the output of the table");
+      ("avg-corr", po::value<double > (&avg_corr)->default_value (0.0), "a constant correction to the average.");
 
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -43,7 +44,7 @@ int main(int argc, char * argv[])
 
   ifstream data (ifile.c_str());
   if (!data){
-    cerr << "cannot open angle file " << data << endl;
+    cerr << "cannot open angle file " << ifile << endl;
     return 1;
   }
 
@@ -70,7 +71,7 @@ int main(int argc, char * argv[])
   printf ("# num data used: %d with %d blocks. 60 percent confidence level\n", ba.getNumDataUsed(), nBlock);
   printf ("# avg \t avg_err \t var \t var_err\n");
   printf ("%e \t %e \t %e \t %e\n",
-	  ba.getAvg(), ba.getAvgError(),
+	  ba.getAvg() + avg_corr, ba.getAvgError(),
 	  ba.getVar(), ba.getVarError()
       );
   

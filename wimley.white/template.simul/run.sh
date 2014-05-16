@@ -5,6 +5,8 @@ rm -f done
 source env.sh
 source parameters.sh
 
+wwd=`pwd`
+
 if echo "$gmx_npt" | grep yes &> /dev/null ; then
     job_dir=gromacs.traj.npt
 else
@@ -31,7 +33,6 @@ else if echo "$gmx_ele_method" | grep rf &> /dev/null ; then
 fi
 fi
 fi
-
 
 if echo "$gmx_thermostat" | grep sd &> /dev/null; then
     gmx_integrator=sd
@@ -135,7 +136,7 @@ if echo "$gmx_npt" | grep yes &> /dev/null ; then
     sed -e "/^DispCorr /s/=.*/= EnerPres/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
 fi
-cd ..
+cd $wwd
 
 if test -f $gmx_init_index; then
     echo "# copy index"
@@ -151,13 +152,13 @@ nline_4_top=`echo $nline_top -4 | bc`
 head -n $nline_4_top topol.top > new.top
 tail -n 4 topol.top | sed "s/^SOL.*/SOL $nSOL/g" >> new.top
 mv -f new.top topol.top
-cd ..
+cd $wwd
 
 # cd $job_dir
 # nmol=`../tools/gen.conf/nresd -f conf.gro | grep SOL | awk '{print $2}'`
 # sed -e "s/SOL.*/SOL $nmol/g" topol.top > tmp.top
 # mv -f tmp.top topol.top
-# cd ..
+# cd $wwd
 
 echo "# rescale conf"
 cd $job_dir
@@ -167,7 +168,7 @@ cd $job_dir
 # box_scale=`echo "$t_boxsize/$r_boxsize" | bc -l`
 # editconf -scale $box_scale -f conf.gro -o out.gro
 # mv -f out.gro conf.gro
-cd ..
+cd $wwd
 
 if test $gmx_ele_method_ind -eq 0; then
     echo "# gen pot"
@@ -175,8 +176,47 @@ if test $gmx_ele_method_ind -eq 0; then
     zm_xup=`echo $gmx_rlist + $gmx_tab_ext + .1 | bc -l`
     make -C $zm_gen_dir &> /dev/null
     $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
-    cd ..
+    rm -f tablep.xvg
+    cp table.xvg tablep.xvg
+    cd $wwd
 fi
+
+# for nose-hoover, we should regenerate the initial velocity
+if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then  
+    echo "# gen inital config for nose-hoover"
+    cd $job_dir
+    sed -e "/^gen_vel /s/=.*/= yes/g" grompp.mdp |\
+    sed -e "/^nsteps /s/=.*/= 20000/g" |\
+    sed -e "/^gen_seed /s/=.*/= $gmx_seed/g" > tmp.mdp
+    mv -f tmp.mdp grompp.mdp
+    if echo "$gmx_npt" | grep yes &>/dev/null; then
+	sed -e "/^Pcoupl /s/=.*/= berendsen/g" grompp.mdp > tmp.mdp
+	mv -f tmp.mdp grompp.mdp
+    fi
+    if test -f index.ndx; then
+	$gmx_grompp_command -n index.ndx -maxwarn 1
+    else
+	$gmx_grompp_command -maxwarn 1
+    fi
+    if [ $? -ne 0 ]; then
+	echo "# failed at warmup $gmx_grompp_command, return"
+	exit
+    fi    
+    $gmx_mdrun_command
+    if [ $? -ne 0 ]; then
+	echo "# failed at warmup $gmx_mdrun_command, return"
+	exit
+    fi
+    mv -f confout.gro conf.gro
+    sed -e "/^gen_vel /s/=.*/= no/g" grompp.mdp |\
+    sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g"  > tmp.mdp
+    mv -f tmp.mdp grompp.mdp
+    if echo "$gmx_npt" | grep yes &>/dev/null; then
+	sed -e "/^Pcoupl /s/=.*/= parrinello-rahman/g" grompp.mdp > tmp.mdp
+	mv -f tmp.mdp grompp.mdp
+    fi
+    cd $wwd
+fi    
 
 echo "# call grompp"
 cd $job_dir
@@ -199,7 +239,7 @@ if [ $gmx_ele_method_ind -eq 1 ] || [ $gmx_ele_method_ind -eq 11 ]; then
     fi    
     mv -f tuned.tpr topol.tpr
 fi
-cd ..
+cd $wwd
 
 echo "# call mdrun"
 echo "## run with `which mdrun`"
@@ -210,7 +250,7 @@ if [ $? -ne 0 ]; then
     echo "# failed at $gmx_mdrun_command, return"
     exit
 fi
-cd ..
+cd $wwd
 
 touch done
 

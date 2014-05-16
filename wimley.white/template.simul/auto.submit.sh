@@ -1,8 +1,15 @@
 #!/bin/bash
 
+source env.sh
+source parameters.sh
+
 new_submit_command=./auto.hlrn.run.de
 con_submit_command=./auto.hlrn.con.de
-siml_dir=gromacs.traj.nvt
+if echo "$gmx_npt" | grep yes &> /dev/null ; then
+    siml_dir=gromacs.traj.npt
+else
+    siml_dir=gromacs.traj.nvt
+fi
 
 while [ 1 -eq 1 ];
 do
