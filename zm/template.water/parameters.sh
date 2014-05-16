@@ -21,6 +21,7 @@ gmx_pme_order=4
 gmx_rcut_vdw=1.2
 gmx_rcut_vdw_switch=1.15
 gmx_tab_ext=0.5
+gmx_thermostat=sd		# hose-hoover or sd
 gmx_taut=0.1
 gmx_taup=0.5
 gmx_e_rf=80.0
