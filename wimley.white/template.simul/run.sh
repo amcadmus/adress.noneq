@@ -5,6 +5,8 @@ rm -f done
 source env.sh
 source parameters.sh
 
+wwd=`pwd`
+
 if echo "$gmx_npt" | grep yes &> /dev/null ; then
     job_dir=gromacs.traj.npt
 else
@@ -178,6 +180,34 @@ if test $gmx_ele_method_ind -eq 0; then
     $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
     cd ..
 fi
+
+# for nose-hoover, we should regenerate the initial velocity
+if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then  
+    echo "# gen inital config for nose-hoover"
+    cd $job_dir
+    sed -e "/^gen_vel /s/=.*/= yes/g" |\
+    sed -e "/^gen_seed /s/=.*/= $gmx_seed/g" grompp.mdp > tmp.mdp
+    mv -f tmp.mdp grompp.mdp
+    if echo "$gmx_npt" | grep yes &>/dev/null; then
+	sed -e "/^Pcoupl /s/=.*/= berendsen/g" grompp.mdp > tmp.mdp
+	mv -f tmp.mdp grompp.mdp
+    fi
+    if test -f index.ndx; then
+	$gmx_grompp_command -n index.ndx 
+    else
+	$gmx_grompp_command 
+    fi
+    $gmx_mdrun_command
+    mv -f confout.gro conf.gro
+    sed -e "/^gen_vel /s/=.*/= no/g" grompp.mdp > tmp.mdp
+    mv -f tmp.mdp grompp.mdp
+    if echo "$gmx_npt" | grep yes &>/dev/null; then
+	sed -e "/^Pcoupl /s/=.*/= parrinello-rahman/g" grompp.mdp > tmp.mdp
+	mv -f tmp.mdp grompp.mdp
+    fi
+    cd $wwd
+fi
+    
 
 echo "# call grompp"
 cd $job_dir
