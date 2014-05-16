@@ -19,7 +19,7 @@ echo "source $WORK/local/gromacs/4.6.5//bin/GMXRC.bash">> submit.sh
 
 echo "if test -f state.cpt; then"		>> submit.sh
 echo "echo restart from checkpoint"		>> submit.sh
-echo "aprun -B mdrun -cpi state.cpt"		>> submit.sh
+echo "aprun -B mdrun -cpi state.cpt -notunepme"	>> submit.sh
 echo "else"					>> submit.sh
 echo "echo new start"				>> submit.sh
 echo "grompp"					>> submit.sh
