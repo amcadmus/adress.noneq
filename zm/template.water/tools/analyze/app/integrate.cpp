@@ -24,13 +24,14 @@ int main(int argc, char * argv[])
 {
   std::string ifile;
   unsigned columnt, columnd, columne;
-  double iup;
+  double iup, scale;
   
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
       ("input,f", po::value<std::string > (&ifile)->default_value ("data"), "the input file.")
       ("inte-up,iup", po::value<double > (&iup)->default_value (100), "upper bond of inte.")
+      ("scale,s", po::value<double > (&scale)->default_value (1.), "scale of the values")
       ("column-t,t", po::value<unsigned > (&columnt)->default_value (1), "the column of time used.")
       ("column-d,d", po::value<unsigned > (&columnd)->default_value (2), "the column of data used.")
       ("column-e,e", po::value<unsigned > (&columne)->default_value (0), "the column of errorused.");
@@ -71,9 +72,9 @@ int main(int argc, char * argv[])
       exit (1);
     }    
     times.push_back( atof(words[columnt-1].c_str()) );
-    data.push_back( atof(words[columnd-1].c_str()) );
+    data.push_back(scale * atof(words[columnd-1].c_str()) );
     if (columne != 0){
-      errors.push_back( atof(words[columnd-1].c_str()) );
+      errors.push_back(scale * atof(words[columnd-1].c_str()) );
     }
     if (times.back() > iup) break;
   }
