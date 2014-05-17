@@ -76,10 +76,16 @@ int main(int argc, char * argv[])
 
   AutoCorrelCalculator acc (ndata, nDataBlock);
 	
+  countRead = 0;
   while (data.getline(valueline, MaxLineLength)){
     if (valueline[0] == '#' || valueline[0] == '@'){
       continue;
     }
+    if (countRead % 10000 == 0){
+      printf ("# read at time %f    \r", countRead * dt);
+      fflush (stdout);
+    }
+    countRead ++;
     vector<string > words;
     StringOperation::split (string(valueline), words);
     if (words.size() < columnd) {
