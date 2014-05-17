@@ -95,6 +95,7 @@ int main(int argc, char * argv[])
     double value = atof(words[columnd-1].c_str());
     acc.push_back (value);
   }
+  printf ("\n");
 
   acc.calculate ();
 
