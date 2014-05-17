@@ -32,19 +32,19 @@ temperature=300
 scale=`echo "$volume / 1.38 / $temperature * 0.0001 * 10" | bc -l`
 
 echo "# auto corr and integrate for xy"
-$acc_command -f tmp.out -u 20 --column-data 2 --num-data-block 1024
+$acc_command -f tmp.out -u 20 --column-data 2 --num-data-block 5000
 $int_command --scale $scale -f autoCorrelation.out -d 2 -e 3 -i 20 > integrate.xy.out
 echo "# auto corr and integrate for xz"
-$acc_command -f tmp.out -u 20 --column-data 3 --num-data-block 1024
+$acc_command -f tmp.out -u 20 --column-data 3 --num-data-block 5000
 $int_command --scale $scale -f autoCorrelation.out -d 2 -e 3 -i 20 > integrate.xz.out
 echo "# auto corr and integrate for yz"
-$acc_command -f tmp.out -u 20 --column-data 4 --num-data-block 1024
+$acc_command -f tmp.out -u 20 --column-data 4 --num-data-block 5000
 $int_command --scale $scale -f autoCorrelation.out -d 2 -e 3 -i 20 > integrate.yz.out
 echo "# auto corr and integrate for (x - y)/2"
-$acc_command -f tmp.out -u 20 --column-data 5 --num-data-block 1024
+$acc_command -f tmp.out -u 20 --column-data 5 --num-data-block 5000
 $int_command --scale $scale -f autoCorrelation.out -d 2 -e 3 -i 20 > integrate.xmy.out
 echo "# auto corr and integrate for (y - z)/2"
-$acc_command -f tmp.out -u 20 --column-data 6 --num-data-block 1024
+$acc_command -f tmp.out -u 20 --column-data 6 --num-data-block 5000
 $int_command --scale $scale -f autoCorrelation.out -d 2 -e 3 -i 20 > integrate.ymz.out
 
 echo "# join results"

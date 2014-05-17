@@ -26,7 +26,7 @@ temperature=300
 scale=`echo "1./1.3806488/6.0221413/$temperature/$temperature*1000000" | bc -l`
 nmol=`grep SOL topol.top | awk '{print $2}'`
 
-result=`$flu_command -f hamiltonian.xvg -c 2 --num-block 32 | grep -v \#`
+result=`$flu_command -f hamiltonian.xvg -c 2 --num-block 1200 | grep -v \#`
 
 fluc=`echo $result | awk '{print $3}'`
 fluc=`printf %f $fluc`
