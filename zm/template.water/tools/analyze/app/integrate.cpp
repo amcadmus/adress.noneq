@@ -81,15 +81,15 @@ int main(int argc, char * argv[])
     sumd += 0.5 * dt * (data[ii+1] + data[ii]);
     printf ("%f \t %e \t", times[ii+1], sumd);
     if (!errors.empty()){
-      sume += 0.5 * dt * data[ii+1] * 0.5 * dt * data[ii+1];
+      sume += 0.5 * dt * errors[ii+1] * 0.5 * dt * errors[ii+1];
       if (ii != 0){
-	sume -= 0.5 * dt * data[ii] * 0.5 * dt * data[ii];
-	sume += 1.0 * dt * data[ii] * 1.0 * dt * data[ii];
+	sume -= 0.5 * dt * errors[ii] * 0.5 * dt * errors[ii];
+	sume += 1.0 * dt * errors[ii] * 1.0 * dt * errors[ii];
       }
       else {
-        sume += 0.5 * dt * data[ii] * 0.5 * dt * data[ii];
+        sume += 0.5 * dt * errors[ii] * 0.5 * dt * errors[ii];
       }      
-      printf ("%e", sume);
+      printf ("%e", sqrt(sume));
     }
     printf ("\n");
   }
