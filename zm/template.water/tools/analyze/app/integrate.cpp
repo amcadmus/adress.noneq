@@ -24,11 +24,13 @@ int main(int argc, char * argv[])
 {
   std::string ifile;
   unsigned columnt, columnd, columne;
+  double iup;
   
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
       ("input,f", po::value<std::string > (&ifile)->default_value ("data"), "the input file.")
+      ("inte-up,iup", po::value<double > (&iup)->default_value (100), "upper bond of inte.")
       ("column-t,t", po::value<unsigned > (&columnt)->default_value (1), "the column of time used.")
       ("column-d,d", po::value<unsigned > (&columnd)->default_value (2), "the column of data used.")
       ("column-e,e", po::value<unsigned > (&columne)->default_value (0), "the column of errorused.");
@@ -60,6 +62,7 @@ int main(int argc, char * argv[])
     vector<string > words;
     StringOperation::split (string(valueline), words);
     if (words.size() < columnt || words.size() < columnd) {
+      cout << valueline << endl;
       cerr << "wrong file format of " << ifile << endl;
       exit (1);
     }
@@ -72,6 +75,7 @@ int main(int argc, char * argv[])
     if (columne != 0){
       errors.push_back( atof(words[columnd-1].c_str()) );
     }
+    if (times.back() > iup) break;
   }
 
   double sumd = 0;
