@@ -38,7 +38,5 @@ fluc_err=`echo "$fluc_err * $scale / $nmol" | bc -l`
 fluc=`printf %f $fluc`
 fluc_err=`printf %f $fluc_err`
 
-
-
-
+echo "$fluc $fluc_err" > cv.out
 
