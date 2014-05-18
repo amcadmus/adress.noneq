@@ -5,6 +5,7 @@ source parameters.sh
 
 acc_command=/home/wanghan/NO_BACKUP/zm/template.water/tools/analyze/autoCorrelation
 int_command=/home/wanghan/NO_BACKUP/zm/template.water/tools/analyze/integrate
+avl_command=/home/wanghan/NO_BACKUP/zm/template.water/tools/analyze/avg.line
 
 #	2	3	4	5	6	7
 items="Pres-XX Pres-XY Pres-XZ Pres-YY Pres-YZ Pres-ZZ"
@@ -54,6 +55,11 @@ join integrate.all.out integrate.yz.out > tmp.out; mv -f tmp.out integrate.all.o
 join integrate.all.out integrate.xmy.out > tmp.out; mv -f tmp.out integrate.all.out
 join integrate.all.out integrate.ymz.out > tmp.out; mv -f tmp.out integrate.all.out
 
-awk '{print $1" "($2+$4+$6+$8+$10)/5.0" "sqrt(($3*$3+$5*$5+$7*$7+$9*$9+$11*$11)/(5.0-1)/5.0)}' integrate.all.out > viscosity.out
+$avl_command -f integrate.all.out  -c "2 4 6 8 10" -o avg.out
+awk '{print $1}' integrate.all.out > tmp.out
+join tmp.out avg.out > viscosity.out
+rm -f avg.out tmp.out
+
+#awk '{print $1" "($2+$4+$6+$8+$10)/5.0" "sqrt(($3*$3+$5*$5+$7*$7+$9*$9+$11*$11)/(5.0-1)/5.0)}' integrate.all.out > viscosity.out
 
 cd ..

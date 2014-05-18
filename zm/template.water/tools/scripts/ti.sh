@@ -48,6 +48,8 @@ else
     energy_corr=0.0
 fi
 
+energy_corr=0
+
 # energy should be minus
 sum_value=`echo "- $sum_value + $energy_corr" | bc -l`
 sum_value=`printf %.2f $sum_value`
