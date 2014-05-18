@@ -24,7 +24,7 @@ calAvg (const std::vector<double > & vec,
   
   double sum2 = 0;
   for (unsigned i = 0; i < nBlock; ++i){
-    sum2 += (blockAverage[i] - avg) * (blockAverage[i] - avg);
+    sum2 += (blockAverage[i] - my_avg) * (blockAverage[i] - my_avg);
   }
 
   my_error_avg = sqrt (sum2 / (nBlock * (nBlock-1)));

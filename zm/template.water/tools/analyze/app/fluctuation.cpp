@@ -23,7 +23,7 @@ using namespace std;
 int main(int argc, char * argv[])
 {
   std::string ifile;
-  unsigned column, nBlock;
+  unsigned column, nBlock, every;
   double avg_corr;
   
   po::options_description desc ("Allow options");
@@ -32,6 +32,7 @@ int main(int argc, char * argv[])
       ("input,f", po::value<std::string > (&ifile)->default_value ("data"), "the input file.")
       ("column,c", po::value<unsigned > (&column)->default_value (1), "the column used.")
       ("num-block,n", po::value<unsigned > (&nBlock)->default_value (20), "number of blocks.")
+      ("every", po::value<unsigned > (&every)->default_value (1), "avery number of data.")
       ("avg-corr", po::value<double > (&avg_corr)->default_value (0.0), "a constant correction to the average.");
 
   po::variables_map vm;
@@ -50,6 +51,7 @@ int main(int argc, char * argv[])
 
   vector<double > deposite;
   char valueline [MaxLineLength];
+  int count = 0;
   
   while (data.getline(valueline, MaxLineLength)){
     if (valueline[0] == '#' || valueline[0] == '@'){
@@ -61,8 +63,10 @@ int main(int argc, char * argv[])
       cerr << "wrong file format of " << ifile << endl;
       exit (1);
     }
-    double value = atof(words[column-1].c_str());
-    deposite.push_back (value);
+    if (count++ % every == 0){
+      double value = atof(words[column-1].c_str());
+      deposite.push_back (value);
+    }
   }
 
   BlockAverage ba;
