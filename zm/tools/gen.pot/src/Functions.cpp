@@ -243,6 +243,7 @@ energyCorr (const vector<double > & charges)
     sum += charges[ii] * charges[ii];
   }
   
+  // return - (coeff[0] * 0.5 + alpha / sqrt(M_PI)) * sum;
   return - (coeff[0] * 0.5 + alpha / sqrt(M_PI)) * sum;
 }
 
