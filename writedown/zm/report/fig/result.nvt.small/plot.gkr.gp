@@ -33,13 +33,14 @@ set key bottom right font "Helvetica, 14"
 set arrow from 1.35, 3.4   to 1.35, 2.1
 
 pl \
+'spme.tune.20ns/nvt/gkr.out' u 1:2 w l ls 112 t 'SPME',\
 'rf.rc1.2.long/nvt/gkr.out' u 1:2 w l ls 162 t 'RF',\
 'zm.l1.alpha0.00.rc1.2.long/nvt/gkr.out' u 1:2 w l ls 122 t 'ZM l = 1',\
 'zm.l2.alpha0.00.rc1.2.long/nvt/gkr.out' u 1:2 w l ls 132 t 'ZM l = 2',\
 'zm.l3.alpha0.00.rc1.2.long/nvt/gkr.out' u 1:2 w l ls 142 t 'ZM l = 3',\
 'zm.l4.alpha0.00.rc1.2.long/nvt/gkr.out' u 1:2 w l ls 152 t 'ZM l = 4',\
 'spme.tune.20ns/nvt/gkr.out' u 1:2:($2-2*$3):($2+2*$3) every 15 w e ls 112 not,\
-'' u 1:2 w l ls 112 t 'SPME',\
+'' u 1:2 w l ls 112 not 'SPME',\
 'zoom.box'  w l lc 0 lw 3 not
 
 

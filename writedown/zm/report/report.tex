@@ -64,7 +64,7 @@ grid spacing is 0.06~nm. The B-Spline interpolation order is 6. The
 splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
 
 \subsubsection{Pressure}
-The results are plotted in Fig.~\ref{fig:tmp0}.
+The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system L0.
 \begin{figure}
   \centering
   \includegraphics[]{pressure-methods.eps}
@@ -116,6 +116,25 @@ The results are listed in Tab.~\ref{tab:tmp2}
   \label{tab:tmp2}
 \end{table}
 
+\begin{table}
+  \centering
+  \caption{A list of the dielectric constant calculated for different systems by different methods.
+    The paremeters are provided. The parenthesises in the last column show the statistical uncertanty
+    of the last two digits upto the confidence level of 95~\%.}
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc rrrr}\hline\hline
+    Method      &   $r_c$ [nm] &    $l$     &  $\mu$ [kJ/mol] & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] & $C_v$ [J/(mol K)] & $\eps$ & $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+    SPME        &         1.9     &       --      &       $-26.08$ (0.24) & 5.93 (0.42)   & 72.21 (0.97)  & 97.6 (3.4)  & 0.315 (0.007)\\
+    RF          &         1.2     & -- & $-26.03$   (0.32)    & 6.27 (0.11)   & 72.28 (0.81)  & 59.4  (1.3)     & 0.449 (0.020) \\
+    ZM          &         1.2     &       1       &       $-26.12$ (0.30) & 5.55 (0.02)   & 71.75 (0.89)  & 95.5 (2.4)  & 0.346 (0.006)\\ 
+    ZM          &         1.2     &       2       &       $-26.00$ (0.24) & 5.72 (0.37)   & 71.53 (0.88)  & 95.4 (2.5)  & 0.318 (0.012)\\ 
+    ZM          &         1.2     &       3       &       $-25.76$ (0.20) & 5.82 (0.12)   & 71.58 (0.88)  & 96.0 (2.7)  & 0.321 (0.008)\\ 
+    ZM          &         1.2     &       4       &       $-25.37$ (0.26) & 5.92 (0.08)   & 71.07 (0.84)  & 99.7 (2.2)  & 0.318 (0.013)\\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp2}
+\end{table}
+
+
 \subsubsection{Kirkwood G-factor}
 
 The Kirkwood G-factor is defined by~\cite{vanderSpoel2006origin}
@@ -145,6 +164,10 @@ using larger cut-off radius can substantially improve the accuracy.
   \centering
   \includegraphics[]{fig-gkr-small.eps}
   \includegraphics[]{fig-gkr-small-conv.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-3000.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-3000.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-10000.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-10000.eps}
   \caption{The Kirkwood G-factor calculated for system S1.
     % The result of different methods are compared in the left plot.
     For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
@@ -160,6 +183,8 @@ using larger cut-off radius can substantially improve the accuracy.
   \centering
   \includegraphics[]{fig-gkr.eps}
   \includegraphics[]{fig-gkr-conv.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-3000.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-3000.eps}
   \caption{The Kirkwood G-factor calculated for system L1.
     % The result of different methods are compared in the left plot.
     For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
@@ -169,6 +194,23 @@ using larger cut-off radius can substantially improve the accuracy.
     The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
   }
   \label{fig:tmp2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig-gkr-10000.eps}
+  \includegraphics[]{fig-gkr-conv-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-10000.eps}
+  \caption{The Kirkwood G-factor calculated for system L1. Equilibriation time is 10~ns, and the production simulation time is 10~ns.
+    % The result of different methods are compared in the left plot.
+    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
+    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
+    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
+    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
+  }
+  \label{fig:tmp3}
 \end{figure}
 
 
