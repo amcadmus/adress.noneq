@@ -224,6 +224,13 @@ pot (const double & rr)
 }
 
 double ZeroMultipole::Potential::
+ulpot (const double & rr)
+{
+  return pot(rr) + coeff[0];
+}
+
+
+double ZeroMultipole::Potential::
 mpotp (const double & rr) {
   if (rr > rc) return 0.;
   double tmp0 = - funcD1V (alpha, rr);
