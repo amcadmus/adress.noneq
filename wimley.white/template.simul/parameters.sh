@@ -3,11 +3,11 @@
 # simulation result from spme.tune
 # nvt_num_density=32.90917546138462644658
 
-gmx_init_conf=./confs/conf.gro
-gmx_init_index=./confs/index.ndx
+gmx_init_conf=./confs/conf.wwa.oplsaa.box004.gro
+gmx_init_index=./confs/index.wwa.oplsaa.box004.ndx
 gmx_sys_tempalte_dir=./tools/system.wwa.oplsaa
 gmx_dt=0.002
-gmx_time=2			# in ps
+gmx_time=1000000		# in ps
 gmx_equi_skip=100		# in ps
 gmx_conf_feq=1			# in ps
 gmx_energy_feq=1		# in ps
@@ -22,8 +22,8 @@ gmx_vdw_type=shift		# using adress will overwrite it with "user"
 gmx_rcut_vdw=1.2
 gmx_rcut_vdw_switch=1.15
 gmx_tab_ext=0.5
-gmx_thermostat=sd		# hose-hoover or sd
-gmx_taut=0.1
+gmx_thermostat=nose-hoover	# hose-hoover or sd
+gmx_taut=1.0
 gmx_npt=yes
 gmx_taup=2.0
 gmx_e_rf=80.0

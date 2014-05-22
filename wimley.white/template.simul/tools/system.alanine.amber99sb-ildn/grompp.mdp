@@ -18,7 +18,7 @@ tinit                    = 0
 dt                       = 0.002
 nsteps                   = 1000
 ; For exact run continuation or redoing part of a run
-init_step                = 0
+init-step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
 simulation-part          = 1
 ; mode for center of mass motion removal
@@ -58,10 +58,10 @@ energygrps               =
 ; nblist update frequency
 nstlist                  = 10
 ; ns algorithm (simple or grid)
-ns_type                  = grid
+ns-type                  = grid
 ; Periodic boundary conditions: xyz, no, xy
 pbc                      = xyz
-periodic_molecules       = no
+periodic-molecules       = no
 ; Allowed energy drift due to the Verlet buffer in kJ/mol/ps per atom,
 ; a value of -1 means: use rlist
 ; verlet-buffer-drift      = 0.005
@@ -75,7 +75,7 @@ rcoulomb-switch          = 1.05
 rcoulomb                 = 1.10
 ; Relative dielectric constant for the medium and the reaction field
 epsilon-r                = 1
-epsilon_rf               = 0
+epsilon-rf               = 0
 ; Method for doing Van der Waals
 vdw-type                 = shift
 ; cut-off lengths       
@@ -86,19 +86,19 @@ DispCorr                 = EnerPres
 ; Extension of the potential lookup tables beyond the cut-off
 table-extension          = 1
 ; Separate tables between energy group pairs
-energygrp_table          = 
+energygrp-table          = 
 ; Spacing for the PME/PPPM FFT grid
 fourierspacing           = 0.12
 ; FFT grid size, when a value is 0 fourierspacing will be used
-fourier_nx               = 0
-fourier_ny               = 0
-fourier_nz               = 0
+fourier-nx               = 0
+fourier-ny               = 0
+fourier-nz               = 0
 ; EWALD/PME/PPPM parameters
-pme_order                = 4
-ewald_rtol               = 1e-05
-ewald_geometry           = 3d
-epsilon_surface          = 0
-optimize_fft             = no
+pme-order                = 4
+ewald-rtol               = 1e-05
+ewald-geometry           = 3d
+epsilon-surface          = 0
+optimize-fft             = no
 
 ; OPTIONS FOR WEAK COUPLING ALGORITHMS
 ; Temperature coupling  
@@ -106,22 +106,22 @@ Tcoupl                   = no
 ; Groups to couple separately
 tc-grps                  = System
 ; Time constant (ps) and reference temperature (K)
-tau_t                    = 0.1
-ref_t                    = 300
+tau-t                    = 0.1
+ref-t                    = 300
 ; Pressure coupling     
 Pcoupl                   = parrinello-rahman
 Pcoupltype               = isotropic
 ; Time constant (ps), compressibility (1/bar) and reference P (bar)
-tau_p                    = 0.5
+tau-p                    = 0.5
 compressibility          = 4.5e-5
-ref_p                    = 1.0
+ref-p                    = 1.0
 ; Scaling of reference coordinates, No, All or COM
-refcoord-scaling         = No
+refcoord-scaling         = All
 
 ; GENERATE VELOCITIES FOR STARTUP RUN
-gen_vel                  = no
-gen_temp                 = 300
-gen_seed                 = 1993
+gen-vel                  = no
+gen-temp                 = 300
+gen-seed                 = 1993
 
 ; OPTIONS FOR BONDS    
 constraints              = h-bonds

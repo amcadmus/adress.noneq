@@ -1,4 +1,4 @@
-nnodes=6
+nnodes=8
 
 gmx_dir=$HOME/local/
 source $gmx_dir/bin/GMXRC

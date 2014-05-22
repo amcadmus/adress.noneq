@@ -90,18 +90,16 @@ sed -e "/^coulombtype /s/=.*/= $gmx_ele_method_gromacs/g"|\
 sed -e "/^rcoulomb-switch /s/=.*/= $gmx_rcut_ele_switch/g"|\
 sed -e "/^rcoulomb /s/=.*/= $gmx_rcut_ele/g"|\
 sed -e "/^fourierspacing /s/=.*/= $gmx_pme_F_spacing/g"|\
-sed -e "/^pme_order /s/=.*/= $gmx_pme_order/g"|\
+sed -e "/^pme-order /s/=.*/= $gmx_pme_order/g"|\
 sed -e "/^vdwtype /s/=.*/= $gmx_vdw_type/g"|\
 sed -e "/^vdw-type /s/=.*/= $gmx_vdw_type/g"|\
-sed -e "/^vdw_type /s/=.*/= $gmx_vdw_type/g"|\
 sed -e "/^rvdw-switch /s/=.*/= $gmx_rcut_vdw_switch/g"|\
-sed -e "/^rvdw_switch /s/=.*/= $gmx_rcut_vdw_switch/g"|\
 sed -e "/^rvdw /s/=.*/= $gmx_rcut_vdw/g"|\
-sed -e "/^tau_t /s/=.*/= $gmx_taut/g"|\
-sed -e "/^tau_p /s/=.*/= $gmx_taup/g"|\
+sed -e "/^tau-t /s/=.*/= $gmx_taut/g"|\
+sed -e "/^tau-p /s/=.*/= $gmx_taup/g"|\
 sed -e "/^Pcoupl /s/=.*/= no/g"|\
-sed -e "/^epsilon_rf /s/=.*/= $gmx_e_rf/g"|\
-sed -e "/^gen_vel /s/=.*/= no/g"|\
+sed -e "/^epsilon-rf /s/=.*/= $gmx_e_rf/g"|\
+sed -e "/^gen-vel /s/=.*/= no/g"|\
 sed -e "/^couple-moltype /s/=.*/= /g"|\
 sed -e "/^integrator /s/=.*/= $gmx_integrator/g"|\
 sed -e "/^Tcoupl /s/=.*/= $gmx_tcouple/g"|\
@@ -119,15 +117,14 @@ if grep "^adress " grompp.mdp | grep yes &> /dev/null; then
     hboxz=`echo "$boxz * 0.5" | bc -l`
     cat grompp.mdp |\
     sed -e "/^DispCorr /s/=.*/= no/g"|\
-    sed -e "/^adress_type /s/=.*/= $adress_type/g" |\
-    sed -e "/^adress_interface_correction /s/=.*/= thermoforce/g" |\
-    sed -e "/^adress_site /s/=.*/= com/g" |\
-    sed -e "/^adress_ex_width /s/=.*/= $adress_ex_region/g" |\
-    sed -e "/^adress_hy_width /s/=.*/= $adress_hy_region/g" |\
+    sed -e "/^adress-type /s/=.*/= $adress_type/g" |\
+    sed -e "/^adress-interface-correction /s/=.*/= thermoforce/g" |\
+    sed -e "/^adress-site /s/=.*/= com/g" |\
+    sed -e "/^adress-ex-width /s/=.*/= $adress_ex_region/g" |\
+    sed -e "/^adress-hy-width /s/=.*/= $adress_hy_region/g" |\
     sed -e "/^vdwtype /s/=.*/= user/g"|\
     sed -e "/^vdw-type /s/=.*/= user/g"|\
-    sed -e "/^vdw_type /s/=.*/= user/g"|\
-    sed -e "/^adress_reference_coords /s/=.*/= $hboxx $hboxy $hboxz/g" > tmp.mdp
+    sed -e "/^adress-reference-coords /s/=.*/= $hboxx $hboxy $hboxz/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
 fi
 if echo "$gmx_npt" | grep yes &> /dev/null ; then
@@ -185,9 +182,9 @@ fi
 if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then  
     echo "# gen inital config for nose-hoover"
     cd $job_dir
-    sed -e "/^gen_vel /s/=.*/= yes/g" grompp.mdp |\
+    sed -e "/^gen-vel /s/=.*/= yes/g" grompp.mdp |\
     sed -e "/^nsteps /s/=.*/= 20000/g" |\
-    sed -e "/^gen_seed /s/=.*/= $gmx_seed/g" > tmp.mdp
+    sed -e "/^gen-seed /s/=.*/= $gmx_seed/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
     if echo "$gmx_npt" | grep yes &>/dev/null; then
 	sed -e "/^Pcoupl /s/=.*/= berendsen/g" grompp.mdp > tmp.mdp
@@ -208,7 +205,7 @@ if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
 	exit
     fi
     mv -f confout.gro conf.gro
-    sed -e "/^gen_vel /s/=.*/= no/g" grompp.mdp |\
+    sed -e "/^gen-vel /s/=.*/= no/g" grompp.mdp |\
     sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g"  > tmp.mdp
     mv -f tmp.mdp grompp.mdp
     if echo "$gmx_npt" | grep yes &>/dev/null; then
