@@ -21,11 +21,11 @@ nsteps                   = 500000000
 ; For exact run continuation or redoing part of a run
 init_step                = 0
 ; Part index is updated automatically on checkpointing (keeps files separate)
-simulation_part          = 1
+simulation-part          = 1
 ; mode for center of mass motion removal
-comm_mode                = linear
+comm-mode                = Linear
 ; number of steps for center of mass motion removal
-nstcomm                  = 500
+nstcomm                  = 10000
 ; group(s) for center of mass motion removal
 comm-grps                = 
 
@@ -52,6 +52,9 @@ xtc-grps                 = non-Water
 energygrps               = 
 
 ; NEIGHBORSEARCHING PARAMETERS
+; cut-off scheme (group: using charge groups, Verlet: particle based cut-offs)
+; gromacs 4.6.5 default, not consistent with gromacs 4.5
+; cutoff-scheme            = Group
 ; nblist update frequency
 nstlist                  = 10
 ; ns algorithm (simple or grid)
@@ -59,6 +62,9 @@ ns_type                  = grid
 ; Periodic boundary conditions: xyz, no, xy
 pbc                      = xyz
 periodic_molecules       = no
+; Allowed energy drift due to the Verlet buffer in kJ/mol/ps per atom,
+; a value of -1 means: use rlist
+; verlet-buffer-drift      = 0.005
 ; nblist cut-off        
 rlist                    = 1.2
 ; long-range cut-off for switched potentials
@@ -70,7 +76,7 @@ coulombtype              = reaction-field
 rcoulomb-switch          = 0
 rcoulomb                 = 1.2
 ; Relative dielectric constant for the medium and the reaction field
-epsilon_r                = 1
+epsilon-r                = 1
 epsilon_rf               = 80
 ; Method for doing Van der Waals
 vdw-type                 = Cut-off
@@ -78,10 +84,10 @@ vdw-type                 = Cut-off
 rvdw-switch              = 0
 rvdw                     = 1.2
 ; Apply long range dispersion corrections for Energy and Pressure
-DispCorr                 = No
+DispCorr                 = EnerPres
 ; Extension of the potential lookup tables beyond the cut-off
 table-extension          = 1
-; Seperate tables between energy group pairs
+; Separate tables between energy group pairs
 energygrp_table          = 
 ; Spacing for the PME/PPPM FFT grid
 fourierspacing           = 0.12
@@ -94,7 +100,7 @@ pme_order                = 4
 ewald_rtol               = 1e-05
 ewald_geometry           = 3d
 epsilon_surface          = 0
-optimize_fft             = yes
+optimize_fft             = no
 
 ; OPTIONS FOR WEAK COUPLING ALGORITHMS
 ; Temperature coupling  
@@ -102,18 +108,17 @@ Tcoupl                   = no
 nsttcouple               = -1
 nh-chain-length          = 10
 ; Groups to couple separately
-tc-grps                  = system
+tc-grps                  = System
 ; Time constant (ps) and reference temperature (K)
 tau_t                    = 0.2
 ref_t                    = 300
 ; Pressure coupling     
 Pcoupl                   = no
 Pcoupltype               = isotropic
-nstpcouple               = -1
 ; Time constant (ps), compressibility (1/bar) and reference P (bar)
 tau_p                    = 2.5
 compressibility          = 4.5e-5
-ref_p                    = 1
+ref_p                    = 1.0
 ; Scaling of reference coordinates, No, All or COM
 refcoord_scaling         = No
 
@@ -122,25 +127,25 @@ freezedim		 = Y Y Y
 
 ; GENERATE VELOCITIES FOR STARTUP RUN
 gen_vel                  = no
-gen-temp                 = 300
-gen-seed                 = 173529
+gen_temp                 = 300
+gen_seed                 = 1993
 
 ; OPTIONS FOR BONDS    
 constraints              = h-bonds
 ; Type of constraint algorithm
-constraint_algorithm     = lincs
+constraint-algorithm     = Lincs
 ; Do not constrain the start configuration
-continuation             = yes
+continuation             = no
 ; Use successive overrelaxation to reduce the number of shake iterations
 Shake-SOR                = no
 ; Relative tolerance of shake
-shake-tol                = 0.0001
+shake-tol                = 1e-04
 ; Highest order in the expansion of the constraint coupling matrix
-lincs_order              = 4
+lincs-order              = 4
 ; Number of iterations in the final step of LINCS. 1 is fine for
 ; normal simulations, but use 2 to conserve energy in NVE runs.
 ; For energy minimization with constraints it should be 4 to 8.
-lincs_iter               = 1
+lincs-iter               = 4
 ; Lincs will write a warning to the stderr if in one step a bond
 ; rotates over more degrees than
 lincs-warnangle          = 30
@@ -149,7 +154,7 @@ morse                    = no
 
 ; ENERGY GROUP EXCLUSIONS
 ; Pairs of energy groups for which all non-bonded interactions are excluded
-energygrp_excl           = 
+energygrp-excl           = 
 
 ; ; AdResS parameters    
 ; adress_type              = off

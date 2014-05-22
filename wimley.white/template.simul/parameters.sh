@@ -3,16 +3,16 @@
 # simulation result from spme.tune
 # nvt_num_density=32.90917546138462644658
 
-gmx_init_conf=./confs/conf.alanine.amber99sb-ildn.gro
-gmx_init_index=
-gmx_sys_tempalte_dir=./tools/system.alanine.amber99sb-ildn
-gmx_dt=0.001
-gmx_time=50			# in ps
+gmx_init_conf=./confs/conf.gro
+gmx_init_index=./confs/index.ndx
+gmx_sys_tempalte_dir=./tools/system.wwa.oplsaa
+gmx_dt=0.002
+gmx_time=2			# in ps
 gmx_equi_skip=100		# in ps
 gmx_conf_feq=1			# in ps
 gmx_energy_feq=1		# in ps
-gmx_ele_method=zm		# pme or zm or rf
-gmx_rlist=1.44			# 
+gmx_ele_method=pme-switch	# pme or zm or rf
+gmx_rlist=1.50			# 
 gmx_nstlist=5			# 
 gmx_rcut_ele=1.2		# if pme is used, set this value to rlist
 gmx_rcut_ele_switch=1.15
@@ -22,8 +22,8 @@ gmx_vdw_type=shift		# using adress will overwrite it with "user"
 gmx_rcut_vdw=1.2
 gmx_rcut_vdw_switch=1.15
 gmx_tab_ext=0.5
-gmx_thermostat=nose-hoover	# hose-hoover or sd
-gmx_taut=1.0
+gmx_thermostat=sd		# hose-hoover or sd
+gmx_taut=0.1
 gmx_npt=yes
 gmx_taup=2.0
 gmx_e_rf=80.0
