@@ -1,4 +1,4 @@
-\documentclass[a4paper,reprint,unsortedaddress,onecolumn]{revtex4-1}
+\documentclass[aip,jcp,a4paper,reprint,unsortedaddress,onecolumn,fleqn]{revtex4-1}
 % \documentclass[reprint,unsortedadress,oneclumn]{revtex4-1}
 
 \usepackage{amsmath,amssymb,amsfonts,latexsym}
@@ -11,6 +11,16 @@
 \newcommand{\redc}[1]{{\color{red} #1}}            
 \newcommand{\bluec}[1]{{\color{blue} #1}}            
 \newcommand{\vect}[1]{\textbf{\textit{#1}}}
+\newcommand{\exc}{\textrm{ex}}
+\newcommand{\systemsa}{S_0}
+\newcommand{\systemsb}{S_1}
+\newcommand{\systemsbp}{S'_1}
+\newcommand{\systemma}{M_0}
+\newcommand{\systemmb}{M_1}
+\newcommand{\systemmbp}{M'_1}
+\newcommand{\systemla}{L_0}
+\newcommand{\systemlbp}{L'_1}
+\newcommand{\systemlb}{L_1}
 
 
 \begin{document}
@@ -28,19 +38,22 @@
 
 \maketitle
 
+\section{Simulation protocols}
 
 \begin{table}
   \centering
   \caption{A list of systems tested in this work. We report, from left to right, the number of water
-    molecules in the system (TIP3P model), box size, length of equilibriation, length of productive trajecty and the frequency
-    that the configurations are recorded or the phsical properties are calculted.}
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c rrrrr}\hline\hline
-    System      & \# of Water Mols. & Box size [$\textrm{nm}^3$]  & Equilibriation [ps] & Traj. Length [ps] & Freq. Record [ps]  \\\hline
-    S1          & 4,500          & $5.15^3$              & 3,000        & 17,000        & 5.0 \\
-    S1'         &   4,500        & $5.15^3$              & --           &  6,000        & -- \\
-    L0          &   13,824       & $7.49^3$              & 200          & 1,800         & 0.1 \\
-    L1          &   13,824       & $7.49^3$              & 3,000        & 17,000        & 10.0 \\
-    L1'         &   13,824       & $7.49^3$              & --           & 10,000        & -- \\
+    molecules in the system (TIP3P model), box size, length of equilibriation, length of productive trajectory, the thermostat and the coupling time scale of the thermostat.
+    }
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c rrrrrr}\hline\hline
+    System      & $N$ & $V$ [$\textrm{nm}^3$]  & $T_{eq}$ [ps] & Traj. Length [ps] & Thermostat & $\tau$ [ps]  \\\hline
+    $\systemsb$          & 2,500          & $4.24^3$              & 3,000        & 27,000        & Nose-Hoover & 1.0 \\
+    $\systemsbp$         &   2,500        & $4.24^3$              & --           &  6,000        & Nose-Hoover & 1.0\\
+    $\systemmb$          & 4,500          & $5.15^3$              & 3,000        & 17,000        & Langevin & 0.1\\
+    $\systemmbp$         &   4,500        & $5.15^3$              & --           &  6,000        & Langevin & 0.1\\
+    $\systemla$          &   13,824       & $7.49^3$              & 200          & 1,800         & Langevin & 0.1\\
+    $\systemlb$          &   13,824       & $7.49^3$              & 3,000        & 17,000        & Langevin & 0.1\\
+    $\systemlbp$         &   13,824       & $7.49^3$              & --           & 10,000        & Langevin & 0.1\\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp1}
@@ -48,14 +61,14 @@
 
 The systems used for MD simulations are listed in
 Table.\ref{tab:tmp1}.  The initial configurations are prepared by in
-the following steps: (1) A NPT simulation of system L0 with SPME~\cite{darden1993pme, essmann1995spm}
+the following steps: (1) A NPT simulation of system $\systemla$ with SPME~\cite{darden1993pme, essmann1995spm}
 electrostatic. The equilibrium density of the system is calculated
 from this simulation. (2) Initial configurations that has 4,500 and
 13,824 molecules are generated at the calculated equilibrium
-density. (3) NVT simulations with SPME electrostatic for system S1'
-and L1' are performed. (4) The output configuration of S1' is used as
-initial configuration for system S1, and the output configuration of
-L1' is used as initial configuration for system L0 and L1.  The SPME
+density. (3) NVT simulations with SPME electrostatic for system $\systemmbp$
+and $\systemlbp$ are performed. (4) The output configuration of $\systemmbp$ is used as
+initial configuration for system $\systemmb$, and the output configuration of
+$\systemlbp$ is used as initial configuration for system $\systemla$ and $\systemlb$.  The SPME
 parameters for all simulations reported by this work is: real space
 cut-off 1.90~nm. The cut-off is smoothed from 1.85 to 1.90~nm by the
 ``\texttt{switch}'' method provide by Gromacs
@@ -63,8 +76,25 @@ cut-off 1.90~nm. The cut-off is smoothed from 1.85 to 1.90~nm by the
 grid spacing is 0.06~nm. The B-Spline interpolation order is 6. The
 splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
 
+We add a new system $\systemsb$, and use the Nose-Hoover
+thermostat. The reason is that for the fluctuation properties (in this
+work heat capacity, dielectric constant, diffusion constant and
+viscosity are fluctuation properties), simply increase the size of the
+system does not improve the accuracy of the
+simulation~\cite{ferrenberg1991statistical}. The only way to improve
+the accuracy is to run longer simulation to do more
+time-average. Therefore, the optimal way of measuring these properties
+is to use smaller system (as far as the finite size effect is not
+important) and run as long simulation as possible, as the equilibrium
+state is reached. The reason of using Nose-Hoover thermostat is that
+it perturbs the dynamics of the system only slightly, while the
+Langevin thermostat is likely to substantially change the dynamics
+when the coupling is very strong.
+
+\subsection{Static properties}
+
 \subsubsection{Pressure}
-The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system L0.
+The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system $\systemla$.
 \begin{figure}
   \centering
   \includegraphics[]{pressure-methods.eps}
@@ -74,6 +104,64 @@ The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are do
   \label{fig:tmp0}
 \end{figure}
 
+\subsubsection{Chemical potential}
+
+The chemical potential of the NVT system is defined by
+\begin{align}
+  \mu = \frac{\partial A}{\partial N}\Big\vert_{V,T}
+\end{align}
+In practice the excess chemical potential $\mu^\exc$, which is the
+chemical potential abstracted by the kinetic contribution, is of
+special interest. We calculate the excess chemical potential by the
+thermodynamic integration (TI). In this approach, the interaction
+between an inserted molecule and the rest of the system is controlled
+by a coupling parameter $\lambda$. $\lambda$ goes from 0 to 1, where 0
+indicates no coupling while 1 indicates full coupling. Therefore the
+Hamiltonian of the system is function of the coupling parameter. The
+excess chemical is calculated by:
+\begin{align}
+  \mu^\exc = \int_0^1 \Big\langle \frac{\partial \mathcal H(\lambda)}{\partial \lambda} \Big\rangle_\lambda d\lambda
+\end{align}
+We use a two step coupling approach: firstly couple the van der Waals
+interaction (stage vdw), and then couple the electrostatic interaction
+(stage ele).  During stage vdw, 21 $\lambda$ values are equally
+distributed in $[0,1]$.  During stage ele, 6 $\lambda$ values are
+equally distributed in $[0,0.05]$, while the other 20 $\lambda$ values
+are equally distributed in $[0.05, 1]$. Therefore, in total 47
+simulations are performed for all $\lambda$ values. The simulation was
+in system $\systemla$.
+
+\begin{table}
+  \centering
+  \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$ and viscosity $\eta$
+    calculated by different methods.    
+    The parenthesises in the last column show the statistical uncertainty
+    at the confidence level of 95~\%.
+    The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
+  }
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc cccc}\hline\hline
+    Method      &   $r_c$ [nm] &    $l$     &  $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+    SPME        &         1.9     &       --      &       $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+    RF          &         1.2     & --            &       $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
+    ZM          &         1.2     &       1       &       $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+    ZM          &         1.2     &       2       &       $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+    ZM          &         1.2     &       3       &       $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+    ZM          &         1.2     &       4       &       $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp3}
+\end{table}
+
+
+\subsubsection{Constant volume molar heat capacity}
+The constant volume molar heat capacity is defined by:
+\begin{align}
+  C_{v,m} = \frac{1}{k_BT N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
+\end{align}
+where $\mathcal H$ is the Hamiltonian of the system. Since constant
+volume heat capacity is a extensive thermodynamics quantity, it is
+normalized by the number molecules in the system.
+It is calculated in system $\systemsb$.
 
 \subsubsection{The dielectric constant}
 
@@ -85,54 +173,47 @@ where
 \begin{align}
   \vect M = \sum_i\boldsymbol\mu_i = \sum_{\alpha\in i} q_\alpha\vect r_\alpha
 \end{align}
-The results are listed in Tab.~\ref{tab:tmp2}
+The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:tmp3}.
 
 \begin{table}
   \centering
   \caption{A list of the dielectric constant calculated for different systems by different methods.
-    The paremeters are provided. The parenthesises in the last column show the statistical uncertanty
-    of the last two digits upto the confidence level of 95~\%.}
+    The parameters are provided. The parenthesises in the last column show the statistical uncertainty
+    of the last two digits up to the confidence level of 95~\%.}
   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}cccc rr}\hline\hline
     System & Method      &       $\alpha$ [$\textrm{nm}^{-1}$] & $r_c$ [nm] &    $l$     &       $\eps$ \\\hline
-    S1  &       ZM          &       0.00    &       1.2     &       1       &       99.8 (3.8)\\ 
-    S1  &       ZM          &       0.00    &       1.2     &       2       &       95.2 (3.6)\\ 
-    S1  &       ZM          &       0.00    &       1.2     &       3       &       93.9 (3.7)\\ 
-    S1  &       ZM          &       0.00    &       1.5     &       3       &       98.7 (3.8)\\ 
-    S1  &       ZM          &       0.00    &       1.8     &       3       &      100.7 (3.6)\\ 
-    S1  &       ZM          &       0.00    &       1.2     &       4       &       94.7 (3.6)\\
-    S1   & SPME          & 2.09  & 1.9   &       --      &       98.8 (4.0) \\
-    S1  & RF             & --  & 1.2 & -- & 60.6   (1.7) \\
-    L1  &       ZM          &       0.00    &       1.2     &       1       &       97.1 (3.2)\\ 
-    L1  &       ZM          &       0.00    &       1.2     &       2       &       95.6 (3.5)\\ 
-    L1  &       ZM          &       0.00    &       1.2     &       3       &       95.8 (4.6)\\ 
-    L1  &       ZM          &       0.00    &       1.5     &       3       &       98.0 (3.3)\\ 
-    L1  &       ZM          &       0.00    &       1.8     &       3       &       98.9 (4.2)\\ 
-    L1  &       ZM          &       0.00    &       2.1     &       3       &       98.8 (3.9)\\ 
-    L1  &       ZM          &       0.00    &       1.2     &       4       &       97.8 (3.9)\\
-   L1   & SPME          & 2.09  & 1.9   &       --      &       98.7 (3.5) \\
-    L1  & RF             & --  & 1.2 & -- & 60.8   (2.0) \\
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       1       &       99.8 (3.8)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       2       &       95.2 (3.6)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       3       &       93.9 (3.7)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.5     &       3       &       98.7 (3.8)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.8     &       3       &      100.7 (3.6)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       4       &       94.7 (3.6)\\
+    $\systemmb$   & SPME          & 2.09  & 1.9   &       --      &       98.8 (4.0) \\
+    $\systemmb$  & RF             & --  & 1.2 & -- & 60.6   (1.7) \\
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       1       &       97.1 (3.2)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       2       &       95.6 (3.5)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       3       &       95.8 (4.6)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.5     &       3       &       98.0 (3.3)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.8     &       3       &       98.9 (4.2)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       2.1     &       3       &       98.8 (3.9)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       4       &       97.8 (3.9)\\
+   $\systemlb$   & SPME          & 2.09  & 1.9   &       --      &       98.7 (3.5) \\
+    $\systemlb$  & RF             & --  & 1.2 & -- & 60.8   (2.0) \\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp2}
 \end{table}
 
-\begin{table}
+
+
+\subsubsection{Radial distribution function}
+The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
+\begin{figure}
   \centering
-  \caption{A list of the dielectric constant calculated for different systems by different methods.
-    The paremeters are provided. The parenthesises in the last column show the statistical uncertanty
-    of the last two digits upto the confidence level of 95~\%.}
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc rrrr}\hline\hline
-    Method      &   $r_c$ [nm] &    $l$     &  $\mu$ [kJ/mol] & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] & $C_v$ [J/(mol K)] & $\eps$ & $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
-    SPME        &         1.9     &       --      &       $-26.08$ (0.24) & 5.93 (0.42)   & 72.21 (0.97)  & 97.6 (3.4)  & 0.315 (0.007)\\
-    RF          &         1.2     & -- & $-26.03$   (0.32)    & 6.27 (0.11)   & 72.28 (0.81)  & 59.4  (1.3)     & 0.449 (0.020) \\
-    ZM          &         1.2     &       1       &       $-26.12$ (0.30) & 5.55 (0.02)   & 71.75 (0.89)  & 95.5 (2.4)  & 0.346 (0.006)\\ 
-    ZM          &         1.2     &       2       &       $-26.00$ (0.24) & 5.72 (0.37)   & 71.53 (0.88)  & 95.4 (2.5)  & 0.318 (0.012)\\ 
-    ZM          &         1.2     &       3       &       $-25.76$ (0.20) & 5.82 (0.12)   & 71.58 (0.88)  & 96.0 (2.7)  & 0.321 (0.008)\\ 
-    ZM          &         1.2     &       4       &       $-25.37$ (0.26) & 5.92 (0.08)   & 71.07 (0.84)  & 99.7 (2.2)  & 0.318 (0.013)\\
-    \hline\hline
-  \end{tabular*}
-  \label{tab:tmp2}
-\end{table}
+  \includegraphics[width=0.4\textwidth]{fig/result.nvt/fig-rdf.eps}  
+  \caption{The RDF of different method. The insert is a zoom-in of range 0.9 -- 1.5~nm. In the insert, the position of the cut-off (1.2~nm) is indicated by a vertical black line.}
+  \label{fig:rdf}
+\end{figure}
 
 
 \subsubsection{Kirkwood G-factor}
@@ -149,9 +230,9 @@ The Kirkwood G-factor is defined by~\cite{vanderSpoel2006origin}
 where $r_{ij}$ denotes the oxygen-oxygen distance between two water
 molecules.  It is well know that the G-factor is system size
 dependent~\cite{vanderSpoel2006origin}. Here we show the G-factor for
-both a smaller system S1 (Fig.~\ref{fig:tmp1}) and a larger system L1
-(Fig.~\ref{fig:tmp2}).  In the figures, the statistical uncertanty of
-the SPME method is denoted by the red error bar, while thoes of the
+both a smaller system $\systemmb$ (Fig.~\ref{fig:tmp1}) and a larger system $\systemlb$
+(Fig.~\ref{fig:tmp2}).  In the figures, the statistical uncertainty of
+the SPME method is denoted by the red error bar, while those of the
 other methods are essentially the same, so they are not presented for
 clarity.  In both the system, the RF method is qualitatively
 wrong. The results of the ZM method are consistent with SPME
@@ -168,7 +249,7 @@ using larger cut-off radius can substantially improve the accuracy.
   \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-3000.eps}
   \includegraphics[]{fig/result.nvt.small/fig-eps-t-10000.eps}
   \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-10000.eps}
-  \caption{The Kirkwood G-factor calculated for system S1.
+  \caption{The Kirkwood G-factor calculated for system $\systemmb$.
     % The result of different methods are compared in the left plot.
     For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
     In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
@@ -185,7 +266,7 @@ using larger cut-off radius can substantially improve the accuracy.
   \includegraphics[]{fig-gkr-conv.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-3000.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-3000.eps}
-  \caption{The Kirkwood G-factor calculated for system L1.
+  \caption{The Kirkwood G-factor calculated for system $\systemlb$.
     % The result of different methods are compared in the left plot.
     For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
     In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
@@ -202,7 +283,7 @@ using larger cut-off radius can substantially improve the accuracy.
   \includegraphics[]{fig-gkr-conv-10000.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-10000.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-10000.eps}
-  \caption{The Kirkwood G-factor calculated for system L1. Equilibriation time is 10~ns, and the production simulation time is 10~ns.
+  \caption{The Kirkwood G-factor calculated for system $\systemlb$. Equilibriation time is 10~ns, and the production simulation time is 10~ns.
     % The result of different methods are compared in the left plot.
     For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
     In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
@@ -214,6 +295,54 @@ using larger cut-off radius can substantially improve the accuracy.
 \end{figure}
 
 
+
+\subsection{Dynamical properties}
+
+\subsubsection{Diffusion constant}
+The diffusion constant is calculated from the Einstein relation:
+\begin{align}
+  D = \lim_{t\rightarrow \infty}\frac {1}{6t} \langle \vert \vect r_i(t) - \vect r_i(0)\vert^2\rangle.
+\end{align}
+In practice, the mean-square-displacement $\langle\vert \vect r_i(t) - \vect
+r_i(0)\vert^2\rangle$ is calculated, then the value is linearly fitted. The
+resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:tmp3}.
+The ZM method $l\geq 2$ is consistent with the SPME
+result, while the RF method is off. The system for simulation is $\systemsb$.
+
+\subsubsection{Viscosity}
+The viscosity is calculated from the Green-Kubo relation:
+\begin{align}
+  \eta = \frac{V}{k_BT}\int_0^\infty\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt, \quad \alpha,\beta \in \{x, y, z\}
+\end{align}
+where $\alpha$ and $\beta$ denote the directions, and
+$P_{\alpha\beta}$ denotes the off-diagonal components of the pressure
+tensor. Since we used the isotropic system setting, then it is obvious
+that $P_{xy}$, $P_{yz}$ and $P_{xz}$ are equivalent. Moreover, it has
+been pointed out that in addition $(P_{xx} - P_{yy})/2$ and $(P_{xx} -
+P_{yy})/2$ are two independent components that are equivalent to the
+first three~\cite{alfe1998first}. Therefore, the viscosity is
+calculated from the auto-correlation functions of five independent
+components, and the statistical error is estimated from the standard
+deviation of the viscosities calculated from the five components.
+
+We investigate the convergence of the integral of the auto-correlation function w.r.t.~time:
+\begin{align}
+  I_\eta(T) = \frac{V}{k_BT}\int_0^T\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt,
+\end{align}
+and plot the function $I_\eta(T) $ for all method in
+Fig.~\ref{fig:tmp4}.  It is clear the integral for the RF method
+converges at 6~ps, while the ZM method converges only in 2~ps, which
+is consistent with the SPME result.  The value of ZM $l=1$ method is
+different from the rest ZM method an SPME result.  The value
+$I_\eta(10\,\textrm{ps})$ is given in Table~\ref{tab:tmp3}.  The
+system for simulation is $\systemsb$.
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.tiny/fig-vis.eps}
+  \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method.}
+  \label{fig:tmp4}
+\end{figure}
 
 
 

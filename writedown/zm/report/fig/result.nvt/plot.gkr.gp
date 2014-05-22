@@ -16,7 +16,7 @@ set style line 142 lt 1 lw 3 pt 0 linecolor 4
 #set style line 151 lt 1 lw 3 pt 7 linecolor rgb "#bbffff"
 set style line 151 lt 1 lw 3 pt 7 linecolor rgb "#CEF6F5"
 set style line 152 lt 1 lw 3 pt 0 linecolor 5
-set style line 162 lt 1 lw 3 pt 0 lc 6
+set style line 162 lt 1 lw 3 pt 0 lc 9
 
 set origin 0,0
 set size 1,1
