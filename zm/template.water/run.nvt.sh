@@ -61,7 +61,7 @@ fi
 sed -e "/^dt /s/=.*/= $gmx_dt/g" grompp.mdp |\
 sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g" |\
 sed -e "/^ld-seed /s/=.*/= $gmx_seed/g" |\
-sed -e "/^nstcalenergy /s/=.*/= $gmx_nstenergy/g"|\
+sed -e "/^nstcalcenergy /s/=.*/= $gmx_nstenergy/g"|\
 sed -e "/^nstenergy /s/=.*/= $gmx_nstenergy/g"|\
 sed -e "/^nstxout /s/=.*/= 0/g"|\
 sed -e "/^nstvout /s/=.*/= 0/g"|\
@@ -75,7 +75,7 @@ sed -e "/^rcoulomb-switch /s/=.*/= $gmx_rcut_ele_switch/g"|\
 sed -e "/^rcoulomb /s/=.*/= $gmx_rcut_ele/g"|\
 sed -e "/^fourierspacing /s/=.*/= $gmx_pme_F_spacing/g"|\
 sed -e "/^pme_order /s/=.*/= $gmx_pme_order/g"|\
-sed -e "/^vdwtype /s/=.*/= shift/g"|\
+sed -e "/^vdw-type /s/=.*/= shift/g"|\
 sed -e "/^rvdw-switch /s/=.*/= $gmx_rcut_vdw_switch/g"|\
 sed -e "/^rvdw /s/=.*/= $gmx_rcut_vdw/g"|\
 sed -e "/^tau_t /s/=.*/= $gmx_taut/g"|\
