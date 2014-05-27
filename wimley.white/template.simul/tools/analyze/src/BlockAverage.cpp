@@ -24,7 +24,7 @@ calAvg (const std::vector<double > & vec,
   
   double sum2 = 0;
   for (unsigned i = 0; i < nBlock; ++i){
-    sum2 += (blockAverage[i] - avg) * (blockAverage[i] - avg);
+    sum2 += (blockAverage[i] - my_avg) * (blockAverage[i] - my_avg);
   }
 
   my_error_avg = sqrt (sum2 / (nBlock * (nBlock-1)));
@@ -101,7 +101,19 @@ deposite (const double & vv)
 void BlockAverage_acc::
 calculate ()
 {
+  if (nBlock == 0){
+    if (currentNDataInBlock != 0){
+      avg = currentBlockSum / double(currentNDataInBlock);
+    }
+    return;
+  }
+  
   avg = sum / double (nBlock);
+
+  if (nBlock == 1){
+    return;
+  }
+  
   error_avg = ( blockSum2 - double(nBlock) * avg * avg ) / (double(nBlock) - 1.) / double(nBlock);
   error_avg = sqrt(error_avg);
 
