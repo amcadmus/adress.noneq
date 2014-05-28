@@ -22,6 +22,7 @@ out_list=""
 
 for ii in $targets;
 do
+    test ! -d $ii/$traj_dir/ && continue
     cd $ii/$traj_dir/
     if [ ! -f $phi_file_name ] || [ ! -f $psi_file_name ]; then
 	echo "# no angle file, make them"

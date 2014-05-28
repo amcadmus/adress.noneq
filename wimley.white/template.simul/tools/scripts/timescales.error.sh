@@ -24,6 +24,7 @@ do
     echo "# doing $pjj"
     for ii in $targets;
     do
+	test ! -d $ii/$traj_dir/ && continue
 	cd $ii/$traj_dir/
 	nlines=`wc -l $phi_file_name | awk '{print $1}'`
 	half_nlines=`echo $nlines / 2 | bc`
@@ -40,6 +41,7 @@ do
     eig_test_list="$eig_test_list eig.$pjj.out"
     for ii in $targets;
     do
+	test ! -d $ii/$traj_dir/ && continue
 	cd $ii/$traj_dir/
 	mv -f $phi_file_name.orig $phi_file_name
 	mv -f $psi_file_name.orig $psi_file_name
