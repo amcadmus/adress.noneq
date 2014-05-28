@@ -1,4 +1,4 @@
-nnodes=6
+nnodes=8
 
 grep flags /proc/cpuinfo  | tail -n 1 | grep sse2 &> /dev/null
 has_sse2=$?
