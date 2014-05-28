@@ -10,7 +10,7 @@ function do_epsilon () {
     echo "# find $folder, cal epsilon"
     cd $folder
     echo "# command: $command -b $gmx_equi_skip --num-data-block 32"
-    $command -b $gmx_equi_skip --num-data-block 32 | head -n 4 > epsilon.out
+    $command -b $gmx_equi_skip --num-data-block 256 | head -n 4 > epsilon.out
     cd ..
 }
 

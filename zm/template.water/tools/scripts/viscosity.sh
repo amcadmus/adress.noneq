@@ -57,7 +57,7 @@ join integrate.all.out integrate.ymz.out > tmp.out; mv -f tmp.out integrate.all.
 
 $avl_command -f integrate.all.out  -c "2 4 6 8 10" -o avg.out
 awk '{print $1}' integrate.all.out > tmp.out
-join tmp.out avg.out > viscosity.out
+paste tmp.out avg.out > viscosity.out
 rm -f avg.out tmp.out
 
 #awk '{print $1" "($2+$4+$6+$8+$10)/5.0" "sqrt(($3*$3+$5*$5+$7*$7+$9*$9+$11*$11)/(5.0-1)/5.0)}' integrate.all.out > viscosity.out
