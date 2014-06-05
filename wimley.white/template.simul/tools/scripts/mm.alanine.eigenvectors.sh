@@ -1,24 +1,31 @@
 #!/bin/bash
 
-eig_file_name=eig.out
-if [ $# -eq 1 ]; then
-    eig_file_name=$1
-fi
-
 emma_dir=$HOME/Softs/emma
 script_dir=$(cd ${0%/*} && echo $PWD)
 base_dir=$script_dir/..
 analyze_dir=$base_dir/analyze
 assign_command=$analyze_dir/assign.dihedral
-traj_dir=gromacs.traj.npt
-phi_file_name=angaver.phi.xvg
-psi_file_name=angaver.psi.xvg
-nbins=20
+back_assign_command=$analyze_dir/recover.full.dist
+make -j -C $analyze_dir &>/dev/null
 cwd=`pwd`
-targets=`ls | grep ^simul | grep [0-9]$`
+
+if [ -f mm.alanine.parameters.sh ]; then
+    echo "# use parameters file: $cwd/mm.alanine.parameters.sh"
+    source mm.alanine.parameters.sh
+else
+    echo "# use parameters file: $script_dir/mm.alanine.parameters.sh"
+    source $script_dir/mm.alanine.parameters.sh
+fi
+
+#traj_dir=gromacs.traj.npt
+#phi_file_name=angaver.phi.xvg
+#psi_file_name=angaver.psi.xvg
+#nbins=20
+#targets=`ls | grep ^simul | grep [0-9]$`
 # lag_times="`seq 1 1 9` `seq 10 10 90` `seq 100 50 1000`"
 # lag_times="`seq 100 100 1000`"
-my_lag_time=10
+
+my_lag_time=$selected_lag_time
 out_list=""
 
 for ii in $targets;
@@ -47,7 +54,16 @@ $emma_dir/bin/mm_estimate    -i dih.simul.00*disctraj -restrictToStates largestS
 echo "# convert count matrix to transition matrix by using on Ben's scirpts"
 $script_dir/convert_cmatrix.py cmatrix.out tmatrix.out
 echo "# emma calculates the eigen vectors"
-$emma_dir/bin/mm_transitionmatrixAnalysis -inputtransitionmatrix tmatrix.out -nev 4 -eigenvalues eigen.values.out -lefteigenvectors eigen.vector.l.out -righteigenvectors eigen.vector.r.out
+$emma_dir/bin/mm_transitionmatrixAnalysis -inputtransitionmatrix tmatrix.out -nev $num_eig -eigenvalues eigen.values.out -lefteigenvectors eigen.vector.l.out -righteigenvectors eigen.vector.r.out
+echo "# convert to readable dists"
+
+for ii in `seq 1 $num_eig`;
+do
+    pii=`printf %02d $ii`
+    $back_assign_command --input eigen.vector.r.out --input-largest-set largestSet --column $ii --num-bin $nbins --output eigen.vector.r.$pii.dist
+    $back_assign_command --input eigen.vector.l.out --input-largest-set largestSet --column $ii --num-bin $nbins --output eigen.vector.l.$pii.dist
+done
+
 
 # echo "# emma calculates the leading timescales"
 # $emma_dir/bin/mm_timescales	-i $out_list -restrictToStates largestSet -prior 0.01 -timestep 1.0 -neig 4 -lagtimes $lag_times -o $eig_file_name
