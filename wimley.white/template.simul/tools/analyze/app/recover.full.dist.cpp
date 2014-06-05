@@ -141,7 +141,7 @@ int main(int argc, char * argv[])
     double xx = (ii + 0.5) * binSize + alow;
     for (unsigned jj = 0; jj < nBin; ++jj){
       double yy = (jj + 0.5) * binSize + alow;
-      fprintf (fp, "%f %f %f\n", xx, yy, dist[ii][jj]);
+      fprintf (fp, "%f %f %e\n", xx, yy, dist[ii][jj]);
     }
     fprintf (fp, "\n");
   }
