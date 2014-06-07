@@ -107,7 +107,7 @@ int main(int argc, char * argv[])
   
   while (fpname.getline(nameline, MaxLineLength)){
     if (nameline[0] == '#') continue;
-    string filename = string(nameline) + string('/') + ifile;
+    string filename = string(nameline) + string("/") + ifile;
     FILE *fp = fopen (filename.c_str(), "r");
     if (fp == NULL){
       std::cerr << "cannot open file " << filename << std::endl;
