@@ -40,7 +40,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("input,f",  po::value<std::string > (&ifile)->default_value ("disc.traj"), "the file of file names")
+      ("input,f",  po::value<std::string > (&ifile)->default_value ("traj.disc"), "the file of file names")
       ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
       ("input-largest-set,s", po::value<std::string > (&isfile)->default_value ("largestSet"), "the input file of largest set.")
       ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
@@ -108,12 +108,12 @@ int main(int argc, char * argv[])
   while (fpname.getline(nameline, MaxLineLength)){
     if (nameline[0] == '#') continue;
     string filename = string(nameline) + ifile;
-    FILE *fp = fopen (nameline, "r");
+    FILE *fp = fopen (filename.c_str(), "r");
     if (fp == NULL){
-      std::cerr << "cannot open file " << nameline << std::endl;
+      std::cerr << "cannot open file " << filename << std::endl;
       return 1;
     }
-    cout << "reading file " << nameline << endl;
+    cout << "reading file " << filename << endl;
     countFile ++;
     vector<unsigned > disc_traj;
     unsigned count_read = 0;
