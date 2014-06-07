@@ -47,7 +47,7 @@ void read_tmatrix (const string & filename,
 	exit (1);
       }
       for (unsigned ii = 0; ii < nstate; ++ii){
-	tmatrix[countLine][ii] = atof(words[ii].c_str());
+	tmatrix[countLine-1][ii] = atof(words[ii].c_str());
       }
     }
     countLine ++;

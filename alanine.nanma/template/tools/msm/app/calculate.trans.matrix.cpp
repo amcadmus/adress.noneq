@@ -34,7 +34,7 @@ int conv_multi_single (const vector<int > & indexes,
 int main(int argc, char * argv[])
 {
   std::string ofile, ifile, isfile, idfile;
-  double dt, period, start, end, tau;
+  double dt, period, begin, end, tau;
   unsigned ndataBlock;
   
   po::options_description desc ("Allow options");
@@ -47,7 +47,7 @@ int main(int argc, char * argv[])
       ("dt,t", po::value<double > (&dt)->default_value (1.0), "time step of disc traj.")
       ("tau,a", po::value<double > (&tau)->default_value (1.0), "the lag time.")
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
-      ("start,s", po::value<double > (&start)->default_value (0), "the start of using data.")
+      ("begin,b", po::value<double > (&begin)->default_value (0), "the begin of using data.")
       ("end,e", po::value<double > (&end)->default_value (0), "the end of using data.")
       ("output,o", po::value<string > (&ofile)->default_value ("tmatrix"), "the head of the output transition matrix.");
   
@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
   
   unsigned nstate = setMap.size();
   unsigned tauInt = unsigned( (tau + 0.5 * dt) / dt );
-  unsigned startInt = unsigned( (start + 0.5 * dt) / dt );
+  unsigned beginInt = unsigned( (begin + 0.5 * dt) / dt );
   unsigned endInt = unsigned( (end + 0.5 * dt) / dt );
   unsigned periodInt = unsigned ( (period + 0.5 * dt) / dt );
 
@@ -120,7 +120,7 @@ int main(int argc, char * argv[])
     unsigned tmpread;
     while (1 == fscanf(fp, "%d", &tmpread)){
       count_read ++;
-      if (count_read <= startInt) continue;
+      if (count_read <= beginInt) continue;
       if (endInt != 0 && count_read > endInt) break;
       // unsigned index = (mymap.find (tmpread)) -> first;
       // if (setMap[index] != tmpread){
@@ -129,10 +129,10 @@ int main(int argc, char * argv[])
       // }
       disc_traj.push_back (tmpread);
     }
-    if (disc_traj.size() % periodInt != 0){
-      cerr << "the size of disc traj is not a multiple of the period" << endl;
-      exit (1);
-    }
+    // if (disc_traj.size() % periodInt != 0){
+    //   cerr << "the size of disc traj is not a multiple of the period" << endl;
+    //   exit (1);
+    // }
     for (unsigned ii = 0; ii < disc_traj.size() / periodInt; ++ii){
       for (unsigned jj = 0; jj < periodInt; ++jj){
 	unsigned myPosi = ii * periodInt + jj;
@@ -168,14 +168,18 @@ int main(int argc, char * argv[])
     char filename [MaxLineLength];
     sprintf (filename, "%s.%06d.out", ofile.c_str(), ii);
     FILE * fp = fopen (filename, "w");
-    fprintf (fp, "DENSE	%d %d", nstate, nstate);
+    fprintf (fp, "DENSE	%d %d\n", nstate, nstate);
+    double maxErr = 0.;
     for (unsigned jj = 0; jj < nstate; ++jj){
       for (unsigned kk = 0; kk < nstate; ++kk){
 	fprintf (fp, "%.10e ", tmatrix[ii][jj][kk].getAvg());
+	double err = tmatrix[ii][jj][kk].getAvgError();
+	if (err > maxErr) maxErr = err;
       }
       fprintf (fp, "\n");
     }
     fclose (fp);
+    printf ("Time %f, max err %e\n", dt * ii, maxErr);
   }
     
   return 0;
