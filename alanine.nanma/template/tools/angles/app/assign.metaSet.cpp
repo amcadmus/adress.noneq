@@ -132,8 +132,8 @@ int main(int argc, char * argv[])
 
   while (fpname.getline(nameline, MaxLineLength)){
     if (nameline[0] == '#') continue;
-    string filename = string(nameline) + ifile;
-    string filenameo = string(nameline) + ofile;
+    string filename = string(nameline) + string("/") + ifile;
+    string filenameo = string(nameline) + string("/") + ofile;
     FILE *fp = fopen (filename.c_str(), "r");
     FILE *fpo = fopen (filenameo.c_str(), "w");
     cout << "reading file " << filename << endl;
