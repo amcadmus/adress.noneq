@@ -95,7 +95,7 @@ int main(int argc, char * argv[])
   po::options_description desc ("Allow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("input-dir,d",  po::value<std::string > (&idfile)->default_value ("angle.name"), "the file of dir names")
+      ("input-dir,d",  po::value<std::string > (&idfile)->default_value ("dir.name"), "the file of dir names")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("angle.dat"), "the file name to find in the dir")
       ("output,o", po::value<std::string > (&ofile)->default_value ("traj.disc"), "the output file name in the dir");
 
@@ -119,9 +119,9 @@ int main(int argc, char * argv[])
   sets.push_back (MetastableSet(setB2_psi_b, setB2_psi_e, setB2_phi_b, setB2_phi_e));
   sets.push_back (MetastableSet(setC_psi_b, setC_psi_e, setC_phi_b, setC_phi_e));
 
-  ifstream fpname (ifile.c_str());
+  ifstream fpname (idfile.c_str());
   if (!fpname){
-    std::cerr << "cannot open file " << ifile << std::endl;
+    std::cerr << "cannot open file " << idfile << std::endl;
     return 1;
   }
   char nameline [MaxLineLength];
