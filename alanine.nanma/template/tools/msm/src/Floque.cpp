@@ -35,10 +35,10 @@ fourierTransitionMatrix (const vector<vector<vector<double > > > & in)
   ffnshift = - ffnsize;
   nstate = in.front().size();
   cout << "# number DOF for Fourier transform is " << ffnmode << endl;
-  if (ffnmode > 1+int(in.size())){
-    cerr << "Fatal: asked number of mode is larger than the input number of degrees of freedoms, exit" << endl;
-    exit (1);
-  }
+  // if (ffnmode > 1+int(in.size())){
+  //   cerr << "Fatal: asked number of mode is larger than the input number of degrees of freedoms, exit" << endl;
+  //   exit (1);
+  // }
 
   // ffnsize * nstate * nstate
   vector<vector<vector<complex<double > > > > & ffin (ffTransitionMatrix);
@@ -74,10 +74,10 @@ checkFourierTransitionMatrix (const vector<vector<vector<double > > > & in)
   double dt = period / in.size();
   double omega = 2. * M_PI / period;
 
-  if (ffnmode > 1+int(in.size())){
-    cerr << "Fatal: asked number of mode is larger than the input number of degrees of freedoms, exit" << endl;
-    exit (1);
-  }
+  // if (ffnmode > 1+int(in.size())){
+  //   cerr << "Fatal: asked number of mode is larger than the input number of degrees of freedoms, exit" << endl;
+  //   exit (1);
+  // }
   if (ffTransitionMatrix.size() == 0) return;
 
   for (int jj = 0; jj < nstate; ++jj){
@@ -184,7 +184,7 @@ printFloqueMatrix (const string & filename_)
       fprintf (fp, "\n");
     }
     fclose (fp);
-  }  
+  }
 }
 
 void Floque::
@@ -228,6 +228,16 @@ printFfTransitionMatrix (const string & filename_)
     }
     fclose (fp);
   }
+
+  // for (unsigned kk = 0; kk < ffTransitionMatrix.size(); ++kk){
+  //   double sum = 0.;
+  //   for (int ii = 0; ii < nstate; ++ii){
+  //     for (int jj = 0; jj < nstate; ++jj){
+  // 	sum += abs(ffTransitionMatrix[kk][ii][jj]) * abs(ffTransitionMatrix[kk][ii][jj]);
+  //     }
+  //   }
+  //   printf ("%d %e\n", kk + ffnshift, sqrt(sum));
+  // }
 }
 
 

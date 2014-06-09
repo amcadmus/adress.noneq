@@ -55,6 +55,23 @@ void read_tmatrix (const string & filename,
   }
 }
 
+void modify_tmatrix (vector<vector<double > > & tmatrix,
+		     const double & dt)
+{
+  for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
+    for (unsigned jj = 0; jj < tmatrix[ii].size(); ++jj){
+      if (ii == jj){
+	tmatrix[ii][jj] = (tmatrix[ii][jj] - 1.) / dt;
+      }
+      else {
+	tmatrix[ii][jj] = (tmatrix[ii][jj]) / dt;
+      }
+    }
+  }
+  
+}
+
+
 void apply_trans (const vector<vector<double > > & tmatrix,
 		  const vector<double > & pin,
 		  vector<double > & pout)
@@ -114,6 +131,7 @@ int main(int argc, char * argv[])
     char filename [MaxLineLength];
     sprintf (filename, "%s.%06d.out", ifile.c_str(), ii);
     read_tmatrix (filename, tmatrix[ii], nstate);
+    modify_tmatrix (tmatrix[ii], dt);
   }
 
   vector<double > pInit ;
@@ -161,8 +179,8 @@ int main(int argc, char * argv[])
   vector<complex<double > > floqueBack;
   
   myfloque.buildFloqueMatrix (tmatrix);
-  myfloque.printFloqueMatrix ("fmatrix.out");
-  myfloque.printFfTransitionMatrix ("fftmatrix.out");
+  // myfloque.printFloqueMatrix ("fmatrix.out");
+  // myfloque.printFfTransitionMatrix ("fftmatrix.out");
   
   myfloque.convert2FloqueVector (pInit, floquePInit);
   printf ("# size of floquePInit is %d, size of pInit is %d\n", floquePInit.size(), pInit.size());
@@ -172,22 +190,21 @@ int main(int argc, char * argv[])
   int nsteps = (end + 0.5 * inteDt) / inteDt;
   int printFeq = (dt + 0.5 * inteDt) / inteDt;
   if (printFeq == 0) printFeq = 1;
-  printFeq = 1;
   
-  for (int ii = 0; ii < nsteps; ++ii){
+  for (int ii = 0; ii < nsteps+1; ++ii){
     if (ii % printFeq == 0){
       printf ("%f ", ii * inteDt);
       myfloque.convert2NormalVector (floquePCur, ii * inteDt, floqueBack);
-      // for (int jj = 0; jj < int(floqueBack.size()); ++jj){
-      // 	printf ("%e  ", floqueBack[jj].real());
-      // }  
-      // for (int jj = 0; jj < int(floqueBack.size()); ++jj){
-      // 	printf ("%.3e  ", floqueBack[jj].imag());
-      // }
+      for (int jj = 0; jj < int(floqueBack.size()); ++jj){
+	printf ("%e  ", floqueBack[jj].real());
+      }
+      for (int jj = 0; jj < int(floqueBack.size()); ++jj){
+	printf ("%.3e  ", floqueBack[jj].imag());
+      }
       // for (int jj = 0; jj < int(floquePCur.size()); ++jj){
       // 	cout << floquePCur[jj] << " ";
       // }
-      // printf ("\n");
+      printf ("\n");
     }
     vector<complex<double > > tmp;
     myfloque.applyFloqueMatrix (floquePCur, tmp);
@@ -195,7 +212,7 @@ int main(int argc, char * argv[])
     //   cout << tmp[jj] << " ";
     // }
     // printf ("\n");
-    printf ("%e %e\n", norm_l2 (floquePCur), norm_l2(tmp));
+    // printf ("%e %e\n", norm_l2 (floquePCur), norm_l2(tmp));
     for (int jj = 0; jj < int(tmp.size()); ++jj){
       floquePCur[jj] = floquePCur[jj] + inteDt * tmp[jj];
     }
