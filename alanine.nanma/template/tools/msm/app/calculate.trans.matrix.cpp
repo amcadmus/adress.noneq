@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
       ("begin,b", po::value<double > (&begin)->default_value (0), "the begin of using data.")
       ("end,e", po::value<double > (&end)->default_value (0), "the end of using data.")
-      ("output-init-prob", po::value<string > (&opfile)->default_value ("init.prob.out"), "the output of the initial probability.");
+      ("output-init-prob", po::value<string > (&opfile)->default_value ("init.prob.out"), "the output of the initial probability.")
       ("output,o", po::value<string > (&ofile)->default_value ("tmatrix"), "the head of the output transition matrix.");
   
 
@@ -202,11 +202,11 @@ int main(int argc, char * argv[])
     printf ("Time %f, max err %e\n", dt * ii, maxErr);
   } 
 
-  FILE * fp = fopen (opfile.c_str(), "w");
+  FILE * fpo = fopen (opfile.c_str(), "w");
   for (unsigned kk = 0; kk < nstate; ++kk){
-    fprintf (fp, "%e\n", initP[kk].getAvg());
+    fprintf (fpo, "%e\n", initP[kk].getAvg());
   }
-  fclose (fp);
+  fclose (fpo);
   
   return 0;
 }
