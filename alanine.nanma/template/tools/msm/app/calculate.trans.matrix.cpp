@@ -119,7 +119,7 @@ int main(int argc, char * argv[])
       std::cerr << "cannot open file " << filename << std::endl;
       return 1;
     }
-    cout << "reading file " << filename << endl;
+    // cout << "reading file " << filename << endl;
     countFile ++;
     vector<unsigned > disc_traj;
     unsigned count_read = 0;
