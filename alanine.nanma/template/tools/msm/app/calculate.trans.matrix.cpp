@@ -139,19 +139,19 @@ int main(int argc, char * argv[])
     //   cerr << "the size of disc traj is not a multiple of the period" << endl;
     //   exit (1);
     // }
+    {
+      unsigned myIdx = mymap.find(disc_traj[0]) -> first;
+      for (unsigned kk = 0; kk < nstate; ++kk){
+	if (myIdx == kk){
+	  initP[kk].deposite (1.);
+	}
+	else {
+	  initP[kk].deposite (0.);
+	}
+      }
+    }
     for (unsigned ii = 0; ii < disc_traj.size() / periodInt; ++ii){
       for (unsigned jj = 0; jj < periodInt; ++jj){
-	if (ii == 0 && jj == 0){
-	  unsigned myIdx = mymap.find(disc_traj[0]) -> first;
-	  for (unsigned kk = 0; kk < nstate; ++kk){
-	    if (myIdx == kk){
-	      initP[kk].deposite (1.);
-	    }
-	    else {
-	      initP[kk].deposite (0.);
-	    }
-	  }
-	}
 	unsigned myPosi = ii * periodInt + jj;
 	unsigned targetPosi = ii * periodInt + jj + tauInt;
 	if (targetPosi < disc_traj.size()){
