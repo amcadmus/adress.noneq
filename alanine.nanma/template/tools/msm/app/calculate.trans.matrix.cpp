@@ -33,7 +33,7 @@ int conv_multi_single (const vector<int > & indexes,
 
 int main(int argc, char * argv[])
 {
-  std::string ofile, ifile, isfile, idfile;
+  std::string ofile, ifile, isfile, idfile, opfile;
   double dt, period, begin, end, tau;
   unsigned ndataBlock;
   
@@ -49,6 +49,7 @@ int main(int argc, char * argv[])
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
       ("begin,b", po::value<double > (&begin)->default_value (0), "the begin of using data.")
       ("end,e", po::value<double > (&end)->default_value (0), "the end of using data.")
+      ("output-init-prob", po::value<string > (&opfile)->default_value ("init.prob.out"), "the output of the initial probability.");
       ("output,o", po::value<string > (&ofile)->default_value ("tmatrix"), "the head of the output transition matrix.");
   
 
@@ -96,6 +97,11 @@ int main(int argc, char * argv[])
       }
     }
   }
+  vector<BlockAverage_acc > initP (nstate);
+  for (unsigned kk = 0; kk < nstate; ++kk){
+    initP[kk].reinit (ndataBlock);
+  }
+  
   
   ifstream fpname (idfile.c_str());
   if (!fpname){
@@ -135,6 +141,17 @@ int main(int argc, char * argv[])
     // }
     for (unsigned ii = 0; ii < disc_traj.size() / periodInt; ++ii){
       for (unsigned jj = 0; jj < periodInt; ++jj){
+	if (ii == 0 && jj == 0){
+	  unsigned myIdx = mymap.find(disc_traj[0]) -> first;
+	  for (unsigned kk = 0; kk < nstate; ++kk){
+	    if (myIdx == kk){
+	      initP[kk].deposite (1.);
+	    }
+	    else {
+	      initP[kk].deposite (0.);
+	    }
+	  }
+	}
 	unsigned myPosi = ii * periodInt + jj;
 	unsigned targetPosi = ii * periodInt + jj + tauInt;
 	if (targetPosi < disc_traj.size()){
@@ -163,6 +180,9 @@ int main(int argc, char * argv[])
       }
     }
   }
+  for (unsigned kk = 0; kk < nstate; ++kk){
+    initP[kk].calculate();
+  }
 
   for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
     char filename [MaxLineLength];
@@ -180,7 +200,13 @@ int main(int argc, char * argv[])
     }
     fclose (fp);
     printf ("Time %f, max err %e\n", dt * ii, maxErr);
+  } 
+
+  FILE * fp = fopen (opfile.c_str(), "w");
+  for (unsigned kk = 0; kk < nstate; ++kk){
+    fprintf (fp, "%e\n", initP[kk].getAvg());
   }
-    
+  fclose (fp);
+  
   return 0;
 }
