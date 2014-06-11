@@ -51,8 +51,11 @@ public:
 			     vector<complex<double > > & out);
   void applyFloqueMatrix (const vector<complex<double > > & in,
 			  vector<complex<double > > & out);
+public:
   void printFloqueMatrix (const string & filename);
-  void printFfTransitionMatrix (const string & filename_);
+  void printFloqueVector (const string & filename,
+			  const vector<complex<double > > & vec );
+  void printFfTransitionMatrix (const string & filename);
 }
     ;
 

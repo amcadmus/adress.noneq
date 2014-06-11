@@ -188,6 +188,26 @@ printFloqueMatrix (const string & filename_)
 }
 
 void Floque::
+printFloqueVector (const string & filename_,
+		   const vector<complex<double > > & vec )
+{
+  {
+    string filename (filename_);  
+    FILE * fp = fopen (filename.c_str(), "w");
+    if (fp == NULL){
+      cerr << "cannot open file " << filename << endl;
+      return ;
+    }
+    for (int ii = 0; ii < floqueDOF; ++ii){
+      fprintf (fp, "%e  %e", vec[ii].real(), vec[ii].imag());
+      fprintf (fp, "\n");
+    }
+    fclose (fp);
+  }
+}
+
+
+void Floque::
 printFfTransitionMatrix (const string & filename_)
 {
   for (unsigned kk = 0; kk < ffTransitionMatrix.size(); ++kk)

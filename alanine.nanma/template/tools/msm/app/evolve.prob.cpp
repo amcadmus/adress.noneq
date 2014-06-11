@@ -144,16 +144,16 @@ int main(int argc, char * argv[])
 
 
   vector<double > pcur = init_p;
-  for (unsigned ii = 0; ii < endInt; ++ii){
+  for (unsigned ii = 0; ii < endInt+1; ++ii){
+    printf ("%f ", ii * dt);
+    for (unsigned jj = 0; jj < nstate; ++jj){
+      printf ("%e ", pcur[jj]);
+    }
+    printf ("\n");
     unsigned posi = ii % periodInt;
     vector <double > pnew;
     apply_trans (tmatrix[posi], pcur, pnew);
     pcur = pnew;
-    printf ("%f ", ii * dt);
-    for (unsigned ii = 0; ii < nstate; ++ii){
-      printf ("%e ", pcur[ii]);
-    }
-    printf ("\n");
   }
   
   return 0;

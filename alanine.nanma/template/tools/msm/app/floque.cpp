@@ -179,7 +179,7 @@ int main(int argc, char * argv[])
   vector<complex<double > > floqueBack;
   
   myfloque.buildFloqueMatrix (tmatrix);
-  // myfloque.printFloqueMatrix ("fmatrix.out");
+  myfloque.printFloqueMatrix ("fmatrix.out");
   // myfloque.printFfTransitionMatrix ("fftmatrix.out");
   
   myfloque.convert2FloqueVector (pInit, floquePInit);
@@ -205,6 +205,9 @@ int main(int argc, char * argv[])
       // 	cout << floquePCur[jj] << " ";
       // }
       printf ("\n");
+      if (ii == nsteps){
+	myfloque.printFloqueVector ("fvector.last.out", floquePCur);
+      }
     }
     vector<complex<double > > tmp;
     myfloque.applyFloqueMatrix (floquePCur, tmp);
