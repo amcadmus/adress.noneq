@@ -136,7 +136,7 @@ int main(int argc, char * argv[])
     string filenameo = string(nameline) + string("/") + ofile;
     FILE *fp = fopen (filename.c_str(), "r");
     FILE *fpo = fopen (filenameo.c_str(), "w");
-    cout << "reading file " << filename << endl;
+    // cout << "reading file " << filename << endl;
     if (fp == NULL){
       std::cerr << "cannot open file " << filename << std::endl;
       return 1;
