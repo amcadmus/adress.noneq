@@ -26,12 +26,14 @@ fi
 #rm -f success.dir.name
 touch angle.name gxs.name success.dir.name
 
-targets=`awk '{print $1}' $pert_equi_result/equi.frame | head -n $pert_num_conf_use`
+# targets=`awk '{print $1}' $pert_equi_result/equi.frame | head -n $pert_num_conf_use`
+targets=`seq 0 $(($pert_num_conf_use-1))`
+nlines_equi_frame=`wc  $pert_equi_result/equi.frame | awk '{print $1}'`
 
 pert_main_dir=result.perts
 for i in $targets;
 do
-    count=$i
+    count=`printf %06d $i`
     runid=`echo "$count % $pert_parallel_num_pro" | bc`
     test $runid -ne $pert_parallel_my_id && continue
     test ! -d $pert_main_dir && mkdir -p $pert_main_dir
@@ -50,7 +52,9 @@ do
     cd $my_dir
     rm -f run.log
     set_parameters_pert grompp.mdp
-    start_time=`grep $count $pert_equi_result/equi.frame | awk '{print $2}'`
+    count_1=`echo "($count % $nlines_equi_frame) + 1" | bc `
+    count_1=`printf %06d $count_1`
+    start_time=`grep "^$count_1" $pert_equi_result/equi.frame | awk '{print $2}'`
     echo "# run with command `which grompp`" &> run.log
     $grompp_command -t $pert_equi_result/traj.trr -time $start_time &> run.log
     if [ $? -ne 0 ]; then
@@ -71,7 +75,8 @@ do
 
     tmpid=`echo "$count - $pert_parallel_num_pro" | bc -l`
     echo "tmpid is $tmpid"
-    if [ $tmpid -lt $pert_parallel_num_pro ]; then
+#    if [ $tmpid -lt $pert_parallel_num_pro ]; then
+    if [ $count -eq 0 ]; then
 	cp -a ..//pert.$count ..//backup.pert.$count
     fi
     rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log
