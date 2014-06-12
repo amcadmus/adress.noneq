@@ -201,8 +201,8 @@ int main(int argc, char * argv[])
       for (unsigned jj = 0; jj < nstate; ++jj){
 	sum += cpTmatrix[ii][jj][kk];
       }
-      if (sum != 1){
-	if (sum == 0){
+      if (fabs(sum - 1) > 1e-12){
+	if (fabs(sum) < 1e-12){
 	  cpTmatrix[ii][kk][kk] = 1.;
 	}
 	else {
