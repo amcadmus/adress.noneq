@@ -36,6 +36,7 @@ int main(int argc, char * argv[])
   std::string ofile, ifile, isfile, idfile, opfile;
   double dt, period, begin, end, tau;
   unsigned ndataBlock;
+  double maxRelError;
   
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -44,6 +45,7 @@ int main(int argc, char * argv[])
       ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
       ("input-largest-set,s", po::value<std::string > (&isfile)->default_value ("largestSet"), "the input file of largest set.")
       ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
+      ("max-rel-error,m", po::value<double > (&maxRelError)->default_value (2e-1), "num data in each block.")
       ("dt,t", po::value<double > (&dt)->default_value (1.0), "time step of disc traj.")
       ("tau,a", po::value<double > (&tau)->default_value (1.0), "the lag time.")
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
@@ -190,16 +192,30 @@ int main(int argc, char * argv[])
     FILE * fp = fopen (filename, "w");
     fprintf (fp, "DENSE	%d %d\n", nstate, nstate);
     double maxErr = 0.;
+    double relErr = 0.;
     for (unsigned jj = 0; jj < nstate; ++jj){
       for (unsigned kk = 0; kk < nstate; ++kk){
-	fprintf (fp, "%.10e ", tmatrix[ii][jj][kk].getAvg());
-	double err = tmatrix[ii][jj][kk].getAvgError();
-	if (err > maxErr) maxErr = err;
+	double value = tmatrix[ii][jj][kk].getAvg();
+	double error = tmatrix[ii][jj][kk].getAvgError();
+	if (value != 0){
+	  if (error / value > maxRelError){
+	    value = 0.;
+	    error = 0.;
+	    cout << "set zero for count " << ii << " state "  << jj << " " << kk << endl;
+	  }
+	}
+	fprintf (fp, "%.10e ", value);
+	if (error > maxErr) {
+	  maxErr = error ;
+	}
+	if (error / value > relErr){
+	  relErr = error / value;
+	}
       }
       fprintf (fp, "\n");
     }
     fclose (fp);
-    printf ("Time %f, max err %e\n", dt * ii, maxErr);
+    printf ("Time %f, max err %e, max rel err %e\n", dt * ii, maxErr, relErr);
   } 
 
   FILE * fpo = fopen (opfile.c_str(), "w");
