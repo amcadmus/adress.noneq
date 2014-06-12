@@ -4,7 +4,7 @@ source parameters.sh
 source functions.sh
 
 make -C tools/angles/ makedir
-make -C tools/angles/ clean
+# make -C tools/angles/ clean
 make -C tools/angles/ -j8
 
 cwd=`pwd`
