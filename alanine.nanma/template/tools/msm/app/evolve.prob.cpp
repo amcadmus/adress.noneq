@@ -82,7 +82,7 @@ int main(int argc, char * argv[])
       ("dt,t", po::value<double > (&dt)->default_value (1.0), "time step of disc traj.")
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
       ("end,e", po::value<double > (&end)->default_value (400.), "the end of using data.")
-      ("output,o", po::value<string > (&ofile)->default_value ("prob.out"), "the output of prob.");
+      ("output,o", po::value<string > (&ofile)->default_value ("cg.prob.out"), "the output of prob.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -141,19 +141,27 @@ int main(int argc, char * argv[])
     // }
   }  
 
+  FILE * fpo ;
+  if ((fpo = fopen(ofile.c_str(), "w")) == NULL) {
+    std::cerr << "ERROR: errno=" << 1 << " opening file"
+    << " at " << __FILE__ << ":" << __LINE__
+    << std::endl << std::flush;
+    exit(1);
+  }
 
   vector<double > pcur = init_p_tmp;
   for (unsigned ii = 0; ii < endInt+1; ++ii){
-    printf ("%f ", ii * dt);
+    fprintf (fpo, "%f ", ii * dt);
     for (unsigned jj = 0; jj < nstate; ++jj){
-      printf ("%e ", pcur[jj]);
+      fprintf (fpo, "%e ", pcur[jj]);
     }
-    printf ("\n");
+    fprintf (fpo, "\n");
     unsigned posi = ii % periodInt;
     vector <double > pnew;
     apply_trans (tmatrix[posi], pcur, pnew);
     pcur = pnew;
   }
+  fclose (fpo);
   
   return 0;
 }
