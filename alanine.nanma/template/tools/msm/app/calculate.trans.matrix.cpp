@@ -185,6 +185,32 @@ int main(int argc, char * argv[])
   for (unsigned kk = 0; kk < nstate; ++kk){
     initP[kk].calculate();
   }
+  vector<vector<vector<double > > > cpTmatrix(tmatrix.size());
+  for (unsigned ii = 0; ii < cpTmatrix.size(); ++ii){
+    cpTmatrix[ii].resize(nstate);
+    for (unsigned jj = 0; jj < nstate; ++jj){
+      cpTmatrix[ii][jj].resize(nstate);
+      for (unsigned kk = 0; kk < nstate; ++kk){
+	cpTmatrix[ii][jj][kk] = tmatrix[ii][jj][kk].getAvg();
+      }
+    }
+  }
+  for (unsigned ii = 0; ii < cpTmatrix.size(); ++ii){
+    for (unsigned kk = 0; kk < nstate; ++kk){
+      double sum = 0;
+      for (unsigned jj = 0; jj < nstate; ++jj){
+	sum += cpTmatrix[ii][jj][kk];
+      }
+      if (sum != 1){
+	if (sum == 0){
+	  cpTmatrix[ii][kk][kk] = 1.;
+	}
+	else {
+	  cerr << "sum is " << sum << " problematic" << endl;
+	}
+      }
+    }
+  }
 
   for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
     char filename [MaxLineLength];
@@ -195,7 +221,7 @@ int main(int argc, char * argv[])
     double relErr = 0.;
     for (unsigned jj = 0; jj < nstate; ++jj){
       for (unsigned kk = 0; kk < nstate; ++kk){
-	double value = tmatrix[ii][jj][kk].getAvg();
+	double value = cpTmatrix[ii][jj][kk];
 	double error = tmatrix[ii][jj][kk].getAvgError();
 	if (value != 0){
 	  if (error / value >= maxRelError){
