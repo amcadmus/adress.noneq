@@ -57,6 +57,7 @@ int main(int argc, char * argv[])
 	fprintf (fp, "%.3f\t", frame[ii][dd]);
       }
     }
+    fprintf (fp, "\n");
   }
   fclose (fp);
   
