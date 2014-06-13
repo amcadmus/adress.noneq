@@ -1,7 +1,7 @@
 # method of run:
 run_method=atom.inhomo.sd
 gro_dir=gromacs.conf.box.002.70
-nthreads=24
+nthreads=8
 
 # # productive equilibrium run settings
 # long_equi_warm_time=200		# ps
@@ -21,7 +21,7 @@ equi_seed=`date +%s`		#
 
 # non-equilibrium settings
 pert_equi_result="$HOME/group_storage/run.result.equi.box02.70.more/result.equi/"
-pert_num_conf_use=100000	#
+pert_num_conf_use=20000	#
 pert_mode=2			# 1: relax, 2: cos wave
 pert_strength=1.0		# nm/ps velocity
 pert_warm_time=40		# ps 1: warm time, 2: periodicity

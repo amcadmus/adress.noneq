@@ -12,8 +12,8 @@ echo "#PBS -N $jobname"				>> submit.sh
 echo "#PBS -o allegro.out"			>> submit.sh
 echo "#PBS -e allegro.err"			>> submit.sh
 echo "#PBS -M han.wang@fu-berlin.de"		>> submit.sh
-echo "#PBS -l walltime=24:00:00"		>> submit.sh
-echo "#PBS -l nodes=1:ppn=$nthreads:Intel"	>> submit.sh
+echo "#PBS -l walltime=70:00:00"		>> submit.sh
+echo "#PBS -l nodes=1:ppn=$nthreads"		>> submit.sh
 echo "#PBS -l pmem=1000mb"			>> submit.sh
 
 echo "cd $cwd"					>> submit.sh

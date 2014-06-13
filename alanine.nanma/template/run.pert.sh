@@ -5,7 +5,7 @@ source functions.sh
 
 make -C tools/angles/ makedir
 # make -C tools/angles/ clean
-make -C tools/angles/ -j8
+make -C tools/angles/ -j$nthreads
 
 cwd=`pwd`
 # prepare files
@@ -55,12 +55,18 @@ do
     count_1=`echo "($count % $nlines_equi_frame) + 1" | bc `
     count_1=`printf %06d $count_1`
     start_time=`grep "^$count_1" $pert_equi_result/equi.frame | awk '{print $2}'`
-    echo "# run with command `which grompp`" &> run.log
+    echo "# run with command `which grompp`"
     $grompp_command -t $pert_equi_result/traj.trr -time $start_time &> run.log
     if [ $? -ne 0 ]; then
 	echo "failed at grompp exit"; exit
     fi
-    echo "# run with command `which mdrun`" &> run.log
+    echo "# tune pme with command `which g_pme_error`"
+    g_pme_error -tune yes -self 1e-2 -seed `date +%s` -nice 0 > error.out 2> /dev/null
+    if [ $? -ne 0 ]; then
+	echo "failed at g_pme_error exit"; exit
+    fi	
+    mv -f tuned.tpr topol.tpr
+    echo "# run with command `which mdrun`"
     $mdrun_command &> run.log
     if [ $? -ne 0 ]; then
 	echo "failed at mdrun exit"; exit
@@ -79,7 +85,7 @@ do
     if [ $count -eq 0 ]; then
 	cp -a ..//pert.$count ..//backup.pert.$count
     fi
-    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log
+    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log confout.gro
     
     cd $cwd
     sleep 1
