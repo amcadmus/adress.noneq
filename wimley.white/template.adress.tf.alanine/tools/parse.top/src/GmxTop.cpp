@@ -722,16 +722,15 @@ parseType (const string & fname,
     if (keys[ii] == "atomtypes"){
       for (unsigned jj = 0; jj < lines[ii].size(); ++jj){
 	StringOperation::split (lines[ii][jj], words);
-	if (words.size() < 8) die_wrong_format (__FILE__, __LINE__);
+	if (words.size() < 7) die_wrong_format (__FILE__, __LINE__);
 	gmx_atomtypes_item tmp;
 	tmp.name = words[0];
-	tmp.alias = words[1];
-	tmp.atom_num = atoi(words[2].c_str());
-	tmp.mass = atof(words[3].c_str());
-	tmp.charge = atof(words[4].c_str());
-	tmp.ptype = string(words[5].c_str());
-	tmp.c6 = atof(words[6].c_str());
-	tmp.c12 = atof(words[7].c_str());
+	tmp.atom_num = atoi(words[1].c_str());
+	tmp.mass = atof(words[2].c_str());
+	tmp.charge = atof(words[3].c_str());
+	tmp.ptype = string(words[4].c_str());
+	tmp.c6 = atof(words[5].c_str());
+	tmp.c12 = atof(words[6].c_str());
 	type.atomtypes.push_back (tmp);
       }
     }
