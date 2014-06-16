@@ -35,7 +35,7 @@ fi
 fi
 
 if echo "$gmx_thermostat" | grep sd &> /dev/null; then
-    gmx_integrator=sd
+    gmx_integrator=$gmx_thermostat
     gmx_tcouple=no
 else if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
     gmx_integrator=md
