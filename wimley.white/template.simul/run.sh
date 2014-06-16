@@ -96,6 +96,7 @@ sed -e "/^vdw-type /s/=.*/= $gmx_vdw_type/g"|\
 sed -e "/^rvdw-switch /s/=.*/= $gmx_rcut_vdw_switch/g"|\
 sed -e "/^rvdw /s/=.*/= $gmx_rcut_vdw/g"|\
 sed -e "/^tau-t /s/=.*/= $gmx_taut/g"|\
+sed -e "/^tau_t /s/=.*/= $gmx_taut/g"|\
 sed -e "/^tau-p /s/=.*/= $gmx_taup/g"|\
 sed -e "/^Pcoupl /s/=.*/= no/g"|\
 sed -e "/^epsilon-rf /s/=.*/= $gmx_e_rf/g"|\
@@ -104,6 +105,7 @@ sed -e "/^couple-moltype /s/=.*/= /g"|\
 sed -e "/^integrator /s/=.*/= $gmx_integrator/g"|\
 sed -e "/^Tcoupl /s/=.*/= $gmx_tcouple/g"|\
 sed -e "/^DispCorr /s/=.*/= EnerPres/g"|\
+sed -e "/^userreal1 /s/=.*/= $gmx_local_sd_range/g"|\
 sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmp.mdp
 mv -f tmp.mdp grompp.mdp
 

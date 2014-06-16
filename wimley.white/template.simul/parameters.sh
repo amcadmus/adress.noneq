@@ -27,6 +27,7 @@ gmx_taut=1.0
 gmx_npt=yes
 gmx_taup=2.0
 gmx_e_rf=80.0
+gmx_local_sd_range=0.0
 
 zm_l=3
 zm_alpha=0.0
