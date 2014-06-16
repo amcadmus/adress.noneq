@@ -80,8 +80,8 @@ Tcoupl                   = no
 ; Groups to couple separately
 tc-grps                  = System
 ; Time constant (ps) and reference temperature (K)
-tau-t                    = 0.1
-ref-t                    = 300
+tau_t                    = 0.1
+ref_t                    = 300
 ; Pressure coupling     
 Pcoupl                   = no
 Pcoupltype               = isotropic
@@ -112,8 +112,8 @@ adress_ex_forcecap       = 0
 adress_interface_correction = thermoforce
 adress_site              = com
 adress_reference_coords  = 3.75000000000000000000 1.86035500000000000000 1.86035500000000000000
-adress_tf_grp_names      = CMW CMK CML
-adress_cg_grp_names      = CMW CMK CML
+adress_tf_grp_names      = CMW
+adress_cg_grp_names      = CMW
 adress_do_hybridpairs    = no
 
 ; User defined thingies

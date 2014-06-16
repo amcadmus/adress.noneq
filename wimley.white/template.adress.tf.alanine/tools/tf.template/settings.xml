@@ -56,7 +56,7 @@
       <table_end>4.75000000000000000000</table_end>
     </gromacs>
     <!-- these files are copied for each new run -->
-    <filelist>ions.itp grompp.mdp topol.top table.xvg tablep.xvg index.ndx table_CMW_CMW.xvg table_CMK_CMK.xvg table_CML_CML.xvg table_CMW_CMK.xvg table_CMW_CML.xvg table_CMK_CML.xvg tabletf_CMK.xvg tabletf_CML.xvg</filelist>
+    <filelist>grompp.mdp topol.top table.xvg tablep.xvg index.ndx table_CMW_CMW.xvg</filelist>
     <!-- do so many iterations -->
     <iterations_max>20</iterations_max>
     <!-- ibi: inverse biltzmann imc: inverse monte carlo tf: thermody force -->
