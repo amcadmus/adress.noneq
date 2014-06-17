@@ -10,6 +10,7 @@ script_dir=$(cd ${0%/*} && echo $PWD)
 base_dir=$script_dir/..
 angle_dir=$base_dir/angles
 msm_dir=$base_dir/msm
+cwd=`pwd`
 
 if [ -f msm.parameters.sh ]; then
     echo "# use parameters file: $cwd/msm.parameters.sh"
