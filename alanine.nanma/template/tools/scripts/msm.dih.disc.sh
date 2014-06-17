@@ -57,7 +57,8 @@ rm -f trash.tmatrix.dih*
 echo "# evlove the probability with command: "
 echo "# $msm_dir/evolve.prob --input tmatrix.dih --input-prob prob.init.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out"
 $msm_dir/evolve.prob --input tmatrix.dih --input-prob prob.init.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out
-echo "# recover 5 sets cg traj"
+echo "# recover 5 sets cg traj with command:"
+echo "# $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out"
 $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out
 
 echo "# calculate the floque matrix"
