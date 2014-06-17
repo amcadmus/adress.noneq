@@ -159,7 +159,9 @@ int main(int argc, char * argv[])
     unsigned posi = ii % periodInt;
     vector <double > pnew;
     apply_trans (tmatrix[posi], pcur, pnew);
-    pcur = pnew;
+    for (unsigned jj = 0; jj < pcur.size(); ++jj){
+      pcur[jj] = pcur[jj] + dt * pnew[jj];
+    }
   }
   fclose (fpo);
   
