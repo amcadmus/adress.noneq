@@ -194,10 +194,19 @@ int main(int argc, char * argv[])
     double maxErr = 0.;
     double relErr = 0.;
     for (unsigned jj = 0; jj < nstate; ++jj){
+      double sum = 0.;
       for (unsigned kk = 0; kk < nstate; ++kk){
-	double value = (tmatrix[ii][jj][kk].getAvgError() - tmatrix[ii][kk][jj].getAvgError()) / tau;
-	double error = sqrt(tmatrix[ii][jj][kk].getAvgError() * tmatrix[ii][jj][kk].getAvgError() +
-			    tmatrix[ii][kk][jj].getAvgError() * tmatrix[ii][kk][jj].getAvgError() ) / tau;
+	sum += tmatrix[ii][kk][jj].getAvgError();
+      }
+      for (unsigned kk = 0; kk < nstate; ++kk){
+	double value, error;
+	if (kk != jj){
+	  value = (tmatrix[ii][jj][kk].getAvgError()) / tau;
+	}
+	else {
+	  value = (tmatrix[ii][jj][kk].getAvgError() - sum) / tau;
+	}
+	error = tmatrix[ii][jj][kk].getAvgError() / tau;
 	if (value != 0){
 	  if (error / value >= maxRelError){
 	    // cout << "set zero for count " << ii << " state "  << jj << " " << kk << " value " << value <<  " error " << error << " rel " << error / value  << endl;
