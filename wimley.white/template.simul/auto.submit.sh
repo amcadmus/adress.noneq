@@ -48,13 +48,13 @@ do
 	    fi
 	else
 	    mydate=`date`
-	    echo "checked at $mydate, job is either Idel or Running, should wait, sleep 240s"
-	    sleep 240
+	    echo "checked at $mydate, job is either Idel or Running, should wait, sleep 180s"
+	    sleep 180
 	fi
     fi
     njobs=`qstat  | grep wangh | wc -l | awk '{print $1}'`
-    if [ $njobs -gt 10 ]; then
-	echo "$njobs, more than 10, something may be wrong, exit"
+    if [ $njobs -gt 30 ]; then
+	echo "$njobs, more than 30, something may be wrong, exit"
 	exit
     fi
 done
