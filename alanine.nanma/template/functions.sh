@@ -38,6 +38,10 @@ function set_parameters_equi () {
 
 function set_parameters_pert () {
     file=$1
+    grep nstcalcenergy $file &> /dev/null
+    if [ $? -eq 1 ]; then
+	echo "nstcalcenergy=1" >> $file
+    fi
     pert_nstep=`echo "$pert_time / $pert_dt" | bc -l | cut -d '.' -f 1`
     pert_xtcout_feq=`echo "$pert_frame_feq / $pert_dt" | bc -l | cut -d '.' -f 1`
     pert_xvout_feq=$pert_xtcout_feq
@@ -53,6 +57,8 @@ function set_parameters_pert () {
     sed -e "/^nstvout/s/=.*/= $pert_xvout_feq/g" |\
     sed -e "/^nstfout/s/=.*/= 0/g" |\
     sed -e "/^nstenergy/s/=.*/= $pert_energy_feq/g" |\
+    sed -e "/^nstcalcenergy/s/=.*/= $pert_energy_feq/g" |\
+    sed -e "/^nstcomm/s/=.*/= $pert_energy_feq/g" |\
     sed -e "/^userreal1/s/=.*/= $pert_noSdRange/g" |\
     sed -e "/^E-x /s/=.*/= 1 $pert_strength 0.0/g" |\
     sed -e "/^ld-seed/s/=.*/= `date +%s`/g" |\
