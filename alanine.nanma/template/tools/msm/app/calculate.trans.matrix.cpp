@@ -186,6 +186,33 @@ int main(int argc, char * argv[])
     initP[kk].calculate();
   }
 
+  vector<vector<vector<double > > > cpTmatrix(tmatrix.size());
+  for (unsigned ii = 0; ii < cpTmatrix.size(); ++ii){
+    cpTmatrix[ii].resize(nstate);
+    for (unsigned jj = 0; jj < nstate; ++jj){
+      cpTmatrix[ii][jj].resize(nstate);
+      for (unsigned kk = 0; kk < nstate; ++kk){
+	cpTmatrix[ii][jj][kk] = tmatrix[ii][jj][kk].getAvg();
+      }
+    }
+  }
+  for (unsigned ii = 0; ii < cpTmatrix.size(); ++ii){
+    for (unsigned kk = 0; kk < nstate; ++kk){
+      double sum = 0;
+      for (unsigned jj = 0; jj < nstate; ++jj){
+	sum += cpTmatrix[ii][jj][kk];
+      }
+      if (fabs(sum - 1) > 1e-12){
+	if (fabs(sum) < 1e-12){
+	  cpTmatrix[ii][kk][kk] = 1.;
+	}
+	else {
+	  cerr << "sum is " << sum << " problematic" << endl;
+	}
+      }
+    }
+  }
+  
   for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
     char filename [MaxLineLength];
     sprintf (filename, "%s.%06d.out", ofile.c_str(), ii);
@@ -196,15 +223,18 @@ int main(int argc, char * argv[])
     for (unsigned jj = 0; jj < nstate; ++jj){
       double sum = 0.;
       for (unsigned kk = 0; kk < nstate; ++kk){
-	sum += tmatrix[ii][kk][jj].getAvgError();
+	// sum += tmatrix[ii][kk][jj].getAvgError();
+	sum += cpTmatrix[ii][kk][jj];
       }
       for (unsigned kk = 0; kk < nstate; ++kk){
 	double value, error;
 	if (kk != jj){
-	  value = (tmatrix[ii][jj][kk].getAvgError()) / tau;
+	  // value = (tmatrix[ii][jj][kk].getAvgError()) / tau;
+	  value = (cpTmatrix[ii][jj][kk]) / tau;
 	}
 	else {
-	  value = (tmatrix[ii][jj][kk].getAvgError() - sum) / tau;
+	  // value = (tmatrix[ii][jj][kk].getAvgError() - sum) / tau;
+	  value = (cpTmatrix[ii][jj][kk] - sum) / tau;
 	}
 	error = tmatrix[ii][jj][kk].getAvgError() / tau;
 	if (value != 0){
