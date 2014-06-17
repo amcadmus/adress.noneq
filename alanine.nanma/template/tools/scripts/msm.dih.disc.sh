@@ -52,18 +52,19 @@ fi
 echo "# calculate the transition matrix with command:"
 echo "# $msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin $msm_steady_begin --end $msm_steady_end --output tmatrix.dih --output-init-prob prob.$msm_steady_begin.dih.out --max-rel-error 2."
 $msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin $msm_steady_begin --end $msm_steady_end --output tmatrix.dih --output-init-prob prob.$msm_steady_begin.dih.out --max-rel-error 2.
-$msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin 0 --end $pert_frame_feq --output trash.tmatrix.dih --output-init-prob prob.init.dih.out --max-rel-error 2.
+$msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin 0 --end $pert_frame_feq --output trash.tmatrix.dih --output-init-prob init.prob.dih.out --max-rel-error 2.
 rm -f trash.tmatrix.dih*
+rm -f prob.$msm_steady_begin.dih.out
 echo "# evlove the probability with command: "
-echo "# $msm_dir/evolve.prob --input tmatrix.dih --input-prob prob.init.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out"
-$msm_dir/evolve.prob --input tmatrix.dih --input-prob prob.init.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out
+echo "# $msm_dir/evolve.prob --input tmatrix.dih --input-prob init.prob.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out"
+$msm_dir/evolve.prob --input tmatrix.dih --input-prob init.prob.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out
 echo "# recover 5 sets cg traj with command:"
 echo "# $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out"
 $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out
 
 echo "# calculate the floque matrix"
 rm -f floque.B.out
-nstate=`wc prob.init.dih.out | awk '{print $1}'`
+nstate=`wc init.prob.dih.out | awk '{print $1}'`
 for ii in `seq 1 $nstate`
 do
     echo "## calcuate for $ii the base"
