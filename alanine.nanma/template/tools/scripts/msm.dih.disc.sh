@@ -49,11 +49,13 @@ if [ $redo -eq 1 ] || [ ! -f largestSet.dih ]; then
 fi
 # rm -f uniq.disc.traj.dih
     
-echo "# calculate the transition matrix"
+echo "# calculate the transition matrix with command:"
+echo "# $msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin $msm_steady_begin --end $msm_steady_end --output tmatrix.dih --output-init-prob prob.$msm_steady_begin.dih.out --max-rel-error 2."
 $msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin $msm_steady_begin --end $msm_steady_end --output tmatrix.dih --output-init-prob prob.$msm_steady_begin.dih.out --max-rel-error 2.
 $msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin 0 --end $pert_frame_feq --output trash.tmatrix.dih --output-init-prob prob.init.dih.out --max-rel-error 2.
 rm -f trash.tmatrix.dih*
-echo "# evlove the probability"
+echo "# evlove the probability with command: "
+echo "# $msm_dir/evolve.prob --input tmatrix.dih --input-prob prob.init.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out"
 $msm_dir/evolve.prob --input tmatrix.dih --input-prob prob.init.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out
 echo "# recover 5 sets cg traj"
 $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out
