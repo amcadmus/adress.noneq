@@ -75,5 +75,5 @@ do
     done
     $msm_dir/evolve.prob --input tmatrix.dih --input-prob tmp.init.out --dt $pert_frame_feq --period $pert_warm_time --end $pert_warm_time --output tmp.perid.out
     tail -n 1 tmp.perid.out | awk '{$1=""; print}' >> floque.B.out
-#    rm -f tmp.init.out tmp.perid.out
+    rm -f tmp.init.out tmp.perid.out
 done
