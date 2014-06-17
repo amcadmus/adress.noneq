@@ -9,7 +9,7 @@ echo "#PBS -j oe"				>> submit.sh
 echo "#PBS -q mpp1q"				>> submit.sh
 echo "#PBS -M han.wang@fu-berlin.de"		>> submit.sh
 echo "#PBS -l walltime=12:00:00"		>> submit.sh
-echo "#PBS -l nodes=8:ppn=24"			>> submit.sh
+echo "#PBS -l nodes=1:ppn=24"			>> submit.sh
 #echo "#PBS -l mem=1000mb"			>> submit.sh
 
 echo "hostname"					>> submit.sh

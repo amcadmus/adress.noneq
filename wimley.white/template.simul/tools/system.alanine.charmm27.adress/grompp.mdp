@@ -104,17 +104,17 @@ constraints              = h-bonds
 
 ; AdResS parameters
 adress = yes
-adress_type              = sphere
-adress_const_wf          = 1
-adress_ex_width          = 0.6
-adress_hy_width          = 1.2
-adress_ex_forcecap       = 0
-adress_interface_correction = thermoforce
-adress_site              = com
-adress_reference_coords  = 3.03902000000000000000 3.03902000000000000000 3.03902000000000000000
-adress_tf_grp_names      = CMW
-adress_cg_grp_names      = CMW
-adress_do_hybridpairs    = no
+adress-type              = sphere
+adress-const-wf          = 1
+adress-ex-width          = 0.6
+adress-hy-width          = 1.2
+adress-ex-forcecap       = 0
+adress-interface-correction = thermoforce
+adress-site              = com
+adress-reference-coords  = 3.03902000000000000000 3.03902000000000000000 3.03902000000000000000
+adress-tf-grp-names      = CMW
+adress-cg-grp-names      = CMW
+adress-do-hybridpairs    = no
 
 ; User defined thingies
 user1-grps               = 
