@@ -1,9 +1,9 @@
-set term post eps enh color solid size 28cm,12cm
+set term post eps enh color solid size 30cm,13cm
 set out 'ele.eps'
 
 unset border 
 unset tics
-set lmargin 10
+set lmargin 12
 set format x ""
 set format y ""
 set label "Electric Field" at -1, -0.9 rotate by 90 font "Helvetica,50" 
