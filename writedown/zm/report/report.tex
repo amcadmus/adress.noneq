@@ -139,29 +139,88 @@ in system $\systemla$.
     at the confidence level of 95~\%.
     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
   }
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc cccc}\hline\hline
-    Method      &   $r_c$ [nm] &    $l$     &  $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
-    SPME        &         1.9     &       --      &       $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
-    RF          &         1.2     & --            &       $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
-    ZM          &         1.2     &       1       &       $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
-    ZM          &         1.2     &       2       &       $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
-    ZM          &         1.2     &       3       &       $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
-    ZM          &         1.2     &       4       &       $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}ccc ccccc}\hline\hline
+    Method      &   $r_c$ &    $l$      & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$ \\
+                &    [nm] &             &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+    % Method      &   $r_c$ [nm] &    $l$      & $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+    SPME        &         1.9     &       --      &      $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+    RF          &         1.2     & --            &      $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
+    ZM          &         1.2     &       1       &      $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+    ZM          &         1.2     &       2       &      $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+    ZM          &         1.2     &       3       &      $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+    ZM          &         1.2     &       4       &      $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp3}
 \end{table}
+    % SPME        &         1.9     &       --      & 1.67049 (0.00014)     $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+    % RF          &         1.2     & --            & 1.66733 (0.00016)      $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
+    % ZM          &         1.2     &       1       & 1.67052 (0.00022)     $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+    % ZM          &         1.2     &       2       & 1.67029 (0.00013)     $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+    % ZM          &         1.2     &       3       & 1.67024 (0.00018)     $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+    % ZM          &         1.2     &       4       & 1.67031 (0.00010)     $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
 
+\begin{table}
+  \centering
+  \caption{The constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
+    thermal expansion coefficient $\alpha$
+    calculated by different methods.    
+    The parenthesises in the last column show the statistical uncertainty
+    at the confidence level of 95~\%.
+    The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
+  }
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}ccc ccc}\hline\hline
+    Method      &   $r_c$ [nm] &    $l$      & $\kappa_T$ [$10^{-10}\textrm{m}^2/\textrm{N}$] & $C_{p,m}$ [J/(mol K)] & $\alpha$ [$10^{-3}\textrm{K}^{-1}$]\\\hline
+    SPME        &         1.9     &       --      & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
+    RF          &         1.2     & --            & \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\
+    ZM          &         1.2     &       1       & 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\
+    ZM          &         1.2     &       2       & 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
+    ZM          &         1.2     &       3       & 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
+    ZM          &         1.2     &       4       & 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp3a}
+\end{table}
+
+% \subsubsection{Hydrogen bonding}
+% We count 
 
 \subsubsection{Constant volume molar heat capacity}
 The constant volume molar heat capacity is defined by:
 \begin{align}
-  C_{v,m} = \frac{1}{k_BT N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
+  C_{v,m} = \frac{1}{k_BT^2 N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
 \end{align}
 where $\mathcal H$ is the Hamiltonian of the system. Since constant
 volume heat capacity is a extensive thermodynamics quantity, it is
 normalized by the number molecules in the system.
 It is calculated in system $\systemsb$.
+
+\subsubsection{Constant pressure molar heat capacity}
+The constant pressure molar heat capacity is defined by:
+\begin{align}
+  C_{p,m} = \frac{1}{k_BT^2 N} \langle ( H - \langle H\rangle)^2 \rangle,
+\end{align}
+where $ H$ is the enthalpy of the system, defined by $H = \mathcal H + PV$. Since constant
+pressure heat capacity is a extensive thermodynamics quantity, it is
+normalized by the number molecules in the system.
+It is calculated by a NPT simulation of  system $\systemsb$.
+
+
+\subsubsection{Isothermal heat capacity}
+The isothermal heat capacity is defined by
+\begin{align}
+  \kappa_T = \frac{1}{k_BT} \frac{\langle (V - \langle V\rangle)^2 \rangle}{\langle V\rangle}.
+\end{align}
+It is calculated by a NPT simulation of  system $\systemsb$.
+
+
+\subsubsection{Thermal expansion coefficient}
+The thermal expansion coefficient is defined by
+\begin{align}
+  \alpha = \frac{1}{k_BT^2\langle V\rangle} \langle (H - \langle H\rangle)\cdot(V - \langle V\rangle) \rangle
+\end{align}
+It is calculated by a NPT simulation of  system $\systemsb$.
+
 
 \subsubsection{The dielectric constant}
 
@@ -343,6 +402,210 @@ system for simulation is $\systemsb$.
   \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method.}
   \label{fig:tmp4}
 \end{figure}
+
+
+
+
+\subsection{Simulation with alanine dipeptide}
+
+Here we denote the full phase space by $\Omega$, and the phase space
+variable by $\vect x$. We assume that 1, the trajectory $\vect x(t)$
+is Markovian; 2, it is ergodic and as $t\rightarrow\infty$ the phase
+space probability density $p(\vect x)$ converges to the unique
+equilibrium probability density $\mu(\vect x)$ and 3, the trajectory
+is reversible (detailed balance condition is satisfied). One can
+easily write down a propagator for the probability density
+\begin{equation}
+\label{eq:propagator}  
+p_{t+\tau}(\vect x) = \mathcal Q(\tau)\circ
+p_t(\vect x),
+\end{equation}
+where the constant $\tau$ is called the lag time. Due to the
+Markovianity of the system, the propagator satisfies the
+Chapman-Kolmogorov equation:
+\begin{equation}
+  \label{eq:chapman}
+  p_{t+k\tau}(\vect x) = \mathcal Q^k(\tau)\circ p_t(\vect x).
+\end{equation}
+Since the dynamics is reversible, the eigenvalues of $\mathcal
+Q(\tau)$ are real-valued. We consider the first $m$ dominant
+eigenvalues from the spectrum: $1 = \lambda_1 > \lambda_2 \geq
+\lambda_3 \geq \cdots \geq \lambda_m$. For most of the biomolecule
+systems, it is reasonable to assume a spectrum gap, i.e.~for a certain
+$m$ $\lambda_m$ is much larger than the magnitude of the rest
+eigenvalues. For the first $m$ leading eigenvalues one define the
+corresponding timescales by
+\begin{equation}
+  \label{eq:timescale}
+  t_i = -\frac{\tau}{\log \lambda_i}, \quad i= 2,\cdots, m
+\end{equation}
+Usually the first $m$ leading timescales can be identified with the
+slowest conformational changes of the biomolecule. The spectrum gap is
+considered as a timescale separation between the slow conformational
+changes and the fast motion in the system, e.g.~bond vibration, angle
+vibration, solvent motion, and other relatively fast conformational
+changes. The eigenfunction of the first eigenvalue is nothing but the
+equilibrium probability density $\mu(\vect x)$. We denote the
+eigenfunctions corresponding to $\lambda_2, \cdot, \lambda_m$ by
+$\phi_2(\vect x), \cdots, \phi_m(\vect x)$, then the original dynamics
+of the system~\eqref{eq:chapman} is approximated by
+\begin{equation}
+  \label{eq:app-dynamics}
+  p_{t+k\tau}(\vect x) = \mu(\vect x) + \sum_{i=2}^m e^{-\frac{k\tau}{t_i}} a_i \phi_i(\vect x) + \textrm{fast decaying dynamics}
+\end{equation}
+where $a_i$ are constants calculated by $a_i = \int \frac{1}{\mu(\vect
+  x)} p_t(\vect x)\phi_i(\vect x) d\vect x$. This means that the
+evolution of the phase space probability is a summation of the
+time-independent equilibrium probability and a series of slow decaying
+processes that are defined by the timescales $t_i$ and eigenfunctions
+$\phi_i(\vect x)$. The eigenfunctions indicates how the conformational
+change happens.
+The slowest timescales and the corresponding conformational
+changes are usually of the most biological interest.  Since the
+slowest timescales determine the convergence speed of the system with
+respect to the equilibrium probability distribution, they are the most
+difficult part to sample and estimate in molecular dynamics
+simulations.
+
+In practice, it is not easy to directly calculate the eigenvalues and
+eigenfunctions from molecular trajectories. Therefore, the continuous
+trajectories are usually projected on to a finite number of sets, so
+that the original dynamics is reduced to a Markov jump process that is
+also called the Markov state model. We expect the Markov jump process
+is a good approximate to the original dynamics in the sense that the
+eigen pairs of the reduced process accurately reproduce those of the
+original dynamics. How to do the discretized and the accuracy are
+explained in detailed in Ref.~\cite{prinz2011markov}.
+
+\begin{figure}
+  \centering  
+  \includegraphics[width=0.49\textwidth]{fig/result.alanine.amber/c-2.eps}
+  \caption{(a) A schematic plot of the alanine dipeptide and the
+    dihedral angles $\phi$ and $\psi$. (b) The free energy landscape on the
+    $\phi$-$\psi$ dihedral angle space.}
+  \label{fig:free-energy}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.40\textwidth]{fig/result.alanine.amber/fig-dih-dist-phi.eps}\\
+  \includegraphics[width=0.40\textwidth]{fig/result.alanine.amber/fig-dih-dist-psi.eps}
+  \caption{The probability distributions of the dihedral angles.}
+  \label{fig:dih-dist}
+\end{figure}
+
+
+We simulate the alanine dipeptide with the Amber
+ff-99SB-ILDN~\cite{lindorff2010improved} force field.  The dihedral
+angles $\phi$ and $\psi$ (see Fig.~\ref{fig:free-energy}~(a)) are
+widely accepted as collective variables that can describe the
+conformational dynamics of the system.  The free energy landscape
+on $\phi$-$\psi$ space is given in Fig.~\ref{fig:free-energy}~(b).  The projected
+probability distributions on both dihedral angles
+with error bars are presented in Fig.~\ref{fig:dih-dist}. It can be easily seen
+from the distribution $P(\psi)$ and $P(\psi)$ that the ZM method with
+$l=2$ and 3 reproduce the over-all probability of the main
+conformations, i.e.~the $\alpha$-helix (right-handed), $\beta$-sheet and
+the left-handed $\alpha$-helix with satisfactory accuracy.  For these
+methods, deviations of $P(\phi)$ at $\phi = -75^\circ$ and $\phi =
+-140^\circ$ are observed. They correspond to the double-peak structure
+of the right-handed $\alpha$-helix and $\beta$-sheet, which means the
+error happens at the sub-structure of the right-handed $\alpha$-helix
+and $\beta$-sheet, which are of relatively smaller biological interest
+comparing with the main conformations.
+
+
+
+\begin{table}
+  \centering
+  \caption{The first three non-trivial timescales in ps computed at lag-time $\tau = 20$~ps.
+  }
+  \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}c   ccc}\hline\hline
+    Method      &        $t_2$ [ps]  & $t_3$ [ps] &  $t_4$ [ps] \\\hline
+    SPME        &         1292  (148)     &          69.95  (0.76)  &         36.0 (4.7)    \\
+    RF          & \textbf{1615} (155)     &  \textbf{68.48} (0.37)  &         34.1 (1.6)    \\
+    ZM $l=1$    & \textbf{1607} (218)     &  \textbf{72.08} (0.50)  &         31.4 (1.9)    \\
+    ZM $l=2$    &         1324  (110)     &          69.97  (0.58)  &         40.4 (2.8)    \\
+    ZM $l=3$    &         1312  (157)     &          70.50  (0.72)  &         37.1 (4.3)    \\
+    ZM $l=4$    & \textbf{1635} (156)     &          69.71  (0.54)  &         39.2 (3.6)    \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp3}
+\end{table}
+
+% \begin{table}
+%   \centering
+%   \caption{The leading time scales in ps.
+%   }
+%   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}ccc ccc}\hline\hline
+%     Method      &   $r_c$ &    $l$      & $t_2$  & $t_3$ &  $t_4$ \\\hline
+%     SPME        &         1.9     &       --      &         1292  (148)     &          69.95  (0.76)  &         36.0 (4.7)    \\
+%     RF          &         1.2     & --            & \textbf{1615} (155)     &  \textbf{68.48} (0.37)  &         34.1 (1.6)    \\
+%     ZM          &         1.2     &       1       & \textbf{1607} (218)     &  \textbf{72.08} (0.50)  &         31.4 (1.9)    \\
+%     ZM          &         1.2     &       2       &         1324  (110)     &          69.97  (0.58)  &         40.4 (2.8)    \\
+%     ZM          &         1.2     &       3       &         1312  (157)     &          70.50  (0.72)  &         37.1 (4.3)    \\
+%     ZM          &         1.2     &       4       & \textbf{1635} (156)     &          69.71  (0.54)  &         39.2 (3.6)    \\
+%     \hline\hline
+%   \end{tabular*}
+%   \label{tab:tmp3}
+% \end{table}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-2.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-3.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2-comp.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3-comp.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4-comp.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-4.eps}
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2-comp.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3-comp.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4-comp.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5-comp.eps}\\
+  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-4.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-5.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-2.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-2.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-3.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-3.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-4.eps}
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2-comp.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3-comp.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4-comp.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5.eps}\\
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2-comp.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3-comp.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4-comp.eps}
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5-comp.eps}\\
+  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-4.eps}\\
+  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-5.eps}\\
+  \caption{The eigenfunctions corresponding to the largest three
+    non-trivial timescales, computed with lag-time 20~ps.}
+  \label{fig:tmp5}
+\end{figure}
+
+The leading timescales and corresponding eigenfunctions are given in
+Tab.~\label{tab:tmp3} and Fig.~\ref{fig:tmp5}. The ZM method with
+order 2 and 3 presents best accuracy.
 
 
 
