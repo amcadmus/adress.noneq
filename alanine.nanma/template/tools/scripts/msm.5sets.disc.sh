@@ -40,5 +40,5 @@ fi
 echo "# calculate the transition matrix"
 $msm_dir/calculate.trans.matrix --input traj.5sets.disc --input-dir dir.name --input-largest-set largestSet.5sets --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --tau $msm_tau --begin $msm_steady_begin --end $msm_steady_end --output tmatrix.5sets --output-init-prob prob.$msm_steady_begin.out --max-rel-error 2.
 echo "# evlove the probability"
-$msm_dir/evolve.prob --input tmatrix.5sets --input-prob init.prob.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.5sets.out
+$msm_dir/evolve.prob --input tmatrix.5sets --input-prob init.prob.5sets.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.5sets.out
 
