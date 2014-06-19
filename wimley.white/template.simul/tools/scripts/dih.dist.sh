@@ -4,12 +4,15 @@ script_dir=$(cd ${0%/*} && echo $PWD)
 base_dir=$script_dir/..
 analyze_dir=$base_dir/analyze
 dist_command=$analyze_dir/dist
-traj_dir=gromacs.traj.npt
-phi_file_name=angaver.phi.xvg
-psi_file_name=angaver.psi.xvg
-
 cwd=`pwd`
-targets=`ls | grep ^simul | grep [0-9]$`
+
+if [ -f mm.alanine.parameters.sh ]; then
+    echo "# use parameters file: $cwd/mm.alanine.parameters.sh"
+    source mm.alanine.parameters.sh
+else
+    echo "# use parameters file: $script_dir/mm.alanine.parameters.sh"
+    source $script_dir/mm.alanine.parameters.sh
+fi
 
 phi_list=""
 psi_list=""
@@ -17,6 +20,7 @@ psi_list=""
 for ii in $targets;
 do
     test ! -d $ii/$traj_dir/ && continue
+    echo "# doing $ii/$traj_dir/"
     cd $ii/$traj_dir/
     if [ ! -f $phi_file_name ] || [ ! -f $psi_file_name ]; then
 	echo "# no angle file, make them"
