@@ -409,9 +409,9 @@ The size of the  dynamical region is $R_{ex} = 1.0$~nm.
 All simulations are performed by a home-modified GROMACS~4.5~\cite{pronk2013gromacs} together with the CHARMM
 force field~\cite{bjelkmar2010implementation}.
 First, an equilibrium NVT simulation at 300~K of
-100~\textsf{ns} was performed with a Langevin thermostat (time-scale
+1000~\textsf{ns} was performed with a Langevin thermostat (time-scale
 $\tau_T = 0.5~\textsf{ps}$).  Along the trajectory, configurations were taken every
-50~\textsf{ps} and we used 2000 initial configurations for each nonequilibrium
+0.5~\textsf{ns} and we used 2000 initial configurations for each nonequilibrium
 MD simulation (if not stated otherwise for specific cases).
 The branching trajectories were integrated by the
 Leap-frog scheme (standard Gromacs implementation) with the aforementioned nonequilibrium
@@ -419,13 +419,13 @@ temperature control technique.  The
 time step was $0.002~\textsf{ps}$.
 The short-range
 interaction (van der Waals interaction)
-have a cut-off radius of 1.0~nm, and has been smoothed from $0.8$ to $1.0$~nm by the
+had a cut-off radius of 1.0~nm, and had been smoothed from $0.8$ to $1.0$~nm by the
 ``switch'' method provided by the GROMACS code.
 A energy conserving Particle Mesh Ewald (PME)~\cite{darden1993pme, essmann1995spm}
 method was applied to calculate the electrostatic interaction in this
 periodic system. For the direct space part of PME the cut-off and smoothing follow the same principles as those applied to the van der Waals interaction.
-All hydrogen involving bonds are constrained by LINCS~\cite{hess1997lincs}, except 
-the TIP3P water molecules which are constrained by the SETTLE algorithm~\cite{miyamoto2004settle}.
+All hydrogen involving bonds were constrained by LINCS~\cite{hess1997lincs}, except 
+the TIP3P water molecules which were constrained by the SETTLE algorithm~\cite{miyamoto2004settle}.
 In the thermostated region, the original dynamics was
 coupled to a Langevin thermostat with $\tau_T = 0.1~\textsf{ps}$.
 In all testing cases, this local thermostat is able to control
@@ -456,7 +456,7 @@ for $t \geq t_{warm}$.
 
 \subsection{Molecular conformation and net probability flux}
 
-\begin{figure}
+\begin{figure*}
   \centering
   \includegraphics[width=1.00\textwidth]{fig-all.eps}
   % \raisebox{0.2\height}{\includegraphics[width=0.22\textwidth]{c-2.eps}}
@@ -483,7 +483,7 @@ for $t \geq t_{warm}$.
     This division is the same for both plot (b) and (c).
   }
   \label{fig:tmp4}
-\end{figure}
+\end{figure*}
 
 The change of conformation in time of the alanine dipeptide is
 investigated by analyzing the probability density $p(\phi,\psi,t)$ on
@@ -578,16 +578,18 @@ which expresses the cumulative effects due to the action of EF on the conformati
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-1.eps}
-  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-2.eps}
-  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-3.eps}
-  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-4.eps}
-  \includegraphics[width=0.3\textwidth]{fig-trans-010-flux-5.eps}
+  \includegraphics[width=0.22\textwidth]{fig-trans-010-flux-1.eps}
+  \includegraphics[width=0.22\textwidth]{fig-trans-010-flux-2.eps}\\
+  \vskip .3cm
+  \includegraphics[width=0.22\textwidth]{fig-trans-010-flux-3.eps}
+  \includegraphics[width=0.22\textwidth]{fig-trans-010-flux-4.eps}\\
+  \vskip .3cm
+  \includegraphics[width=0.22\textwidth]{fig-trans-010-flux-5.eps}
   \caption{
     The net probability flux for the constant EF case.
     The warm-up time is $t_{warm} = 10$~ps.
     The probability flux $F_{J,I}(t)$ (defined by Eqn.~\eqref{eqn:tmp7}) is reported in units of $\textrm{ps}^{-1}$.
-    From top, left to right we report $I = \confaa$, $\confab$, $\confba$; bottom, left to right $\confbb$ and
+    From top to bottom, left to right we report $I = \confaa$, $\confab$, $\confba$, $\confbb$ and
     $\confc$, respectively. In each plot, the red line stands for $J=\confaa$,
     green for $J=\confab$, dark blue for $J=\confba$, purple for $J=\confbb$ and light blue
     for $J=\confc$.
@@ -605,9 +607,9 @@ Results are consistent within the statistical uncertainty (see Fig.\ref{fig:tmp5
 The $\beta$-sheet conformations $\confba$ and $\confbb$,
 which are present at the initial stage after EF is switched on,
 {fade away as the system relaxes}. The
-probability of the $\alpha$-helix conformation $\confaa$, grows from 0.45 to 0.69.
+probability of the $\alpha$-helix conformation $\confaa$, grows from 0.43 to 0.65.
 The $\alpha$-helix $\confab$  does not change significantly  under the action of EF.
-The left-hand helix conformation $\confc$ noticeably grows from 0 to 0.22.
+The left-hand helix conformation $\confc$ noticeably grows from 0.05 to 0.25.
 We plot the net probability fluxes {of the four-branching-trajectories case} in Fig.~\ref{fig:tmp6}.
 Results show that for short $t$, the net fluxes are generally non-zero,
 however, 
@@ -766,8 +768,8 @@ time scale of the molecular conformational change.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.48\textwidth]{fig-rdf.eps}
-  \includegraphics[width=0.48\textwidth]{fig-hbond.eps}
+  \includegraphics[width=0.4\textwidth]{fig-rdf.eps}
+  \includegraphics[width=0.4\textwidth]{fig-hbond.eps}
   \caption{The solvent structure around the alanine dipeptide.  
     (a): the radial distribution function (RDF) between the
     $\alpha$-carbon and the center-of-mass (COM) of the water molecules at
@@ -863,8 +865,8 @@ Here we tested three different
 periods 10, 40 and 200~ps.
 \begin{figure}
   \centering
-  \includegraphics[width=0.48\textwidth]{fig-mode2-dipol.eps}
-  \includegraphics[width=0.48\textwidth]{fig-mode2-order.eps}
+  \includegraphics[width=0.4\textwidth]{fig-mode2-dipol.eps}
+  \includegraphics[width=0.4\textwidth]{fig-mode2-order.eps}
   \caption{Illustration of the effect of the oscillatory EF on the system:
     (a) the dipole moment  and (b) the
     orientational order parameter of alanine dipeptide as a
@@ -905,7 +907,7 @@ on the time scale of 10~ps. For $\period =200$~ps, the molecule tends periodical
 to be more perpendicular to the EF, but this directional preference is much
 weaker than in the case of constant EF.
 
-\begin{figure}
+\begin{figure*}
   \centering
   \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0010.eps}
   \includegraphics[width=0.32\textwidth]{fig-meta-mode2-0040.eps}
@@ -921,10 +923,10 @@ weaker than in the case of constant EF.
     simulations last 1000~ps, while for $\period =200$~ps,
     they last 6400~ps.  }
   \label{fig:tmp9}
-\end{figure}
+\end{figure*}
 
 
-\begin{figure}
+\begin{figure*}
   \centering
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-1.eps}
   \includegraphics[width=0.19\textwidth]{fig-trans-mode2-0010-iflux-2.eps}
@@ -961,7 +963,7 @@ weaker than in the case of constant EF.
       flux from $I$ to $J$.
   }
   \label{fig:tmp10}
-\end{figure}
+\end{figure*}
 
 
 Fig.~\ref{fig:tmp9} shows the probability of the
@@ -1117,7 +1119,7 @@ conformational dynamics of alanine dipeptide under the EF.
 The response function, for example the time-dependent probability of
 left-handed $\alpha$-helix, is defined as~\cite{tuckeman2010statistical}
 \begin{align}\label{eqn:appdx1}
-  P_\confc(t) = \langle\chi_{\confc}(t)\rangle = \langle \chi_{\confc} \rangle_0 -
+  P_\confc(t) = \langle\chi_{\confc}(t)\rangle \approx \langle \chi_{\confc} \rangle_0 -
   \beta \int_0^t ds\; M_e(t - s)\langle j(0)\cdot \chi_{\confc}(t) \rangle_0,
 \end{align}
 where $\chi_{\confc}$ is the characteristic function of set $\confc$ that takes
