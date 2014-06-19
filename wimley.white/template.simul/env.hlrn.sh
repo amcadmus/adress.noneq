@@ -1,5 +1,5 @@
 
-gmx_dir=$WORK/local/gromacs/4.6.5
+gmx_dir=$WORK/local/gromacs/4.6.5.localsd
 source $gmx_dir/bin/GMXRC.bash
 
 zm_gen_dir=$WORK/study/adress.noneq/zm/tools/gen.pot
