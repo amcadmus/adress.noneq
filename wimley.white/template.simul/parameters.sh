@@ -35,4 +35,5 @@ zm_alpha=0.0
 adress_ex_region=1.5
 adress_hy_region=1.5
 adress_type=sphere
+adress_tf_file=tools/adress.tf/tabletf_CMW.charmm27.ex0.6.hy1.0.xvg
 

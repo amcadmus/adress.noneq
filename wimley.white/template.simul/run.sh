@@ -128,6 +128,12 @@ if grep "^adress " grompp.mdp | grep yes &> /dev/null; then
     sed -e "/^vdw-type /s/=.*/= user/g"|\
     sed -e "/^adress-reference-coords /s/=.*/= $hboxx $hboxy $hboxz/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
+    if [ -f $wwd/$adress_tf_file ]; then
+	if [ -f tabletf_CMW.xvg ]; then
+	    echo "# rm existing tf table"
+	fi
+	cp $wwd/$adress_tf_file ./tabletf_CMW.xvg
+    fi
 fi
 if echo "$gmx_npt" | grep yes &> /dev/null ; then
     cat grompp.mdp |\
