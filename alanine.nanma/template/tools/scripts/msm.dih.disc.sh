@@ -36,9 +36,11 @@ if [ $redo -eq 1 ] || [ ! -f largestSet.dih ]; then
 	if [ $redo -eq 1 ] || [ ! -f $ii/traj.dih.disc ]; then
 	    echo "# prepare $ii/traj.dih.disc"
 	    cd $ii/
-	    $script_dir/build.dih.traj.sh &> /dev/null
+	    if [ ! -f angaver.phi.xvg ] || [ ! -f angaver.psi.xvg ]; then
+		$script_dir/build.dih.traj.sh &> /dev/null
+		rm -f angdist.phi.xvg angdist.psi.xvg
+	    fi
 	    $msm_dir/assign.dihedral --input-dih-list "angaver.phi.xvg angaver.psi.xvg" --column 2 --num-bin $msm_dih_nbin --output traj.dih.disc &> /dev/null
-	    rm -f angaver.phi.xvg angaver.psi.xvg angdist.phi.xvg angdist.psi.xvg
 	    cd $cwd
 	fi
 	sort -g $ii/traj.dih.disc  | uniq >> uniq.disc.traj.dih
