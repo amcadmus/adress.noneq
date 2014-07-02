@@ -24,6 +24,7 @@ do
     cd $ii/$traj_dir/
     if [ ! -f $phi_file_name ] || [ ! -f $psi_file_name ]; then
 	echo "# no angle file, make them"
+	rm -f angdist*xvg
 	$script_dir/build.dih.traj.sh &> /dev/null
     fi
     cd $cwd
