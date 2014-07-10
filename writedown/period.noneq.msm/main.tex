@@ -1,0 +1,325 @@
+\documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolumn]{revtex4-1}
+% \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
+% \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
+% \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\makeatletter
+\makeatother
+
+\newcommand{\recheck}[1]{{\color{red} #1}}
+\newcommand{\redc}[1]{{\color{red} #1}}
+\newcommand{\bluec}[1]{{\color{red} #1}}
+\newcommand{\greenc}[1]{{\color{green} #1}}
+\newcommand{\vect}[1]{\textbf{\textit{#1}}}
+\newcommand{\dd}[1]{\textsf{#1}}
+\newcommand{\fwd}[0]{\textrm{fwd}}
+\newcommand{\bwd}[0]{\textrm{bwd}}
+\newcommand{\period}[0]{T_{\textrm{P}}}
+\newcommand{\ml}[0]{\mathcal {L}}
+\newcommand{\mo}[0]{\mathcal {O}}
+\newcommand{\mbp}[0]{\mathbb {P}}
+\newcommand{\dt}[0]{\Delta t}
+
+\newcommand{\confaa}[0]{{\alpha_{\textrm{R}}}}
+\newcommand{\confab}[0]{{\alpha_{\textrm{R}}'}}
+\newcommand{\confba}[0]{{\textrm{C}7_{\textrm{eq}}}}
+\newcommand{\confbb}[0]{{\textrm{C}5}}
+\newcommand{\confc}[0]{{\alpha_{\textrm{L}}}}
+
+
+
+\begin{document}
+
+\title{Building Markov State Model for a Periodically Driven Non-Equilibrium System}
+\author{Han Wang}
+\email{han.wang@fu-berlin.de}
+\affiliation{Zuse Institut Berlin, Germany}
+\author{Christof Sch\"utte}
+\email{Christof.Schuette@fu-berlin.de}
+\affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+\affiliation{Zuse Institut Berlin, Germany}
+   
+\begin{abstract}
+\end{abstract}
+
+\maketitle
+
+\section{Discretization of the non-equilibrium molecular dynamics}
+
+We denote the phase space by $\Omega$, and the variable by $\vect
+x$. The time-dependent probability distribution on the phase space is
+denoted by $\rho(\vect x, t)$. The dynamics of the system is governed
+by
+\begin{align}
+  \label{eqn:tmp1}
+  \frac{\partial \rho(\vect x, t)}{\partial t} = \ml(t) \rho(\vect x,t),
+\end{align}
+where the generator $\ml(t)$ is time-dependent and assumed to be
+periodic, i.e.~$\ml(t) = \ml(t+T)$, with period denoted by $T$.  Now
+we discretize the phase space $\Omega$ into finite number of disjoint
+sets $\{ S_1, \cdots, S_n\}$, which satisfy $\Omega = \cup_i S_i$,
+$S_j\cap S_j = \emptyset,\ \forall i\neq j$.
+Now the original dynamics of the system can be discretized to a time-dependent
+Markov jump process:
+\begin{align}
+  \label{eqn:tmp2}
+  \frac{d\vect p(t)}{dt} = \vect M(t)\cdot \vect p(t)
+\end{align}
+where
+\begin{align}
+  \vect p(t) = (p_1(t), \cdots, p_n(t))^T, \quad \textrm{with}\ p_i(t) = \int_{S_i} \rho(\vect x,t)d\vect x,
+\end{align}
+and the generator is approximated by finite difference scheme:
+\begin{align}
+  \label{eqn:tmp4}
+  M_{ij}(t) \approx \frac{1}{\tau} \,[\, \mbp (\vect x_{t+\tau} \in S_j \vert \vect x_{t} \in S_i) - \delta_{ij} \,]
+\end{align}
+From Eqn.~\eqref{eqn:tmp1} to Eqn.~\eqref{eqn:tmp2} involves several
+approximations:
+\begin{enumerate}
+\item Eqn.~\eqref{eqn:tmp2} assumes Markovianity, which is not
+  necessarily true for a reduce dynamics $\vect p(t)$.
+\item Numerical error from the finite difference introduced in
+  Eqn.~\eqref{eqn:tmp4}. The lag-time $\tau$ should not be too large
+  to control the finite difference error, and at the same time should
+  not be too small, because otherwise the statistical error would be
+  large, and the Markovianity would be disturbed.
+\item Although the original dynamics defined by generator $\ml(t)$ is
+  periodic, the reduced one defined by $\vect M(t)$ is not necessary
+  periodic, i.e.~$\vect M(t) \neq \vect M(t+T)$ in general.  In the
+  simulation of biomolecules, it is reasonable, in most cases to
+  assume a time-scale separation in the system. For example, the
+  conformational change of the molecules is much faster than the
+  covalent bond vibrations. Therefore, if the discretion $\{ S_1,
+  \cdots, S_n\}$ properly captures the slow dynamics of interest, in
+  the sense that within the lag-time $\tau$, the system is fully
+  relaxed to a local equilibrium in the set $S_i$, then it is clear
+  that the reduce system is periodic. It suggests that the lag-time
+  should be right in the spectrum gap: it is shorter than the dominant
+  implied timescale, and longer than the fast-relaxing time-scales.
+\end{enumerate}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{fig/confs/fig-begin-1.eps}
+  \caption{The Ramachandran plot presents the main conformations of the alanine dipeptide.}
+  \label{fig:tmp1}
+\end{figure}
+
+At this stage we do have any analytical result regarding the quality
+of approximating Eqn.~\eqref{eqn:tmp1} by
+Eqn.~\eqref{eqn:tmp2}. However, it would be useful to do some
+numerical experiments. We have studied the alanine dipeptide system
+under oscillatory EF, which was studied by
+Ref.~\cite{wang2014exploring}. We use the two dihedral angles $\phi$
+and $\psi$ as slow variables. The definition of the conformations
+$\confaa$, $\confab$, $\confba$, $\confbb$ and $\confc$ are presented
+by Fig.~\ref{fig:tmp1}.  We are interested in the time-dependent
+probability of the conformations. In Fig.~\ref{fig:tmp2}, the brute
+force molecular dynamics simulation result
+(i.e.~Eqn.~\eqref{eqn:tmp1}) is compared with different discretization
+methods, which give different generator in Eqn.~\eqref{eqn:tmp2}. For
+clarity, only the probability of conformation $\confc$ is plotted.  In
+the figure, ``5 sets'' means the $\phi$-$\psi$ space is discretized by
+5 sets as shown in Fig.~\ref{fig:tmp1}, ``Uni. $M=$'' stands for the
+uniform discretization on $\phi$-$\psi$ space, and $M$ denotes the
+number of bins on both $\phi$ and $\psi$ directions.  Both $M=10$ and
+20 methods present very good accuracy.  Please notice that for $M=10$,
+for example, the number of discretized sets is $n=M^2=100$.  The
+lag-time in all cases is chosen to be $\tau = 0.5$~ps. A test with
+$\tau = 1.0$~ps shows good consistency with $\tau = 0.5$~ps.
+The generator
+$\vect M(t)$ is assumed to be periodic, and is estimated from the
+trajectories from $t=300$ to 1000~ps.
+
+The phenomena presented by Fig.~\ref{fig:tmp2} is very similar to the
+equilibrium MSM: the quality of the MSM depends on how accurate the
+eigenfunctions are approximated by the discretization. The ``5 sets''
+method achieve better accuracy than the uniform $M=5$ method by using
+much less DOFs, because it captures the positive and negative signs of
+the eigenfunctions. With larger $M$ the discretization error of the
+eigenfunctions becomes smaller, so the accuracy of the MSM is improved.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{fig/t040/fig-cg-prob.eps}  
+  \caption{The time-dependent probability of conformation
+    $\confc$. The brute force MD simulation is compared with different
+    discretization methods.}
+  \label{fig:tmp2}
+\end{figure}
+
+
+
+\section{Floquet theory}
+
+The Floquet theory states that for a periodic system
+Eqn.~\ref{eqn:tmp2}, the solution can be written as
+\begin{align}
+  \label{eqn:tmp5}
+  \vect p(t)  = \vect Q(t) e^{t\vect B} \vect p(0)
+\end{align}
+where $\vect Q(t)$ is periodic and $\vect B$ is a constant matrix.  To
+analyze the spectrum, it is not difficult to infer the implied
+timescales, on which the system relaxes to the periodic steady states
+defined by $\vect Q(t)$.
+Assume that the fundamental solution to Eqn.~\ref{eqn:tmp2} is denoted by $\boldsymbol \Phi(t)$, then
+the matrix $\vect B$ can be expressed by
+\begin{align}
+  e^{T\vect B} = \boldsymbol \Phi^{-1}(0)\cdot \boldsymbol \Phi(T)
+\end{align}
+It is fully justified by choosing $ \boldsymbol \Phi(0) = I$, then
+$e^{T\vect B}$ is estimated by evolving the fundamental solutions by
+one period.  Calculating the eigenvalues of $e^{T\vect B}$ reveals the
+implied timescales on which the non-equilibrium dynamics converges to
+the periodic steady state. However, it can only resolve the processes that are longer than the period $T$.
+The largest non-trivial timescales is given in table
+Tab.~\ref{tab:tmp1}, which corresponds very well to the dynamics of the  $\confc$ probability.
+
+
+\begin{table}
+  \centering
+  \caption{The first non-trivial timescales calculated from $e^{T\vect B}$.
+  }
+  \begin{tabular*}{0.3\textwidth}{@{\extracolsep{\fill}}c   c}\hline\hline
+    Method      &        $t_2$ [ps]  \\\hline
+    5 sets      & 72.4     \\
+    Uni. $M=05$ & 53.6     \\
+    Uni. $M=10$ &107.2     \\
+    Uni. $M=20$ &113.8     \\
+    Uni. $M=30$ &120.6     \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp1}
+\end{table}
+
+
+\section{To do}
+
+\begin{itemize}
+\item Theoretical analysis of the accuracy of the discretization, a
+generalization of the equilibrium case. the numerical results indicate
+a very close link. The perodicity is very nice, if the generator is
+``continuous'', then it should be uniformly continuous, then it should
+be possible to develop estimates that are similar to the equilibrium
+case.
+\item More tests on the effect of choosing different lag-time $\tau$ (0.5 and 1.0~ps are done).
+\item More theoretical consideration on the Floquet theory, what is the
+explict form of matrix $\vect B$, and does it has any nice properties,
+such as self-joint.
+\end{itemize}
+
+
+\section{Reversibility of the original dynamics}
+
+Now we assume the overdamped dynamics
+\begin{align}
+  dx_t = -\nabla_x V(x_t,t) dt + \sigma dw_t
+\end{align}
+where $V$ is the time-dependent and $t$-periodic potential. For simplicity we denote the force by $F(x_t,t) = -\nabla_x V(x_t, t)$. $dw_t$ is
+the standard Wiener process.  Assuming a discretization of the
+stochastic process at time $0 < t_1 < t_2 < \cdots < t_N = T$, where
+$t_i = iT / N$. We denote $x_i = x_{t_i}$, and $w_i = w_{t_i}$, then we have the
+conditional probability:
+\begin{align}\nonumber
+  p(x_T,T\vert x_0,0) =\lim_{N\rightarrow\infty} &\,
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
+  &\,
+  \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} F(x_i,t_i)(w_{i+1} - w_{i}) - \frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp8}
+  &\,
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
+\end{align}
+Now consider the differentiation:
+\begin{align}\nonumber
+  F(x_i,t_i) - F(x_{i+1},t_{i+1}) =
+  &\,
+  F(x_i,t_i) - F(x_{i+1},t_{i}) + F(x_{i+1},t_{i}) -  F(x_{i+1},t_{i+1})\\\nonumber
+  =&\,
+  -\sigma\nabla_x F(x_{i+1},t_{i})dw_t + \mo(\dt) \\\label{eqn:tmp9}
+  =&\,
+  -\sigma\nabla_x F(x_{i+1},t_{i+1})dw_t + \mo(\dt) 
+\end{align}
+and
+\begin{align}\label{eqn:tmp10}
+  \sigma(w_{i+1} - w_{i}) =
+  &\,
+  x_{i+1} - x_i 
+\end{align}
+Inserting Eq.~\eqref{eqn:tmp9} and \eqref{eqn:tmp10} into Eq.~\eqref{eqn:tmp8}, all terms of order $\mo(\dt)$ vanish at the limit $N\rightarrow\infty$,
+% so with the formal identity $(dw_t)^2 = dt$,  we have
+\begin{align}\nonumber
+  p(x_T,T\vert x_0,0) =\lim_{N\rightarrow\infty} &\,
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
+  &\,
+  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{i+1},t_{i+1})(x_{i+1} - x_i) \bigg\} \times \\ \nonumber
+  &\,
+  \exp\bigg\{-\frac{1}{\sigma^2}\sum_{i=0}^{N-1}  \nabla_x F(x_{i+1},t_{i+1}) (x_{i+1} - x_{i})^2\bigg\} \times \\\nonumber
+  &\,
+  \exp\bigg\{-\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp11}
+  &\,
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
+\end{align}
+Now, consider a trajectory that starts at $x_T$, ends at $x_0$, and visits $x_{N-i}$ at time $t_i$, the conditional probability
+gives
+\begin{align}\nonumber
+  p(x_0,T\vert x_T,0)
+  =\lim_{N\rightarrow\infty} &\,
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{N-1}\cdots\int dx_{1}\\\nonumber
+  &\,
+  \exp\bigg\{\frac1\sigma\sum_{i=N}^{1} F(x_i,t_{N-i})(x_{i-1} - x_{i}) - \frac1{2\sigma^2}\sum_{i=N}^{1}F^2(x_i,t_{N-i})\dt\bigg\} \times\\\nonumber
+  &\,
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=N}^{1} \frac{(x_{i-1} - x_{i})^2}{\dt}\bigg\} \\\nonumber
+  =\lim_{N\rightarrow\infty} &\,
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{1}\cdots\int dx_{N}\\\nonumber
+  &\,
+  \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} -F(x_{i+1},t_{i+1})(x_{i} - x_{i+1}) - \frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_{i+1},t_{i+1})\dt\bigg\} \times\\\nonumber
+  &\,
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i} - x_{i+1})^2}{\dt}\bigg\}\\\nonumber
+  =\lim_{N\rightarrow\infty} &\,
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{1}\cdots\int dx_{N}\\\nonumber
+  &\,
+  \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} F(x_{i+1},t_{i+1})(x_{i+1} - x_{i})\bigg\}\times\\\nonumber
+  &\,
+  \exp\bigg\{- \frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_{i+1},t_{i+1})\dt\bigg\} \times\\\nonumber
+  &\,
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i} - x_{i+1})^2}{\dt}\bigg\}.
+\end{align}
+
+% Now we consider the time-reversed process $y_{N-i} = x_i$,
+% \begin{align}\nonumber
+%   p(y_0,T\vert y_N,0) =\lim_{N\rightarrow\infty} &\,
+%   \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dy_1\cdots\int dx_{y-1}\\\nonumber
+%   &\,
+%   \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} F(y_{N - i-1},t_{N-i-1})(w_{N-i-1} - w_{N-i}) \bigg\} \times \\ \nonumber
+%   &\,
+%   \exp\bigg\{-\sum_{i=0}^{N-1}  \nabla_x F(x_{i+1},t_{i+1})\dt\bigg\} \times \\\nonumber
+%   &\,
+%   \exp\bigg\{-\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp8}
+%   &\,
+%   \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
+% \end{align}
+
+We notice that
+\begin{align}\nonumber
+  dV(x, t) = &\, \frac{\partial V}{\partial x} dx + \frac{\partial V}{\partial t} dt\\\nonumber
+  =&\,
+  (\nabla_x V F + \frac12 \sigma^2 \nabla^2_x V) dt + \sigma \nabla V dw_t + \frac{\partial V}{\partial t} dt \\\nonumber
+  =&\,
+  -F^2dt + \frac12 \sigma^2\nabla_x F dt - \sigma F dw_t + \frac{\partial V}{\partial t} dt 
+\end{align}
+
+
+\bibliography{ref}{}
+\bibliographystyle{unsrt}
+
+
+
+\end{document}
