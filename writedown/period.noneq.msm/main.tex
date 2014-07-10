@@ -1,4 +1,4 @@
-\documentclass[aip,jcp,preprint,unsortedaddress,a4paper,onecolumn]{revtex4-1}
+\documentclass[preprint,unsortedaddress,a4paper,onecolumn]{revtex4-1}
 % \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
@@ -26,6 +26,7 @@
 \newcommand{\ml}[0]{\mathcal {L}}
 \newcommand{\mo}[0]{\mathcal {O}}
 \newcommand{\mbp}[0]{\mathbb {P}}
+\newcommand{\mc}[0]{\mathcal {C}}
 \newcommand{\dt}[0]{\Delta t}
 
 \newcommand{\confaa}[0]{{\alpha_{\textrm{R}}}}
@@ -221,7 +222,7 @@ such as self-joint.
 \section{Reversibility of the original dynamics}
 
 Now we assume the overdamped dynamics
-\begin{align}
+\begin{align}\label{eqn:tmp7}
   dx_t = -\nabla_x V(x_t,t) dt + \sigma dw_t
 \end{align}
 where $V$ is the time-dependent and $t$-periodic potential. For simplicity we denote the force by $F(x_t,t) = -\nabla_x V(x_t, t)$. $dw_t$ is
@@ -237,84 +238,124 @@ conditional probability:
   &\,
   \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
 \end{align}
-Now consider the differentiation:
-\begin{align}\nonumber
-  F(x_i,t_i) - F(x_{i+1},t_{i+1}) =
-  &\,
-  F(x_i,t_i) - F(x_{i+1},t_{i}) + F(x_{i+1},t_{i}) -  F(x_{i+1},t_{i+1})\\\nonumber
-  =&\,
-  -\sigma\nabla_x F(x_{i+1},t_{i})dw_t + \mo(\dt) \\\label{eqn:tmp9}
-  =&\,
-  -\sigma\nabla_x F(x_{i+1},t_{i+1})dw_t + \mo(\dt) 
-\end{align}
-and
+Notice that
 \begin{align}\label{eqn:tmp10}
   \sigma(w_{i+1} - w_{i}) =
   &\,
   x_{i+1} - x_i 
 \end{align}
-Inserting Eq.~\eqref{eqn:tmp9} and \eqref{eqn:tmp10} into Eq.~\eqref{eqn:tmp8}, all terms of order $\mo(\dt)$ vanish at the limit $N\rightarrow\infty$,
+we have
 % so with the formal identity $(dw_t)^2 = dt$,  we have
 \begin{align}\nonumber
-  p(x_T,T\vert x_0,0) =\lim_{N\rightarrow\infty} &\,
+  p(x_T,T\vert x_0,0)
+  =\lim_{N\rightarrow\infty} &\,
   \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
   &\,
-  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{i+1},t_{i+1})(x_{i+1} - x_i) \bigg\} \times \\ \nonumber
-  &\,
-  \exp\bigg\{-\frac{1}{\sigma^2}\sum_{i=0}^{N-1}  \nabla_x F(x_{i+1},t_{i+1}) (x_{i+1} - x_{i})^2\bigg\} \times \\\nonumber
-  &\,
-  \exp\bigg\{-\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp11}
+  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{i},t_{i})(x_{i+1} - x_i) -\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp10}
   &\,
   \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
 \end{align}
-Now, consider a trajectory that starts at $x_T$, ends at $x_0$, and visits $x_{N-i}$ at time $t_i$, the conditional probability
-gives
+Now, consider a conjugate trajectory $x^\dagger_t = x_{T-t}$ that starts at $x_T$, ends at $x_0$. The conjugate dynamics is driven by  $F^\dagger(x^\dagger_t,t) = F(x^\dagger_t, T-t)$.
+Since we have the symmetry $F(x_t, -t) = -F(x_t, t)$, the conjugate dynamics also satisfies Eq.~\eqref{eqn:tmp7}.
+Therefore, we have the probability:
 \begin{align}\nonumber
-  p(x_0,T\vert x_T,0)
-  =\lim_{N\rightarrow\infty} &\,
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{N-1}\cdots\int dx_{1}\\\nonumber
+  p(x_0,T\vert x_T,0) = &\,
+  p^\dagger(x^\dagger_T,T\vert x^\dagger_0,0)  \\\nonumber
+  = &\,
+  \lim_{N\rightarrow\infty}
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx^\dagger_1\cdots\int dx^\dagger_{N-1}\\\nonumber
   &\,
-  \exp\bigg\{\frac1\sigma\sum_{i=N}^{1} F(x_i,t_{N-i})(x_{i-1} - x_{i}) - \frac1{2\sigma^2}\sum_{i=N}^{1}F^2(x_i,t_{N-i})\dt\bigg\} \times\\\nonumber
+  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F^\dagger(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -\frac1{2\sigma^2}\sum_{i=0}^{N-1}[F^\dagger(x^\dagger_i,t_i)]^2\dt\bigg\} \times\\\nonumber
   &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=N}^{1} \frac{(x_{i-1} - x_{i})^2}{\dt}\bigg\} \\\nonumber
-  =\lim_{N\rightarrow\infty} &\,
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{1}\cdots\int dx_{N}\\\nonumber
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x^\dagger_{i+1} - x^\dagger_i)^2}{\dt}\bigg\} \\\nonumber
+  =&\,
+  \lim_{N\rightarrow\infty} 
+  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
   &\,
-  \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} -F(x_{i+1},t_{i+1})(x_{i} - x_{i+1}) - \frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_{i+1},t_{i+1})\dt\bigg\} \times\\\nonumber
+  \exp\bigg\{\frac1{\sigma^2}\sum_{i=N}^{1} F(x_{i},t_{i})(x_{i-1} - x_i) -\frac1{2\sigma^2}\sum_{i=N}^{1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp11}
   &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i} - x_{i+1})^2}{\dt}\bigg\}\\\nonumber
-  =\lim_{N\rightarrow\infty} &\,
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{1}\cdots\int dx_{N}\\\nonumber
-  &\,
-  \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} F(x_{i+1},t_{i+1})(x_{i+1} - x_{i})\bigg\}\times\\\nonumber
-  &\,
-  \exp\bigg\{- \frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_{i+1},t_{i+1})\dt\bigg\} \times\\\nonumber
-  &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i} - x_{i+1})^2}{\dt}\bigg\}.
+  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=N}^{1} \frac{(x_{i-1} - x_i)^2}{\dt}\bigg\}.
 \end{align}
-
-% Now we consider the time-reversed process $y_{N-i} = x_i$,
-% \begin{align}\nonumber
-%   p(y_0,T\vert y_N,0) =\lim_{N\rightarrow\infty} &\,
-%   \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dy_1\cdots\int dx_{y-1}\\\nonumber
-%   &\,
-%   \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} F(y_{N - i-1},t_{N-i-1})(w_{N-i-1} - w_{N-i}) \bigg\} \times \\ \nonumber
-%   &\,
-%   \exp\bigg\{-\sum_{i=0}^{N-1}  \nabla_x F(x_{i+1},t_{i+1})\dt\bigg\} \times \\\nonumber
-%   &\,
-%   \exp\bigg\{-\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp8}
-%   &\,
-%   \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
-% \end{align}
-
+The difference between the single trajectory probabilities is
+\begin{align}\label{eqn:tmp12}
+  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
+  =&\,
+  \frac1{\sigma^2}\sum_{i=1}^{N-1} F(x_i,t_i)(x_{i+1} - x_{i}) + F(x_i,t_i)(x_{i} - x_{i-1}) 
+\end{align}
+Now consider the differentiation:
+\begin{align}\nonumber
+  F(x_{i},t_{i}) - F(x_{i-1},t_{i-1}) =
+  &\,
+  F(x_{i},t_{i}) - F(x_{i-1},t_{i}) + F(x_{i-1},t_{i}) -  F(x_{i-1},t_{i-1})\\\nonumber
+  =&\,
+  \nabla_x F(x_{i-1},t_{i})(x_i - x_{i-1}) + \mo(\dt) \\\label{eqn:tmp13}
+  =&\,
+  \nabla_x F(x_{i-1},t_{i-1})(x_i - x_{i-1}) + \mo(\dt)
+\end{align}
+Then the \eqref{eqn:tmp12} becomes
+\begin{align}\label{eqn:tmp14}
+  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
+  =&\,
+  \frac2{\sigma^2}\sum_{i=0}^{N-1} F(x_i,t_i)(x_{i+1} - x_{i}) +
+  \frac1{\sigma^2}\sum_{i=0}^{N-1}\nabla_xF(x_i,t_i)(x_{i+1} - x_{i})^2
+\end{align}
 We notice that
 \begin{align}\nonumber
   dV(x, t) = &\, \frac{\partial V}{\partial x} dx + \frac{\partial V}{\partial t} dt\\\nonumber
   =&\,
-  (\nabla_x V F + \frac12 \sigma^2 \nabla^2_x V) dt + \sigma \nabla V dw_t + \frac{\partial V}{\partial t} dt \\\nonumber
+  \frac12 \sigma^2 \nabla^2_x V dt +  \nabla V dx_t + \frac{\partial V}{\partial t} dt \\
   =&\,
-  -F^2dt + \frac12 \sigma^2\nabla_x F dt - \sigma F dw_t + \frac{\partial V}{\partial t} dt 
+  -\frac12 \sigma^2 \nabla_x F dt -  F dx_t + \frac{\partial V}{\partial t} dt
 \end{align}
+and the identity
+\begin{align}
+  dt = (dw_t)^2 = \frac1{\sigma^2} dx_t^2
+\end{align}
+Eq.~\eqref{eqn:tmp14} becomes
+\begin{align}
+  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
+  =&\,
+  -\frac2{\sigma^2}\bigg[
+  V(x_N,t_N) - V(x_0,t_0) + \sum_{i=0}^{N-1}\partial_tV(x_i,t_i)\dt
+  \bigg]
+\end{align}
+According to the  Einstein relation $T = \sigma^2/2$, by denoting $\beta = 1/T$
+\begin{align}
+  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
+  =&\,
+  -\beta\bigg[
+  V(x_N,t_N) - V(x_0,t_0) + \sum_{i=0}^{N-1}\partial_tV(x_i,t_i)\dt
+  \bigg]  
+\end{align}
+Therefore
+\begin{align}\nonumber
+  p(x_0,T\vert x_T,0)
+  =&\,
+  % \lim_{N\rightarrow\infty} 
+  % \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{N-1}\cdots\int dx_{1}
+  \int_{\mc\{x_0,0;x_T,T\}}
+  \frac{  p[x^\dagger_t] }{ p[x_t]} \cdot p[x_t] \\\label{eqn:tmp19}
+  = &\,
+  \frac{e^{-\beta V(x_0,t_0)}}{e^{-\beta V(x_N,t_N)}}
+  \int_{\mc\{x_0,0;x_T,T\}}
+  \exp\bigg\{
+  \beta\int_0^T \partial_t V(x_t,t)dt 
+  \bigg\} \cdot p[x_t]
+\end{align}
+where $\mc\{x_0,0;x_T,T\}$ denotes all continuous trajectories starting at $x_0$ and ending at $x_T$.
+If $\partial_t V = 0$, i.e.~equilibrium, we have
+\begin{align}
+  p(x_0,T\vert x_T,0)e^{-\beta V(x_T,T)} =  p(x_T,T\vert x_0,0) e^{-\beta V(x_0,0)},
+\end{align}
+which proves the reversibility of the equilibrium dynamics.
+The term
+\begin{align}
+  W[x_t] = - \int_0^T \partial_t V(x_t,t)dt
+\end{align}
+is the non-equilibrium work associated to all possible
+the dynamics $x_t$ starting at $x_0$ and ending at $x_T$ (see e.g.~Ref.~\cite{seifert2012stochastic}).
+Therefore Eq.~\eqref{eqn:tmp19} is the detailed Jarzynski relation.
+Now the problem becomes if we can write a nice form (e.g.~the difference of a state function measured at $x_T$ and $x_0$) for the non-equilibrium work.
 
 
 \bibliography{ref}{}
