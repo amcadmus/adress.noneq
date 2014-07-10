@@ -182,7 +182,7 @@ if test $gmx_ele_method_ind -eq 0; then
     make -C $zm_gen_dir &> /dev/null
     $zm_gen_dir/zm -l $zm_l --xup $zm_xup --alpha $zm_alpha --rc $gmx_rcut_ele --output table.xvg &> /dev/null
     rm -f tablep.xvg
-    cp table.xvg tablep.xvg
+    cp $wwd/tools/table6-12.xvg tablep.xvg
     cd $wwd
 fi
 

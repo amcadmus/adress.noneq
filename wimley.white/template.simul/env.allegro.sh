@@ -1,4 +1,4 @@
-nnodes=8
+nnodes=24
 
 grep flags /proc/cpuinfo  | tail -n 1 | grep sse2 &> /dev/null
 has_sse2=$?
@@ -28,7 +28,7 @@ fi
 fi
 fi  
 
-gmx_dir=$HOME/local/gromacs/4.6.5$appendix
+gmx_dir=$HOME/local/gromacs/4.6.5.fcorr$appendix
 source $gmx_dir/bin/GMXRC
 
 zm_gen_dir=$HOME/NO_BACKUP/zm/tools/gen.pot

@@ -42,3 +42,22 @@ $msm_dir/calculate.trans.matrix --input traj.5sets.disc --input-dir dir.name --i
 echo "# evlove the probability"
 $msm_dir/evolve.prob --input tmatrix.5sets --input-prob init.prob.5sets.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.5sets.out
 
+echo "# calculate the floque matrix"
+rm -f floque.B.out
+nstate=5
+for ii in `seq 1 $nstate`
+do
+    echo "## calcuate for $ii the base"
+    rm -f tmp.init.out
+    for jj in `seq 1 $nstate`
+    do
+	if [ $jj -eq $ii ]; then
+	    echo 1 >> tmp.init.out
+	else
+	    echo 0 >> tmp.init.out
+	fi
+    done
+    $msm_dir/evolve.prob --input tmatrix.5sets --input-prob tmp.init.out --dt $pert_frame_feq --period $pert_warm_time --end $pert_warm_time --output tmp.perid.out
+    tail -n 1 tmp.perid.out | awk '{$1=""; print}' >> floque.B.out
+    rm -f tmp.init.out tmp.perid.out
+done
