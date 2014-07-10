@@ -42,6 +42,7 @@ do
 		    exit
 		fi
 		ln -sf ../$con_submit_command .
+		ln -sf ../env.sh .
 		$con_submit_command
 		mv -f jobid ..
 		cd ..
