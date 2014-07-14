@@ -5,6 +5,6 @@ source $gmx_dir/bin/GMXRC.bash
 
 zm_gen_dir=$WORK/study/adress.noneq/zm/tools/gen.pot
 
-gmx_grompp_command="grompp"
-gmx_tune_command="g_pme_error"
-gmx_mdrun_command="mdrun -notunepme"
+pert_grompp_command="grompp"
+pert_tune_command="g_pme_error"
+pert_mdrun_command="mdrun -notunepme"
