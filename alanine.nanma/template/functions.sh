@@ -91,13 +91,13 @@ function set_parameters_pert () {
     sed -e "/^tau-t/s/=.*/= $pert_taut/g" |\
     sed -e "/^tau_p/s/=.*/= $pert_taup/g" |\
     sed -e "/^tau-p/s/=.*/= $pert_taup/g" |\
-    sed -e "/^epsilon-rf /s/=.*/= $gmx_e_rf/g"|\
+    sed -e "/^epsilon-rf /s/=.*/= $pert_e_rf/g"|\
     sed -e "/^userreal1/s/=.*/= $pert_local_sd_range/g" |\
     sed -e "/^gen_vel /s/=.*/= no/g" |\
     sed -e "/^gen-vel /s/=.*/= no/g"|\
     sed -e "/^couple-moltype /s/=.*/= /g"|\
     sed -e "/^E-x /s/=.*/= 1 $pert_strength 0.0/g" |\
-    sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmptmptmp.mdp
+    sed -e "/^table-extension /s/=.*/= $pert_tab_ext/g"> tmptmptmp.mdp
     mv -f tmptmptmp.mdp $file
     if test $pert_mode -eq 1; then
 	sed -e "/^E-xt /s/=.*/= 1 $pert_warm_time 0.0/g" $file > tmptmptmp.mdp
