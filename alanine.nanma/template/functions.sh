@@ -125,11 +125,11 @@ function set_parameters_pert () {
 	hboxz=`echo "$boxz * 0.5" | bc -l`
 	cat $file |\
         sed -e "/^DispCorr /s/=.*/= no/g"|\
-        sed -e "/^adress-type /s/=.*/= $adress_type/g" |\
+        sed -e "/^adress-type /s/=.*/= $pert_adress_type/g" |\
         sed -e "/^adress-interface-correction /s/=.*/= thermoforce/g" |\
         sed -e "/^adress-site /s/=.*/= com/g" |\
-        sed -e "/^adress-ex-width /s/=.*/= $adress_ex_region/g" |\
-        sed -e "/^adress-hy-width /s/=.*/= $adress_hy_region/g" |\
+        sed -e "/^adress-ex-width /s/=.*/= $pert_adress_ex_region/g" |\
+        sed -e "/^adress-hy-width /s/=.*/= $pert_adress_hy_region/g" |\
         sed -e "/^vdwtype /s/=.*/= user/g"|\
         sed -e "/^vdw-type /s/=.*/= user/g"|\
         sed -e "/^vdw_type /s/=.*/= user/g"|\

@@ -73,13 +73,25 @@ do
     rm -f run.log
     set_parameters_pert grompp.mdp
 
-    if test $pert_ele_method_ind -eq 0; then
+    if test $pert_ele_method_ind -eq 0; then	# zm
 	echo "# gen zm pot"
 	zm_xup=`echo $pert_rlist + $pert_tab_ext + .1 | bc -l`
 	make -C $zm_gen_dir &> /dev/null
 	$zm_gen_dir/zm -l $pert_zm_l --xup $zm_xup --alpha $pert_zm_alpha --rc $pert_rcut_ele --output table.xvg &> /dev/null
 	rm -f tablep.xvg
 	cp $wwd/tools/table6-12.xvg tablep.xvg
+    fi
+    if echo $pert_adress | grep yes &> /dev/null; then	# vdw tables for adress
+	rm -f table.xvg tablep.xvg
+	cp $wwd/tools/table6-12.xvg tablep.xvg
+	cp $wwd/tools/table6-12.xvg table.xvg
+    fi
+    if [ -f $wwd/$pert_adress_tf_file ]; then	# tf table for adress
+	if [ -f tabletf_CMW.xvg ]; then
+	    echo "# rm existing tf table"
+	    rm -f tabletf_CMW.xvg
+	fi
+	cp $wwd/$pert_adress_tf_file ./tabletf_CMW.xvg
     fi
     
     count_1=`echo "($count % $nlines_equi_frame) + 1" | bc `
