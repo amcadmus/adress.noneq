@@ -61,7 +61,7 @@ function set_parameters_pert () {
 	pert_rcut_ele_switch=$pert_rcut_ele
     fi
     sed -e "/^dt /s/=.*/= $pert_dt/g" $file |\
-    sed -e "/^nstep /s/=.*/= $pert_nstep/g" |\
+    sed -e "/^nsteps /s/=.*/= $pert_nstep/g" |\
     sed -e "/^ld-seed /s/=.*/= `date +%s`/g" |\
     sed -e "/^nstcalcenergy /s/=.*/= $pert_nstcalce/g"|\
     sed -e "/^nstcomm /s/=.*/= $pert_nstcomm/g"|\
