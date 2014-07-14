@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source env.sh
 source parameters.sh
 source functions.sh
 
@@ -7,7 +8,7 @@ make -C tools/angles/ makedir
 # make -C tools/angles/ clean
 make -C tools/angles/ -j$nthreads
 
-cwd=`pwd`
+wwd=`pwd`
 # prepare files
 if test ! -d $pert_equi_result ; then
     echo "no dir $pert_equi_result, exit"
@@ -21,9 +22,28 @@ if test ! -d $gro_dir; then
     echo "no dir $gro_dir, exit"
     exit
 fi
-#rm -f angle.name
-#rm -f gxs.name
-#rm -f success.dir.name
+
+if echo "$pert_ele_method" | grep pme &> /dev/null ; then
+    echo "# run with ele method pme"
+    pert_ele_method_gromacs=pme
+    pert_ele_method_ind=1
+    if echo "$pert_ele_method" | grep pme-switch &> /dev/null ; then
+	echo "# run with ele method pme-switch"
+	pert_ele_method_gromacs=pme-switch
+	pert_ele_method_ind=11
+    fi
+else if echo "$pert_ele_method" | grep zm &> /dev/null ; then
+    echo "# run with ele method zm"
+    pert_ele_method_gromacs=user
+    pert_ele_method_ind=0
+else if echo "$pert_ele_method" | grep rf &> /dev/null ; then
+    echo "# run with ele method rf"
+    pert_ele_method_gromacs=reaction-field
+    pert_ele_method_ind=2
+fi
+fi
+fi
+
 touch angle.name gxs.name success.dir.name
 
 # targets=`awk '{print $1}' $pert_equi_result/equi.frame | head -n $pert_num_conf_use`
@@ -52,29 +72,43 @@ do
     cd $my_dir
     rm -f run.log
     set_parameters_pert grompp.mdp
+
+    if test $pert_ele_method_ind -eq 0; then
+	echo "# gen zm pot"
+	zm_xup=`echo $pert_rlist + $pert_tab_ext + .1 | bc -l`
+	make -C $zm_gen_dir &> /dev/null
+	$zm_gen_dir/zm -l $pert_zm_l --xup $zm_xup --alpha $pert_zm_alpha --rc $pert_rcut_ele --output table.xvg &> /dev/null
+	rm -f tablep.xvg
+	cp $wwd/tools/table6-12.xvg tablep.xvg
+    fi
+    
     count_1=`echo "($count % $nlines_equi_frame) + 1" | bc `
     count_1=`printf %06d $count_1`
     start_time=`grep "^$count_1" $pert_equi_result/equi.frame | awk '{print $2}'`
     echo "# run with command `which grompp`"
-    $grompp_command -t $pert_equi_result/traj.trr -time $start_time &> run.log
+    $pert_grompp_command -n index.ndx -t $pert_equi_result/traj.trr -time $start_time &> run.log
     if [ $? -ne 0 ]; then
 	echo "failed at grompp exit"; exit
     fi
-    echo "# tune pme with command `which g_pme_error`"
-    g_pme_error -tune yes -self 1e-2 -seed `date +%s` -nice 0 > error.out 2> /dev/null
-    if [ $? -ne 0 ]; then
-	echo "failed at g_pme_error exit"; exit
-    fi	
-    mv -f tuned.tpr topol.tpr
+    if [ $pert_ele_method_ind -eq 1 ] || [ $pert_ele_method_ind -eq 11 ]; then
+	echo "# tune pme with command `which g_pme_error`"
+	$pert_tune_command -tune yes -self 1e-2 -seed `date +%s` -nice 0
+	if [ $? -ne 0 ]; then
+	    echo "# failed at $pert_tune_command, return"
+	    exit
+	fi    
+	mv -f tuned.tpr topol.tpr
+    fi
     echo "# run with command `which mdrun`"
-    $mdrun_command &> run.log
+    echo "# run with $pert_mdrun_command"
+    $pert_mdrun_command &> run.log
     if [ $? -ne 0 ]; then
 	echo "failed at mdrun exit"; exit
     fi
 
     echo 3 14 | trjconv -center -pbc whole
     mv -f trajout.xtc alanine.xtc
-    $cwd/tools/angles/evolve -f alanine.xtc -s angle.dat &> angle.log
+    $wwd/tools/angles/evolve -f alanine.xtc -s angle.dat &> angle.log
     if [ $? -ne 0 ]; then
 	echo "failed at evolve exit"; exit
     fi
@@ -87,8 +121,7 @@ do
     fi
     rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log confout.gro
     
-    cd $cwd
-    sleep 1
+    cd $wwd
     echo "$my_dir/angle.dat" >> angle.name
     echo "$my_dir/gxs.out" >> gxs.name
     echo "$my_dir" >> success.dir.name
