@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source env.sh
+
 cwd=`pwd`
 jobname=${cwd##*/}
 
@@ -9,13 +11,14 @@ echo "#PBS -j oe"				>> submit.sh
 echo "#PBS -q mpp1q"				>> submit.sh
 echo "#PBS -M han.wang@fu-berlin.de"		>> submit.sh
 echo "#PBS -l walltime=12:00:00"		>> submit.sh
-echo "#PBS -l nodes=1:ppn=24"			>> submit.sh
+echo "#PBS -l nodes=2:ppn=24"			>> submit.sh
 #echo "#PBS -l mem=1000mb"			>> submit.sh
 
 echo "hostname"					>> submit.sh
 echo "date"					>> submit.sh
 echo "pwd"					>> submit.sh
-echo "source $WORK/local/gromacs/4.6.5//bin/GMXRC.bash">> submit.sh
+echo "source $gmx_dir/bin/GMXRC.bash"		>> submit.sh
+echo "echo run with \`which mdrun\`"		>> submit.sh
 
 echo "if test -f state.cpt; then"		>> submit.sh
 echo "echo restart from checkpoint"		>> submit.sh
