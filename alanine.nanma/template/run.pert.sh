@@ -68,8 +68,17 @@ do
 	fi
     fi
     echo "# doing in dir $my_dir"
-    cp -a $gro_dir $my_dir
-    cd $my_dir
+    mkdir -p $my_dir
+#    cp -a $gro_dir $my_dir
+    cd $wwd/$gro_dir
+    ln_file_list=`ls | grep -v grompp | grep -v mdp$`
+    cd $wwd/$my_dir
+    for file in $ln_file_list;
+    do
+	ln -sf $wwd/$gro_dir/$file .
+    done
+    rm -f grompp.mdp
+    cp $wwd/$gro_dir/grompp.mdp .
     rm -f run.log
     set_parameters_pert grompp.mdp
 
@@ -85,13 +94,13 @@ do
 	rm -f table.xvg tablep.xvg
 	cp $wwd/tools/table6-12.xvg tablep.xvg
 	cp $wwd/tools/table6-12.xvg table.xvg
-    fi
-    if [ -f $wwd/$pert_adress_tf_file ]; then	# tf table for adress
-	if [ -f tabletf_CMW.xvg ]; then
-	    echo "# rm existing tf table"
-	    rm -f tabletf_CMW.xvg
+	if [ -f $wwd/$pert_adress_tf_file ]; then	# tf table for adress
+	    if [ -f tabletf_CMW.xvg ]; then
+		echo "# rm existing tf table"
+		rm -f tabletf_CMW.xvg
+	    fi
+	    cp $wwd/$pert_adress_tf_file ./tabletf_CMW.xvg
 	fi
-	cp $wwd/$pert_adress_tf_file ./tabletf_CMW.xvg
     fi
     
     count_1=`echo "($count % $nlines_equi_frame) + 1" | bc `
@@ -131,7 +140,7 @@ do
     if [ $count -eq 0 ]; then
 	cp -a ..//pert.$count ..//backup.pert.$count
     fi
-    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log confout.gro
+    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log confout.gro error.out grompp.mdp topol.top
     
     cd $wwd
     echo "$my_dir/angle.dat" >> angle.name
