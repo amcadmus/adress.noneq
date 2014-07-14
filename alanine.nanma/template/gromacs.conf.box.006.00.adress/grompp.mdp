@@ -34,7 +34,7 @@ xtc-precision            = 1000
 xtc-grps                 = 
 ; Selection of energy groups
 energygrps               =  EXW CMW
-energygrp_table          =  CMW CMW
+energygrp-table          =  CMW CMW
 
 ; NEIGHBORSEARCHING PARAMETERS
 ; cut-off scheme (group: using charge groups, Verlet: particle based cut-offs)
@@ -119,6 +119,16 @@ lincs-iter               = 4
 lincs-warnangle          = 30
 ; Convert harmonic bonds to morse potentials
 morse                    = no
+
+; Electric fields      
+; Format is number of terms (int) and for all terms an amplitude (real)
+; and a phase angle (real)
+E-x                      = 
+E-xt                     = 
+E-y                      = 
+E-yt                     = 
+E-z                      = 
+E-zt                     = 
 
 ; AdResS parameters
 adress = yes
