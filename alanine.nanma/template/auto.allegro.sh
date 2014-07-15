@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source env.sh
 source parameters.sh
 
 cwd=`pwd`
@@ -13,7 +14,7 @@ echo "#PBS -o allegro.out"			>> submit.sh
 echo "#PBS -e allegro.err"			>> submit.sh
 echo "#PBS -M han.wang@fu-berlin.de"		>> submit.sh
 echo "#PBS -l walltime=70:00:00"		>> submit.sh
-echo "#PBS -l nodes=1:ppn=$nthreads"		>> submit.sh
+echo "#PBS -l nodes=1:ppn=$nnodes"		>> submit.sh
 echo "#PBS -l pmem=1000mb"			>> submit.sh
 
 echo "cd $cwd"					>> submit.sh
