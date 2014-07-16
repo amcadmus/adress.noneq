@@ -88,18 +88,18 @@ do
 	make -C $zm_gen_dir &> /dev/null
 	$zm_gen_dir/zm -l $pert_zm_l --xup $zm_xup --alpha $pert_zm_alpha --rc $pert_rcut_ele --output table.xvg &> /dev/null
 	rm -f tablep.xvg
-	cp $wwd/tools/table6-12.xvg tablep.xvg
+	ln -s $wwd/tools/table6-12.xvg tablep.xvg
     fi
     if echo $pert_adress | grep yes &> /dev/null; then	# vdw tables for adress
 	rm -f table.xvg tablep.xvg
-	cp $wwd/tools/table6-12.xvg tablep.xvg
-	cp $wwd/tools/table6-12.xvg table.xvg
+	ln -s $wwd/tools/table6-12.xvg tablep.xvg
+	ln -s $wwd/tools/table6-12.xvg table.xvg
 	if [ -f $wwd/$pert_adress_tf_file ]; then	# tf table for adress
 	    if [ -f tabletf_CMW.xvg ]; then
 		echo "# rm existing tf table"
 		rm -f tabletf_CMW.xvg
 	    fi
-	    cp $wwd/$pert_adress_tf_file ./tabletf_CMW.xvg
+	    ln -s $wwd/$pert_adress_tf_file ./tabletf_CMW.xvg
 	fi
     fi
     
@@ -140,7 +140,7 @@ do
     if [ $count -eq 0 ]; then
 	cp -a ..//pert.$count ..//backup.pert.$count
     fi
-    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log confout.gro error.out grompp.mdp topol.top
+    rm -f traj.xtc traj.trr state*.cpt topol.tpr conf.gro index.ndx angle.log md.log genbox.log mdout.mdp protein.gro run.log confout.gro error.out grompp.mdp topol.top table*xvg
     
     cd $wwd
     echo "$my_dir/angle.dat" >> angle.name
