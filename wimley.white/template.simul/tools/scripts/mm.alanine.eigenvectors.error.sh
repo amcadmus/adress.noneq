@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function pick_col2 () {
-    awk 'function abs(x){return ((x < 0.0) ? -x : x)} {print abs($2)}' $1 > tmp.out; mv -f tmp.out $1
+    awk 'function abs(x){return ((x < 0.0) ? -x : x)} {print ($2)}' $1 > tmp.out; mv -f tmp.out $1
 }
 
 emma_dir=$HOME/Softs/emma
@@ -11,6 +11,7 @@ analyze_dir=$base_dir/analyze
 assign_command=$analyze_dir/assign.dihedral
 back_assign_command=$analyze_dir/recover.full.dist
 eigenvector_command=$script_dir/mm.alanine.eigenvectors.sh
+norm_eig_vec_command=$analyze_dir/norm.eig.vec
 make -j -C $analyze_dir &>/dev/null
 cwd=`pwd`
 
@@ -63,6 +64,14 @@ do
     pick_col2 eigen.vector.l.02.dist.$pjj.psi
     pick_col2 eigen.vector.l.03.dist.$pjj.psi
     pick_col2 eigen.vector.l.04.dist.$pjj.psi
+    $norm_eig_vec_command --input-ref eigen.vector.l.01.dist.phi -c 2 --input eigen.vector.l.01.dist.$pjj.phi --output tmp.out; mv -f tmp.out eigen.vector.l.01.dist.$pjj.phi
+    $norm_eig_vec_command --input-ref eigen.vector.l.02.dist.phi -c 2 --input eigen.vector.l.02.dist.$pjj.phi --output tmp.out; mv -f tmp.out eigen.vector.l.02.dist.$pjj.phi
+    $norm_eig_vec_command --input-ref eigen.vector.l.03.dist.phi -c 2 --input eigen.vector.l.03.dist.$pjj.phi --output tmp.out; mv -f tmp.out eigen.vector.l.03.dist.$pjj.phi
+    $norm_eig_vec_command --input-ref eigen.vector.l.04.dist.phi -c 2 --input eigen.vector.l.04.dist.$pjj.phi --output tmp.out; mv -f tmp.out eigen.vector.l.04.dist.$pjj.phi
+    $norm_eig_vec_command --input-ref eigen.vector.l.01.dist.psi -c 2 --input eigen.vector.l.01.dist.$pjj.psi --output tmp.out; mv -f tmp.out eigen.vector.l.01.dist.$pjj.psi
+    $norm_eig_vec_command --input-ref eigen.vector.l.02.dist.psi -c 2 --input eigen.vector.l.02.dist.$pjj.psi --output tmp.out; mv -f tmp.out eigen.vector.l.02.dist.$pjj.psi
+    $norm_eig_vec_command --input-ref eigen.vector.l.03.dist.psi -c 2 --input eigen.vector.l.03.dist.$pjj.psi --output tmp.out; mv -f tmp.out eigen.vector.l.03.dist.$pjj.psi
+    $norm_eig_vec_command --input-ref eigen.vector.l.04.dist.psi -c 2 --input eigen.vector.l.04.dist.$pjj.psi --output tmp.out; mv -f tmp.out eigen.vector.l.04.dist.$pjj.psi
     eigv_l1_phi_list="$eigv_l1_phi_list eigen.vector.l.01.dist.$pjj.phi"
     eigv_l2_phi_list="$eigv_l2_phi_list eigen.vector.l.02.dist.$pjj.phi"
     eigv_l3_phi_list="$eigv_l3_phi_list eigen.vector.l.03.dist.$pjj.phi"
