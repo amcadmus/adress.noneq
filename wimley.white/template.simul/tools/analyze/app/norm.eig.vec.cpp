@@ -80,7 +80,7 @@ int main(int argc, char * argv[])
       cerr << "wrong file format of " << ifile << endl;
       exit (1);
     }
-    ref.push_back(atof(words[col-1].c_str()));
+    value.push_back(atof(words[col-1].c_str()));
   }
   
     
@@ -96,10 +96,13 @@ int main(int argc, char * argv[])
     sump += (ref[ii] + value[ii]) * (ref[ii] + value[ii]);
     summ += (ref[ii] - value[ii]) * (ref[ii] - value[ii]);
   }
+  // cout << "sump " << sump << endl;
+  // cout << "summ " << summ << endl;
 
-  if (sump < summ);
-  for (unsigned ii = 0; ii < value.size(); ++ii){
-    value[ii] = -value[ii];
+  if (sump < summ){
+    for (unsigned ii = 0; ii < value.size(); ++ii){
+      value[ii] = -value[ii];
+    }
   }
   
   FILE * fp = fopen (ofile.c_str(), "w");
