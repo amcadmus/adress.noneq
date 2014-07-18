@@ -17,6 +17,10 @@ else
     source $script_dir/mm.alanine.parameters.sh
 fi
 
+if [ $# -ge 1 ]; then
+    file_surfix=$1
+fi
+
 #traj_dir=gromacs.traj.npt
 #phi_file_name=angaver.phi.xvg
 #psi_file_name=angaver.psi.xvg
@@ -60,8 +64,8 @@ echo "# convert to readable dists"
 for ii in `seq 1 $num_eig`;
 do
     pii=`printf %02d $ii`
-    $back_assign_command --input eigen.vector.r.out --input-largest-set largestSet --column $ii --num-bin $nbins --output eigen.vector.r.$pii.dist
-    $back_assign_command --input eigen.vector.l.out --input-largest-set largestSet --column $ii --num-bin $nbins --output eigen.vector.l.$pii.dist
+    $back_assign_command --input eigen.vector.r.out --input-largest-set largestSet --column $ii --num-bin $nbins --output eigen.vector.r.$pii.dist$file_surfix
+    $back_assign_command --input eigen.vector.l.out --input-largest-set largestSet --column $ii --num-bin $nbins --output eigen.vector.l.$pii.dist$file_surfix
 done
 
 
