@@ -119,6 +119,16 @@ int main(int argc, char * argv[])
     vector<int > idx = conv_single_multi (setMap[ii], 2, nBin);
     dist[idx[0]][idx[1]] = values [ii];
   }
+  vector<double > distphi (nBin, 0.);
+  vector<double > distpsi (nBin, 0.);
+  for (int ii = 0; ii < int(nBin); ++ii){
+    for (int jj = 0; jj < int(nBin); ++jj){
+      distphi[ii] += dist[ii][jj];
+      distpsi[ii] += dist[jj][ii];
+    }
+    distphi[ii] /= double (nBin);
+    distpsi[ii] /= double (nBin);
+  }
 
   for (unsigned ii = 0; ii < nBin; ++ii){
     for (unsigned jj = 0; jj < nBin; ++jj){
@@ -136,7 +146,11 @@ int main(int argc, char * argv[])
   }
   
   
+  string ophi = ofile + string(".phi");
+  string opsi = ofile + string(".psi");
   fp = fopen (ofile.c_str(), "w");
+  FILE *fpphi = fopen (ophi.c_str(), "w");
+  FILE *fppsi = fopen (opsi.c_str(), "w");
   for (unsigned ii = 0; ii < nBin; ++ii){
     double xx = (ii + 0.5) * binSize + alow;
     for (unsigned jj = 0; jj < nBin; ++jj){
@@ -144,8 +158,12 @@ int main(int argc, char * argv[])
       fprintf (fp, "%f %f %e\n", xx, yy, dist[ii][jj]);
     }
     fprintf (fp, "\n");
+    fprintf (fpphi, "%f %e\n", xx, distphi[ii]);
+    fprintf (fppsi, "%f %e\n", xx, distpsi[ii]);
   }
   fclose (fp);
+  fclose (fpphi);
+  fclose (fppsi);
   
   return 0;
 }
