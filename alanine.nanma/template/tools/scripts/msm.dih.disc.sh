@@ -59,7 +59,7 @@ rm -f trash.tmatrix.dih*
 rm -f prob.$msm_steady_begin.dih.out
 echo "# evlove the probability with command: "
 echo "# $msm_dir/evolve.prob --input tmatrix.dih --input-prob init.prob.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out"
-$msm_dir/evolve.prob --input tmatrix.dih --input-prob init.prob.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $msm_steady_end --output cg.prob.dih.out
+$msm_dir/evolve.prob --input tmatrix.dih --input-prob init.prob.dih.out --dt $pert_frame_feq --period $pert_warm_time --end $pert_time --output cg.prob.dih.out
 echo "# recover 5 sets cg traj with command:"
 echo "# $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out"
 $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out
@@ -79,7 +79,7 @@ do
 	    echo 0 >> tmp.init.out
 	fi
     done
-    $msm_dir/evolve.prob --input tmatrix.dih --input-prob tmp.init.out --dt $pert_frame_feq --period $pert_warm_time --end $pert_warm_time --output tmp.perid.out
+    $msm_dir/evolve.prob --input tmatrix.dih --input-prob tmp.init.out --dt-store $pert_frame_feq --dt $msm_tau --period $pert_warm_time --end $pert_warm_time --output tmp.perid.out
     tail -n 1 tmp.perid.out | awk '{$1=""; print}' >> floque.B.out
     rm -f tmp.init.out tmp.perid.out
 done

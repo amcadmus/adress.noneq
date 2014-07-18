@@ -71,7 +71,7 @@ void apply_trans (const vector<vector<double > > & tmatrix,
 int main(int argc, char * argv[])
 {
   std::string ofile, ifile, ipfile;
-  double dt, period, end;
+  double dt, storeDt, period, end;
   
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -80,6 +80,7 @@ int main(int argc, char * argv[])
       ("input-prob", po::value<string > (&ipfile)->default_value ("init.prob.out"), "the input probability.")
       // ("input-largest-set,s", po::value<std::string > (&isfile)->default_value ("largestSet"), "the input file of largest set.")
       ("dt,t", po::value<double > (&dt)->default_value (1.0), "time step of disc traj.")
+      ("dt-store", po::value<double > (&storeDt)->default_value (0.5), "time step for claculating the transition matrix")
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
       ("end,e", po::value<double > (&end)->default_value (400.), "the end of using data.")
       ("output,o", po::value<string > (&ofile)->default_value ("cg.prob.out"), "the output of prob.");
@@ -91,10 +92,16 @@ int main(int argc, char * argv[])
     std::cout << desc<< "\n";
     return 0;
   }
+
+  if (dt < storeDt) {
+    cerr << "dt should be larger than store dt" << endl;
+    return 1;
+  }
   
   unsigned nstate;
+  unsigned dtInt = unsigned ( (dt + 0.5 * storeDt) / storeDt );
   unsigned endInt = unsigned( (end + 0.5 * dt) / dt );
-  unsigned periodInt = unsigned ( (period + 0.5 * dt) / dt );
+  unsigned periodInt = unsigned ( (period + 0.5 * storeDt) / storeDt );
 
   vector<vector<vector<double > > > tmatrix (periodInt); // periodInt x nstate x nstate
 
@@ -153,10 +160,10 @@ int main(int argc, char * argv[])
   for (unsigned ii = 0; ii < endInt+1; ++ii){
     fprintf (fpo, "%f ", ii * dt);
     for (unsigned jj = 0; jj < nstate; ++jj){
-      fprintf (fpo, "%e ", pcur[jj]);
+      fprintf (fpo, "%.12e ", pcur[jj]);
     }
     fprintf (fpo, "\n");
-    unsigned posi = ii % periodInt;
+    unsigned posi = (ii * dtInt) % periodInt;
     vector <double > pnew;
     apply_trans (tmatrix[posi], pcur, pnew);
     for (unsigned jj = 0; jj < pcur.size(); ++jj){

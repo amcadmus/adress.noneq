@@ -244,7 +244,7 @@ int main(int argc, char * argv[])
 	    error = 0.;
 	  }
 	}
-	fprintf (fp, "%.10e ", value);
+	fprintf (fp, "%.12e ", value);
 	if (error > maxErr) {
 	  maxErr = error ;
 	  // cout << "find max: " << ii << " state "  << jj << " " << kk << " value " << value <<  " error " << error << " rel " << error / value  << endl;

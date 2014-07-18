@@ -40,31 +40,64 @@ function set_parameters_pert () {
     file=$1
     grep nstcalcenergy $file &> /dev/null
     if [ $? -eq 1 ]; then
-	echo "nstcalcenergy=1" >> $file
+	echo "nstcalcenergy = 1" >> $file
     fi
     pert_nstep=`echo "$pert_time / $pert_dt" | bc -l | cut -d '.' -f 1`
     pert_xtcout_feq=`echo "$pert_frame_feq / $pert_dt" | bc -l | cut -d '.' -f 1`
-    pert_xvout_feq=$pert_xtcout_feq
+    pert_xvout_feq=0
     pert_energy_feq=$pert_xtcout_feq
-    sed -e "/^dt/s/=.*/= $pert_dt/g" $file |\
+    pert_nstcalce=`echo "$pert_energy_feq" | bc`
+    pert_nstcomm=`echo "$pert_energy_feq" | bc`
+    if test $pert_ele_method_ind -eq 0; then # zm
+	pert_nstlist=$pert_nstlist
+	pert_rcut_ele_switch=$pert_rcut_ele
+    fi
+    if test $pert_ele_method_ind -eq 1; then # pme
+	pert_rcut_ele=$pert_rlist
+	pert_rcut_ele_switch=$pert_rcut_ele
+    fi
+    if test $pert_ele_method_ind -eq 2; then # rf
+	pert_rcut_ele=$pert_rlist
+	pert_rcut_ele_switch=$pert_rcut_ele
+    fi
+    sed -e "/^dt /s/=.*/= $pert_dt/g" $file |\
+    sed -e "/^nsteps /s/=.*/= $pert_nstep/g" |\
+    sed -e "/^ld-seed /s/=.*/= `date +%s`/g" |\
+    sed -e "/^nstcalcenergy /s/=.*/= $pert_nstcalce/g"|\
+    sed -e "/^nstcomm /s/=.*/= $pert_nstcomm/g"|\
+    sed -e "/^nstenergy /s/=.*/= $pert_energy_feq/g"|\
     sed -e "/^integrator/s/=.*/= $pert_integrator/g" |\
-    sed -e "/^Tcoupl /s/=.*/= no/g" |\
-    sed -e "/^Pcoupl /s/=.*/= $pert_barostat/g" |\
-    sed -e "/^tau_t/s/=.*/= $pert_taut/g" |\
-    sed -e "/^tau_p/s/=.*/= $pert_taup/g" |\
-    sed -e "/^nstep/s/=.*/= $pert_nstep/g" |\
+    sed -e "/^nstxtcout/s/=.*/= $pert_xtcout_feq/g" |\
     sed -e "/^nstxout/s/=.*/= $pert_xvout_feq/g" |\
     sed -e "/^nstvout/s/=.*/= $pert_xvout_feq/g" |\
     sed -e "/^nstfout/s/=.*/= 0/g" |\
-    sed -e "/^nstenergy/s/=.*/= $pert_energy_feq/g" |\
-    sed -e "/^nstcalcenergy/s/=.*/= $pert_energy_feq/g" |\
-    sed -e "/^nstcomm/s/=.*/= $pert_energy_feq/g" |\
-    sed -e "/^userreal1/s/=.*/= $pert_noSdRange/g" |\
-    sed -e "/^E-x /s/=.*/= 1 $pert_strength 0.0/g" |\
-    sed -e "/^ld-seed/s/=.*/= `date +%s`/g" |\
+    sed -e "/^nstlog /s/=.*/= 0/g"|\
+    sed -e "/^nstlist /s/=.*/= $pert_nstlist/g"|\
+    sed -e "/^rlist /s/=.*/= $pert_rlist/g"|\
+    sed -e "/^coulombtype /s/=.*/= $pert_ele_method_gromacs/g"|\
+    sed -e "/^rcoulomb-switch /s/=.*/= $pert_rcut_ele_switch/g"|\
+    sed -e "/^rcoulomb /s/=.*/= $pert_rcut_ele/g"|\
+    sed -e "/^fourierspacing /s/=.*/= $pert_pme_F_spacing/g"|\
+    sed -e "/^pme-order /s/=.*/= $pert_pme_order/g"|\
+    sed -e "/^vdwtype /s/=.*/= $pert_vdw_type/g"|\
+    sed -e "/^vdw-type /s/=.*/= $pert_vdw_type/g"|\
+    sed -e "/^vdw_type /s/=.*/= $pert_vdw_type/g"|\
+    sed -e "/^rvdw-switch /s/=.*/= $pert_rcut_vdw_switch/g"|\
+    sed -e "/^rvdw /s/=.*/= $pert_rcut_vdw/g"|\
+    sed -e "/^DispCorr /s/=.*/= EnerPres/g"|\
+    sed -e "/^Tcoupl /s/=.*/= no/g" |\
+    sed -e "/^Pcoupl /s/=.*/= $pert_barostat/g" |\
+    sed -e "/^tau_t/s/=.*/= $pert_taut/g" |\
+    sed -e "/^tau-t/s/=.*/= $pert_taut/g" |\
+    sed -e "/^tau_p/s/=.*/= $pert_taup/g" |\
+    sed -e "/^tau-p/s/=.*/= $pert_taup/g" |\
+    sed -e "/^epsilon-rf /s/=.*/= $pert_e_rf/g"|\
+    sed -e "/^userreal1/s/=.*/= $pert_local_sd_range/g" |\
     sed -e "/^gen_vel /s/=.*/= no/g" |\
-    sed -e "/^gen-vel /s/=.*/= no/g" |\
-    sed -e "/^nstxtcout/s/=.*/= $pert_xtcout_feq/g" > tmptmptmp.mdp
+    sed -e "/^gen-vel /s/=.*/= no/g"|\
+    sed -e "/^couple-moltype /s/=.*/= /g"|\
+    sed -e "/^E-x /s/=.*/= 1 $pert_strength 0.0/g" |\
+    sed -e "/^table-extension /s/=.*/= $pert_tab_ext/g"> tmptmptmp.mdp
     mv -f tmptmptmp.mdp $file
     if test $pert_mode -eq 1; then
 	sed -e "/^E-xt /s/=.*/= 1 $pert_warm_time 0.0/g" $file > tmptmptmp.mdp
@@ -79,6 +112,30 @@ function set_parameters_pert () {
     fi
     fi
     mv -f tmptmptmp.mdp $file
+    if echo $pert_adress | grep no &> /dev/null; then
+	grep -v adress $file >  tmptmptmp.mdp
+	mv -f tmptmptmp.mdp $file
+    else
+	echo "# run with adress"
+	boxx=`tail -n 1 conf.gro | awk '{print $1}'`
+	boxy=`tail -n 1 conf.gro | awk '{print $2}'`
+	boxz=`tail -n 1 conf.gro | awk '{print $3}'`
+	hboxx=`echo "$boxx * 0.5" | bc -l`
+	hboxy=`echo "$boxy * 0.5" | bc -l`
+	hboxz=`echo "$boxz * 0.5" | bc -l`
+	cat $file |\
+        sed -e "/^DispCorr /s/=.*/= no/g"|\
+        sed -e "/^adress-type /s/=.*/= $pert_adress_type/g" |\
+        sed -e "/^adress-interface-correction /s/=.*/= thermoforce/g" |\
+        sed -e "/^adress-site /s/=.*/= com/g" |\
+        sed -e "/^adress-ex-width /s/=.*/= $pert_adress_ex_region/g" |\
+        sed -e "/^adress-hy-width /s/=.*/= $pert_adress_hy_region/g" |\
+        sed -e "/^vdwtype /s/=.*/= user/g"|\
+        sed -e "/^vdw-type /s/=.*/= user/g"|\
+        sed -e "/^vdw_type /s/=.*/= user/g"|\
+        sed -e "/^adress-reference-coords /s/=.*/= $hboxx $hboxy $hboxz/g" > tmptmptmp.mdp
+	mv -f tmptmptmp.mdp grompp.mdp
+    fi
 }
 
 function split_trr () {
