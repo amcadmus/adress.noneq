@@ -48,13 +48,10 @@ do
     out_list="$out_list dih.$ii.disctraj"
 done
 
-if [ ! -f largestSet ]; then
-    echo "# emma calculates the connectivity"
-    $emma_dir/bin/mm_connectivity	-i $out_list -o largestSet
-fi
-
+echo "# emma calculates the connectivity"
+$emma_dir/bin/mm_connectivity	-i $out_list -o largestSet
 echo "# emma calculates the count matrix"
-$emma_dir/bin/mm_estimate    -i dih.simul.00*disctraj -restrictToStates largestSet -prior 0.00 -lagtime $my_lag_time -outputtransitionmatrix tmatrix.failed.out -outputcountmatrix cmatrix.out -sampling slidingwindow
+$emma_dir/bin/mm_estimate    -i dih.simul.00*disctraj -restrictToStates largestSet -prior 0.01 -lagtime $my_lag_time -outputtransitionmatrix tmatrix.failed.out -outputcountmatrix cmatrix.out -sampling slidingwindow
 echo "# convert count matrix to transition matrix by using on Ben's scirpts"
 $script_dir/convert_cmatrix.py cmatrix.out tmatrix.out
 echo "# emma calculates the eigen vectors"

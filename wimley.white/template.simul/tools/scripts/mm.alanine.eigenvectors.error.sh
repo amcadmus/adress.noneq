@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function pick_col2 () {
-    awk '{printf $2}' $1 > tmp.out; mv -f tmp.out $1
+    awk 'function abs(x){return ((x < 0.0) ? -x : x)} {print abs($2)}' $1 > tmp.out; mv -f tmp.out $1
 }
 
 emma_dir=$HOME/Softs/emma
@@ -88,5 +88,61 @@ awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
 paste eigen.vector.l.01.dist.phi sd.out > tmp.out
 mv -f tmp.out eigen.vector.l.01.dist.phi
 
-    
+paste $eigv_l2_phi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.02.dist.phi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.02.dist.phi
 
+paste $eigv_l3_phi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.03.dist.phi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.03.dist.phi
+
+paste $eigv_l4_phi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.04.dist.phi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.04.dist.phi
+
+
+    
+paste $eigv_l1_psi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.01.dist.psi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.01.dist.psi
+
+paste $eigv_l2_psi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.02.dist.psi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.02.dist.psi
+
+paste $eigv_l3_psi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.03.dist.psi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.03.dist.psi
+
+paste $eigv_l4_psi_list > all.tmp
+$analyze_dir/avg.line -f all.tmp -c "`seq 1 1 $num_samples`" --output tmp.avg.out
+awk '{print ($3)/sqrt(2)}' tmp.avg.out > sd.out
+paste eigen.vector.l.04.dist.psi sd.out > tmp.out
+mv -f tmp.out eigen.vector.l.04.dist.psi
+
+for jj in `seq 1 1 $num_samples`;
+do
+    pjj=`printf %03d $jj`    
+    for ii in `seq 1 $num_eig`;
+    do
+	pii=`printf %02d $ii`
+	rm -f eigen.vector.l.$pii.dist.$pjj.phi
+	rm -f eigen.vector.l.$pii.dist.$pjj.psi
+	rm -f eigen.vector.l.$pii.dist.$pjj
+	rm -f eigen.vector.r.$pii.dist.$pjj.phi
+	rm -f eigen.vector.r.$pii.dist.$pjj.psi
+	rm -f eigen.vector.r.$pii.dist.$pjj
+    done
+done
