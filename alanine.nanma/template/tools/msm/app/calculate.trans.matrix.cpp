@@ -128,8 +128,8 @@ int main(int argc, char * argv[])
     unsigned tmpread;
     while (1 == fscanf(fp, "%d", &tmpread)){
       count_read ++;
-      if (count_read <= beginInt) continue;
-      if (endInt != 0 && count_read > endInt) break;
+      if ((count_read - 1) < beginInt) continue;
+      if (endInt != 0 && (count_read - 1) >= endInt + tauInt) break;
       // unsigned index = (mymap.find (tmpread)) -> second;
       // if (setMap[index] != tmpread){
       // 	cerr << "error with map !" << endl;
@@ -152,20 +152,18 @@ int main(int argc, char * argv[])
 	}
       }
     }
-    for (unsigned ii = 0; ii < disc_traj.size() / periodInt; ++ii){
-      for (unsigned jj = 0; jj < periodInt; ++jj){
-	unsigned myPosi = ii * periodInt + jj;
-	unsigned targetPosi = ii * periodInt + jj + tauInt;
-	if (targetPosi < disc_traj.size()){
-	  unsigned myIdx = mymap.find(disc_traj[myPosi]) -> second;
-	  unsigned targetIdx = mymap.find(disc_traj[targetPosi]) -> second;
-	  for (unsigned kk = 0; kk < nstate; ++kk){
-	    if (kk == targetIdx){
-	      tmatrix[jj][kk][myIdx].deposite(1.);
-	    }
-	    else {
-	      tmatrix[jj][kk][myIdx].deposite(0.);
-	    }
+    for (unsigned myPosi = 0; myPosi < disc_traj.size(); ++myPosi) {
+      unsigned jj = (myPosi + beginInt) % periodInt;
+      unsigned targetPosi = myPosi + tauInt;
+      if (targetPosi < disc_traj.size()){
+	unsigned myIdx = mymap.find(disc_traj[myPosi]) -> second;
+	unsigned targetIdx = mymap.find(disc_traj[targetPosi]) -> second;
+	for (unsigned kk = 0; kk < nstate; ++kk){
+	  if (kk == targetIdx){
+	    tmatrix[jj][kk][myIdx].deposite(1.);
+	  }
+	  else {
+	    tmatrix[jj][kk][myIdx].deposite(0.);
 	  }
 	}
       }
