@@ -49,7 +49,7 @@ echo "# copy dir"
 if test -d tf; then
     mv tf tf.`date +%s`
 fi
-cp -a tools/tf.template ./tf
+cp -a $tf_template ./tf
 
 # prepare grompp.mdp
 echo "# prepare grompp.mdp"

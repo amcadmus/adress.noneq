@@ -12,6 +12,7 @@ gmx_ex_region_r=0.6
 gmx_hy_region_r=1.2
 gmx_fix_ndx=9
 
+tf_template=tools/tf.template.charmm27
 tf_extension=0.05
 tf_step=0.01
 tf_spline_extension=0.1
