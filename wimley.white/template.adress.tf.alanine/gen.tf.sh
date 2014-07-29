@@ -6,11 +6,11 @@ source parameters.sh
 mylog=`pwd`/gen.tf.log
 makelog=`pwd`/make.log
 rm -f $mylog
-make -C ./tools/gen.pot/ clean
+#make -C ./tools/gen.pot/ clean
 make -C ./tools/gen.pot/ -j8 &> /dev/null
-make -C ./tools/gen.conf/ clean
+#make -C ./tools/gen.conf/ clean
 make -C ./tools/gen.conf/ -j8 &> /dev/null
-make -C ./tools/parse.top/ clean
+#make -C ./tools/parse.top/ clean
 make -C ./tools/parse.top/ -j8 &> /dev/null
 
 # prepare conf.gro

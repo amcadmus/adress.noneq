@@ -1,6 +1,6 @@
 #!/bin/bash
 
-input_conf=confs/conf.gro
+input_conf=confs/conf.amber99sb.gro
 
 gmx_dt=0.002
 gmx_nsteps=100000
@@ -8,11 +8,11 @@ gmx_nstenergy=100
 gmx_nstxtcout=100
 gmx_tau_t=0.1
 gmx_epsilon_rf=80
-gmx_ex_region_r=0.6
-gmx_hy_region_r=1.2
+gmx_ex_region_r=1.0
+gmx_hy_region_r=1.0
 gmx_fix_ndx=9
 
-tf_template=tools/tf.template.charmm27
+tf_template=tools/tf.template.amber99sb
 tf_extension=0.05
 tf_step=0.01
 tf_spline_extension=0.1
