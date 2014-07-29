@@ -8,18 +8,18 @@ gmx_nstenergy=100
 gmx_nstxtcout=100
 gmx_tau_t=0.1
 gmx_epsilon_rf=80
-gmx_ex_region_r=1.0
-gmx_hy_region_r=1.0
+gmx_ex_region_r=1.00
+gmx_hy_region_r=1.01
 gmx_fix_ndx=9
 
 tf_template=tools/tf.template.amber99sb
 tf_extension=0.05
 tf_step=0.01
 tf_spline_extension=0.1
-tf_spline_step=0.35
+tf_spline_step=0.30250
 tf_iterations_max=20
 tf_equi_time_discard=20
-tf_init_guess_CMW=./tabletf_CMW.xvg
+tf_init_guess_CMW=./SOL.pot.new
 tf_SOL_prefactor=0.04
 
 SOL_poten_eps=0.6
