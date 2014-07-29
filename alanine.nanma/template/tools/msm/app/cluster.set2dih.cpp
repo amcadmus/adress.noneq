@@ -22,7 +22,7 @@ namespace po = boost::program_options;
 using namespace std;
 
 void load_cluster (const string &ifile,
-		   vector<int > & cluster)
+		   vector<double > & cluster)
 {
   cluster.clear ();
   FILE * fp = fopen (ifile.c_str(), "r");
@@ -30,8 +30,8 @@ void load_cluster (const string &ifile,
     cerr << "cannot open angle file " << ifile << endl;
     exit( 1);
   }
-  int tmp;
-  while (1 == fscanf(fp, "%d", &tmp) ){
+  double tmp;
+  while (1 == fscanf(fp, "%lf", &tmp) ){
     cluster.push_back (tmp);
   }
   fclose(fp);
@@ -43,19 +43,24 @@ void load_fz_cluster (const string &ifile,
   char valueline [MaxLineLength];
   vector<string > words;
   ifstream ifp (ifile.c_str());
+  cluster.clear();
   if (! ifp){
     cerr << "cannot open angle file " << ifile << endl;
     exit( 1);
   }
+  int count = 0;
   while (ifp.getline(valueline, MaxLineLength)){
     if (valueline[0] == '#' || valueline[0] == '@'){
       continue;
     }
     StringOperation::split (string(valueline), words);
-    cluster.resize (words.size());
+    if (count == 0) {
+      cluster.resize (words.size());
+    }
     for (unsigned ii = 0; ii < words.size(); ++ii){
       cluster[ii].push_back (atof(words[ii].c_str()));
     }
+    count ++;
   }
 }
 
@@ -107,17 +112,17 @@ int main(int argc, char * argv[])
 
   double binSize = (aup - alow) / double(nbin);
 
-  vector<int > cluster;
+  vector<double > cluster;
   vector<vector<double > > fzcluster;
   load_cluster (ifile, cluster);
   load_fz_cluster (ifzfile, fzcluster);
 
   if (nstate != cluster.size()){
-    cerr << "set map is not consistent with the cluster file" << endl;
+    cerr << "set map " << nstate << " is not consistent with the cluster file " << cluster.size() << endl;
     return 1;
   }
-  if (nstate != fzcluster.size()){
-    cerr << "set map is not consistent with the fuzzy cluster file" << endl;
+  if (nstate != fzcluster[0].size()){
+    cerr << "set map " << nstate << " is not consistent with the fuzzy cluster file "  << fzcluster.size() << endl;
     return 1;
   }
 
@@ -132,25 +137,27 @@ int main(int argc, char * argv[])
     return 1;
   }
   for (unsigned ii = 0; ii < nbin; ++ii){
-    double phi = ii * binSize + alow;
+    double phi = (ii+0.5) * binSize + alow;
     for (unsigned jj = 0; jj < nbin; ++jj){
-      double psi = jj * binSize + alow;
+      double psi = (jj+0.5) * binSize + alow;
       unsigned dihIndex = jj + ii * nbin;
       map<unsigned, unsigned> :: const_iterator it = mymap.find(dihIndex);
       if (it != mymap.end()){
 	unsigned fileIndex = it -> second;
 	unsigned mostlike = 0;
 	double currentvalue = 0.;
+	double sum = 0.;
 	fprintf (fpfz, "%f %f ", phi, psi);
 	for (unsigned kk = 0; kk < fzcluster.size(); ++kk){
 	  fprintf(fpfz, "%f ", fzcluster[kk][fileIndex]);
+	  sum += (kk+1) * fzcluster[kk][fileIndex];
 	  if (fzcluster[kk][fileIndex] > currentvalue){
 	    currentvalue = fzcluster[kk][fileIndex];
 	    mostlike = kk;
 	  }
 	}
 	fprintf (fpfz, "\n");
-	fprintf (fp, "%f %f %d %d\n", phi, psi, cluster[fileIndex], mostlike);
+	fprintf (fp, "%f %f %f %d %f\n", phi, psi, cluster[fileIndex], mostlike+1, sum);
       }
       else {
 	fprintf (fpfz, "%f %f ", phi, psi);
@@ -158,9 +165,11 @@ int main(int argc, char * argv[])
 	  fprintf(fpfz, "%f ", 0.);
 	}
 	fprintf (fpfz, "\n");
-	fprintf (fp, "%f %f %d %d\n", phi, psi, 0, 0);
+	fprintf (fp, "%f %f %f %d %f\n", phi, psi, 0., 0, 0.);
       }      
     }
+    fprintf (fp, "\n");
+    fprintf (fpfz, "\n");
   }
   fclose (fp);
   fclose (fpfz);
