@@ -6,5 +6,5 @@ zm_gen_dir=$WORK/study/adress.noneq/zm/tools/gen.pot
 
 gmx_grompp_command="grompp"
 gmx_tune_command="aprun -B g_pme_error"
-gmx_mdrun_command="aprun -B mdrun -notunepme"
+gmx_mdrun_command="aprun -B mdrun -notunepme -maxh 12 -cpt 5 -cpo state.cpt"
 

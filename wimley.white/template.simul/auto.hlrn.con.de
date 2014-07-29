@@ -22,7 +22,7 @@ echo "echo run with \`which mdrun\`"		>> submit.sh
 
 echo "if test -f state.cpt; then"		>> submit.sh
 echo "echo restart from checkpoint"		>> submit.sh
-echo "aprun -B mdrun -cpi state.cpt -notunepme"	>> submit.sh
+echo "aprun -B mdrun -cpi state.cpt -cpo state.cpt -maxh 12 -cpt 5 -notunepme"	>> submit.sh
 echo "else"					>> submit.sh
 echo "echo new start"				>> submit.sh
 echo "grompp"					>> submit.sh
