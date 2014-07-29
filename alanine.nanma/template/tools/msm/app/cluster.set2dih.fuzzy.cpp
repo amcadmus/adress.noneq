@@ -37,10 +37,36 @@ void load_cluster (const string &ifile,
   fclose(fp);
 }
 
+void load_fz_cluster (const string &ifile,
+		      vector<vector<double > > & cluster)
+{
+  char valueline [MaxLineLength];
+  vector<string > words;
+  ifstream ifp (ifile.c_str());
+  cluster.clear();
+  if (! ifp){
+    cerr << "cannot open angle file " << ifile << endl;
+    exit( 1);
+  }
+  int count = 0;
+  while (ifp.getline(valueline, MaxLineLength)){
+    if (valueline[0] == '#' || valueline[0] == '@'){
+      continue;
+    }
+    StringOperation::split (string(valueline), words);
+    if (count == 0) {
+      cluster.resize (words.size());
+    }
+    for (unsigned ii = 0; ii < words.size(); ++ii){
+      cluster[ii].push_back (atof(words[ii].c_str()));
+    }
+    count ++;
+  }
+}
 
 int main(int argc, char * argv[])
 {
-  std::string ofile, ifile, isfile;
+  std::string ofile, ofzfile, ifile, ifzfile, isfile;
   double aup, alow;
   unsigned nbin;
   
@@ -52,7 +78,9 @@ int main(int argc, char * argv[])
       ("angle-up", po::value<double > (&aup)->default_value (180.), "upper bond of the angle.")
       ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
       ("input,f", po::value<string > (&ifile)->default_value ("cluster.dat"), "the input of cluster.")
-      ("output,o", po::value<string > (&ofile)->default_value ("cluster.out"), "the output of cluster.");
+      ("input-fuzzy", po::value<string > (&ifzfile)->default_value ("cluster.fuzzy.dat"), "the input of fuzzy cluster.")
+      ("output,o", po::value<string > (&ofile)->default_value ("cluster.out"), "the output of cluster.")
+      ("output-fuzzy,o", po::value<string > (&ofzfile)->default_value ("cluster.fuzzy.out"), "the output of fuzzy cluster.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -85,16 +113,27 @@ int main(int argc, char * argv[])
   double binSize = (aup - alow) / double(nbin);
 
   vector<double > cluster;
+  vector<vector<double > > fzcluster;
   load_cluster (ifile, cluster);
+  load_fz_cluster (ifzfile, fzcluster);
 
   if (nstate != cluster.size()){
     cerr << "set map " << nstate << " is not consistent with the cluster file " << cluster.size() << endl;
     return 1;
   }
+  if (nstate != fzcluster[0].size()){
+    cerr << "set map " << nstate << " is not consistent with the fuzzy cluster file "  << fzcluster.size() << endl;
+    return 1;
+  }
 
   FILE * fp = fopen (ofile.c_str(), "w");
+  FILE * fpfz = fopen (ofzfile.c_str(), "w");
   if (fp == NULL){
     cerr << "cannot open file " << ofile << endl;
+    return 1;
+  }
+  if (fpfz == NULL){
+    cerr << "cannot open file " << ofzfile << endl;
     return 1;
   }
   for (unsigned ii = 0; ii < nbin; ++ii){
@@ -105,15 +144,35 @@ int main(int argc, char * argv[])
       map<unsigned, unsigned> :: const_iterator it = mymap.find(dihIndex);
       if (it != mymap.end()){
 	unsigned fileIndex = it -> second;
-	fprintf (fp, "%f %f %f\n", phi, psi, cluster[fileIndex]);
+	unsigned mostlike = 0;
+	double currentvalue = 0.;
+	double sum = 0.;
+	fprintf (fpfz, "%f %f ", phi, psi);
+	for (unsigned kk = 0; kk < fzcluster.size(); ++kk){
+	  fprintf(fpfz, "%f ", fzcluster[kk][fileIndex]);
+	  sum += (kk+1) * fzcluster[kk][fileIndex];
+	  if (fzcluster[kk][fileIndex] > currentvalue){
+	    currentvalue = fzcluster[kk][fileIndex];
+	    mostlike = kk;
+	  }
+	}
+	fprintf (fpfz, "\n");
+	fprintf (fp, "%f %f %f %d %f\n", phi, psi, cluster[fileIndex], mostlike+1, sum);
       }
       else {
-	fprintf (fp, "%f %f %f\n", phi, psi, 0.);
+	fprintf (fpfz, "%f %f ", phi, psi);
+	for (unsigned kk = 0; kk < fzcluster.size(); ++kk){
+	  fprintf(fpfz, "%f ", 0.);
+	}
+	fprintf (fpfz, "\n");
+	fprintf (fp, "%f %f %f %d %f\n", phi, psi, 0., 0, 0.);
       }      
     }
     fprintf (fp, "\n");
+    fprintf (fpfz, "\n");
   }
   fclose (fp);
+  fclose (fpfz);
   
   return 0;
 }
