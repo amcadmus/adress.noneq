@@ -179,12 +179,12 @@ int main(int argc, char * argv[])
       map<unsigned, unsigned> :: const_iterator it = mymap.find(dihIndex);
       // if (it != mymap.end()){
 	for (unsigned mm = 0; mm < fht.size(); ++mm){
-	  if (clusterMap[dihIndex] != (mm+1)) {
+	  // if (clusterMap[dihIndex] != (mm+1)) {
 	    fprintf (fpfht, " %f %f ", fht[mm][dihIndex].getAvg(), fht[mm][dihIndex].getAvgError());
-	  }
-	  else{
-	    fprintf (fpfht, " %f %f ", 0., 0.);
-	  }
+	  // }
+	  // else{
+	  //   fprintf (fpfht, " %f %f ", 0., 0.);
+	  // }
 	}
       // }
       // else {
