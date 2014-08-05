@@ -37,20 +37,18 @@ void read_tmatrix (const string & filename,
     vector<string > words;
     StringOperation::split (string(valueline), words);
     if (countLine == 0){
-      nstate = atoi (words[2].c_str());
+      nstate = words.size();
       tmatrix.resize(nstate);
       for (unsigned ii = 0; ii < nstate; ++ii){
 	tmatrix[ii].resize(nstate);
       }
     }
-    else {
-      if (words.size() != nstate){
-	cerr << "format error of tmatrix reading " << endl;
-	exit (1);
-      }
-      for (unsigned ii = 0; ii < nstate; ++ii){
-	tmatrix[countLine-1][ii] = atof(words[ii].c_str());
-      }
+    if (words.size() != nstate){
+      cerr << "format error of tmatrix reading " << endl;
+      exit (1);
+    }
+    for (unsigned ii = 0; ii < nstate; ++ii){
+      tmatrix[countLine][ii] = atof(words[ii].c_str());
     }
     countLine ++;
   }
