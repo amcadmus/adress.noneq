@@ -40,7 +40,7 @@ void load_cluster (const string &ifile,
 
 int main(int argc, char * argv[])
 {
-  std::string ofile, ifile, isfile;
+  std::string ofile, ifile, isfile, osmfile;
   double aup, alow;
   unsigned nbin;
   
@@ -52,7 +52,8 @@ int main(int argc, char * argv[])
       ("angle-up", po::value<double > (&aup)->default_value (180.), "upper bond of the angle.")
       ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
       ("input,f", po::value<string > (&ifile)->default_value ("cluster.dat"), "the input of cluster.")
-      ("output,o", po::value<string > (&ofile)->default_value ("cluster.out"), "the output of cluster.");
+      ("output,o", po::value<string > (&ofile)->default_value ("cluster.out"), "the output of cluster.")
+      ("output-cluster-map", po::value<string > (&osmfile)->default_value ("cluster.map.out"), "the output of cluster set map.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -97,6 +98,11 @@ int main(int argc, char * argv[])
     cerr << "cannot open file " << ofile << endl;
     return 1;
   }
+  FILE * fpsm = fopen (osmfile.c_str(), "w");
+  if (fpsm == NULL){
+    cerr << "cannot open file " << osmfile << endl;
+    return 1;
+  }
   for (unsigned ii = 0; ii < nbin; ++ii){
     double phi = (ii+0.5) * binSize + alow;
     for (unsigned jj = 0; jj < nbin; ++jj){
@@ -106,12 +112,15 @@ int main(int argc, char * argv[])
       if (it != mymap.end()){
 	unsigned fileIndex = it -> second;
 	fprintf (fp, "%f %f %f\n", phi, psi, cluster[fileIndex]);
+	fprintf (fpsm, "%d ", int(cluster[fileIndex] + 0.01));
       }
       else {
 	fprintf (fp, "%f %f %f\n", phi, psi, 0.);
+	fprintf (fpsm, "%d ", 0);
       }      
     }
     fprintf (fp, "\n");
+    fprintf (fpsm, "\n");
   }
   fclose (fp);
   
