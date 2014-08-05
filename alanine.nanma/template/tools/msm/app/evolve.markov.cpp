@@ -116,6 +116,8 @@ int main(int argc, char * argv[])
   unsigned nstate1;
   read_tmatrix (ifile, tmatrix, nstate1);
 
+  cout << "# read transition matrix of size " << tmatrix.size() << " by " << tmatrix[0].size() << endl;
+
   if (nstate1 != nstate){
     cerr << "the largest set file is not consistent with the transition matrix" << endl;
     return 1;

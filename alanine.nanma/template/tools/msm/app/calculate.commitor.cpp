@@ -214,6 +214,29 @@ int main(int argc, char * argv[])
 
   fclose (fpfw);
   fclose (fpbw);
+
+  double eps = 1e-10;
+  for (unsigned ii = 0; ii < nbin2; ++ii){
+    double sum = 0.;
+    for (unsigned mm = 0; mm < numCluster; ++mm){
+      sum += fwCommitor[mm][ii].getAvg();
+    }
+    if ( (sum > eps && sum < 1 - eps) ||
+	 (sum < -eps) ||
+	 (sum > 1+eps) ){
+      cerr << "failed at fw commitor test" << endl;
+    }
+    sum = 0.;
+    for (unsigned mm = 0; mm < numCluster; ++mm){
+      sum += bwCommitor[mm][ii].getAvg();
+    }
+    if ( (sum > eps && sum < 1 - eps) ||
+	 (sum < -eps) ||
+	 (sum > 1+eps) ){
+      cerr << "failed at bw commitor test" << endl;
+    }
+  }
+  cout << "# passed test for commitors" << endl;
   
   return 0;
 }
