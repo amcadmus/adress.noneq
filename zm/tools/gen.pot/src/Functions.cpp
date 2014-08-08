@@ -241,6 +241,12 @@ mpotp (const double & rr) {
   return tmp0 + tmp1 * rr;
 }
 
+double ZeroMultipole::Potential::
+mulpotp (const double & rr)
+{
+  return mpotp (rr);
+}
+
 
 double ZeroMultipole::Potential::
 energyCorr (const vector<double > & charges)

@@ -32,8 +32,8 @@ int main(int argc, char * argv[])
       ("rc,c",  po::value<double > (&rc)->default_value (1.5), "cut-off")
       ("order,l",  po::value<int > (&ll)->default_value (0), "order")
       ("charge-o,q",  po::value<double > (&qo)->default_value (-0.834), "charge of oxygen")
-      ("dist-oh,q",  po::value<double > (&roh)->default_value (0.09572), "charge of oxygen")
-      ("angle-hoh,q",  po::value<double > (&ahoh)->default_value (104.52), "charge of oxygen");
+      ("dist-oh,q",  po::value<double > (&roh)->default_value (0.09572), "distance between O and H, TIP3P by default")
+      ("angle-hoh,q",  po::value<double > (&ahoh)->default_value (104.52), "the H-O-H angle, TIP3P by default");
     
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -44,7 +44,7 @@ int main(int argc, char * argv[])
   }
 
   double rhh = 2. * roh * sin (0.5 * ahoh / 180. * M_PI);
-  cout << rhh << endl;
+  cout << "# rhh: " << rhh << endl;
   double qh = -0.5 * qo;  
   Potential potzm (ll, alpha, rc);
 
@@ -54,8 +54,9 @@ int main(int argc, char * argv[])
   sum += 2. * qo * qh * (potzm.ulpot(roh) - 1./roh);
   sum += qh * qh * (potzm.ulpot(rhh) - 1./rhh);
 
-  cout << potzm.ulpot(roh) - 1./roh << endl;
-  cout << potzm.ulpot(rhh) - 1./rhh << endl;
+  // cout << potzm.ulpot(roh) - 1./roh << endl;
+  // cout << potzm.ulpot(rhh) - 1./rhh << endl;
+  printf ("# coeff 0 is %f\n", potzm.ulpot(rhh) - potzm.pot(rhh));
   
   cout << sum * factor << endl;
 

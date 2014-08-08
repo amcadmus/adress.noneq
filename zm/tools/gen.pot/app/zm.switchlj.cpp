@@ -181,7 +181,7 @@ up (const double & rr) const
 int main(int argc, char * argv[])
 {
   std::string ofile;
-  double hbin, xup, alpha, rc;
+  double hbin, xup, alpha, rc, rs;
   int ll;
 
   po::options_description desc ("Allow options");
@@ -191,6 +191,7 @@ int main(int argc, char * argv[])
       ("xup,x",  po::value<double > (&xup)->default_value (2.), "xrange")
       ("alpha,a",  po::value<double > (&alpha)->default_value (1.2), "alpha")
       ("rc,c",  po::value<double > (&rc)->default_value (1.5), "cut-off")
+      ("rswitch",  po::value<double > (&rs)->default_value (0.05), "the switch region")
       ("order,l",  po::value<int > (&ll)->default_value (0), "order")
       ("output,o", po::value<std::string > (&ofile)->default_value ("table.xvg"), "the output of the table");
 
@@ -219,8 +220,8 @@ int main(int argc, char * argv[])
     }
   }
 
-  C6 pc6;
-  C12 pc12;
+  C6_Smooth pc6 (rc - rs, rc);
+  C12_Smooth pc12 (rc - rs, rc);
   
   FILE * fp = fopen (ofile.c_str(), "w");
   if (fp == NULL){

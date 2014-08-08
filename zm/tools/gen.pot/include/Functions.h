@@ -37,6 +37,7 @@ public:
     double pot (const double & rr);
     double ulpot (const double & rr);
     double mpotp (const double & rr);
+    double mulpotp (const double & rr);
 public:
     double energyCorr (const vector<double > & charges);
   }
