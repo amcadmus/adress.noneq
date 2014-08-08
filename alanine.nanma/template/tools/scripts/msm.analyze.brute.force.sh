@@ -29,4 +29,7 @@ mycommand="$msm_dir/calculate.commitor --num-bin $msm_dih_nbin --input-cluster-m
 echo "# calculate commitor by command: $mycommand"
 $mycommand
 
+mycommand="$msm_dir/calculate.steady.dist --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output steady.dist.out"
+echo "# calculate steady dist by command: $mycommand"
+$mycommand
 
