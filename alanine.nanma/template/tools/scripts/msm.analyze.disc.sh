@@ -34,3 +34,7 @@ echo "." > current.name
 mycommand="$msm_dir/calculate.commitor --num-bin $msm_dih_nbin --input-cluster-map $target_dir/cluster.map.out --input-traj-dir current.name --input-disc-traj traj.out --output-fw $target_dir/commitor.fw.msm.out --output-bw $target_dir/commitor.bw.msm.out"
 echo "# compute commitor by $mycommand"
 $mycommand
+
+mycommand="$msm_dir/calculate.steady.dist --num-bin $msm_dih_nbin --input-traj-dir current.name --input-disc-traj traj.out --output $target_dir/steady.dist.msm.out"
+echo "# compute steady dist by $mycommand"
+$mycommand
