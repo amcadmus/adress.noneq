@@ -28,8 +28,31 @@ fi
 mycommand="$msm_dir/calculate.commitor --num-bin $msm_dih_nbin --input-cluster-map $target_dir/cluster.map.out --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output-fw $target_dir/commitor.fw.out --output-bw $target_dir/commitor.bw.out"
 echo "# calculate commitor by command: $mycommand"
 $mycommand
+paste $target_dir/commitor.fw.out $target_dir/commitor.bw.out > $target_dir/commitor.out
 
 mycommand="$msm_dir/calculate.steady.dist --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/steady.dist.out"
 echo "# calculate steady dist by command: $mycommand"
 $mycommand
+
+mycommand="$msm_dir/calculate.fht --input-largest-set $target_dir/largestSet.dih --input-cluster-map $target_dir/cluster.map.out  --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/fht.out"
+echo "# calculate first hitting time by command: $mycommand"
+$mycommand
+
+if [ -f $target_dir/cluster.map.1.out ]; then
+    mycommand="$msm_dir/calculate.fht --input-largest-set $target_dir/largestSet.dih --input-cluster-map $target_dir/cluster.map.1.out  --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/fht.1.out"
+    echo "# calculate first hitting time 1 by command: $mycommand"
+    $mycommand
+fi
+
+if [ -f $target_dir/cluster.map.2.out ]; then
+    mycommand="$msm_dir/calculate.fht --input-largest-set $target_dir/largestSet.dih --input-cluster-map $target_dir/cluster.map.2.out  --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/fht.2.out"
+    echo "# calculate first hitting time 2 by command: $mycommand"
+    $mycommand
+fi
+
+if [ -f $target_dir/cluster.map.3.out ]; then
+    mycommand="$msm_dir/calculate.fht --input-largest-set $target_dir/largestSet.dih --input-cluster-map $target_dir/cluster.map.3.out  --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/fht.3.out"
+    echo "# calculate first hitting time 3 by command: $mycommand"
+    $mycommand
+fi
 
