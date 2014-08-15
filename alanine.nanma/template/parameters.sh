@@ -23,7 +23,7 @@ pert_frame_feq=0.5		# ps
 
 ## electrostatic and vdw method
 pert_ele_method=pme-switch	# pme or zm or rf
-pert_rlist=1.3			# 
+pert_rlist=1.26			# 
 pert_nstlist=5			# 
 pert_rcut_ele=1.0		# if pme is used, set this value to rlist
 pert_rcut_ele_switch=0.95
