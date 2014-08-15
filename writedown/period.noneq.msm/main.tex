@@ -1,4 +1,4 @@
-\documentclass[preprint,unsortedaddress,a4paper,onecolumn]{revtex4-1}
+\documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn]{revtex4-1}
 % \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
@@ -52,6 +52,15 @@
 \end{abstract}
 
 \maketitle
+
+\section{Introduction}
+Non-equilibrium, especically periodically driven system. Interesting.
+
+MSM tools for analyzing, provide profund understanding.
+
+Current achievement of MSM in equilibrium cases.
+
+Importance: first application of MSM in a non-equilibrium system.
 
 \section{Discretization of the non-equilibrium molecular dynamics}
 
@@ -188,20 +197,77 @@ Tab.~\ref{tab:tmp1}, which corresponds very well to the dynamics of the  $\confc
 
 \begin{table}
   \centering
-  \caption{The first non-trivial timescales calculated from $e^{T\vect B}$.
+  \caption{The first four non-trivial timescales calculated from $e^{T\vect B}$. The unit of time in the table is ps.
+    $\tau$ is the lag time used to calculate the generator~\eqref{eqn:tmp4}. $[T_0,T_1]$ is the time interval,
+    in which the generator is estimated from the MD trajectories. The 5th eigenvalue of uniform decomposition with $\tau=8.0$~ps is not real, so
+    the corresponding timescale is not calculated.
   }
-  \begin{tabular*}{0.3\textwidth}{@{\extracolsep{\fill}}c   c}\hline\hline
-    Method      &        $t_2$ [ps]  \\\hline
-    5 sets      & 72.4     \\
-    Uni. $M=05$ & 53.6     \\
-    Uni. $M=10$ &107.2     \\
-    Uni. $M=20$ &113.8     \\
-    Uni. $M=30$ &120.6     \\
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c ccc rrrr}\hline\hline
+    Method  &  $M$ & $\tau$ & $[T_0,T_1]$ &   $t_2$ &   $t_3$ &   $t_4$ &   $t_5$  \\\hline
+    5 sets  & --   & 0.5    & $[300,1000]$    &  72.4 & 17.8 &  2.1 & 2.8    \\
+    Uniform & $05$ & 0.5    & $[300,1000]$    &  53.6 & 17.4 &  9.4 & 2.8    \\
+    Uniform & $10$ & 0.5    & $[300,1000]$    & 107.2 & 27.0 & 16.4 & 3.6    \\
+    Uniform & $20$ & 0.5    & $[300,1000]$    & 118.6 & 30.4 & 20.3 & 4.3    \\
+    Uniform & $30$ & 0.5    & $[300,1000]$    & 120.6 & 31.1 & 20.9 & 4.4    \\\hline
+    Uniform & $20$ & 0.5    & $[0,40]$    & 156.5 & 34.4 & 20.7 & 4.4    \\
+    Uniform & $20$ & 0.5    & $[0,80]$    & 133.8 & 32.8 & 20.4 & 4.4    \\
+    Uniform & $20$ & 0.5    & $[0,120]$   & 127.5 & 32.0 & 20.3 & 4.3    \\
+    Uniform & $20$ & 0.5    & $[0,200]$   & 122.0 & 31.3 & 20.3 & 4.3    \\
+    Uniform & $20$ & 0.5    & $[0,320]$   & 120.4 & 31.0 & 20.3 & 4.3    \\\hline
+    Uniform & $20$ & 1.0    & $[300,1000]$    & 119.8 & 30.5 & 21.7 & 4.9   \\
+    Uniform & $20$ & 2.0    & $[300,1000]$    & 117.8 & 29.2 & 21.5 & 5.3   \\
+    Uniform & $20$ & 4.0    & $[300,1000]$    & 114.2 & 27.0 & 20.2 & 4.8   \\
+    Uniform & $20$ & 8.0    & $[300,1000]$    & 110.6 & 25.0 & 18.1 & --   \\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp1}
 \end{table}
 
+
+\section{Discussions}
+\subsection{The periodicity of the reduced dynamics}
+
+
+As discussed before, if the reduced dynamics captures the slow
+dynamics of interest, then the reduced dynamics is also periodic,
+which implies that the generator $M(t)$ can be estimated from any time
+interval by Eq.~\eqref{eqn:tmp4}. In practice, the reduced dynamics
+may not be perfectly periodic. The generator calculated from
+different time intervals can be used to test the periodicity of the
+reduced dynamics. The results are shown in Tab.~\ref{tab:tmp1} and
+Fig.~\ref{fig:tmp2}.  The dependency with respect to the time
+interval, in which the generator is calculated, indicates the reduced
+dynamics is not perfectly periodic. The reduced dynamics from $[0,40]$
+reproduces the best probability in interval $[0,40]$, and worst in the
+steady state. Moreover, the leading non-trivial timescale is also off
+(see Tab.~\ref{tab:tmp1}), while the accuracy of the second and third
+non-trivial timescales are better, because they are comparable to the
+period, 40~ps, in which the dynamics is relaxed. The reduced dynamics
+from $[300,1000]$ reproduces the best steady state probability, while
+worst in reproducing the initial relaxation process. The reduced
+dynamics from $[0,320]$ is indistinguishable from the one from
+$[300,1000]$, which implies that in practice, one only have to
+simulation relatively short non-equilibrium trajectories (that are
+almost relaxed), and compute the generator from it to build the reduced dynamics. \redc{This saves a great
+amount of computational resources comparing with calculating the
+reduced dynamics only from steady state trajectories.}
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\textwidth]{fig/t040/fig-cg-prob-range.eps}  
+  \caption{The time-dependent probability of conformation
+    $\confc$. The brute force MD simulation is compared with reduced
+    dynamics, the transition matrix of which are calculated from
+    different ranges. The red shadow region is the statistical uncertainty of the brute force MD simulation.
+    The inserts show the zoom-ined probability at the relaxation stage $[0,120 ]~\textrm{ps}$ and at the steady state $[800,880 ]~\textrm{ps}$.}
+  \label{fig:tmp2}
+\end{figure}
+
+\subsection{The choice of lag time $\tau$}
+Table~\ref{tab:tmp1} shows a clear trend of worse accuracy with
+increased $\tau$, however, the timescales are not very sensitive to
+the choice of lag time $\tau$.
 
 \section{To do}
 
@@ -219,70 +285,140 @@ such as self-joint.
 \end{itemize}
 
 
+\section{Numerical results}
+\subsection{Steady state distribution}
+\begin{figure}
+  \centering  
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist-msm.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-1.eps}
+  \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
+  \label{fig:num-1}
+\end{figure}
+\begin{figure}
+  \centering  
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-2-simple.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-3-simple.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-4-simple.eps}
+  \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
+  \label{fig:num-2}
+\end{figure}
+
+\subsection{Committors}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-1.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-1.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-1.eps}
+  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-2.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-2.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-2.eps}
+  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-3.eps}
+  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+  \label{fig:num-2}
+\end{figure}
+
+
 \section{Reversibility of the original dynamics}
 
 Now we assume the overdamped dynamics
 \begin{align}\label{eqn:tmp7}
   dx_t = -\nabla_x V(x_t,t) dt + \sigma dw_t
 \end{align}
-where $V$ is the time-dependent and $t$-periodic potential. For simplicity we denote the force by $F(x_t,t) = -\nabla_x V(x_t, t)$. $dw_t$ is
-the standard Wiener process.  Assuming a discretization of the
+where $V$ is the time-dependent and $T$-periodic potential. For simplicity we denote the force by $F(x_t,t) = -\nabla_x V(x_t, t)$. $dw_t$ is
+the standard Wiener process.
+According to Girsanov, we have
+\begin{align}
+  \label{eq:tmp8}
+  \frac{dp[x_t]}{dw[x_t]}  =
+  \exp \bigg\{
+  \frac 1{\sigma^2}\int_0^T F(x_t,t) dx_t -
+  \frac1{2\sigma^2}\int_0^T F^2(x_t,t) dt
+  \bigg\}
+\end{align}
+where $dp$ is the probability measure of trajectory $x_t$, while $dw$ is the
+probability measure of the standard Wiener process $dx_t = \sigma dw_t$.
+Assuming a discretization of the
 stochastic process at time $0 < t_1 < t_2 < \cdots < t_N = T$, where
-$t_i = iT / N$. We denote $x_i = x_{t_i}$, and $w_i = w_{t_i}$, then we have the
-conditional probability:
-\begin{align}\nonumber
-  p(x_T,T\vert x_0,0) =\lim_{N\rightarrow\infty} &\,
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
-  &\,
-  \exp\bigg\{\frac1\sigma\sum_{i=0}^{N-1} F(x_i,t_i)(w_{i+1} - w_{i}) - \frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp8}
-  &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
-\end{align}
-Notice that
-\begin{align}\label{eqn:tmp10}
-  \sigma(w_{i+1} - w_{i}) =
-  &\,
-  x_{i+1} - x_i 
-\end{align}
-we have
-% so with the formal identity $(dw_t)^2 = dt$,  we have
-\begin{align}\nonumber
-  p(x_T,T\vert x_0,0)
-  =\lim_{N\rightarrow\infty} &\,
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
-  &\,
-  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{i},t_{i})(x_{i+1} - x_i) -\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp10}
-  &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x_{i+1} - x_i)^2}{\dt}\bigg\}.
+$t_i = iT / N$. We denote $x_i = x_{t_i}$, and $w_i = w_{t_i}$, then we have,
+in the sense of Ito,
+\begin{align}\label{eq:tmp9}
+  \frac{dp[x_t]}{dw[x_t]}  \approx
+  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{i},t_{i})(x_{i+1} - x_i) -\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} 
 \end{align}
 Now, consider a conjugate trajectory $x^\dagger_t = x_{T-t}$ that starts at $x_T$, ends at $x_0$. The conjugate dynamics is driven by  $F^\dagger(x^\dagger_t,t) = F(x^\dagger_t, T-t)$.
-Since we have the symmetry $F(x_t, -t) = -F(x_t, t)$, the conjugate dynamics also satisfies Eq.~\eqref{eqn:tmp7}.
-Therefore, we have the probability:
-\begin{align}\nonumber
-  p(x_0,T\vert x_T,0) = &\,
-  p^\dagger(x^\dagger_T,T\vert x^\dagger_0,0)  \\\nonumber
-  = &\,
-  \lim_{N\rightarrow\infty}
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx^\dagger_1\cdots\int dx^\dagger_{N-1}\\\nonumber
-  &\,
-  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F^\dagger(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -\frac1{2\sigma^2}\sum_{i=0}^{N-1}[F^\dagger(x^\dagger_i,t_i)]^2\dt\bigg\} \times\\\nonumber
-  &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=0}^{N-1} \frac{(x^\dagger_{i+1} - x^\dagger_i)^2}{\dt}\bigg\} \\\nonumber
-  =&\,
-  \lim_{N\rightarrow\infty} 
-  \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_1\cdots\int dx_{N-1}\\\nonumber
-  &\,
-  \exp\bigg\{\frac1{\sigma^2}\sum_{i=N}^{1} F(x_{i},t_{i})(x_{i-1} - x_i) -\frac1{2\sigma^2}\sum_{i=N}^{1}F^2(x_i,t_i)\dt\bigg\} \times\\\label{eqn:tmp11}
-  &\,
-  \exp\bigg\{- \frac1{2\sigma^2} \sum_{i=N}^{1} \frac{(x_{i-1} - x_i)^2}{\dt}\bigg\}.
+Writting the Girsanov for the conjugate dynamics
+\begin{align}\label{eq:dagger-0}
+  \frac{dp^\dagger[x^\dagger_t]}{dw[x^\dagger_t]}  
+  \approx\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F^\dagger(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F^\dagger(x^\dagger_i,t_i)]^2\dt\bigg\} \\ \nonumber
+  =\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F(x^\dagger_{i},T - t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F(x^\dagger_i, T-t_i)]^2\dt\bigg\} \\\nonumber
+  =\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{N-i},t_{N-i})(x_{N-i-1} - x_{N-i}) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F(x_{N-i},t_{N-i})]^2\dt\bigg\} \\
+  = \,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=N}^{1} F(x_{i},t_{i})(x_{i-1} - x_i) -
+  \frac1{2\sigma^2}\sum_{i=N}^{1}F^2(x_i,t_i)\dt\bigg\}
+\end{align}
+% Therefore,
+% \begin{align}\nonumber
+%   \frac{dp[x^\dagger_t]}{dw[x^\dagger_t]}  =
+%   \,&
+%   \frac{dp^\dagger[x^\dagger_t]}{dw[x^\dagger_t]} \\\nonumber
+%   \approx\,&
+%   \exp\bigg\{
+%   \frac1{\sigma^2}\sum_{i=0}^{N-1} F^\dagger(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+%   \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F^\dagger(x^\dagger_i,t_i)]^2\dt\bigg\} \\\nonumber
+% \end{align}
+Since it is obvious that $dw[x^\dagger_t] / dw[x_t] = 1$,
+\begin{align}
+  \label{eq:tmp10}
+  \frac{dp^\dagger[x^\dagger_t]}{dw[x_t]}
+  \approx \,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=1}^{N} F(x_{i},t_{i})(x_{i-1} - x_i) -
+  \frac1{2\sigma^2}\sum_{i=1}^{N}F^2(x_i,t_i)\dt\bigg\}
 \end{align}
 The difference between the single trajectory probabilities is
 \begin{align}\label{eqn:tmp12}
-  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
-  =&\,
-  \frac1{\sigma^2}\sum_{i=1}^{N-1} F(x_i,t_i)(x_{i+1} - x_{i}) + F(x_i,t_i)(x_{i} - x_{i-1}) 
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  \approx&\,
+  \exp\bigg\{
+  -\frac1{\sigma^2}\sum_{i=1}^{N-1}
+  \bigg[
+  F(x_i,t_i)(x_{i+1} - x_{i}) + F(x_i,t_i)(x_{i} - x_{i-1})
+  \bigg]
+  \bigg\}
 \end{align}
-Now consider the differentiation:
+Assuming the smoothness of the external perturbation, consider the differentiation:
 \begin{align}\nonumber
   F(x_{i},t_{i}) - F(x_{i-1},t_{i-1}) =
   &\,
@@ -292,13 +428,29 @@ Now consider the differentiation:
   =&\,
   \nabla_x F(x_{i-1},t_{i-1})(x_i - x_{i-1}) + \mo(\dt)
 \end{align}
+The second order expansion w.r.t.~$x_i - x_{i-1}$ is of order $\dt$, so it is absorbed into $ \mo(\dt)$.
 Then the \eqref{eqn:tmp12} becomes
 \begin{align}\label{eqn:tmp14}
-  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
-  =&\,
-  \frac2{\sigma^2}\sum_{i=0}^{N-1} F(x_i,t_i)(x_{i+1} - x_{i}) +
-  \frac1{\sigma^2}\sum_{i=0}^{N-1}\nabla_xF(x_i,t_i)(x_{i+1} - x_{i})^2
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  \approx&\,
+  \exp\bigg\{
+ -\frac2{\sigma^2}\sum_{i=0}^{N-1} F(x_i,t_i)(x_{i+1} - x_{i}) 
+ -\frac1{\sigma^2}\sum_{i=0}^{N-1}\nabla_xF(x_i,t_i)(x_{i+1} - x_{i})^2
+ \bigg\}
 \end{align}
+Using the identity
+$  dt = (dw_t)^2 = {\sigma^{-2}} dx_t^2$,
+Eq.~\eqref{eqn:tmp14} is written in the integral form
+\begin{align}\label{eqn:tmp14-0}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  \approx&\,
+  \exp\bigg\{
+ -\frac2{\sigma^2}\int_0^T F(x_t,t) dx_t
+ -\int_0^T\nabla_xF(x_t,t)dt
+ \bigg\}  
+\end{align}
+One would not have the second integral on the exponent if the first integral of the exponent were defined in the sense of Stratonovich.
+
 We notice that
 \begin{align}\nonumber
   dV(x, t) = &\, \frac{\partial V}{\partial x} dx + \frac{\partial V}{\partial t} dt\\\nonumber
@@ -307,40 +459,57 @@ We notice that
   =&\,
   -\frac12 \sigma^2 \nabla_x F dt -  F dx_t + \frac{\partial V}{\partial t} dt
 \end{align}
-and the identity
+Eq.~\eqref{eqn:tmp14-0} becomes
 \begin{align}
-  dt = (dw_t)^2 = \frac1{\sigma^2} dx_t^2
-\end{align}
-Eq.~\eqref{eqn:tmp14} becomes
-\begin{align}
-  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
   =&\,
-  -\frac2{\sigma^2}\bigg[
-  V(x_N,t_N) - V(x_0,t_0) + \sum_{i=0}^{N-1}\partial_tV(x_i,t_i)\dt
+  \exp\bigg\{
+  \frac2{\sigma^2}\bigg[
+  V(x_T,T) - V(x_0,t_0) - \int_0^T\partial_tV(x_t,t)dt
   \bigg]
+  \bigg\}
 \end{align}
-According to the  Einstein relation $T = \sigma^2/2$, by denoting $\beta = 1/T$
+According to the  Einstein relation, the temperature $\mathcal T = \sigma^2/2$, we denote $\beta = 1/{\mathcal T} = 2/\sigma^2$.
+Take the limit of infinite small time interval, and notice the equilibrium
+invariant probability density with respect to potential $V(x,0)$ satisfies $\mu(x) \propto e^{-\beta V(x,0)}$,
 \begin{align}
-  \log\bigg\{\frac{  p[x_t] }{ p[x^\dagger_t]} \bigg\}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
   =&\,
-  -\beta\bigg[
-  V(x_N,t_N) - V(x_0,t_0) + \sum_{i=0}^{N-1}\partial_tV(x_i,t_i)\dt
-  \bigg]  
+  \frac{\mu(x_0)}{\mu(x_T)}\times
+  \exp\bigg\{
+  - \beta\int_0^T\partial_tV(x_t,t)dt
+  \bigg\}
 \end{align}
+
+In Eq.~\eqref{eq:dagger-0}, we assume the periodicity of the perturbation $F(x,t) = F(x,t+T)$, and the symmetry of the external perturbation, i.e.~$F(x, -t) = F(x, t)$, we have
+\begin{align}
+  \frac{dp^\dagger[x^\dagger_t]}{dw[x^\dagger_t]}  
+  \approx\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F(x^\dagger_i, t_i)]^2\dt\bigg\}  
+\end{align}
+By changing notation $x^\dagger$ back to $x$, and comparing with~\eqref{eq:tmp9}, the reversed dynamics is subject to the Eq.~\eqref{eqn:tmp7},
+i.e.~$dp^\dagger = dp$.
 Therefore
 \begin{align}\nonumber
   p(x_0,T\vert x_T,0)
+  =&\,\int_{\mc\{x_T,0;x_0,T\}}
+  dp[x^\dagger_t] \\\nonumber  
+  =&\,
+  \int_{\mc\{x_0,0;x_T,T\}}
+  \frac{  dp[x^\dagger_t] }{ dp[x_t]} \cdot dp[x_t] \\\nonumber
   =&\,
   % \lim_{N\rightarrow\infty} 
   % \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{N-1}\cdots\int dx_{1}
   \int_{\mc\{x_0,0;x_T,T\}}
-  \frac{  p[x^\dagger_t] }{ p[x_t]} \cdot p[x_t] \\\label{eqn:tmp19}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]} \cdot dp[x_t] \\\label{eqn:tmp18}
   = &\,
-  \frac{e^{-\beta V(x_0,t_0)}}{e^{-\beta V(x_N,t_N)}}
+  \frac{\mu(x_0)}{\mu(x_T)}
   \int_{\mc\{x_0,0;x_T,T\}}
   \exp\bigg\{
-  \beta\int_0^T \partial_t V(x_t,t)dt 
-  \bigg\} \cdot p[x_t]
+  -\beta\int_0^T \partial_t V(x_t,t)dt 
+  \bigg\} \cdot dp[x_t]
 \end{align}
 where $\mc\{x_0,0;x_T,T\}$ denotes all continuous trajectories starting at $x_0$ and ending at $x_T$.
 If $\partial_t V = 0$, i.e.~equilibrium, we have
@@ -350,12 +519,58 @@ If $\partial_t V = 0$, i.e.~equilibrium, we have
 which proves the reversibility of the equilibrium dynamics.
 The term
 \begin{align}
-  W[x_t] = - \int_0^T \partial_t V(x_t,t)dt
+  W[x_t] = \int_0^T \partial_t V(x_t,t)dt
 \end{align}
 is the non-equilibrium work associated to all possible
 the dynamics $x_t$ starting at $x_0$ and ending at $x_T$ (see e.g.~Ref.~\cite{seifert2012stochastic}).
-Therefore Eq.~\eqref{eqn:tmp19} is the detailed Jarzynski relation.
-Now the problem becomes if we can write a nice form (e.g.~the difference of a state function measured at $x_T$ and $x_0$) for the non-equilibrium work.
+Therefore Eq.~\eqref{eqn:tmp18} is the detailed Jarzynski relation.
+% Now the problem becomes if we can write a nice form (e.g.~the difference of a state function measured at $x_T$ and $x_0$) for the non-equilibrium work.
+Noticing that
+\begin{align}
+  \label{eq:tmp21}
+  p(x_T,T\vert x_0,0) = \int_{\mc\{x_0,0;x_T,T\}}dp[x_t],
+\end{align}
+From Eq.~\eqref{eqn:tmp18} we have
+\begin{align}
+  \label{eq:tmp22}
+  \frac{p(x_0,T\vert x_T,0)}{  p(x_T,T\vert x_0,0)  }
+  =
+  \frac{\mu(x_0)}{\mu(x_T)}
+  \mathbb E_{x_0\rightarrow x_T} [e^{-\beta W}]
+\end{align}
+% Maybe we want a more symmetric form.
+% The expectation value of the reversed dynamics reads,
+% \begin{align}\nonumber
+%   \mathbb E_{x^\dagger_0\rightarrow x^\dagger_T} [e^{-\beta W^\dagger}]
+%   =\,&
+%   \int_{\mc\{x^\dagger_0,0;x^\dagger_T,T\}}
+%   \exp\bigg\{
+%   -\beta\int_0^T \partial_t V(x^\dagger_t,t)dt 
+%   \bigg\} \cdot dp[x^\dagger_t]   \\\nonumber
+%   =\,&
+%   \int_{\mc\{x_0,0;x_T,T\}}
+%   \exp\bigg\{
+%   -\beta\int_0^T \partial_t V(x_{T-t},t)dt 
+%   -\beta\int_0^T \partial_t V(x_{t},t)dt 
+%   \bigg\}
+%   \cdot dp[x_t]   \\  \nonumber
+%   =\,&
+%   \int_{\mc\{x_T,0;x_0,T\}}
+%   \exp\bigg\{
+%   \beta\int_0^T \partial_t V(x_t,t)dt 
+%   \bigg\} \cdot dp[x_t]   \\
+%   \label{eq:tmp23}
+%   = \,&
+%   \mathbb E_{x_0\rightarrow x_T} [e^{- 2\beta W}]  
+% \end{align}
+% Noticing that \eqref{eq:tmp22}  is true for the reversed dynamics, we have
+% \begin{align}
+%   \label{eq:24}
+%   \frac{p(x_T,T\vert x_0,0)}{  p(x_0,T\vert x_T,0)  }
+%   =
+%   \frac{\mu(x_T)}{\mu(x_0)}
+%   \mathbb E_{x_T\rightarrow x_0} [e^{\beta W}]  
+% \end{align}
 
 
 \bibliography{ref}{}
