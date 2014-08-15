@@ -31,7 +31,7 @@ nstxtcout                = 100
 xtc-precision            = 1000
 ; This selects the subset of atoms for the xtc file. You can
 ; select multiple groups. By default all atoms will be written.
-xtc-grps                 = 
+xtc-grps                 = Non-Water
 ; Selection of energy groups
 energygrps               = 
 

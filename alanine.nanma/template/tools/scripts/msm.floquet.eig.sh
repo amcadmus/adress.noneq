@@ -25,8 +25,18 @@ else
     source $target_dir/msm.parameters.sh
 fi
 
-mycommand="$msm_dir/calculate.commitor --num-bin $msm_dih_nbin --input-cluster-map $target_dir/cluster.map.out --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output-fw $target_dir/commitor.fw.out --output-bw $target_dir/commitor.bw.out"
-echo "# calculate commitor by command: $mycommand"
-$mycommand
+cd $target_dir
+octave $script_dir/msm.floquet.eig.m
 
+neig=`grep columns floquet.eigvector.out | awk '{print $3}'`
+echo "# $neig eigenvectors are printed"
+
+for ii in `seq 1 $neig`;
+do
+    grep -v \# floquet.eigvector.out | awk "{print \$$ii}"  | grep -v \# > tmp.vec.in
+    $msm_dir/vector.set2dih --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --input tmp.vec.in --output floquet.eigvector.$ii.out
+done
+# rm -f tmp.vec.in
+
+cd $cwd
 

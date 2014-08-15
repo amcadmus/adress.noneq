@@ -4,6 +4,8 @@ source env.sh
 source parameters.sh
 source functions.sh
 
+rm -f done
+
 make -C tools/angles/ makedir
 # make -C tools/angles/ clean
 make -C tools/angles/ -j$nthreads
@@ -149,3 +151,4 @@ do
     sync
 done
 
+touch done
