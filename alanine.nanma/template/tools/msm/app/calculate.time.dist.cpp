@@ -24,7 +24,7 @@ using namespace std;
 
 int main(int argc, char * argv[])
 {
-  std::string ofile, ifile, idfile, isfile, ismfile;
+  std::string ofile, ifile, idfile, isfile;
   double aup, alow, dt;
   unsigned nDataInBlock, nbin;
   
@@ -36,7 +36,6 @@ int main(int argc, char * argv[])
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
       ("angle-up", po::value<double > (&aup)->default_value (180.), "upper bond of the angle.")
       ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
-      ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
       ("input-traj-dir", po::value<string > (&idfile)->default_value ("success.dir.name"), "the traj dir name.")
       ("input-disc-traj", po::value<string > (&ifile)->default_value ("disc.traj"), "the traj file name.")
       ("output", po::value<string > (&ofile)->default_value ("steady.dist.out"), "the output of forward commitor.");
