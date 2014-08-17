@@ -38,7 +38,7 @@ int main(int argc, char * argv[])
       ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
       ("input-traj-dir", po::value<string > (&idfile)->default_value ("success.dir.name"), "the traj dir name.")
       ("input-disc-traj", po::value<string > (&ifile)->default_value ("disc.traj"), "the traj file name.")
-      ("output", po::value<string > (&ofile)->default_value ("steady.dist.out"), "the output of forward commitor.");
+      ("output", po::value<string > (&ofile)->default_value ("dih.time.dist.out"), "the output of forward commitor.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -80,6 +80,7 @@ int main(int argc, char * argv[])
     if (countFile == 0){
       dists.resize(disc_traj.size());
       for (unsigned ii = 0; ii < disc_traj.size(); ++ii){
+	dists[ii].resize(nbin2);
 	for (unsigned jj = 0; jj < nbin2; ++jj){
 	  dists[ii][jj].reinit (nDataInBlock);
 	}
