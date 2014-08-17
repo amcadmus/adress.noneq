@@ -108,7 +108,7 @@ int main(int argc, char * argv[])
     for (unsigned jj = 0; jj < nbin; ++jj){
       double psi = (jj+0.5) * binSize + alow;
       unsigned dihIndex = ii * nbin + jj;
-      fprintf (fp, "%f \t %f \t %f %f\n", phi, psi, dist[dihIndex].getAvg(), dist[dihIndex].getAvgError());
+      fprintf (fp, "%f \t %f \t %e %e\n", phi, psi, dist[dihIndex].getAvg(), dist[dihIndex].getAvgError());
     }
     fprintf (fp, "\n");
   }

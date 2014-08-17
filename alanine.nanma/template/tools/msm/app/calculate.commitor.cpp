@@ -189,8 +189,8 @@ int main(int argc, char * argv[])
       fprintf (fpbw, "%f \t %f \t ", phi, psi);
       if (clusterMap[dihIndex] == 0) {
 	for (unsigned mm = 0; mm < fwCommitor.size(); ++mm){
-	  fprintf (fpfw, " %f %f ", fwCommitor[mm][dihIndex].getAvg(), fwCommitor[mm][dihIndex].getAvgError());
-	  fprintf (fpbw, " %f %f ", bwCommitor[mm][dihIndex].getAvg(), bwCommitor[mm][dihIndex].getAvgError());
+	  fprintf (fpfw, " %e %e ", fwCommitor[mm][dihIndex].getAvg(), fwCommitor[mm][dihIndex].getAvgError());
+	  fprintf (fpbw, " %e %e ", bwCommitor[mm][dihIndex].getAvg(), bwCommitor[mm][dihIndex].getAvgError());
 	}
       }
       else {
