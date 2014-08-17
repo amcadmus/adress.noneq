@@ -114,7 +114,8 @@ int main(int argc, char * argv[])
     fprintf (fp, "%f ", dt * mm);
     for (unsigned nn = 0; nn < dists[mm].size(); ++nn){
       fprintf (fp, "%e ", dists[mm][nn].getAvg());
-    } 
+    }
+    fprintf (fp, "\n");
   }
   fclose (fp);
 
