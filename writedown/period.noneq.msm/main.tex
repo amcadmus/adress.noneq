@@ -1,4 +1,5 @@
-\documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn]{revtex4-1}
+\documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn]{revtex4}
+% \documentclass[aps, pre, preprint,unsortedaddress,a4paper,twocolumn]{revtex4}
 % \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
@@ -20,8 +21,8 @@
 \newcommand{\greenc}[1]{{\color{green} #1}}
 \newcommand{\vect}[1]{\textbf{\textit{#1}}}
 \newcommand{\dd}[1]{\textsf{#1}}
-\newcommand{\fwd}[0]{\textrm{fwd}}
-\newcommand{\bwd}[0]{\textrm{bwd}}
+\newcommand{\fwd}[0]{\textrm{fw}}
+\newcommand{\bwd}[0]{\textrm{bw}}
 \newcommand{\period}[0]{T_{\textrm{P}}}
 \newcommand{\ml}[0]{\mathcal {L}}
 \newcommand{\mo}[0]{\mathcal {O}}
@@ -96,7 +97,7 @@ From Eqn.~\eqref{eqn:tmp1} to Eqn.~\eqref{eqn:tmp2} involves several
 approximations:
 \begin{enumerate}
 \item Eqn.~\eqref{eqn:tmp2} assumes Markovianity, which is not
-  necessarily true for a reduce dynamics $\vect p(t)$.
+  necessarily true for a reduce dynamics $\vect p(t)$, see e.g.~\cite{prinz2011markov}.
 \item Numerical error from the finite difference introduced in
   Eqn.~\eqref{eqn:tmp4}. The lag-time $\tau$ should not be too large
   to control the finite difference error, and at the same time should
@@ -117,62 +118,143 @@ approximations:
   implied timescale, and longer than the fast-relaxing time-scales.
 \end{enumerate}
 
+
+\subsection{Perodicity of the reduced dynamics: investigated by alanine dipeptide under oscillatory electric field}
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{fig/confs/fig-begin-1.eps}
-  \caption{The Ramachandran plot presents the main conformations of the alanine dipeptide.}
+  \includegraphics[width=0.3\textwidth]{fig/confs/c-2.eps}
+  \caption{A schematic plot of the alanine dipeptide molecule and the dihedral angles $\phi$ and $\psi$.}
   \label{fig:tmp1}
 \end{figure}
 
 At this stage we do have any analytical result regarding the quality
 of approximating Eqn.~\eqref{eqn:tmp1} by
-Eqn.~\eqref{eqn:tmp2}. However, it would be useful to do some
-numerical experiments. We have studied the alanine dipeptide system
-under oscillatory EF, which was studied by
-Ref.~\cite{wang2014exploring}. We use the two dihedral angles $\phi$
-and $\psi$ as slow variables. The definition of the conformations
-$\confaa$, $\confab$, $\confba$, $\confbb$ and $\confc$ are presented
-by Fig.~\ref{fig:tmp1}.  We are interested in the time-dependent
-probability of the conformations. In Fig.~\ref{fig:tmp2}, the brute
-force molecular dynamics simulation result
-(i.e.~Eqn.~\eqref{eqn:tmp1}) is compared with different discretization
-methods, which give different generator in Eqn.~\eqref{eqn:tmp2}. For
-clarity, only the probability of conformation $\confc$ is plotted.  In
-the figure, ``5 sets'' means the $\phi$-$\psi$ space is discretized by
-5 sets as shown in Fig.~\ref{fig:tmp1}, ``Uni. $M=$'' stands for the
-uniform discretization on $\phi$-$\psi$ space, and $M$ denotes the
-number of bins on both $\phi$ and $\psi$ directions.  Both $M=10$ and
-20 methods present very good accuracy.  Please notice that for $M=10$,
-for example, the number of discretized sets is $n=M^2=100$.  The
-lag-time in all cases is chosen to be $\tau = 0.5$~ps. A test with
-$\tau = 1.0$~ps shows good consistency with $\tau = 0.5$~ps.
-The generator
-$\vect M(t)$ is assumed to be periodic, and is estimated from the
-trajectories from $t=300$ to 1000~ps.
+Eqn.~\eqref{eqn:tmp2}.
+It is therefore useful to investigate the discussed approximations
+by a numerical example. The Markovianity of the reduce dynamics
+was extensively discussed in e.g.~\cite{prinz2011markov}, so we 
+will not touch this topic in the current paper. The choice of the lag-time
+will be discussed later, and in this subsection we focus on the periodicity
+of the reduced dynamics.
+Throughout this paper, we take the alanine dipeptide system
+under oscillatory EF, as an example, which was extensively studied by
+Ref.~\cite{wang2014exploring}.
+We choose the two dihedral angles $\phi$
+and $\psi$ as slow variables (see Fig.~\ref{fig:tmp1}), and the discretization
+is a uniform division of the $\phi$--$\psi$ plane. We denote the number of
+division on each dihedral by $K$.
 
-The phenomena presented by Fig.~\ref{fig:tmp2} is very similar to the
-equilibrium MSM: the quality of the MSM depends on how accurate the
-eigenfunctions are approximated by the discretization. The ``5 sets''
-method achieve better accuracy than the uniform $M=5$ method by using
-much less DOFs, because it captures the positive and negative signs of
-the eigenfunctions. With larger $M$ the discretization error of the
-eigenfunctions becomes smaller, so the accuracy of the MSM is improved.
+The alanine dipeptide was put into the local thermostating
+environment, and was driven by a periodic electric field with period
+$T = 10$~ps. The 20,000 branching trajectories started from 20,000
+initial configurations that samples the equilibrium distribution.
+\redc{Write a lot of details on non-equilibrium MD.}  The branching
+trajectories were each 1000~ps long, and the system reaches
+non-equilibrium steady state in roughly 300~ps. We compute the
+generator from non-equilibrium trajectories in time interval $[t_1,
+t_2]$. If the reduced dynamics were periodic, then generator $\vect
+M(t)$ would not depends on the choice of the time interval. We compute
+the reduced generator by two discretizations $K=2$ and $K=20$, and two
+choices of time intervals $[0, 40]$ and $[320, 1000]$, and then
+compare the results with the brute force result in
+Fig.~\ref{fig:tmp2}. In the figure, we show the time-dependent
+probability $\mathbb P\big(\phi\in[0,180), \psi\in [0,180)\big)$.
+Using $K=2$ the dynamics depends on the time interval used for
+calculating the generator: using time intervals $[0, 40]$ the reduced
+dynamics can only reproduces the brute force result in $[0, 40]$,
+while using time intervals $[0, 40]$ the reduced dynamics can only
+reproduces the brute force result after 300~ps.  This shows that the
+reduced dynamics is lack of periodicity.  The reason is that the
+discretization is too coarse so that the dynamics cannot be fully
+equilibriated within the lag-time $\tau$ in each discretized set.  For
+$K=20$, the reduced dynamics does not depend on the time interval of
+calculating the generator, and is consistent with the brute force
+non-equilibrium simulation within the error bar. Therefore, the $K=20$
+is a reliable discretization for the alanine dipeptide system.
+
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{fig/t040/fig-cg-prob.eps}  
-  \caption{The time-dependent probability of conformation
-    $\confc$. The brute force MD simulation is compared with different
-    discretization methods.}
+  \includegraphics[width=0.4\textwidth]{fig/t010/discrete/fig-cg-prob.eps}  
+  \caption{The time-dependent probability $\mathbb
+    P\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The brute force
+    non-equilibrium MD simulation is compared with different
+    discretization methods. The red shadow region indicates the
+    statsitical uncertainty of the brute force simulation.}
   \label{fig:tmp2}
 \end{figure}
+
+
+\subsection{The choice of lag-time $\tau$}
+
+As discussed before, the lag-time should be chosen a value that lies
+in the spectrum gap of the original dynamics, so that it resolves the
+slow dynamics, and at the same time relaxes the fast dynamics. In
+practice, it is very difficult to estimate the lag-time in
+priori. Therefore, we discretize the original non-equilibrium based on
+different choices of $\tau$ (0.5, 1.0, 2.0 and 5.0~ps) and compare the
+time dependent probability of $\mathbb P\big(\phi\in[0,180), \psi\in
+[0,180)\big)$ estimated out of the reduced dynamics in
+Fig.~\ref{fig:tmp3}.  All cases use idential discretization: $K=20$.
+It is clear that when lag-time is close to the period (10~ps), the
+reduced dynamics cannot resolve the probability change within a
+period. However, the large lag-times are able to capture the
+the overall log time behavior of the probability.
+We observe no significant difference between $\tau=0.5$ and
+$\tau=1.0$~ps, which means the reduced dynamics is not very sensitive
+to the choice of $\tau$. 
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{fig/t010/discrete/fig-cg-prob-tau.eps}  
+  \caption{The time-dependent probability $\mathbb
+    P\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The brute force
+    non-equilibrium MD simulation is compared with different
+    discretization methods. The red shadow region indicates the
+    statsitical uncertainty of the brute force simulation.}
+  \label{fig:tmp3}
+\end{figure}
+
+
+% The definition of the conformations
+% $\confaa$, $\confab$, $\confba$, $\confbb$ and $\confc$ are presented
+% by Fig.~\ref{fig:tmp1}.  We are interested in the time-dependent
+% probability of the conformations. In Fig.~\ref{fig:tmp2}, the brute
+% force molecular dynamics simulation result
+% (i.e.~Eqn.~\eqref{eqn:tmp1}) is compared with different discretization
+% methods, which give different generator in Eqn.~\eqref{eqn:tmp2}. For
+% clarity, only the probability of conformation $\confc$ is plotted.  In
+% the figure, ``5 sets'' means the $\phi$-$\psi$ space is discretized by
+% 5 sets as shown in Fig.~\ref{fig:tmp1}, ``Uni. $M=$'' stands for the
+% uniform discretization on $\phi$-$\psi$ space, and $M$ denotes the
+% number of bins on both $\phi$ and $\psi$ directions.  Both $M=10$ and
+% 20 methods present very good accuracy.  Please notice that for $M=10$,
+% for example, the number of discretized sets is $n=M^2=100$.  The
+% lag-time in all cases is chosen to be $\tau = 0.5$~ps. A test with
+% $\tau = 1.0$~ps shows good consistency with $\tau = 0.5$~ps.
+% The generator
+% $\vect M(t)$ is assumed to be periodic, and is estimated from the
+% trajectories from $t=300$ to 1000~ps.
+
+% The phenomena presented by Fig.~\ref{fig:tmp2} is very similar to the
+% equilibrium MSM: the quality of the MSM depends on how accurate the
+% eigenfunctions are approximated by the discretization. The ``5 sets''
+% method achieve better accuracy than the uniform $M=5$ method by using
+% much less DOFs, because it captures the positive and negative signs of
+% the eigenfunctions. With larger $M$ the discretization error of the
+% eigenfunctions becomes smaller, so the accuracy of the MSM is improved.
+
 
 
 
 \section{Floquet theory}
 
-The Floquet theory states that for a periodic system
-Eqn.~\ref{eqn:tmp2}, the solution can be written as
+The reduced dynamics will not provide a lot further interesting
+information until we introduce the MSM to analyze the reduced dynamics. The main
+difficulty is that the reduced dynamics is time-inhomogeneous, however, this can
+be overcome by the Floquet theory.
+The Floquet theory states that for a periodic system, e.g.~Eq.~\eqref{eqn:tmp2}, the solution can be written as
 \begin{align}
   \label{eqn:tmp5}
   \vect p(t)  = \vect Q(t) e^{t\vect B} \vect p(0)
@@ -188,40 +270,153 @@ the matrix $\vect B$ can be expressed by
 \end{align}
 It is fully justified by choosing $ \boldsymbol \Phi(0) = I$, then
 $e^{T\vect B}$ is estimated by evolving the fundamental solutions by
-one period.  Calculating the eigenvalues of $e^{T\vect B}$ reveals the
+one period.
+Since it is obvious that $Q(kT) = Q(0) = I,\ k\in\mathbb N$, if we only consider the state of the system
+at time $kT$, then from Eq.~\eqref{eqn:tmp5} we have
+\begin{align}
+  \label{eqn:tmp5a}
+  \vect p(kT)  = \boldsymbol\Phi^k(T) \,\vect p(0),
+\end{align}
+which is a time-homogeneous Markov process with transition matrix $\boldsymbol\Phi(T)$.
+Please notice that in general this Markov process is not reversible.
+Calculating the eigenvalues of $\boldsymbol\Phi(T)$ reveals the
 implied timescales on which the non-equilibrium dynamics converges to
-the periodic steady state. However, it can only resolve the processes that are longer than the period $T$.
-The largest non-trivial timescales is given in table
-Tab.~\ref{tab:tmp1}, which corresponds very well to the dynamics of the  $\confc$ probability.
+the periodic steady state.
+The Eq.~\eqref{eqn:tmp5a} allows one to use the available techniques for time-homogeneous
+Markov jump process (especially for irreversible processes)
+to analyze the time-inhomogeneous dynamics Eq.~\eqref{eqn:tmp2}.
+However, it can only resolve the processes that are longer than the period $T$.
+Therefore, rather than going directly from Eq.~\eqref{eqn:tmp1} to Eq.~\eqref{eqn:tmp5a},
+we would like to keep the intermediate step Eq.~\eqref{eqn:tmp2}.
+In the following we compare the MSM with the brute force non-equilibrium simulation
+by considering several properties that are of special interest.
+
+% The largest non-trivial timescales is given in table
+% Tab.~\ref{tab:tmp1}, which corresponds very well to the dynamics of the  $\confc$ probability.
+% \begin{table}
+%   \centering
+%   \caption{The first four non-trivial timescales calculated from ${\vect B}$. The unit of time in the table is ps.
+%     $\tau$ is the lag time used to calculate the generator~\eqref{eqn:tmp4}. $[T_0,T_1]$ is the time interval,
+%     in which the generator is estimated from the MD trajectories. The 5th eigenvalue of uniform decomposition with $\tau=8.0$~ps is not real, so
+%     the corresponding timescale is not calculated.
+%   }
+%   \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c ccc rrrr}\hline\hline
+%     Method  &  $M$ & $\tau$ & $[T_0,T_1]$ &   $t_2$ &   $t_3$ &   $t_4$ &   $t_5$  \\\hline
+%     5 sets  & --   & 0.5    & $[300,1000]$    &  72.4 & 17.8 &  2.1 & 2.8    \\
+%     Uniform & $05$ & 0.5    & $[300,1000]$    &  53.6 & 17.4 &  9.4 & 2.8    \\
+%     Uniform & $10$ & 0.5    & $[300,1000]$    & 107.2 & 27.0 & 16.4 & 3.6    \\
+%     Uniform & $20$ & 0.5    & $[300,1000]$    & 118.6 & 30.4 & 20.3 & 4.3    \\
+%     Uniform & $30$ & 0.5    & $[300,1000]$    & 120.6 & 31.1 & 20.9 & 4.4    \\\hline
+%     Uniform & $20$ & 0.5    & $[0,40]$    & 156.5 & 34.4 & 20.7 & 4.4    \\
+%     Uniform & $20$ & 0.5    & $[0,80]$    & 133.8 & 32.8 & 20.4 & 4.4    \\
+%     Uniform & $20$ & 0.5    & $[0,120]$   & 127.5 & 32.0 & 20.3 & 4.3    \\
+%     Uniform & $20$ & 0.5    & $[0,200]$   & 122.0 & 31.3 & 20.3 & 4.3    \\
+%     Uniform & $20$ & 0.5    & $[0,320]$   & 120.4 & 31.0 & 20.3 & 4.3    \\\hline
+%     Uniform & $20$ & 1.0    & $[300,1000]$    & 119.8 & 30.5 & 21.7 & 4.9   \\
+%     Uniform & $20$ & 2.0    & $[300,1000]$    & 117.8 & 29.2 & 21.5 & 5.3   \\
+%     Uniform & $20$ & 4.0    & $[300,1000]$    & 114.2 & 27.0 & 20.2 & 4.8   \\
+%     Uniform & $20$ & 8.0    & $[300,1000]$    & 110.6 & 25.0 & 18.1 & --   \\
+%     \hline\hline
+%   \end{tabular*}
+%   \label{tab:tmp1}
+% \end{table}
 
 
-\begin{table}
+% \section{Numerical investigation of the accuracy of the MSM}
+
+% At this stage we do have any analytical result regarding the quality
+% of approximating Eqn.~\eqref{eqn:tmp1} by
+% Eqn.~\eqref{eqn:tmp2}. However, it would be useful to do some
+% numerical experiments. We have studied the alanine dipeptide system
+% under oscillatory EF, which was studied by
+% Ref.~\cite{wang2014exploring}. We use the two dihedral angles $\phi$
+% and $\psi$ as slow variables. The discretization is the uniform division of
+% the $\phi$--$\psi$ plan in to 2-dimentional bins. 
+% The quality of the MSM~\eqref{eqn:tmp5a} can be checked by comparing the physical properties
+% computed from the MSM and those computed by the brute force non-equilibrium molecular
+% dynamics simulation from Ref.~\cite{wang2014exploring}.
+
+\subsection{Core set identification}
+
+\redc{Write how to detact the core sets for irreversible Markovian process}.
+
+The coresets are denoted by $C_{R_\alpha}$, $C_\beta$ and $C_{L_\alpha}$, which correspond to
+right-handed alpha-helix, beta-sheet and left-handed alpha-helix, respectively.
+
+\subsection{Steady state distribution and eigenfunctions}
+We investigate the steady state properties distribution at time $kT$. To make it comparible to
+the free energy in equilibrium case, we take the logrithm of the properties, i.e.
+\begin{align}
+  \label{eq:num-tmp1}
+  F_{\textrm{st}}(\phi,\psi) = \lim_{k\rightarrow\infty} -k_B\mathcal T \log p(\phi,\psi,kT),
+\end{align}
+where $k_B$ is the Boltzmann constant and $\mathcal T$ is the temperature of the system.
+The result is given in Fig.~\ref{fig:num-1}. A good consistency between the brute force
+MD simulation and the MSM is observed.
+
+\begin{figure}
+  \centering  
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist.eps}
+  % \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist-msm.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-1.eps}
+  \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
+  \label{fig:num-1}
+\end{figure}
+
+
+% \begin{figure}
+%   \centering  
+%   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-2-simple.eps}
+%   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-3-simple.eps}
+%   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-4-simple.eps}
+%   \caption{The first three non-trivial eigenfunctions cdalculated by the MSM.}
+%   \label{fig:num-2}
+% \end{figure}
+
+\subsection{Committors}
+
+The forward committor $q^\fwd_i(\phi,\psi)$ of a coreset $C_i,\ i\in\{R_\alpha, \beta, L_\alpha\}$ is defined as
+the probability of visiting coreset $C_i$ next conditioned on being at configuration $(\phi,\psi)$.
+The backward committor $q^\bwd_i(\phi,\psi)$ of a coreset $C_i,\ i\in\{R_\alpha, \beta, L_\alpha\}$ is defined as
+the probability of last coming from $C_i$  conditioned on being at configuration $(\phi,\psi)$.
+For  reversible Markov processes, the forward and backward committors are identical, however, it is in general not the case
+for irreversible processes. Please see Fig.~\ref{fig:num-3}--\ref{fig:num-5} for the committors.
+
+\begin{figure}
   \centering
-  \caption{The first four non-trivial timescales calculated from $e^{T\vect B}$. The unit of time in the table is ps.
-    $\tau$ is the lag time used to calculate the generator~\eqref{eqn:tmp4}. $[T_0,T_1]$ is the time interval,
-    in which the generator is estimated from the MD trajectories. The 5th eigenvalue of uniform decomposition with $\tau=8.0$~ps is not real, so
-    the corresponding timescale is not calculated.
-  }
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c ccc rrrr}\hline\hline
-    Method  &  $M$ & $\tau$ & $[T_0,T_1]$ &   $t_2$ &   $t_3$ &   $t_4$ &   $t_5$  \\\hline
-    5 sets  & --   & 0.5    & $[300,1000]$    &  72.4 & 17.8 &  2.1 & 2.8    \\
-    Uniform & $05$ & 0.5    & $[300,1000]$    &  53.6 & 17.4 &  9.4 & 2.8    \\
-    Uniform & $10$ & 0.5    & $[300,1000]$    & 107.2 & 27.0 & 16.4 & 3.6    \\
-    Uniform & $20$ & 0.5    & $[300,1000]$    & 118.6 & 30.4 & 20.3 & 4.3    \\
-    Uniform & $30$ & 0.5    & $[300,1000]$    & 120.6 & 31.1 & 20.9 & 4.4    \\\hline
-    Uniform & $20$ & 0.5    & $[0,40]$    & 156.5 & 34.4 & 20.7 & 4.4    \\
-    Uniform & $20$ & 0.5    & $[0,80]$    & 133.8 & 32.8 & 20.4 & 4.4    \\
-    Uniform & $20$ & 0.5    & $[0,120]$   & 127.5 & 32.0 & 20.3 & 4.3    \\
-    Uniform & $20$ & 0.5    & $[0,200]$   & 122.0 & 31.3 & 20.3 & 4.3    \\
-    Uniform & $20$ & 0.5    & $[0,320]$   & 120.4 & 31.0 & 20.3 & 4.3    \\\hline
-    Uniform & $20$ & 1.0    & $[300,1000]$    & 119.8 & 30.5 & 21.7 & 4.9   \\
-    Uniform & $20$ & 2.0    & $[300,1000]$    & 117.8 & 29.2 & 21.5 & 5.3   \\
-    Uniform & $20$ & 4.0    & $[300,1000]$    & 114.2 & 27.0 & 20.2 & 4.8   \\
-    Uniform & $20$ & 8.0    & $[300,1000]$    & 110.6 & 25.0 & 18.1 & --   \\
-    \hline\hline
-  \end{tabular*}
-  \label{tab:tmp1}
-\end{table}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-1.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-1.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-1.eps}
+  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}
+  \label{fig:num-3}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-2.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-2.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-2.eps}
+  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+  \label{fig:num-4}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-3.eps}
+  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+  \label{fig:num-5}
+\end{figure}
 
 
 \section{Discussions}
@@ -284,60 +479,6 @@ explict form of matrix $\vect B$, and does it has any nice properties,
 such as self-joint.
 \end{itemize}
 
-
-\section{Numerical results}
-\subsection{Steady state distribution}
-\begin{figure}
-  \centering  
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist-msm.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-1.eps}
-  \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
-  \label{fig:num-1}
-\end{figure}
-\begin{figure}
-  \centering  
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-2-simple.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-3-simple.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-4-simple.eps}
-  \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
-  \label{fig:num-2}
-\end{figure}
-
-\subsection{Committors}
-\begin{figure}
-  \centering
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-1.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-1.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-1.eps}
-  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-2.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-2.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-2.eps}
-  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-3.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-3.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-3.eps}
-  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
-  \label{fig:num-2}
-\end{figure}
 
 
 \section{Reversibility of the original dynamics}
