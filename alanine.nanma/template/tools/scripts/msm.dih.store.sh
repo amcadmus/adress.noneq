@@ -13,7 +13,7 @@ test ! -d $target_dir && mkdir -p $target_dir
 echo "pack tansition matrixes"
 tar cjvf tmatrix.tar.bz2 tmatrix.dih.*.out
 
-files="cg.prob.dih.out cg.prob.dih.5sets.out tmatrix.tar.bz2 init.prob.dih.out floque.B.out uniq.disc.traj.dih largestSet.dih count.disc.state.dih"
+files="cg.prob.dih.out bf.prob.dih.out cg.prob.dih.5sets.out tmatrix.tar.bz2 init.prob.dih.out floque.B.out uniq.disc.traj.dih largestSet.dih count.disc.state.dih diff.prob.dih.out"
 
 if [ -f msm.parameters.sh ]; then
     files="$files msm.parameters.sh"

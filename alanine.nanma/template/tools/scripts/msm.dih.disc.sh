@@ -64,6 +64,14 @@ echo "# recover 5 sets cg traj with command:"
 echo "# $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out"
 $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out
 
+mycommand="$msm_dir/calculate.time.dist --input-traj-dir dir.name --input-disc-traj traj.dih.disc --dt $pert_frame_feq --num-data-block 1 --num-bin $msm_dih_nbin --output bf.prob.dih.out"
+echo "# compute the bf probability with command : $mycommand"
+$mycommand
+
+mycommand="$msm_dir/diff.time.dist --input-dist-bf bf.prob.dih.out --input-dist-cg cg.prob.dih.out --input-largest-set largestSet.dih --output diff.prob.dih.out"
+echo "# compare bf with cg by command: $mycommand"
+$mycommand
+
 echo "# calculate the floque matrix"
 rm -f floque.B.out
 nstate=`wc init.prob.dih.out | awk '{print $1}'`
@@ -83,3 +91,6 @@ do
     tail -n 1 tmp.perid.out | awk '{$1=""; print}' >> floque.B.out
     rm -f tmp.init.out tmp.perid.out
 done
+
+store_dir_name="dis.dih$msm_dih_nbin.tau$msm_tau.b$msm_steady_begin.e$pert_time"
+$script_dir/msm.dih.store.sh $store_dir_name
