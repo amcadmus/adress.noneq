@@ -245,8 +245,20 @@ int main(int argc, char * argv[])
   }
   for (unsigned ii = 0; ii < nstate; ++ii){
     for (unsigned mm = 0; mm < fwCommitor.size(); ++mm){
+      if (0 == clusterMap[setMap[ii]]){
       fprintf (fpfw, "%e ", fwCommitor[mm][setMap[ii]].getAvg());
       fprintf (fpbw, "%e ", bwCommitor[mm][setMap[ii]].getAvg());
+      }
+      else {
+	if ( mm+1 == clusterMap[setMap[ii]] ){
+	  fprintf (fpfw, "%e ", 1.);
+	  fprintf (fpbw, "%e ", 1.);
+	}
+	else {
+	  fprintf (fpfw, "%e ", 0.);
+	  fprintf (fpbw, "%e ", 0.);
+	}
+      }
     }
     fprintf (fpfw, "\n");
     fprintf (fpbw, "\n");
