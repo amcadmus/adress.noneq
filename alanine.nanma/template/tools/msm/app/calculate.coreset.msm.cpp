@@ -88,7 +88,6 @@ int main(int argc, char * argv[])
   po::options_description desc ("Calculates the forward and backward commitor.\nAllow options");
   desc.add_options()
       ("help,h", "print this message")
-      ("num-data-block", po::value<unsigned > (&nDataInBlock)->default_value (1), "number of data in each block.")
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
       ("angle-up", po::value<double > (&aup)->default_value (180.), "upper bond of the angle.")
       ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
@@ -121,12 +120,31 @@ int main(int argc, char * argv[])
     fclose (fp);
   }
   unsigned nstate = setMap.size();
+  map<unsigned,unsigned> mymap;
+  for (unsigned ii = 0; ii < setMap.size(); ++ii){
+    mymap[setMap[ii]] = ii;
+  }
 
   double binSize = (aup - alow) / double(nbin);
   unsigned nbin2 = nbin * nbin;
 
   vector<unsigned > clusterMap;
   unsigned numCluster = load_cluster_map (ismfile, nbin, clusterMap);
+  vector<unsigned > clusterMapOrig (nstate, 0);
+  for (unsigned ii = 0; ii < nbin; ++ii){
+    for (unsigned jj = 0; jj < nbin; ++jj){
+      unsigned dihIndex = ii * nbin + jj;
+      map<unsigned, unsigned> :: const_iterator it = mymap.find(dihIndex);
+      if (it != mymap.end()){
+	unsigned fileIndex = it -> second;
+	clusterMapOrig[fileIndex] = clusterMap[dihIndex];
+      }
+    }
+  }
+  for (unsigned ii = 0; ii < nstate; ++ii){
+    printf ("%d\n", clusterMapOrig[ii]);
+  }
+  
 
   vector<vector<BlockAverage_acc > > fwCommitor (numCluster);
   vector<vector<BlockAverage_acc > > bwCommitor (numCluster);

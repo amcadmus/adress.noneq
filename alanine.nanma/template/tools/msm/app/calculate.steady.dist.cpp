@@ -35,6 +35,7 @@ int main(int argc, char * argv[])
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
       ("angle-up", po::value<double > (&aup)->default_value (180.), "upper bond of the angle.")
       ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
+      ("input-largest-set,s", po::value<std::string > (&isfile)->default_value ("largestSet"), "the input file of largest set.")
       ("input-traj-dir", po::value<string > (&idfile)->default_value ("success.dir.name"), "the traj dir name.")
       ("input-disc-traj", po::value<string > (&ifile)->default_value ("disc.traj"), "the traj file name.")
       ("output", po::value<string > (&ofile)->default_value ("steady.dist.out"), "the output of forward commitor.");
@@ -46,6 +47,21 @@ int main(int argc, char * argv[])
     std::cout << desc<< "\n";
     return 0;
   }
+
+  vector<int > setMap ;
+  {
+    FILE * fp  = fopen (isfile.c_str(), "r");
+    if (fp == NULL){
+      cerr << "cannot open file " << isfile << endl;
+      return 1;
+    }
+    int tmpint;
+    while (fscanf(fp, "%d", &tmpint) == 1){
+      setMap.push_back (tmpint);
+    }
+    fclose (fp);
+  }
+  unsigned nstate = setMap.size();
 
   unsigned nbin2 = nbin * nbin;
 
@@ -111,7 +127,17 @@ int main(int argc, char * argv[])
     }
     fprintf (fp, "\n");
   }
+  fclose (fp);
 
+  string origname = ofile+".orig";
+  fp = fopen ((origname).c_str(), "w");
+  if (fp == NULL){
+    cerr << "cannot open file " << ofile << endl;
+    return 1;
+  }
+  for (unsigned ii = 0; ii < nstate; ++ii){
+    fprintf (fp, "%e\n", dist[setMap[ii]].getAvg());
+  }
   fclose (fp);
 
   double eps = 1e-10;
