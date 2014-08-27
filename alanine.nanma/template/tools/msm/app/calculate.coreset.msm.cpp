@@ -166,7 +166,7 @@ void apply_trans (const vector<vector<double > > & tmatrix,
 
 int main(int argc, char * argv[])
 {
-  std::string ofwfile, obwfile, ifile, idfile, isfile, ismfile, ifloquetfile, isdfile;
+  std::string ofwfile, obwfile, idfile, isfile, ismfile, ifloquetfile, isdfile;
   unsigned nbin;
   
   po::options_description desc ("Calculates the forward and backward commitor.\nAllow options");
@@ -209,10 +209,14 @@ int main(int argc, char * argv[])
 
   vector<vector<double > > tmatrix;
   unsigned nstate1;
-  read_tmatrix (ifile, tmatrix, nstate1);
+  read_tmatrix (ifloquetfile, tmatrix, nstate1);
   if (nstate1 != nstate){
     cerr << "the largest set file is not consistent with the transition matrix" << endl;
     return 1;
+  }
+  vector<vector<double > > pmatrix(tmatrix);
+  for (unsigned ii = 0; ii < nstate; ++ii){
+    pmatrix[ii][ii] -= 1.;
   }
 
   vector<unsigned > clusterMap;
@@ -236,17 +240,55 @@ int main(int argc, char * argv[])
   vector<vector<double > > fwq;
   vector<vector<double > > bwq;
   load_committor (ofwfile, numCluster, fwq);
-  load_committor (obwfile, numCluster, fwq);
+  load_committor (obwfile, numCluster, bwq);
   vector<double > dist;
   load_steady_dist (isdfile, dist);
+  // for (unsigned ii = 0; ii < numCluster; ++ii){
+  //   double sum = 0.;
+  //   for (unsigned jj = 0; jj < nstate; ++jj){
+  //     sum += bwq[ii][jj];
+  //     // if (dist[jj] != 0) bwq[ii][jj] /= dist[jj];
+  //     // if (dist[jj] != 0) fwq[ii][jj] /= dist[jj];
+  //   }
+  //   cout <<  (sum) << endl;
+  //   sum = 0.;
+  //   for (unsigned jj = 0; jj < nstate; ++jj){
+  //     sum += fwq[ii][jj];
+  //   }
+  //   cout <<  (sum) << endl;
+  // }
+  // for (unsigned jj = 0; jj < nstate; ++jj){
+  //   double sum = 0;
+  //   for (unsigned ii = 0; ii < numCluster; ++ii){
+  //     sum +=  bwq[ii][jj];
+  //   }
+  //   cout << sum << endl;
+  // }
+  // for (unsigned jj = 0; jj < nstate; ++jj){
+  //   double sum = 0;
+  //   for (unsigned ii = 0; ii < numCluster; ++ii){
+  //     sum +=  fwq[ii][jj];
+  //   }
+  //   cout << sum << endl;
+  // }
+  
+  
   vector<vector<double > > Pbwq(numCluster);
   for (unsigned ii = 0; ii < numCluster; ++ii){
-    apply_trans (tmatrix, bwq[ii], Pbwq[ii]);
+    apply_trans (pmatrix, bwq[ii], Pbwq[ii]);
   }
+  // for (unsigned jj = 0; jj < nstate; ++jj){
+  //   double sum = 0;
+  //   for (unsigned ii = 0; ii < numCluster; ++ii){
+  //     sum +=  Pbwq[ii][jj];
+  //   }
+  //   cout << sum << endl;
+  // }
 
   vector<double > coresetDist (numCluster, 0.);
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < nstate; ++jj){
+    // printf ("%e\n", coresetDist[ii]);
       coresetDist[ii] += bwq[ii][jj] * dist[jj];
     }
   }
@@ -255,8 +297,8 @@ int main(int argc, char * argv[])
     printf ("%e\n", coresetDist[ii]);
     sum += coresetDist[ii];
   }
-  if (fabs(sum - 1) > 1e-10){
-    cerr << "sum of prob is not 1, return..." << endl;
+  if (fabs(sum - 1) > 1e-6){
+    cerr << "sum of prob is not 1, " << fabs(sum - 1) <<  " return..." << endl;
     return 1;
   }
 
@@ -286,7 +328,7 @@ int main(int argc, char * argv[])
 
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < numCluster; ++jj){
-      printf ("%e\n", coresetTmatrix[ii][jj]);
+      printf ("%e \t", coresetTmatrix[ii][jj]);
     }
     printf ("\n");
   }
