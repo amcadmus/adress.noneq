@@ -42,6 +42,46 @@ unsigned load_cluster_map (const string & file,
   return max;
 }
 
+void load_steady_dist (const string & file,
+		       vector<double > & dist)
+{
+  FILE * fp = fopen (file.c_str(), "r");
+  if (fp == NULL){
+    cerr << "cannot open file " << file <<  endl;
+    exit(1);
+  }
+  double tmp;
+  dist.clear ();
+  while (1 == fscanf(fp, "%lf", &tmp)){
+    dist.push_back (tmp);
+  }
+  fclose (fp);
+}
+
+void load_committor (const string & file,
+		     const unsigned & ncluster,
+		     vector<vector<double > > & fwq)
+{
+  FILE * fp = fopen (file.c_str(), "r");
+  if (fp == NULL){
+    cerr << "cannot open file " << file <<  endl;
+    exit(1);
+  }
+  double tmp;
+  unsigned countC = 0;
+  fwq.clear();
+  fwq.resize(ncluster);
+  while (1 == fscanf(fp, "%lf", &tmp)){
+    if (countC == ncluster){
+      countC = 0;
+    }
+    fwq[countC].push_back (tmp);
+    countC++;
+  }
+  fclose (fp);
+}
+
+
 void deposite_traj (const vector<unsigned > & traj,
 		    const int & startPosi,
 		    const int & stopPosi,
@@ -79,24 +119,66 @@ void deposite_traj (const vector<unsigned > & traj,
   }
 }
 
+void read_tmatrix (const string & filename,
+		   vector<vector<double > > & tmatrix,
+		   unsigned & nstate)
+{
+  ifstream fpname (filename.c_str());
+  if (!fpname){
+    std::cerr << "cannot open file " << filename << std::endl;
+    exit(1);
+  }
+  char valueline [MaxLineLength];
+  int countLine = 0;
+  while (fpname.getline(valueline, MaxLineLength)){
+    vector<string > words;
+    StringOperation::split (string(valueline), words);
+    if (countLine == 0){
+      nstate = words.size();
+      tmatrix.resize(nstate);
+      for (unsigned ii = 0; ii < nstate; ++ii){
+	tmatrix[ii].resize(nstate);
+      }
+    }
+    if (words.size() != nstate){
+      cerr << "format error of tmatrix reading " << endl;
+      exit (1);
+    }
+    for (unsigned ii = 0; ii < nstate; ++ii){
+      tmatrix[countLine][ii] = atof(words[ii].c_str());
+    }
+    countLine ++;
+  }
+}
+
+void apply_trans (const vector<vector<double > > & tmatrix,
+		  const vector<double > & pin,
+		  vector<double > & pout)
+{
+  pout.resize(tmatrix.size());
+  for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
+    pout[ii] = 0.;
+    for (unsigned jj = 0; jj < tmatrix[ii].size(); ++jj){
+      pout[ii] += tmatrix[ii][jj] * pin[jj];
+    }
+  }
+}
+
 int main(int argc, char * argv[])
 {
-  std::string ofwfile, obwfile, ifile, idfile, isfile, ismfile;
-  double aup, alow;
-  unsigned nDataInBlock, nbin;
+  std::string ofwfile, obwfile, ifile, idfile, isfile, ismfile, ifloquetfile, isdfile;
+  unsigned nbin;
   
   po::options_description desc ("Calculates the forward and backward commitor.\nAllow options");
   desc.add_options()
       ("help,h", "print this message")
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
-      ("angle-up", po::value<double > (&aup)->default_value (180.), "upper bond of the angle.")
-      ("angle-low", po::value<double > (&alow)->default_value (-180.), "lower bond of the angle.")      
       ("input-largest-set,s", po::value<std::string > (&isfile)->default_value ("largestSet"), "the input file of largest set.")
+      ("input-floquet,f", po::value<string > (&ifloquetfile)->default_value ("floque.B.out"), "the input transition matrix.")
       ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
-      ("input-traj-dir", po::value<string > (&idfile)->default_value ("success.dir.name"), "the traj dir name.")
-      ("input-disc-traj", po::value<string > (&ifile)->default_value ("disc.traj"), "the traj file name.")
-      ("output-fw", po::value<string > (&ofwfile)->default_value ("commitor.fw.out"), "the output of forward commitor.")
-      ("output-bw", po::value<string > (&obwfile)->default_value ("commitor.bw.out"), "the output of backward commitor.");
+      ("input-steady", po::value<string > (&isdfile)->default_value ("steady.dist.out.orig"), "the input steady state.")
+      ("input-fw", po::value<string > (&ofwfile)->default_value ("commitor.fw.out.orig"), "the input of forward commitor.")
+      ("input-bw", po::value<string > (&obwfile)->default_value ("commitor.bw.out.orig"), "the input of backward commitor.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -125,8 +207,13 @@ int main(int argc, char * argv[])
     mymap[setMap[ii]] = ii;
   }
 
-  double binSize = (aup - alow) / double(nbin);
-  unsigned nbin2 = nbin * nbin;
+  vector<vector<double > > tmatrix;
+  unsigned nstate1;
+  read_tmatrix (ifile, tmatrix, nstate1);
+  if (nstate1 != nstate){
+    cerr << "the largest set file is not consistent with the transition matrix" << endl;
+    return 1;
+  }
 
   vector<unsigned > clusterMap;
   unsigned numCluster = load_cluster_map (ismfile, nbin, clusterMap);
@@ -141,157 +228,68 @@ int main(int argc, char * argv[])
       }
     }
   }
-  for (unsigned ii = 0; ii < nstate; ++ii){
-    printf ("%d\n", clusterMapOrig[ii]);
-  }
+  // for (unsigned ii = 0; ii < nstate; ++ii){
+  //   printf ("%d\n", clusterMapOrig[ii]);
+  // }
   
 
-  vector<vector<BlockAverage_acc > > fwCommitor (numCluster);
-  vector<vector<BlockAverage_acc > > bwCommitor (numCluster);
-  for (unsigned ii= 0; ii < numCluster; ++ii){
-    fwCommitor[ii].resize (nbin2);
-    bwCommitor[ii].resize (nbin2);
-    for (unsigned kk = 0; kk < nbin2; ++kk){
-      fwCommitor[ii][kk].reinit (nDataInBlock);
-      bwCommitor[ii][kk].reinit (nDataInBlock);
-    }
+  vector<vector<double > > fwq;
+  vector<vector<double > > bwq;
+  load_committor (ofwfile, numCluster, fwq);
+  load_committor (obwfile, numCluster, fwq);
+  vector<double > dist;
+  load_steady_dist (isdfile, dist);
+  vector<vector<double > > Pbwq(numCluster);
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    apply_trans (tmatrix, bwq[ii], Pbwq[ii]);
   }
 
-  ifstream fpname (idfile.c_str());
-  if (!fpname){
-    std::cerr << "cannot open file " << idfile << std::endl;
+  vector<double > coresetDist (numCluster, 0.);
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    for (unsigned jj = 0; jj < nstate; ++jj){
+      coresetDist[ii] += bwq[ii][jj] * dist[jj];
+    }
+  }
+  double sum = 0.;
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    printf ("%e\n", coresetDist[ii]);
+    sum += coresetDist[ii];
+  }
+  if (fabs(sum - 1) > 1e-10){
+    cerr << "sum of prob is not 1, return..." << endl;
     return 1;
   }
-  char nameline [MaxLineLength];
-  unsigned countFile = 0;
-  
-  while (fpname.getline(nameline, MaxLineLength)){
-    if (nameline[0] == '#') continue;
-    string filename = string(nameline) + string("/") + ifile;
-    FILE *fp = fopen (filename.c_str(), "r");
-    if (fp == NULL){
-      std::cerr << "cannot open file " << filename << std::endl;
-      return 1;
-    }
-    if (countFile % 100 == 0){
-      cout << "# processing file " << filename << endl;
-    }
-    countFile ++;
-    vector<unsigned > disc_traj;
-    unsigned tmpread;
-    while (1 == fscanf(fp, "%d", &tmpread)){
-      disc_traj.push_back (tmpread);
-    }
-    fclose (fp);
-    int startPosi = 0;
-    int stopPosi = 0;
-    while (stopPosi < int(disc_traj.size())){
-      while (stopPosi < int(disc_traj.size()) && clusterMap[disc_traj[stopPosi]] != 0){
-	stopPosi ++;
+
+  vector<vector<double > > coresetTmatrix (numCluster);
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    coresetTmatrix[ii].resize (numCluster, 0.);
+  }
+
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    for (unsigned jj = 0; jj < numCluster; ++jj){
+      if (ii == jj) continue;
+      for (unsigned kk = 0; kk < nstate; ++kk){
+	coresetTmatrix[ii][jj] += Pbwq[ii][kk] * fwq[jj][kk] * dist[kk];
       }
-      startPosi = stopPosi - 1;
-      while (stopPosi < int(disc_traj.size()) && clusterMap[disc_traj[stopPosi]] == 0){
-	stopPosi ++;
-      }
-      deposite_traj (disc_traj, startPosi, stopPosi, clusterMap, fwCommitor, bwCommitor);
+      coresetTmatrix[ii][jj] /= coresetDist[ii];
     }
   }
   
-  for (unsigned mm = 0; mm < fwCommitor.size(); ++mm){
-    for (unsigned ii = 0; ii < fwCommitor[mm].size(); ++ii){
-      fwCommitor[mm][ii].calculate ();
-      bwCommitor[mm][ii].calculate ();
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    double sum = 0;
+    for (unsigned jj = 0; jj < numCluster; ++jj){
+      if (ii == jj) continue;
+      sum += coresetTmatrix[ii][jj];
     }
-  } 
-
-  FILE * fpfw = fopen (ofwfile.c_str(), "w");
-  if (fpfw == NULL){
-    cerr << "cannot open file " << ofwfile << endl;
-    return 1;
-  }
-  FILE * fpbw = fopen (obwfile.c_str(), "w");
-  if (fpbw == NULL){
-    cerr << "cannot open file " << obwfile << endl;
-    return 1;
-  }
-  for (unsigned ii = 0; ii < nbin; ++ii){
-    double phi = (ii+0.5) * binSize + alow;
-    for (unsigned jj = 0; jj < nbin; ++jj){
-      double psi = (jj+0.5) * binSize + alow;
-      unsigned dihIndex = ii * nbin + jj;
-      fprintf (fpfw, "%f \t %f \t ", phi, psi);
-      fprintf (fpbw, "%f \t %f \t ", phi, psi);
-      if (clusterMap[dihIndex] == 0) {
-	for (unsigned mm = 0; mm < fwCommitor.size(); ++mm){
-	  fprintf (fpfw, " %e %e ", fwCommitor[mm][dihIndex].getAvg(), fwCommitor[mm][dihIndex].getAvgError());
-	  fprintf (fpbw, " %e %e ", bwCommitor[mm][dihIndex].getAvg(), bwCommitor[mm][dihIndex].getAvgError());
-	}
-      }
-      else {
-	for (unsigned mm = 0; mm < fwCommitor.size(); ++mm){
-	  if ((mm+1) == clusterMap[dihIndex]) {
-	    fprintf (fpfw, " %f %f ", 1., 0.);
-	    fprintf (fpbw, " %f %f ", 1., 0.);
-	  }
-	  else {
-	    fprintf (fpfw, " %f %f ", 0., 0.);
-	    fprintf (fpbw, " %f %f ", 0., 0.);
-	  }	    
-	}
-      }
-      fprintf (fpfw, "\n");
-      fprintf (fpbw, "\n");
-    }
-    fprintf (fpfw, "\n");
-    fprintf (fpbw, "\n");
+    coresetTmatrix[ii][ii] = 1 - sum;
   }
 
-  fclose (fpfw);
-  fclose (fpbw);
-
-  ofwfile += ".orig";
-  obwfile += ".orig";
-  fpfw = fopen (ofwfile.c_str(), "w");
-  fpbw = fopen (obwfile.c_str(), "w");
-  if (fpfw == NULL){
-    cerr << "cannot open file " << ofwfile << endl;
-    return 1;
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    for (unsigned jj = 0; jj < numCluster; ++jj){
+      printf ("%e\n", coresetTmatrix[ii][jj]);
+    }
+    printf ("\n");
   }
-  if (fpbw == NULL){
-    cerr << "cannot open file " << obwfile << endl;
-    return 1;
-  }
-  for (unsigned ii = 0; ii < nstate; ++ii){
-    for (unsigned mm = 0; mm < fwCommitor.size(); ++mm){
-      fprintf (fpfw, "%e ", fwCommitor[mm][setMap[ii]].getAvg());
-      fprintf (fpbw, "%e ", bwCommitor[mm][setMap[ii]].getAvg());
-    }
-    fprintf (fpfw, "\n");
-    fprintf (fpbw, "\n");
-  }
-
-  double eps = 1e-10;
-  for (unsigned ii = 0; ii < nbin2; ++ii){
-    double sum = 0.;
-    for (unsigned mm = 0; mm < numCluster; ++mm){
-      sum += fwCommitor[mm][ii].getAvg();
-    }
-    if ( (sum > eps && sum < 1 - eps) ||
-	 (sum < -eps) ||
-	 (sum > 1+eps) ){
-      cerr << "failed at fw commitor test" << endl;
-    }
-    sum = 0.;
-    for (unsigned mm = 0; mm < numCluster; ++mm){
-      sum += bwCommitor[mm][ii].getAvg();
-    }
-    if ( (sum > eps && sum < 1 - eps) ||
-	 (sum < -eps) ||
-	 (sum > 1+eps) ){
-      cerr << "failed at bw commitor test" << endl;
-    }
-  }
-  cout << "# passed test for commitors" << endl;
   
   return 0;
 }
