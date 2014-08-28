@@ -36,6 +36,11 @@ do
     grep -v \# floquet.eigvector.out | awk "{print \$$ii}"  | grep -v \# > tmp.vec.in
     $msm_dir/vector.set2dih --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --input tmp.vec.in --output floquet.eigvector.$ii.out
 done
+for ii in `seq 1 $neig`;
+do
+    grep -v \# floquet.eigvector.l.out | awk "{print \$$ii}"  | grep -v \# > tmp.vec.in
+    $msm_dir/vector.set2dih --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --input tmp.vec.in --output floquet.eigvector.l.$ii.out
+done
 # rm -f tmp.vec.in
 
 cd $cwd

@@ -25,17 +25,21 @@ else
     source $target_dir/msm.parameters.sh
 fi
 
-mycommand="$msm_dir/calculate.commitor --num-bin $msm_dih_nbin --input-cluster-map $target_dir/cluster.map.out --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output-fw $target_dir/commitor.fw.out --output-bw $target_dir/commitor.bw.out"
+mycommand="$msm_dir/calculate.commitor --input-largest-set $target_dir/largestSet.dih --num-bin $msm_dih_nbin --input-cluster-map $target_dir/cluster.map.out --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output-fw $target_dir/commitor.fw.out --output-bw $target_dir/commitor.bw.out"
 echo "# calculate commitor by command: $mycommand"
 $mycommand
 paste $target_dir/commitor.fw.out $target_dir/commitor.bw.out > $target_dir/commitor.out
 
-mycommand="$msm_dir/calculate.steady.dist --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/steady.dist.out"
+mycommand="$msm_dir/calculate.steady.dist --input-largest-set $target_dir/largestSet.dih --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/steady.dist.out"
 echo "# calculate steady dist by command: $mycommand"
 $mycommand
 
 mycommand="$msm_dir/calculate.fht --input-largest-set $target_dir/largestSet.dih --input-cluster-map $target_dir/cluster.map.out  --num-bin $msm_dih_nbin --input-traj-dir dir.name --input-disc-traj traj.dih.disc.periodT --output $target_dir/fht.out"
 echo "# calculate first hitting time by command: $mycommand"
+$mycommand
+
+mycommand="$msm_dir/calculate.coreset.msm --num-bin $msm_dih_nbin --input-largest-set $target_dir/largestSet.dih  --input-floquet $target_dir/floque.B.out --input-cluster-map $target_dir/cluster.map.out --input-steady $target_dir/steady.dist.out.orig --input-fw $target_dir/commitor.fw.out.orig --input-bw $target_dir/commitor.bw.out.orig --output-tmatrix $target_dir/coreset.tmatrix.out"
+echo "# calculate coreset msm tmatrix by command: $mycommand"
 $mycommand
 
 if [ -f $target_dir/cluster.map.1.out ]; then
