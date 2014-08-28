@@ -166,7 +166,7 @@ void apply_trans (const vector<vector<double > > & tmatrix,
 
 int main(int argc, char * argv[])
 {
-  std::string ofwfile, obwfile, idfile, isfile, ismfile, ifloquetfile, isdfile;
+  std::string ifwfile, ibwfile, idfile, isfile, ismfile, ifloquetfile, isdfile, otmfile;
   unsigned nbin;
   
   po::options_description desc ("Calculates the forward and backward commitor.\nAllow options");
@@ -177,8 +177,9 @@ int main(int argc, char * argv[])
       ("input-floquet,f", po::value<string > (&ifloquetfile)->default_value ("floque.B.out"), "the input transition matrix.")
       ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
       ("input-steady", po::value<string > (&isdfile)->default_value ("steady.dist.out.orig"), "the input steady state.")
-      ("input-fw", po::value<string > (&ofwfile)->default_value ("commitor.fw.out.orig"), "the input of forward commitor.")
-      ("input-bw", po::value<string > (&obwfile)->default_value ("commitor.bw.out.orig"), "the input of backward commitor.");
+      ("input-fw", po::value<string > (&ifwfile)->default_value ("commitor.fw.out.orig"), "the input of forward commitor.")
+      ("input-bw", po::value<string > (&ibwfile)->default_value ("commitor.bw.out.orig"), "the input of backward commitor.")
+      ("output-tmatrix", po::value<string > (&otmfile)->default_value ("coreset.tmatrix.out"), "the output transition matrix of coreset MSM.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -239,8 +240,8 @@ int main(int argc, char * argv[])
 
   vector<vector<double > > fwq;
   vector<vector<double > > bwq;
-  load_committor (ofwfile, numCluster, fwq);
-  load_committor (obwfile, numCluster, bwq);
+  load_committor (ifwfile, numCluster, fwq);
+  load_committor (ibwfile, numCluster, bwq);
   vector<double > dist;
   load_steady_dist (isdfile, dist);
   // for (unsigned ii = 0; ii < numCluster; ++ii){
@@ -326,12 +327,18 @@ int main(int argc, char * argv[])
     coresetTmatrix[ii][ii] = 1 - sum;
   }
 
+  FILE * fp = fopen (otmfile.c_str(), "w");
+  if (fp == NULL){
+    cerr << "cannot open file " << otmfile <<  endl;
+    exit(1);
+  }  
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < numCluster; ++jj){
-      printf ("%e \t", coresetTmatrix[ii][jj]);
+      fprintf (fp, "%e \t", coresetTmatrix[ii][jj]);
     }
-    printf ("\n");
+    fprintf (fp, "\n");
   }
+  fclose (fp);
   
   return 0;
 }
