@@ -160,7 +160,7 @@ compare the results with the brute force result in
 Fig.~\ref{fig:tmp2}. In the figure, we show the time-dependent
 probability $\mathbb P\big(\phi\in[0,180), \psi\in [0,180)\big)$.
 Using $K=2$ the dynamics depends on the time interval used for
-calculating the generator: using time intervals $[0, 40]$ the reduced
+calculating the generator: using time intervals $[320, 1000]$ the reduced
 dynamics can only reproduces the brute force result in $[0, 40]$,
 while using time intervals $[0, 40]$ the reduced dynamics can only
 reproduces the brute force result after 300~ps.  This shows that the
@@ -336,12 +336,6 @@ by considering several properties that are of special interest.
 % computed from the MSM and those computed by the brute force non-equilibrium molecular
 % dynamics simulation from Ref.~\cite{wang2014exploring}.
 
-\subsection{Core set identification}
-
-\redc{Write how to detact the core sets for irreversible Markovian process}.
-
-The coresets are denoted by $C_{R_\alpha}$, $C_\beta$ and $C_{L_\alpha}$, which correspond to
-right-handed alpha-helix, beta-sheet and left-handed alpha-helix, respectively.
 
 \subsection{Steady state distribution and eigenfunctions}
 We investigate the steady state properties distribution at time $kT$. To make it comparible to
@@ -356,9 +350,9 @@ MD simulation and the MSM is observed.
 
 \begin{figure}
   \centering  
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist.eps}
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.40/fig-dist.eps}
   % \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist-msm.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-1.eps}
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-1.eps}
   \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
   \label{fig:num-1}
 \end{figure}
@@ -373,6 +367,22 @@ MD simulation and the MSM is observed.
 %   \label{fig:num-2}
 % \end{figure}
 
+\subsection{Coreset identification}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{fig/t040/cluster.marco/fig-cluster-2.eps}
+  \caption{The coreset identification. Different colors indicate different coresets: $C_{R_\alpha}$ (yellow), $C_\beta$ (red) and $C_{L_\alpha}$ (green).
+    The blue color means out of any coreset. (By Marco)}
+  \label{fig:cluster}
+\end{figure}
+
+\redc{Write how to detact the core sets for irreversible Markovian process}.
+
+The coresets (see Fig.~\ref{fig:cluster}) are denoted by $C_{R_\alpha}$ (yellow), $C_\beta$ (red) and $C_{L_\alpha}$ (green), which correspond to
+right-handed alpha-helix, beta-sheet and left-handed alpha-helix, respectively.
+
+
 \subsection{Committors}
 
 The forward committor $q^\fwd_i(\phi,\psi)$ of a coreset $C_i,\ i\in\{R_\alpha, \beta, L_\alpha\}$ is defined as
@@ -385,103 +395,136 @@ for irreversible processes. Please see Fig.~\ref{fig:num-3}--\ref{fig:num-5} for
 \begin{figure}
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-1.eps}\\
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-1.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-1.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-1.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-1.eps}
-  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}
+  \caption{The forward $q^\fwd_{L_\alpha}$ and backward committors $q^\bwd_{L_\alpha}$ computed by MSM (second row) is compared with those computed by brute force non-equilibrium simulations (first row).}
   \label{fig:num-3}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-2.eps}\\
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-2.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-2.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-2.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-2.eps}
-  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+  \caption{The forward $q^\fwd_{R_\alpha}$ and backward $q^\fwd_{R_\alpha}$ committors computed by MSM (second row) is compared with those computed by brute force non-equilibrium simulations (first row).}  
   \label{fig:num-4}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-3.eps}\\
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-3.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-3.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-3.eps}
-  \caption{The forward and backward committors computed by MSM is compared with those computed by brute force non-equilibrium simulations.}  
+  \caption{The forward $q^\fwd_{\beta}$ and backward $q^\fwd_{\beta}$ committors computed by MSM (second row) is compared with those computed by brute force non-equilibrium simulations (first row).}  
   \label{fig:num-5}
 \end{figure}
 
+\subsection{First mean hitting time}
 
-\section{Discussions}
-\subsection{The periodicity of the reduced dynamics}
-
-
-As discussed before, if the reduced dynamics captures the slow
-dynamics of interest, then the reduced dynamics is also periodic,
-which implies that the generator $M(t)$ can be estimated from any time
-interval by Eq.~\eqref{eqn:tmp4}. In practice, the reduced dynamics
-may not be perfectly periodic. The generator calculated from
-different time intervals can be used to test the periodicity of the
-reduced dynamics. The results are shown in Tab.~\ref{tab:tmp1} and
-Fig.~\ref{fig:tmp2}.  The dependency with respect to the time
-interval, in which the generator is calculated, indicates the reduced
-dynamics is not perfectly periodic. The reduced dynamics from $[0,40]$
-reproduces the best probability in interval $[0,40]$, and worst in the
-steady state. Moreover, the leading non-trivial timescale is also off
-(see Tab.~\ref{tab:tmp1}), while the accuracy of the second and third
-non-trivial timescales are better, because they are comparable to the
-period, 40~ps, in which the dynamics is relaxed. The reduced dynamics
-from $[300,1000]$ reproduces the best steady state probability, while
-worst in reproducing the initial relaxation process. The reduced
-dynamics from $[0,320]$ is indistinguishable from the one from
-$[300,1000]$, which implies that in practice, one only have to
-simulation relatively short non-equilibrium trajectories (that are
-almost relaxed), and compute the generator from it to build the reduced dynamics. \redc{This saves a great
-amount of computational resources comparing with calculating the
-reduced dynamics only from steady state trajectories.}
-
+The first mean hitting time is presented in Fig.~\ref{fig:num-6}.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{fig/t040/fig-cg-prob-range.eps}  
-  \caption{The time-dependent probability of conformation
-    $\confc$. The brute force MD simulation is compared with reduced
-    dynamics, the transition matrix of which are calculated from
-    different ranges. The red shadow region is the statistical uncertainty of the brute force MD simulation.
-    The inserts show the zoom-ined probability at the relaxation stage $[0,120 ]~\textrm{ps}$ and at the steady state $[800,880 ]~\textrm{ps}$.}
-  \label{fig:tmp2}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-msm-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-msm-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-msm-3.eps}
+  \caption{The first mean htting time comparsion between the brute force simulation (first row) and the MSM (second row).
+  From left to right are first mean hitting time to coresets $C_{L_\alpha}$, $C_{R_\alpha}$ and $C_{\beta}$, respectively}  
+  \label{fig:num-6}
 \end{figure}
 
-\subsection{The choice of lag time $\tau$}
-Table~\ref{tab:tmp1} shows a clear trend of worse accuracy with
-increased $\tau$, however, the timescales are not very sensitive to
-the choice of lag time $\tau$.
 
-\section{To do}
 
-\begin{itemize}
-\item Theoretical analysis of the accuracy of the discretization, a
-generalization of the equilibrium case. the numerical results indicate
-a very close link. The perodicity is very nice, if the generator is
-``continuous'', then it should be uniformly continuous, then it should
-be possible to develop estimates that are similar to the equilibrium
-case.
-\item More tests on the effect of choosing different lag-time $\tau$ (0.5 and 1.0~ps are done).
-\item More theoretical consideration on the Floquet theory, what is the
-explict form of matrix $\vect B$, and does it has any nice properties,
-such as self-joint.
-\end{itemize}
+% \section{Discussions}
+% \subsection{The periodicity of the reduced dynamics}
+
+
+% As discussed before, if the reduced dynamics captures the slow
+% dynamics of interest, then the reduced dynamics is also periodic,
+% which implies that the generator $M(t)$ can be estimated from any time
+% interval by Eq.~\eqref{eqn:tmp4}. In practice, the reduced dynamics
+% may not be perfectly periodic. The generator calculated from
+% different time intervals can be used to test the periodicity of the
+% reduced dynamics. The results are shown in Tab.~\ref{tab:tmp1} and
+% Fig.~\ref{fig:tmp2}.  The dependency with respect to the time
+% interval, in which the generator is calculated, indicates the reduced
+% dynamics is not perfectly periodic. The reduced dynamics from $[0,40]$
+% reproduces the best probability in interval $[0,40]$, and worst in the
+% steady state. Moreover, the leading non-trivial timescale is also off
+% (see Tab.~\ref{tab:tmp1}), while the accuracy of the second and third
+% non-trivial timescales are better, because they are comparable to the
+% period, 40~ps, in which the dynamics is relaxed. The reduced dynamics
+% from $[300,1000]$ reproduces the best steady state probability, while
+% worst in reproducing the initial relaxation process. The reduced
+% dynamics from $[0,320]$ is indistinguishable from the one from
+% $[300,1000]$, which implies that in practice, one only have to
+% simulation relatively short non-equilibrium trajectories (that are
+% almost relaxed), and compute the generator from it to build the reduced dynamics. \redc{This saves a great
+% amount of computational resources comparing with calculating the
+% reduced dynamics only from steady state trajectories.}
+
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{fig/t040/fig-cg-prob-range.eps}  
+%   \caption{The time-dependent probability of conformation
+%     $\confc$. The brute force MD simulation is compared with reduced
+%     dynamics, the transition matrix of which are calculated from
+%     different ranges. The red shadow region is the statistical uncertainty of the brute force MD simulation.
+%     The inserts show the zoom-ined probability at the relaxation stage $[0,120 ]~\textrm{ps}$ and at the steady state $[800,880 ]~\textrm{ps}$.}
+%   \label{fig:tmp2}
+% \end{figure}
+
+% \subsection{The choice of lag time $\tau$}
+% Table~\ref{tab:tmp1} shows a clear trend of worse accuracy with
+% increased $\tau$, however, the timescales are not very sensitive to
+% the choice of lag time $\tau$.
+
+
+
+% \section{To do}
+
+% \begin{itemize}
+% \item Theoretical analysis of the accuracy of the discretization, a
+% generalization of the equilibrium case. the numerical results indicate
+% a very close link. The perodicity is very nice, if the generator is
+% ``continuous'', then it should be uniformly continuous, then it should
+% be possible to develop estimates that are similar to the equilibrium
+% case.
+% \item More tests on the effect of choosing different lag-time $\tau$ (0.5 and 1.0~ps are done).
+% \item More theoretical consideration on the Floquet theory, what is the
+% explict form of matrix $\vect B$, and does it has any nice properties,
+% such as self-joint.
+% \end{itemize}
+
+
+\section{Approximation quality of the Markov state model}
+
+The whole Floquet theory can be applied to the original dynamics, and we denote that the resulting transition matrix by $\psi(T)$, then
+the time-dependent probability density can be written as
+\begin{align*}
+  \rho(\vect x, kT) = 
+\end{align*}
+
+In general, the original dynamics of the molecular system under perodical external driven
+is not reversible, see the discussion in Sec.~\ref{sec:revs}. However, we can assume the, 
 
 
 
 \section{Reversibility of the original dynamics}
+\label{sec:revs}
 
 Now we assume the overdamped dynamics
 \begin{align}\label{eqn:tmp7}
@@ -621,6 +664,8 @@ invariant probability density with respect to potential $V(x,0)$ satisfies $\mu(
   - \beta\int_0^T\partial_tV(x_t,t)dt
   \bigg\}
 \end{align}
+
+\subsection{Irreversibility of the perodical symmetrical dynamics}
 
 In Eq.~\eqref{eq:dagger-0}, we assume the periodicity of the perturbation $F(x,t) = F(x,t+T)$, and the symmetry of the external perturbation, i.e.~$F(x, -t) = F(x, t)$, we have
 \begin{align}
