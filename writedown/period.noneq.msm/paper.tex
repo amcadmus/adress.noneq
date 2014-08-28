@@ -1,0 +1,784 @@
+\documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn]{revtex4}
+% \documentclass[aps, pre, preprint,unsortedaddress,a4paper,twocolumn]{revtex4}
+% \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
+% \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
+% \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\makeatletter
+\makeatother
+
+\newcommand{\recheck}[1]{{\color{red} #1}}
+\newcommand{\redc}[1]{{\color{red} #1}}
+\newcommand{\bluec}[1]{{\color{red} #1}}
+\newcommand{\greenc}[1]{{\color{green} #1}}
+\newcommand{\vect}[1]{\textbf{\textit{#1}}}
+\newcommand{\dd}[1]{\textsf{#1}}
+\newcommand{\fwd}[0]{\textrm{fw}}
+\newcommand{\bwd}[0]{\textrm{bw}}
+\newcommand{\period}[0]{T_{\textrm{P}}}
+\newcommand{\ml}[0]{\mathcal {L}}
+\newcommand{\mo}[0]{\mathcal {O}}
+\newcommand{\mbp}[0]{\mathbb {P}}
+\newcommand{\mc}[0]{\mathcal {C}}
+\newcommand{\dt}[0]{\Delta t}
+
+\newcommand{\confaa}[0]{{\alpha_{\textrm{R}}}}
+\newcommand{\confab}[0]{{\alpha_{\textrm{R}}'}}
+\newcommand{\confba}[0]{{\textrm{C}7_{\textrm{eq}}}}
+\newcommand{\confbb}[0]{{\textrm{C}5}}
+\newcommand{\confc}[0]{{\alpha_{\textrm{L}}}}
+
+
+
+\begin{document}
+
+\title{Building Markov State Model for a Periodically Driven Non-Equilibrium System}
+\author{Han Wang}
+\email{han.wang@fu-berlin.de}
+\affiliation{Zuse Institut Berlin, Germany}
+\author{Christof Sch\"utte}
+\email{Christof.Schuette@fu-berlin.de}
+\affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
+\affiliation{Zuse Institut Berlin, Germany}
+   
+\begin{abstract}
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+Non-equilibrium, especically periodically driven system. Interesting.
+
+MSM tools for analyzing, provide profund understanding.
+
+Current achievement of MSM in equilibrium cases.
+
+Importance: first application of MSM in a non-equilibrium system.
+
+\section{Discretization of the non-equilibrium molecular dynamics}
+
+We consider  the following SDE form of the externally driven MD:
+\begin{align}
+  \label{eq:dis-1}
+  d\vect x_t = \Big(-\nabla V(\vect x_t) + E(t) D(\vect x_t)\Big)dt + \sqrt{2\beta^{-1}} d\vect w_t, 
+\end{align}
+where the configurational space is denoted by $\Omega$, and the variable by
+$\vect x$.   $V(\vect x)$ is the molecular interaction potential and
+$E(t)D(x_t)$ the time-dependent external perturbation with the
+$T$-periodic external field $E(t)$. $\beta$ is the inversed temperature,
+i.e.~$\beta = 1/(k_B\mathcal T)$.
+The propagation of probability
+densities $\rho=\rho(\vect x,t)$ based on this kind of dynamics in the sense
+of $\rho(\vect x,t)dx=\mathbb P[\vect x_t\in [\vect x,\vect x+d\vect x)]$ is governed by
+Fokker-Planck equation:
+\begin{align}
+  \label{eq:dis-2}
+  \frac{\partial \rho}{\partial t} = \ml^\dagger(t) \rho,
+\end{align}
+where $\ml^\dagger(t)$ is the adjoint of the generator
+\begin{align}
+  \label{eq:dis-3}
+  \ml(t)=\beta^{-1}\Delta_{\vect x}+\Big(-\nabla V(\vect x) + E(t)D(\vect x)\Big)\cdot\nabla_{\vect x},
+\end{align}
+where $\Delta_{\vect x}$ denotes the Laplacian operator and $\nabla_{\vect x}$
+the nabla-operator wrt to $\vect x$. 
+The periodicity of the external driven indicates the periodicity of the generator,
+i.e.~$\ml(t) = \ml(t+T)$.  Now
+introduce a partition of the configurational space $\Omega$ into finite number of disjoint
+sets $\{ \Omega_1, \cdots, \Omega_n\}$, which satisfy $\Omega = \cup_i \Omega_i$,
+$\Omega_j\cap \Omega_j = \emptyset,\ \forall i\neq j$.
+Now the original dynamics of the system can be discretized to a time-dependent
+Markov jump process:
+\begin{align}
+  \label{eqn:tmp2}
+  \frac{d\vect p(t)}{dt} = \vect M(t)\cdot \vect p(t)
+\end{align}
+where
+\begin{align}
+  \vect p(t) = (p_1(t), \cdots, p_n(t))^T, \quad \textrm{with}\ p_i(t) = \int_{\Omega_i} \rho(\vect x,t)d\vect x,
+\end{align}
+and the generator is approximated by finite difference scheme:
+\begin{align}
+  \label{eqn:tmp4}
+  M_{ij}(t) \approx \frac{1}{\tau} \,[\, \mbp (\vect x_{t+\tau} \in \Omega_j \vert \vect x_{t} \in \Omega_i) - \delta_{ij} \,]
+\end{align}
+From Eqn.~\eqref{eq:dis-2} to Eqn.~\eqref{eqn:tmp2} involves several
+approximations:
+\begin{enumerate}
+\item Eqn.~\eqref{eqn:tmp2} assumes Markovianity, which is not
+  necessarily true for a reduce dynamics $\vect p(t)$, see e.g.~\cite{prinz2011markov}.
+\item Numerical error from the finite difference introduced in
+  Eqn.~\eqref{eqn:tmp4}. The lag-time $\tau$ should not be too large
+  to control the finite difference error, and at the same time should
+  not be too small, because otherwise the statistical error would be
+  large, and the Markovianity would be disturbed.
+\item Although the original dynamics defined by generator $\ml(t)$ is
+  periodic, the reduced one defined by $\vect M(t)$ is not necessary
+  periodic, i.e.~$\vect M(t) \neq \vect M(t+T)$ in general.  In the
+  simulation of biomolecules, it is reasonable, in most cases to
+  assume a time-scale separation in the system. For example, the
+  conformational change of the molecules is much faster than the
+  covalent bond vibrations. Therefore, if the discretion $\{ \Omega_1,
+  \cdots, \Omega_n\}$ properly captures the slow dynamics of interest, in
+  the sense that within the lag-time $\tau$, the system is fully
+  relaxed to a local equilibrium in the set $\Omega_i$, then it is clear
+  that the reduce system is periodic. It suggests that the lag-time
+  should be right in the spectrum gap: it is shorter than the dominant
+  implied timescale, and longer than the fast-relaxing time-scales.
+\end{enumerate}
+
+
+\subsection{Perodicity of the reduced dynamics: investigated by alanine dipeptide under oscillatory electric field}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.3\textwidth]{fig/confs/c-2.eps}
+  \caption{A schematic plot of the alanine dipeptide molecule and the dihedral angles $\phi$ and $\psi$.}
+  \label{fig:tmp1}
+\end{figure}
+
+At this stage we do have any analytical result regarding the quality
+of approximating Eqn.~\eqref{eq:dis-2} by
+Eqn.~\eqref{eqn:tmp2}.
+It is therefore useful to investigate the discussed approximations
+by a numerical example. The Markovianity of the reduce dynamics
+was extensively discussed in e.g.~\cite{prinz2011markov}, so we 
+will not touch this topic in the current paper. The choice of the lag-time
+will be discussed later, and in this subsection we focus on the periodicity
+of the reduced dynamics.
+Throughout this paper, we take the alanine dipeptide system
+under oscillatory EF, as an example, which was extensively studied by
+Ref.~\cite{wang2014exploring}.
+We choose the two dihedral angles $\phi$
+and $\psi$ as slow variables (see Fig.~\ref{fig:tmp1}), and the discretization
+is a uniform division of the $\phi$--$\psi$ plane. We denote the number of
+division on each dihedral by $K$.
+
+The alanine dipeptide was put into the local thermostating
+environment, and was driven by a periodic electric field with period
+$T = 10$~ps. The 20,000 branching trajectories started from 20,000
+initial configurations that samples the equilibrium distribution.
+\redc{Write a lot of details on non-equilibrium MD.}  The branching
+trajectories were each 1000~ps long, and the system reaches
+non-equilibrium steady state in roughly 300~ps. We compute the
+generator from non-equilibrium trajectories in time interval $[t_1,
+t_2]$. If the reduced dynamics were periodic, then generator $\vect
+M(t)$ would not depends on the choice of the time interval. We compute
+the reduced generator by two discretizations $K=2$ and $K=20$, and two
+choices of time intervals $[0, 40]$ and $[320, 1000]$, and then
+compare the results with the brute force result in
+Fig.~\ref{fig:tmp2}. In the figure, we show the time-dependent
+probability $\mathbb P\big(\phi\in[0,180), \psi\in [0,180)\big)$.
+Using $K=2$ the dynamics depends on the time interval used for
+calculating the generator: using time intervals $[320, 1000]$ the reduced
+dynamics can only reproduces the brute force result in $[0, 40]$,
+while using time intervals $[0, 40]$ the reduced dynamics can only
+reproduces the brute force result after 300~ps.  This shows that the
+reduced dynamics is lack of periodicity.  The reason is that the
+discretization is too coarse so that the dynamics cannot be fully
+equilibriated within the lag-time $\tau$ in each discretized set.  For
+$K=20$, the reduced dynamics does not depend on the time interval of
+calculating the generator, and is consistent with the brute force
+non-equilibrium simulation within the error bar. Therefore, the $K=20$
+is a reliable discretization for the alanine dipeptide system.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{fig/t010/discrete/fig-cg-prob.eps}  
+  \caption{The time-dependent probability $\mathbb
+    P\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The brute force
+    non-equilibrium MD simulation is compared with different
+    discretization methods. The red shadow region indicates the
+    statsitical uncertainty of the brute force simulation.}
+  \label{fig:tmp2}
+\end{figure}
+
+
+\subsection{The choice of lag-time $\tau$}
+
+As discussed before, the lag-time should be chosen a value that lies
+in the spectrum gap of the original dynamics, so that it resolves the
+slow dynamics, and at the same time relaxes the fast dynamics. In
+practice, it is very difficult to estimate the lag-time in
+priori. Therefore, we discretize the original non-equilibrium based on
+different choices of $\tau$ (0.5, 1.0, 2.0 and 5.0~ps) and compare the
+time dependent probability of $\mathbb P\big(\phi\in[0,180), \psi\in
+[0,180)\big)$ estimated out of the reduced dynamics in
+Fig.~\ref{fig:tmp3}.  All cases use idential discretization: $K=20$.
+It is clear that when lag-time is close to the period (10~ps), the
+reduced dynamics cannot resolve the probability change within a
+period. However, the large lag-times are able to capture the
+the overall log time behavior of the probability.
+We observe no significant difference between $\tau=0.5$ and
+$\tau=1.0$~ps, which means the reduced dynamics is not very sensitive
+to the choice of $\tau$. 
+
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{fig/t010/discrete/fig-cg-prob-tau.eps}  
+  \caption{The time-dependent probability $\mathbb
+    P\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The brute force
+    non-equilibrium MD simulation is compared with different
+    discretization methods. The red shadow region indicates the
+    statsitical uncertainty of the brute force simulation.}
+  \label{fig:tmp3}
+\end{figure}
+
+
+% The definition of the conformations
+% $\confaa$, $\confab$, $\confba$, $\confbb$ and $\confc$ are presented
+% by Fig.~\ref{fig:tmp1}.  We are interested in the time-dependent
+% probability of the conformations. In Fig.~\ref{fig:tmp2}, the brute
+% force molecular dynamics simulation result
+% (i.e.~Eqn.~\eqref{eq:dis-2}) is compared with different discretization
+% methods, which give different generator in Eqn.~\eqref{eqn:tmp2}. For
+% clarity, only the probability of conformation $\confc$ is plotted.  In
+% the figure, ``5 sets'' means the $\phi$-$\psi$ space is discretized by
+% 5 sets as shown in Fig.~\ref{fig:tmp1}, ``Uni. $M=$'' stands for the
+% uniform discretization on $\phi$-$\psi$ space, and $M$ denotes the
+% number of bins on both $\phi$ and $\psi$ directions.  Both $M=10$ and
+% 20 methods present very good accuracy.  Please notice that for $M=10$,
+% for example, the number of discretized sets is $n=M^2=100$.  The
+% lag-time in all cases is chosen to be $\tau = 0.5$~ps. A test with
+% $\tau = 1.0$~ps shows good consistency with $\tau = 0.5$~ps.
+% The generator
+% $\vect M(t)$ is assumed to be periodic, and is estimated from the
+% trajectories from $t=300$ to 1000~ps.
+
+% The phenomena presented by Fig.~\ref{fig:tmp2} is very similar to the
+% equilibrium MSM: the quality of the MSM depends on how accurate the
+% eigenfunctions are approximated by the discretization. The ``5 sets''
+% method achieve better accuracy than the uniform $M=5$ method by using
+% much less DOFs, because it captures the positive and negative signs of
+% the eigenfunctions. With larger $M$ the discretization error of the
+% eigenfunctions becomes smaller, so the accuracy of the MSM is improved.
+
+
+
+
+\section{Floquet theory}
+
+The reduced dynamics will not provide a lot further interesting
+information until we introduce the MSM to analyze the reduced dynamics. The main
+difficulty is that the reduced dynamics is time-inhomogeneous, however, this can
+be overcome by the Floquet theory.
+The Floquet theory states that for a periodic system, e.g.~Eq.~\eqref{eqn:tmp2}, the solution can be written as
+\begin{align}
+  \label{eqn:tmp5}
+  \vect p(t)  = \vect Q(t) e^{t\vect B} \vect p(0)
+\end{align}
+where $\vect Q(t)$ is periodic and $\vect B$ is a constant matrix.  To
+analyze the spectrum, it is not difficult to infer the implied
+timescales, on which the system relaxes to the periodic steady states
+defined by $\vect Q(t)$.
+Assume that the fundamental solution to Eqn.~\ref{eqn:tmp2} is denoted by $\boldsymbol \Phi(t)$, then
+the matrix $\vect B$ can be expressed by
+\begin{align}
+  e^{T\vect B} = \boldsymbol \Phi^{-1}(0)\cdot \boldsymbol \Phi(T)
+\end{align}
+It is fully justified by choosing $ \boldsymbol \Phi(0) = I$, then
+$e^{T\vect B}$ is estimated by evolving the fundamental solutions by
+one period.
+Since it is obvious that $Q(kT) = Q(0) = I,\ k\in\mathbb N$, if we only consider the state of the system
+at time $kT$, then from Eq.~\eqref{eqn:tmp5} we have
+\begin{align}
+  \label{eqn:tmp5a}
+  \vect p(kT)  = \boldsymbol\Phi^k(T) \,\vect p(0),
+\end{align}
+which is a time-homogeneous Markov process with transition matrix $\boldsymbol\Phi(T)$.
+Please notice that in general this Markov process is not reversible.
+Calculating the eigenvalues of $\boldsymbol\Phi(T)$ reveals the
+implied timescales on which the non-equilibrium dynamics converges to
+the periodic steady state.
+The Eq.~\eqref{eqn:tmp5a} allows one to use the available techniques for time-homogeneous
+Markov jump process (especially for irreversible processes)
+to analyze the time-inhomogeneous dynamics Eq.~\eqref{eqn:tmp2}.
+However, it can only resolve the processes that are longer than the period $T$.
+Therefore, rather than going directly from Eq.~\eqref{eq:dis-2} to Eq.~\eqref{eqn:tmp5a},
+we would like to keep the intermediate step Eq.~\eqref{eqn:tmp2}.
+In the following we compare the MSM with the brute force non-equilibrium simulation
+by considering several properties that are of special interest.
+
+% The largest non-trivial timescales is given in table
+% Tab.~\ref{tab:tmp1}, which corresponds very well to the dynamics of the  $\confc$ probability.
+% \begin{table}
+%   \centering
+%   \caption{The first four non-trivial timescales calculated from ${\vect B}$. The unit of time in the table is ps.
+%     $\tau$ is the lag time used to calculate the generator~\eqref{eqn:tmp4}. $[T_0,T_1]$ is the time interval,
+%     in which the generator is estimated from the MD trajectories. The 5th eigenvalue of uniform decomposition with $\tau=8.0$~ps is not real, so
+%     the corresponding timescale is not calculated.
+%   }
+%   \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c ccc rrrr}\hline\hline
+%     Method  &  $M$ & $\tau$ & $[T_0,T_1]$ &   $t_2$ &   $t_3$ &   $t_4$ &   $t_5$  \\\hline
+%     5 sets  & --   & 0.5    & $[300,1000]$    &  72.4 & 17.8 &  2.1 & 2.8    \\
+%     Uniform & $05$ & 0.5    & $[300,1000]$    &  53.6 & 17.4 &  9.4 & 2.8    \\
+%     Uniform & $10$ & 0.5    & $[300,1000]$    & 107.2 & 27.0 & 16.4 & 3.6    \\
+%     Uniform & $20$ & 0.5    & $[300,1000]$    & 118.6 & 30.4 & 20.3 & 4.3    \\
+%     Uniform & $30$ & 0.5    & $[300,1000]$    & 120.6 & 31.1 & 20.9 & 4.4    \\\hline
+%     Uniform & $20$ & 0.5    & $[0,40]$    & 156.5 & 34.4 & 20.7 & 4.4    \\
+%     Uniform & $20$ & 0.5    & $[0,80]$    & 133.8 & 32.8 & 20.4 & 4.4    \\
+%     Uniform & $20$ & 0.5    & $[0,120]$   & 127.5 & 32.0 & 20.3 & 4.3    \\
+%     Uniform & $20$ & 0.5    & $[0,200]$   & 122.0 & 31.3 & 20.3 & 4.3    \\
+%     Uniform & $20$ & 0.5    & $[0,320]$   & 120.4 & 31.0 & 20.3 & 4.3    \\\hline
+%     Uniform & $20$ & 1.0    & $[300,1000]$    & 119.8 & 30.5 & 21.7 & 4.9   \\
+%     Uniform & $20$ & 2.0    & $[300,1000]$    & 117.8 & 29.2 & 21.5 & 5.3   \\
+%     Uniform & $20$ & 4.0    & $[300,1000]$    & 114.2 & 27.0 & 20.2 & 4.8   \\
+%     Uniform & $20$ & 8.0    & $[300,1000]$    & 110.6 & 25.0 & 18.1 & --   \\
+%     \hline\hline
+%   \end{tabular*}
+%   \label{tab:tmp1}
+% \end{table}
+
+
+% \section{Numerical investigation of the accuracy of the MSM}
+
+% At this stage we do have any analytical result regarding the quality
+% of approximating Eqn.~\eqref{eq:dis-2} by
+% Eqn.~\eqref{eqn:tmp2}. However, it would be useful to do some
+% numerical experiments. We have studied the alanine dipeptide system
+% under oscillatory EF, which was studied by
+% Ref.~\cite{wang2014exploring}. We use the two dihedral angles $\phi$
+% and $\psi$ as slow variables. The discretization is the uniform division of
+% the $\phi$--$\psi$ plan in to 2-dimentional bins. 
+% The quality of the MSM~\eqref{eqn:tmp5a} can be checked by comparing the physical properties
+% computed from the MSM and those computed by the brute force non-equilibrium molecular
+% dynamics simulation from Ref.~\cite{wang2014exploring}.
+
+
+\subsection{Steady state distribution and eigenfunctions}
+We investigate the steady state properties distribution at time $kT$. To make it comparible to
+the free energy in equilibrium case, we take the logrithm of the properties, i.e.
+\begin{align}
+  \label{eq:num-tmp1}
+  F_{\textrm{st}}(\phi,\psi) = \lim_{k\rightarrow\infty} -k_B\mathcal T \log p(\phi,\psi,kT),
+\end{align}
+where $k_B$ is the Boltzmann constant and $\mathcal T$ is the temperature of the system.
+The result is given in Fig.~\ref{fig:num-1}. A good consistency between the brute force
+MD simulation and the MSM is observed.
+
+\begin{figure}
+  \centering  
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.40/fig-dist.eps}
+  % \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-dist-msm.eps}
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-1.eps}
+  \caption{The steady state distribution calculated by brute force non-equilibrium comparing with MSM.}
+  \label{fig:num-1}
+\end{figure}
+
+
+% \begin{figure}
+%   \centering  
+%   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-2-simple.eps}
+%   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-3-simple.eps}
+%   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-floquet-vec-4-simple.eps}
+%   \caption{The first three non-trivial eigenfunctions cdalculated by the MSM.}
+%   \label{fig:num-2}
+% \end{figure}
+
+\subsection{Coreset identification}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{fig/t040/cluster.marco/fig-cluster-2.eps}
+  \caption{The coreset identification. Different colors indicate different coresets: $C_{R_\alpha}$ (yellow), $C_\beta$ (red) and $C_{L_\alpha}$ (green).
+    The blue color means out of any coreset. (By Marco)}
+  \label{fig:cluster}
+\end{figure}
+
+\redc{Write how to detact the core sets for irreversible Markovian process}.
+
+The coresets (see Fig.~\ref{fig:cluster}) are denoted by $C_{R_\alpha}$ (yellow), $C_\beta$ (red) and $C_{L_\alpha}$ (green), which correspond to
+right-handed alpha-helix, beta-sheet and left-handed alpha-helix, respectively.
+
+
+\subsection{Committors}
+
+The forward committor $q^\fwd_i(\phi,\psi)$ of a coreset $C_i,\ i\in\{R_\alpha, \beta, L_\alpha\}$ is defined as
+the probability of visiting coreset $C_i$ next conditioned on being at configuration $(\phi,\psi)$.
+The backward committor $q^\bwd_i(\phi,\psi)$ of a coreset $C_i,\ i\in\{R_\alpha, \beta, L_\alpha\}$ is defined as
+the probability of last coming from $C_i$  conditioned on being at configuration $(\phi,\psi)$.
+For  reversible Markov processes, the forward and backward committors are identical, however, it is in general not the case
+for irreversible processes. Please see Fig.~\ref{fig:num-3}--\ref{fig:num-5} for the committors.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-1.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-1.eps}
+  \caption{The forward $q^\fwd_{L_\alpha}$ and backward committors $q^\bwd_{L_\alpha}$ computed by MSM (second row) is compared with those computed by brute force non-equilibrium simulations (first row).}
+  \label{fig:num-3}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-2.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-2.eps}
+  \caption{The forward $q^\fwd_{R_\alpha}$ and backward $q^\fwd_{R_\alpha}$ committors computed by MSM (second row) is compared with those computed by brute force non-equilibrium simulations (first row).}  
+  \label{fig:num-4}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-fw-msm-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-bw-msm-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40/fig-commitor-diff-msm-3.eps}
+  \caption{The forward $q^\fwd_{\beta}$ and backward $q^\fwd_{\beta}$ committors computed by MSM (second row) is compared with those computed by brute force non-equilibrium simulations (first row).}  
+  \label{fig:num-5}
+\end{figure}
+
+\subsection{First mean hitting time}
+
+The first mean hitting time is presented in Fig.~\ref{fig:num-6}.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-3.eps}\\
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-msm-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-msm-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.40.fht/fig-fht-msm-3.eps}
+  \caption{The first mean htting time comparsion between the brute force simulation (first row) and the MSM (second row).
+  From left to right are first mean hitting time to coresets $C_{L_\alpha}$, $C_{R_\alpha}$ and $C_{\beta}$, respectively}  
+  \label{fig:num-6}
+\end{figure}
+
+
+
+% \section{Discussions}
+% \subsection{The periodicity of the reduced dynamics}
+
+
+% As discussed before, if the reduced dynamics captures the slow
+% dynamics of interest, then the reduced dynamics is also periodic,
+% which implies that the generator $M(t)$ can be estimated from any time
+% interval by Eq.~\eqref{eqn:tmp4}. In practice, the reduced dynamics
+% may not be perfectly periodic. The generator calculated from
+% different time intervals can be used to test the periodicity of the
+% reduced dynamics. The results are shown in Tab.~\ref{tab:tmp1} and
+% Fig.~\ref{fig:tmp2}.  The dependency with respect to the time
+% interval, in which the generator is calculated, indicates the reduced
+% dynamics is not perfectly periodic. The reduced dynamics from $[0,40]$
+% reproduces the best probability in interval $[0,40]$, and worst in the
+% steady state. Moreover, the leading non-trivial timescale is also off
+% (see Tab.~\ref{tab:tmp1}), while the accuracy of the second and third
+% non-trivial timescales are better, because they are comparable to the
+% period, 40~ps, in which the dynamics is relaxed. The reduced dynamics
+% from $[300,1000]$ reproduces the best steady state probability, while
+% worst in reproducing the initial relaxation process. The reduced
+% dynamics from $[0,320]$ is indistinguishable from the one from
+% $[300,1000]$, which implies that in practice, one only have to
+% simulation relatively short non-equilibrium trajectories (that are
+% almost relaxed), and compute the generator from it to build the reduced dynamics. \redc{This saves a great
+% amount of computational resources comparing with calculating the
+% reduced dynamics only from steady state trajectories.}
+
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.5\textwidth]{fig/t040/fig-cg-prob-range.eps}  
+%   \caption{The time-dependent probability of conformation
+%     $\confc$. The brute force MD simulation is compared with reduced
+%     dynamics, the transition matrix of which are calculated from
+%     different ranges. The red shadow region is the statistical uncertainty of the brute force MD simulation.
+%     The inserts show the zoom-ined probability at the relaxation stage $[0,120 ]~\textrm{ps}$ and at the steady state $[800,880 ]~\textrm{ps}$.}
+%   \label{fig:tmp2}
+% \end{figure}
+
+% \subsection{The choice of lag time $\tau$}
+% Table~\ref{tab:tmp1} shows a clear trend of worse accuracy with
+% increased $\tau$, however, the timescales are not very sensitive to
+% the choice of lag time $\tau$.
+
+
+
+% \section{To do}
+
+% \begin{itemize}
+% \item Theoretical analysis of the accuracy of the discretization, a
+% generalization of the equilibrium case. the numerical results indicate
+% a very close link. The perodicity is very nice, if the generator is
+% ``continuous'', then it should be uniformly continuous, then it should
+% be possible to develop estimates that are similar to the equilibrium
+% case.
+% \item More tests on the effect of choosing different lag-time $\tau$ (0.5 and 1.0~ps are done).
+% \item More theoretical consideration on the Floquet theory, what is the
+% explict form of matrix $\vect B$, and does it has any nice properties,
+% such as self-joint.
+% \end{itemize}
+
+
+\section{Approximation quality of the Markov state model}
+
+The whole Floquet theory can be applied to the original dynamics, and we denote that the resulting transition matrix by $\psi(T)$, then
+the time-dependent probability density can be written as
+\begin{align*}
+  \rho(\vect x, kT) = 
+\end{align*}
+
+In general, the original dynamics of the molecular system under perodical external driven
+is not reversible, see the discussion in Sec.~\ref{sec:revs}. However, we can assume the, 
+
+
+
+\section{Reversibility of the original dynamics}
+\label{sec:revs}
+
+Now we assume the overdamped dynamics
+\begin{align}\label{eqn:tmp7}
+  dx_t = -\nabla_x V(x_t,t) dt + \sigma dw_t
+\end{align}
+where $V$ is the time-dependent and $T$-periodic potential. For simplicity we denote the force by $F(x_t,t) = -\nabla_x V(x_t, t)$. $dw_t$ is
+the standard Wiener process.
+According to Girsanov, we have
+\begin{align}
+  \label{eq:tmp8}
+  \frac{dp[x_t]}{dw[x_t]}  =
+  \exp \bigg\{
+  \frac 1{\sigma^2}\int_0^T F(x_t,t) dx_t -
+  \frac1{2\sigma^2}\int_0^T F^2(x_t,t) dt
+  \bigg\}
+\end{align}
+where $dp$ is the probability measure of trajectory $x_t$, while $dw$ is the
+probability measure of the standard Wiener process $dx_t = \sigma dw_t$.
+Assuming a discretization of the
+stochastic process at time $0 < t_1 < t_2 < \cdots < t_N = T$, where
+$t_i = iT / N$. We denote $x_i = x_{t_i}$, and $w_i = w_{t_i}$, then we have,
+in the sense of Ito,
+\begin{align}\label{eq:tmp9}
+  \frac{dp[x_t]}{dw[x_t]}  \approx
+  \exp\bigg\{\frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{i},t_{i})(x_{i+1} - x_i) -\frac1{2\sigma^2}\sum_{i=0}^{N-1}F^2(x_i,t_i)\dt\bigg\} 
+\end{align}
+Now, consider a conjugate trajectory $x^\dagger_t = x_{T-t}$ that starts at $x_T$, ends at $x_0$. The conjugate dynamics is driven by  $F^\dagger(x^\dagger_t,t) = F(x^\dagger_t, T-t)$.
+Writting the Girsanov for the conjugate dynamics
+\begin{align}\label{eq:dagger-0}
+  \frac{dp^\dagger[x^\dagger_t]}{dw[x^\dagger_t]}  
+  \approx\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F^\dagger(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F^\dagger(x^\dagger_i,t_i)]^2\dt\bigg\} \\ \nonumber
+  =\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F(x^\dagger_{i},T - t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F(x^\dagger_i, T-t_i)]^2\dt\bigg\} \\\nonumber
+  =\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F(x_{N-i},t_{N-i})(x_{N-i-1} - x_{N-i}) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F(x_{N-i},t_{N-i})]^2\dt\bigg\} \\
+  = \,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=N}^{1} F(x_{i},t_{i})(x_{i-1} - x_i) -
+  \frac1{2\sigma^2}\sum_{i=N}^{1}F^2(x_i,t_i)\dt\bigg\}
+\end{align}
+% Therefore,
+% \begin{align}\nonumber
+%   \frac{dp[x^\dagger_t]}{dw[x^\dagger_t]}  =
+%   \,&
+%   \frac{dp^\dagger[x^\dagger_t]}{dw[x^\dagger_t]} \\\nonumber
+%   \approx\,&
+%   \exp\bigg\{
+%   \frac1{\sigma^2}\sum_{i=0}^{N-1} F^\dagger(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+%   \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F^\dagger(x^\dagger_i,t_i)]^2\dt\bigg\} \\\nonumber
+% \end{align}
+Since it is obvious that $dw[x^\dagger_t] / dw[x_t] = 1$,
+\begin{align}
+  \label{eq:tmp10}
+  \frac{dp^\dagger[x^\dagger_t]}{dw[x_t]}
+  \approx \,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=1}^{N} F(x_{i},t_{i})(x_{i-1} - x_i) -
+  \frac1{2\sigma^2}\sum_{i=1}^{N}F^2(x_i,t_i)\dt\bigg\}
+\end{align}
+The difference between the single trajectory probabilities is
+\begin{align}\label{eqn:tmp12}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  \approx&\,
+  \exp\bigg\{
+  -\frac1{\sigma^2}\sum_{i=1}^{N-1}
+  \bigg[
+  F(x_i,t_i)(x_{i+1} - x_{i}) + F(x_i,t_i)(x_{i} - x_{i-1})
+  \bigg]
+  \bigg\}
+\end{align}
+Assuming the smoothness of the external perturbation, consider the differentiation:
+\begin{align}\nonumber
+  F(x_{i},t_{i}) - F(x_{i-1},t_{i-1}) =
+  &\,
+  F(x_{i},t_{i}) - F(x_{i-1},t_{i}) + F(x_{i-1},t_{i}) -  F(x_{i-1},t_{i-1})\\\nonumber
+  =&\,
+  \nabla_x F(x_{i-1},t_{i})(x_i - x_{i-1}) + \mo(\dt) \\\label{eqn:tmp13}
+  =&\,
+  \nabla_x F(x_{i-1},t_{i-1})(x_i - x_{i-1}) + \mo(\dt)
+\end{align}
+The second order expansion w.r.t.~$x_i - x_{i-1}$ is of order $\dt$, so it is absorbed into $ \mo(\dt)$.
+Then the \eqref{eqn:tmp12} becomes
+\begin{align}\label{eqn:tmp14}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  \approx&\,
+  \exp\bigg\{
+ -\frac2{\sigma^2}\sum_{i=0}^{N-1} F(x_i,t_i)(x_{i+1} - x_{i}) 
+ -\frac1{\sigma^2}\sum_{i=0}^{N-1}\nabla_xF(x_i,t_i)(x_{i+1} - x_{i})^2
+ \bigg\}
+\end{align}
+Using the identity
+$  dt = (dw_t)^2 = {\sigma^{-2}} dx_t^2$,
+Eq.~\eqref{eqn:tmp14} is written in the integral form
+\begin{align}\label{eqn:tmp14-0}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  \approx&\,
+  \exp\bigg\{
+ -\frac2{\sigma^2}\int_0^T F(x_t,t) dx_t
+ -\int_0^T\nabla_xF(x_t,t)dt
+ \bigg\}  
+\end{align}
+One would not have the second integral on the exponent if the first integral of the exponent were defined in the sense of Stratonovich.
+
+We notice that
+\begin{align}\nonumber
+  dV(x, t) = &\, \frac{\partial V}{\partial x} dx + \frac{\partial V}{\partial t} dt\\\nonumber
+  =&\,
+  \frac12 \sigma^2 \nabla^2_x V dt +  \nabla V dx_t + \frac{\partial V}{\partial t} dt \\
+  =&\,
+  -\frac12 \sigma^2 \nabla_x F dt -  F dx_t + \frac{\partial V}{\partial t} dt
+\end{align}
+Eq.~\eqref{eqn:tmp14-0} becomes
+\begin{align}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  =&\,
+  \exp\bigg\{
+  \frac2{\sigma^2}\bigg[
+  V(x_T,T) - V(x_0,t_0) - \int_0^T\partial_tV(x_t,t)dt
+  \bigg]
+  \bigg\}
+\end{align}
+According to the  Einstein relation, the temperature $\mathcal T = \sigma^2/2$, we denote $\beta = 1/{\mathcal T} = 2/\sigma^2$.
+Take the limit of infinite small time interval, and notice the equilibrium
+invariant probability density with respect to potential $V(x,0)$ satisfies $\mu(x) \propto e^{-\beta V(x,0)}$,
+\begin{align}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]}
+  =&\,
+  \frac{\mu(x_0)}{\mu(x_T)}\times
+  \exp\bigg\{
+  - \beta\int_0^T\partial_tV(x_t,t)dt
+  \bigg\}
+\end{align}
+
+\subsection{Irreversibility of the perodical symmetrical dynamics}
+
+In Eq.~\eqref{eq:dagger-0}, we assume the periodicity of the perturbation $F(x,t) = F(x,t+T)$, and the symmetry of the external perturbation, i.e.~$F(x, -t) = F(x, t)$, we have
+\begin{align}
+  \frac{dp^\dagger[x^\dagger_t]}{dw[x^\dagger_t]}  
+  \approx\,&
+  \exp\bigg\{
+  \frac1{\sigma^2}\sum_{i=0}^{N-1} F(x^\dagger_{i},t_{i})(x^\dagger_{i+1} - x^\dagger_i) -
+  \frac1{2\sigma^2}\sum_{i=0}^{N-1}[F(x^\dagger_i, t_i)]^2\dt\bigg\}  
+\end{align}
+By changing notation $x^\dagger$ back to $x$, and comparing with~\eqref{eq:tmp9}, the reversed dynamics is subject to the Eq.~\eqref{eqn:tmp7},
+i.e.~$dp^\dagger = dp$.
+Therefore
+\begin{align}\nonumber
+  p(x_0,T\vert x_T,0)
+  =&\,\int_{\mc\{x_T,0;x_0,T\}}
+  dp[x^\dagger_t] \\\nonumber  
+  =&\,
+  \int_{\mc\{x_0,0;x_T,T\}}
+  \frac{  dp[x^\dagger_t] }{ dp[x_t]} \cdot dp[x_t] \\\nonumber
+  =&\,
+  % \lim_{N\rightarrow\infty} 
+  % \frac{1}{(2\pi\sigma^2\dt)^{(N-1)/2}} \int dx_{N-1}\cdots\int dx_{1}
+  \int_{\mc\{x_0,0;x_T,T\}}
+  \frac{  dp^\dagger[x^\dagger_t] }{ dp[x_t]} \cdot dp[x_t] \\\label{eqn:tmp18}
+  = &\,
+  \frac{\mu(x_0)}{\mu(x_T)}
+  \int_{\mc\{x_0,0;x_T,T\}}
+  \exp\bigg\{
+  -\beta\int_0^T \partial_t V(x_t,t)dt 
+  \bigg\} \cdot dp[x_t]
+\end{align}
+where $\mc\{x_0,0;x_T,T\}$ denotes all continuous trajectories starting at $x_0$ and ending at $x_T$.
+If $\partial_t V = 0$, i.e.~equilibrium, we have
+\begin{align}
+  p(x_0,T\vert x_T,0)e^{-\beta V(x_T,T)} =  p(x_T,T\vert x_0,0) e^{-\beta V(x_0,0)},
+\end{align}
+which proves the reversibility of the equilibrium dynamics.
+The term
+\begin{align}
+  W[x_t] = \int_0^T \partial_t V(x_t,t)dt
+\end{align}
+is the non-equilibrium work associated to all possible
+the dynamics $x_t$ starting at $x_0$ and ending at $x_T$ (see e.g.~Ref.~\cite{seifert2012stochastic}).
+Therefore Eq.~\eqref{eqn:tmp18} is the detailed Jarzynski relation.
+% Now the problem becomes if we can write a nice form (e.g.~the difference of a state function measured at $x_T$ and $x_0$) for the non-equilibrium work.
+Noticing that
+\begin{align}
+  \label{eq:tmp21}
+  p(x_T,T\vert x_0,0) = \int_{\mc\{x_0,0;x_T,T\}}dp[x_t],
+\end{align}
+From Eq.~\eqref{eqn:tmp18} we have
+\begin{align}
+  \label{eq:tmp22}
+  \frac{p(x_0,T\vert x_T,0)}{  p(x_T,T\vert x_0,0)  }
+  =
+  \frac{\mu(x_0)}{\mu(x_T)}
+  \mathbb E_{x_0\rightarrow x_T} [e^{-\beta W}]
+\end{align}
+% Maybe we want a more symmetric form.
+% The expectation value of the reversed dynamics reads,
+% \begin{align}\nonumber
+%   \mathbb E_{x^\dagger_0\rightarrow x^\dagger_T} [e^{-\beta W^\dagger}]
+%   =\,&
+%   \int_{\mc\{x^\dagger_0,0;x^\dagger_T,T\}}
+%   \exp\bigg\{
+%   -\beta\int_0^T \partial_t V(x^\dagger_t,t)dt 
+%   \bigg\} \cdot dp[x^\dagger_t]   \\\nonumber
+%   =\,&
+%   \int_{\mc\{x_0,0;x_T,T\}}
+%   \exp\bigg\{
+%   -\beta\int_0^T \partial_t V(x_{T-t},t)dt 
+%   -\beta\int_0^T \partial_t V(x_{t},t)dt 
+%   \bigg\}
+%   \cdot dp[x_t]   \\  \nonumber
+%   =\,&
+%   \int_{\mc\{x_T,0;x_0,T\}}
+%   \exp\bigg\{
+%   \beta\int_0^T \partial_t V(x_t,t)dt 
+%   \bigg\} \cdot dp[x_t]   \\
+%   \label{eq:tmp23}
+%   = \,&
+%   \mathbb E_{x_0\rightarrow x_T} [e^{- 2\beta W}]  
+% \end{align}
+% Noticing that \eqref{eq:tmp22}  is true for the reversed dynamics, we have
+% \begin{align}
+%   \label{eq:24}
+%   \frac{p(x_T,T\vert x_0,0)}{  p(x_0,T\vert x_T,0)  }
+%   =
+%   \frac{\mu(x_T)}{\mu(x_0)}
+%   \mathbb E_{x_T\rightarrow x_0} [e^{\beta W}]  
+% \end{align}
+
+
+\bibliography{ref}{}
+\bibliographystyle{unsrt}
+
+
+
+\end{document}
