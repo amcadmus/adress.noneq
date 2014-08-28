@@ -92,5 +92,5 @@ do
     rm -f tmp.init.out tmp.perid.out
 done
 
-store_dir_name="dis.dih$msm_dih_nbin.tau$msm_tau.b$msm_steady_begin.e$pert_time"
+store_dir_name="dis.dih$msm_dih_nbin.tau$msm_tau.b$msm_steady_begin.e$msm_steady_end"
 $script_dir/msm.dih.store.sh $store_dir_name
