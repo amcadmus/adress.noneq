@@ -33,7 +33,7 @@ set multiplot
 
 set size 1,1
 set origin 0,0
-set yrange [0:.18]
+set yrange [0:.17]
 set xtics 50
 set mxtics 5
 set mytics 2
@@ -48,19 +48,19 @@ set key right bottom
 # set label 't_{init}=10 ps' at 10, 0.7
 set grid
 
-set xrange [0:350]
+set xrange [0:400]
 pl \
 'metastable.out' \
 u 1:5 every 1 w l ls 11 t 'Brute force', \
 '' u 1:($5-$9*2):($5+$9*2) every 1 w filledcu ls 111 not,\
-'dis.dih2.tau0.5.b0.e40.5/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 22 t '[0,40] K=2', \
-'dis.dih2.tau0.5.b320.e1000/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 12 t '[320,1000] K=2', \
-'dis.dih20.tau0.5.b0.e40.5/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 23 t '[0,40] K=20', \
-'dis.dih20.tau0.5.b320.e1000/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 13 t '[320,1000] K=20', \
+'dis.dih2.tau0.5.b0.e80.5/cg.prob.dih.5sets.out' \
+u 1:5 every 1 w l ls 22 t '[0,80] K=2', \
+'dis.dih2.tau0.5.b320.e400.5/cg.prob.dih.5sets.out' \
+u 1:5 every 1 w l ls 12 t '[320,400] K=2', \
+'dis.dih20.tau0.5.b0.e80.5/cg.prob.dih.5sets.out' \
+u 1:5 every 1 w l ls 23 t '[0,80] K=20', \
+'dis.dih20.tau0.5.b320.e400.5/cg.prob.dih.5sets.out' \
+u 1:5 every 1 w l ls 13 t '[320,400] K=20', \
 'metastable.out' \
 u 1:5 every 1 w l ls 11 not
 
@@ -70,21 +70,21 @@ unset grid
 unset arrow
 unset key
 set xtics 10 font "Helvetica, 8"
-set ytics 0.05 font "Helvetica, 8"
+set ytics 0.01 font "Helvetica, 8"
 set mxtics 2
-set mytics 5
+set mytics 1
 set size 0.38,0.38
 set origin 0.13,0.13
 set xrange [0:40]
-set yrange [0.05: 0.15]
+set yrange [0.05: 0.10]
 rep
 
 set ytics 0.01 font "Helvetica, 8"
 set mytics 2
 set xtics 10
 set mytics 1
-set size 0.35,0.32
-set origin 0.63,0.48
-set xrange [300:320]
+set size 0.35,0.33
+set origin 0.63,0.52
+set xrange [320:340]
 set yrange [0.135: 0.165]
 rep

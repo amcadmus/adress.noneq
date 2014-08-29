@@ -48,18 +48,18 @@ set key right bottom
 # set label 't_{init}=10 ps' at 10, 0.7
 set grid
 
-set xrange [0:350]
+set xrange [0:400]
 pl \
 'metastable.out' \
 u 1:5 every 1 w l ls 11 t 'Brute force', \
 '' u 1:($5-$9*2):($5+$9*2) every 1 w filledcu ls 111 not,\
-'dis.dih20.tau0.5.b320.e1000/cg.prob.dih.5sets.out' \
+'dis.dih20.tau0.5.b0.e4000/cg.prob.dih.5sets.out' \
 u 1:5 every 1 w l ls 12 t '{/Symbol t} = 0.5 ps', \
-'dis.dih20.tau1.0.b320.e1000/cg.prob.dih.5sets.out' \
+'dis.dih20.tau1.0.b0.e4000/cg.prob.dih.5sets.out' \
 u 1:5 every 1 w l ls 13 t '{/Symbol t} = 1.0 ps', \
-'dis.dih20.tau2.0.b320.e1000/cg.prob.dih.5sets.out' \
+'dis.dih20.tau2.0.b0.e4000/cg.prob.dih.5sets.out' \
 u 1:5 every 1 w l ls 14 t '{/Symbol t} = 2.0 ps', \
-'dis.dih20.tau5.0.b320.e1000/cg.prob.dih.5sets.out' \
+'dis.dih20.tau5.0.b0.e4000/cg.prob.dih.5sets.out' \
 u 1:5 every 1 w l ls 15 t '{/Symbol t} = 5.0 ps', \
 'metastable.out' \
 u 1:5 every 1 w l ls 11 not
@@ -70,12 +70,13 @@ unset grid
 unset arrow
 unset key
 set xtics 10 font "Helvetica, 8"
-set ytics 0.02 font "Helvetica, 8"
+set ytics 0.01 font "Helvetica, 8"
 set mxtics 2
-set size 0.38,0.38
+set mytics 1
+set size 0.38,0.40
 set origin 0.13,0.13
 set xrange [0:40]
-set yrange [0.05: 0.11]
+set yrange [0.05: 0.10]
 rep
 
 set ytics 0.01 font "Helvetica, 8"
@@ -83,6 +84,6 @@ set mytics 2
 set xtics 10
 set size 0.4,0.38
 set origin 0.55,0.41
-set xrange [300:320]
+set xrange [320:340]
 set yrange [0.135: 0.165]
 rep
