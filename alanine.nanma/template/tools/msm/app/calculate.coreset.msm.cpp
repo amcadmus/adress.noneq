@@ -192,7 +192,7 @@ int main(int argc, char * argv[])
   std::string ifwfile, ibwfile, idfile, isfile, ismfile, ifloquetfile, isdfile, otmfile;
   unsigned nbin;
   
-  po::options_description desc ("Calculates the forward and backward commitor.\nAllow options");
+  po::options_description desc ("Calculates the MSM based on coreset milestoning.\nAllow options");
   desc.add_options()
       ("help,h", "print this message")
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
