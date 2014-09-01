@@ -164,6 +164,29 @@ void apply_trans (const vector<vector<double > > & tmatrix,
   }
 }
 
+void reverse_tmatrix (const vector<vector<double > > & tmatrix,
+		      const vector<double > & dist,
+		      vector<vector<double > > & omatrix)
+{
+  omatrix = tmatrix;
+  for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
+    for (unsigned jj = 0; jj < tmatrix[ii].size(); ++jj){
+      if (dist[jj] != 0){
+	omatrix[jj][ii] = dist[ii] * tmatrix[ii][jj] / dist[jj];
+      }
+      else {
+	if (dist[ii] * tmatrix[ii][jj] != 0){
+	  cerr << "problem of reverse" <<endl;
+	}
+	else{
+	  omatrix[jj][ii] =0.;
+	}
+      }
+    }
+  }  
+}
+
+
 int main(int argc, char * argv[])
 {
   std::string ifwfile, ibwfile, idfile, isfile, ismfile, ifloquetfile, isdfile, otmfile;
@@ -208,18 +231,6 @@ int main(int argc, char * argv[])
     mymap[setMap[ii]] = ii;
   }
 
-  vector<vector<double > > tmatrix;
-  unsigned nstate1;
-  read_tmatrix (ifloquetfile, tmatrix, nstate1);
-  if (nstate1 != nstate){
-    cerr << "the largest set file is not consistent with the transition matrix" << endl;
-    return 1;
-  }
-  vector<vector<double > > pmatrix(tmatrix);
-  for (unsigned ii = 0; ii < nstate; ++ii){
-    pmatrix[ii][ii] -= 1.;
-  }
-
   vector<unsigned > clusterMap;
   unsigned numCluster = load_cluster_map (ismfile, nbin, clusterMap);
   vector<unsigned > clusterMapOrig (nstate, 0);
@@ -233,17 +244,37 @@ int main(int argc, char * argv[])
       }
     }
   }
-  // for (unsigned ii = 0; ii < nstate; ++ii){
-  //   printf ("%d\n", clusterMapOrig[ii]);
-  // }
-  
 
+  vector<vector<double > > tmatrix;
+  unsigned nstate1;
+  read_tmatrix (ifloquetfile, tmatrix, nstate1);
+  if (nstate1 != nstate){
+    cerr << "the largest set file is not consistent with the transition matrix" << endl;
+    return 1;
+  }
   vector<vector<double > > fwq;
   vector<vector<double > > bwq;
   load_committor (ifwfile, numCluster, fwq);
   load_committor (ibwfile, numCluster, bwq);
   vector<double > dist;
   load_steady_dist (isdfile, dist);
+
+  vector<vector<double > > omatrix;
+  reverse_tmatrix (tmatrix, dist, omatrix);
+  vector<vector<double > > pmatrix(omatrix);
+  for (unsigned ii = 0; ii < nstate; ++ii){
+    pmatrix[ii][ii] -= 1.;
+  }
+  vector<vector<double > > Pbwq(numCluster);
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    apply_trans (pmatrix, bwq[ii], Pbwq[ii]);
+  }
+
+  // for (unsigned ii = 0; ii < nstate; ++ii){
+  //   printf ("%d\n", clusterMapOrig[ii]);
+  // }
+  
+
   // for (unsigned ii = 0; ii < numCluster; ++ii){
   //   double sum = 0.;
   //   for (unsigned jj = 0; jj < nstate; ++jj){
@@ -274,10 +305,6 @@ int main(int argc, char * argv[])
   // }
   
   
-  vector<vector<double > > Pbwq(numCluster);
-  for (unsigned ii = 0; ii < numCluster; ++ii){
-    apply_trans (pmatrix, bwq[ii], Pbwq[ii]);
-  }
   // for (unsigned jj = 0; jj < nstate; ++jj){
   //   double sum = 0;
   //   for (unsigned ii = 0; ii < numCluster; ++ii){
