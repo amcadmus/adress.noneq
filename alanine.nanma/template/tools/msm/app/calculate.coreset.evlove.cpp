@@ -159,33 +159,10 @@ void apply_trans (const vector<vector<double > > & tmatrix,
   for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
     pout[ii] = 0.;
     for (unsigned jj = 0; jj < tmatrix[ii].size(); ++jj){
-      pout[ii] += tmatrix[ii][jj] * pin[jj];
+      pout[ii] += tmatrix[jj][ii] * pin[jj];
     }
   }
 }
-
-void reverse_tmatrix (const vector<vector<double > > & tmatrix,
-		      const vector<double > & dist,
-		      vector<vector<double > > & omatrix)
-{
-  omatrix = tmatrix;
-  for (unsigned ii = 0; ii < tmatrix.size(); ++ii){
-    for (unsigned jj = 0; jj < tmatrix[ii].size(); ++jj){
-      if (dist[jj] != 0){
-	omatrix[jj][ii] = dist[ii] * tmatrix[ii][jj] / dist[jj];
-      }
-      else {
-	if (dist[ii] * tmatrix[ii][jj] != 0){
-	  cerr << "problem of reverse" <<endl;
-	}
-	else{
-	  omatrix[jj][ii] =0.;
-	}
-      }
-    }
-  }  
-}
-
 
 int main(int argc, char * argv[])
 {
