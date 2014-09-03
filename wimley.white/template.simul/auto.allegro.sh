@@ -12,16 +12,15 @@ echo "#PBS -N $jobname"				>> submit.sh
 echo "#PBS -o allegro.out"			>> submit.sh
 echo "#PBS -e allegro.err"			>> submit.sh
 echo "#PBS -M han.wang@fu-berlin.de"		>> submit.sh
-echo "#PBS -l walltime=24:00:00"		>> submit.sh
-echo "#PBS -l nodes=1:ppn=$nnodes"		>> submit.sh
-echo "#PBS -l pmem=1000mb"			>> submit.sh
+echo "#PBS -l walltime=168:00:00"		>> submit.sh
+echo "#PBS -l nodes=1:ppn=$nnodes:Intel"	>> submit.sh
+echo "#PBS -l pmem=2000mb"			>> submit.sh
 
 echo "cd $cwd"					>> submit.sh
 echo "hostname"					>> submit.sh
 echo "date"					>> submit.sh
 echo "pwd"					>> submit.sh
-#echo "./assign.param.sh"			>> submit.sh
-echo "./run.npt.sh"				>> submit.sh
+echo "./run.sh"					>> submit.sh
 
 qsub submit.sh &> jobid
 
