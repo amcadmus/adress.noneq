@@ -4,6 +4,7 @@ script_dir=$(cd ${0%/*} && echo $PWD)
 base_dir=$script_dir/..
 analyze_dir=$base_dir/analyze
 dist_command=$analyze_dir/dist
+dist2_command=$analyze_dir/dist.2d
 cwd=`pwd`
 
 if [ -f mm.alanine.parameters.sh ]; then
@@ -36,4 +37,6 @@ echo "# compute the distribution of phi by $dist_command"
 $dist_command --input-list-files "$phi_list" --column 2 --num-data-block 320 --num-bins 72 --output dist.phi.out
 echo "# compute the distribution of psi by $dist_command"
 $dist_command --input-list-files "$psi_list" --column 2 --num-data-block 320 --num-bins 72 --output dist.psi.out
+echo "# compute the distribution of phi and psi by $dist2_command"
+$dist2_command --input-list-phi-files "$phi_list" --input-list-psi-files "$psi_list" --column 2 --num-data-block 320 --num-bins 72 --output dist.2d.out
 

@@ -131,6 +131,7 @@ if grep "^adress " grompp.mdp | grep yes &> /dev/null; then
     if [ -f $wwd/$adress_tf_file ]; then
 	if [ -f tabletf_CMW.xvg ]; then
 	    echo "# rm existing tf table"
+	    rm -f tabletf_CMW.xvg
 	fi
 	cp $wwd/$adress_tf_file ./tabletf_CMW.xvg
     fi
