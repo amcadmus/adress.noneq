@@ -27,18 +27,31 @@ int main(int argc, char * argv[])
   double aup, alow;
   unsigned nbin, nsample;
 
-  double setC_psi_b = 13,  setC_psi_e = 128;
-  double setC_phi_b = -180,setC_phi_e = 180;
+  // double setC_psi_b = 13,  setC_psi_e = 128;
+  // double setC_phi_b = -180,setC_phi_e = 180;
   
-  double setA1_psi_b =-134, setA1_psi_e = 13;
-  double setA1_phi_b =-125, setA1_phi_e = 74;
-  double setA2_psi_b = 128, setA2_psi_e =-134;
-  double setA2_phi_b =-125, setA2_phi_e = 74;
+  // double setA1_psi_b =-134, setA1_psi_e = 13;
+  // double setA1_phi_b =-125, setA1_phi_e = 74;
+  // double setA2_psi_b = 128, setA2_psi_e =-134;
+  // double setA2_phi_b =-125, setA2_phi_e = 74;
 
-  double setB1_psi_b =-110, setB1_psi_e = 13;
-  double setB1_phi_b = 74,  setB1_phi_e =-125;
-  double setB2_psi_b = 128, setB2_psi_e =-110;
-  double setB2_phi_b = 74,  setB2_phi_e =-125;
+  // double setB1_psi_b =-110, setB1_psi_e = 13;
+  // double setB1_phi_b = 74,  setB1_phi_e =-125;
+  // double setB2_psi_b = 128, setB2_psi_e =-110;
+  // double setB2_phi_b = 74,  setB2_phi_e =-125;
+
+  // double setC_psi_b = 0,  setC_psi_e = 180;
+  // double setC_phi_b = -180,setC_phi_e = 180;
+
+  double setA1_psi_b =-180, setA1_psi_e = 0;
+  double setA1_phi_b =-180, setA1_phi_e = 0;
+  double setA2_psi_b =-180, setA2_psi_e = 0;
+  double setA2_phi_b = 0, setA2_phi_e = 180;
+
+  double setB1_psi_b = 0, setB1_psi_e = 180;
+  double setB1_phi_b =-180,  setB1_phi_e =0;
+  double setB2_psi_b = 0, setB2_psi_e = 180;
+  double setB2_phi_b = 0,  setB2_phi_e =180;
   
   vector<MetastableSet > sets;
   // sets.push_back (MetastableSet(setA_psi_b, setA_psi_e, setA_phi_b, setA_phi_e));
@@ -47,7 +60,7 @@ int main(int argc, char * argv[])
   sets.push_back (MetastableSet(setA2_psi_b, setA2_psi_e, setA2_phi_b, setA2_phi_e));
   sets.push_back (MetastableSet(setB1_psi_b, setB1_psi_e, setB1_phi_b, setB1_phi_e));
   sets.push_back (MetastableSet(setB2_psi_b, setB2_psi_e, setB2_phi_b, setB2_phi_e));
-  sets.push_back (MetastableSet(setC_psi_b, setC_psi_e, setC_phi_b, setC_phi_e));
+  // sets.push_back (MetastableSet(setC_psi_b, setC_psi_e, setC_phi_b, setC_phi_e));
   unsigned nsets = sets.size();
 
   
