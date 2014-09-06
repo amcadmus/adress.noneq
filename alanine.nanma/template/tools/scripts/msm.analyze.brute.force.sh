@@ -57,11 +57,11 @@ $mycommand
 
 if [ -f $target_dir/bf.prob.dih.out ]; then
     sed -n "1~${period_frame}p" $target_dir/bf.prob.dih.out > $target_dir/bf.prob.dih.periodT.out
-    mycommand="$msm_dir/calculate.coreset.proj --input $target_dir/bf.prob.dih.periodT.out --input-bw $target_dir/commitor.bw.out.orig --output $target_dir/coreset.prob.out"
+    mycommand="$msm_dir/calculate.coreset.proj --input $target_dir/bf.prob.dih.periodT.out --input-largest-set $target_dir/largestSet.dih --input-bw $target_dir/commitor.bw.out.orig --output $target_dir/coreset.prob.out"
     echo "# calculate the projected time-dep prob. by command: $mycommand"
     $mycommand
 
-    mycommand="$msm_dir/calculate.coreset.evlove --dt $pert_warm_time --end $pert_time --input-init-prob $target_dir/coreset.prob.out --input-tmatrix $target_dir/coreset.tmatrix.out --output $target_dir/coreset.prob.coreset.msm.out"
+    mycommand="$msm_dir/calculate.coreset.evlove --dt $pert_warm_time --end $pert_time --input-init-prob $target_dir/coreset.prob.out --input-tmatrix $target_dir/coreset.tmatrix.out --output $target_dir/coreset.prob.coreset.out"
     echo "# calculate the prob from coreset msm by $mycommand"
     $mycommand
 fi

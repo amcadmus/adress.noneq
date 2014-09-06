@@ -13,6 +13,9 @@ angle_dir=$base_dir/angles
 msm_dir=$base_dir/msm
 cwd=`pwd`
 
+echo "# use running parameter: parameters.sh"
+source parameters.sh
+
 if [ ! -d $target_dir ]; then
     echo "no dir $target_dir"
     exit
@@ -46,6 +49,10 @@ $mycommand
 
 mycommand="$msm_dir/calculate.coreset.msm --num-bin $msm_dih_nbin --input-largest-set $target_dir/largestSet.dih  --input-floquet $target_dir/floque.B.out --input-cluster-map $target_dir/cluster.map.out --input-steady $target_dir/steady.dist.msm.out.orig --input-fw $target_dir/commitor.fw.msm.out.orig --input-bw $target_dir/commitor.bw.msm.out.orig --output-tmatrix $target_dir/coreset.tmatrix.msm.out"
 echo "# calculate coreset msm tmatrix by command: $mycommand"
+$mycommand
+
+mycommand="$msm_dir/calculate.coreset.evlove --dt $pert_warm_time --end $pert_time --input-init-prob $target_dir/coreset.prob.out --input-tmatrix $target_dir/coreset.tmatrix.msm.out --output $target_dir/coreset.prob.coreset.msm.out"
+echo "# calculate the prob from coreset msm by $mycommand"
 $mycommand
 
 if [ -f $target_dir/cluster.map.1.out ]; then
