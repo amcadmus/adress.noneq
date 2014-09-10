@@ -304,12 +304,30 @@ int main(int argc, char * argv[])
 	for (unsigned kk = 0; kk < numCluster; ++kk){
 	  if (kk == nextindex){
 	    mmatrix[curtindex][kk].deposite (1.);
-	    if (ii >= curtposi+1) tmatrix[curtindex][kk].deposite (1.);
+	    if (ii < nextposi - 1) tmatrix[curtindex][kk].deposite (1.);
 	    // cout << "depo " << curtindex << " " << nextindex << endl;
 	  }
 	  else{
 	    mmatrix[curtindex][kk].deposite (0.);
-	    if (ii >= curtposi+1) tmatrix[curtindex][kk].deposite (0.);
+	    if (ii < nextposi - 1) tmatrix[curtindex][kk].deposite (0.);
+	  }
+	}
+      }
+      unsigned next2posi = nextposi;
+      while (milestone_traj[next2posi] == milestone_traj[nextposi]) {
+	next2posi ++;
+	if (next2posi >= milestone_traj.size()){
+	  break;
+	}
+      }
+      if (next2posi < milestone_traj.size()){
+	unsigned next2index = milestone_traj[next2posi] - 1;
+	for (unsigned kk = 0; kk < numCluster; ++kk){
+	  if (kk == next2index){
+	    tmatrix[curtindex][kk].deposite (1.);
+	  }
+	  else{
+	    tmatrix[curtindex][kk].deposite (0.);
 	  }
 	}
       }
