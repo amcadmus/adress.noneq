@@ -204,6 +204,27 @@ void convert_milestone (const vector<unsigned > & input,
   }
 }
 
+int compute_next_index (const vector<unsigned > & disc_traj,
+			const vector<unsigned > & clusterMap,
+			const unsigned & curtposi_)
+{
+  unsigned curtposi (curtposi_);
+  if (curtposi >= disc_traj.size()) return -1;
+  if (clusterMap[disc_traj[curtposi]] != 0){
+    return clusterMap[disc_traj[curtposi]] - 1;
+  }
+  else {
+    while (curtposi < disc_traj.size() && clusterMap[disc_traj[curtposi]] == 0){
+      curtposi ++;
+    }
+    if (curtposi == disc_traj.size()){
+      return -1;
+    }
+    else {
+      return clusterMap[disc_traj[curtposi]] - 1;
+    }
+  }
+}
 
 
 int main(int argc, char * argv[])
@@ -213,14 +234,14 @@ int main(int argc, char * argv[])
   
   po::options_description desc ("Calculates the MSM based on coreset milestoning.\nAllow options");
   desc.add_options()
-    ("help,h", "print this message")
-    ("input,f",  po::value<std::string > (&ifile)->default_value ("traj.dih.disc.periodT"), "the file of file names")
-    ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
-    ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
-    ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
-    ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
-    ("output-matrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
-    ("output-matrix-m", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.");
+      ("help,h", "print this message")
+      ("input,f",  po::value<std::string > (&ifile)->default_value ("traj.dih.disc.periodT"), "the file of file names")
+      ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
+      ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
+      ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
+      ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
+      ("output-matrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
+      ("output-matrix-m", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -282,56 +303,30 @@ int main(int argc, char * argv[])
     // cout << endl;
     // cout << endl;
     unsigned curtposi = 0;
-    while (milestone_traj[curtposi] == 0) curtposi ++;
-    unsigned nextposi = curtposi;
-    while (1){
-      while (milestone_traj[curtposi] == milestone_traj[nextposi]) {
-	nextposi ++;
-	if (nextposi >= milestone_traj.size()){
-	  break;
+    while (curtposi < disc_traj.size()){
+      unsigned curtindex = milestone_traj[curtposi] - 1;
+      int nextindex = compute_next_index (disc_traj, clusterMap, curtposi);
+      int next2index = compute_next_index (disc_traj, clusterMap, curtposi + 1);
+      if (nextindex < 0 ) break;
+      for (int kk = 0; kk < numCluster; ++kk){
+	if ((kk) == nextindex){
+	  mmatrix[curtindex][kk].deposite (1.);
+	}
+	else{
+	  mmatrix[curtindex][kk].deposite (0.);
 	}
       }
-      if (nextposi >= milestone_traj.size()){
-	break;
-      }
-      unsigned curtindex = milestone_traj[curtposi] - 1;
-      unsigned nextindex = milestone_traj[nextposi] - 1;
-      // for (unsigned ii = curtposi; ii < nextposi; ++ii){
-      // 	cout << milestone_traj[ii] << " ";
-      // }
-      // cout << endl;
-      for (unsigned ii = curtposi; ii < nextposi; ++ii){
-	for (unsigned kk = 0; kk < numCluster; ++kk){
-	  if (kk == nextindex){
+      if (next2index >= 0){
+	for (int kk = 0; kk < numCluster; ++kk){
+	  if (kk == next2index){
 	    mmatrix[curtindex][kk].deposite (1.);
-	    if (ii < nextposi - 1) tmatrix[curtindex][kk].deposite (1.);
-	    // cout << "depo " << curtindex << " " << nextindex << endl;
 	  }
 	  else{
 	    mmatrix[curtindex][kk].deposite (0.);
-	    if (ii < nextposi - 1) tmatrix[curtindex][kk].deposite (0.);
 	  }
-	}
+	}	
       }
-      unsigned next2posi = nextposi;
-      while (milestone_traj[next2posi] == milestone_traj[nextposi]) {
-	next2posi ++;
-	if (next2posi >= milestone_traj.size()){
-	  break;
-	}
-      }
-      if (next2posi < milestone_traj.size()){
-	unsigned next2index = milestone_traj[next2posi] - 1;
-	for (unsigned kk = 0; kk < numCluster; ++kk){
-	  if (kk == next2index){
-	    tmatrix[curtindex][kk].deposite (1.);
-	  }
-	  else{
-	    tmatrix[curtindex][kk].deposite (0.);
-	  }
-	}
-      }
-      curtposi = nextposi;
+      curtposi ++;
     }
   }
   
@@ -357,7 +352,7 @@ int main(int argc, char * argv[])
     fprintf (fp, "\n");
     printf("\n");
   }
-    printf("\n");
+  printf("\n");
   fclose (fp);
   FILE * fp1 = fopen (ommfile.c_str(), "w");
   if (fp1 == NULL){
