@@ -213,14 +213,14 @@ int main(int argc, char * argv[])
   
   po::options_description desc ("Calculates the MSM based on coreset milestoning.\nAllow options");
   desc.add_options()
-      ("help,h", "print this message")
-      ("input,f",  po::value<std::string > (&ifile)->default_value ("traj.disc.periodT"), "the file of file names")
-      ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
-      ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
-      ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
-      ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
-      ("output-tmatrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
-      ("output-tmatrix-t", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.");
+    ("help,h", "print this message")
+    ("input,f",  po::value<std::string > (&ifile)->default_value ("traj.dih.disc.periodT"), "the file of file names")
+    ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
+    ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
+    ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
+    ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
+    ("output-matrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
+    ("output-matrix-m", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.");
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -269,10 +269,21 @@ int main(int argc, char * argv[])
     while (1 == fscanf(fp, "%d", &tmpread)){
       disc_traj.push_back (tmpread);
     }
+    fclose (fp);
     vector<unsigned > milestone_traj;
+    // for (unsigned ii = 0; ii < disc_traj.size(); ++ii){
+    //   cout << disc_traj[ii] << " ";     
+    // }
+    // cout << endl;    
     convert_milestone (disc_traj, clusterMap, milestone_traj);
+    // for (unsigned ii = 0; ii < milestone_traj.size(); ++ii){
+    //   cout << milestone_traj[ii] << " ";      
+    // }
+    // cout << endl;
+    // cout << endl;
     unsigned curtposi = 0;
-    unsigned nextposi = 0;
+    while (milestone_traj[curtposi] == 0) curtposi ++;
+    unsigned nextposi = curtposi;
     while (1){
       while (milestone_traj[curtposi] == milestone_traj[nextposi]) {
 	nextposi ++;
@@ -285,15 +296,20 @@ int main(int argc, char * argv[])
       }
       unsigned curtindex = milestone_traj[curtposi] - 1;
       unsigned nextindex = milestone_traj[nextposi] - 1;
+      // for (unsigned ii = curtposi; ii < nextposi; ++ii){
+      // 	cout << milestone_traj[ii] << " ";
+      // }
+      // cout << endl;
       for (unsigned ii = curtposi; ii < nextposi; ++ii){
 	for (unsigned kk = 0; kk < numCluster; ++kk){
 	  if (kk == nextindex){
 	    mmatrix[curtindex][kk].deposite (1.);
-	    if (ii >= 1) tmatrix[curtindex][kk].deposite (1.);
+	    if (ii >= curtposi+1) tmatrix[curtindex][kk].deposite (1.);
+	    // cout << "depo " << curtindex << " " << nextindex << endl;
 	  }
 	  else{
 	    mmatrix[curtindex][kk].deposite (0.);
-	    if (ii >= 1) tmatrix[curtindex][kk].deposite (0.);
+	    if (ii >= curtposi+1) tmatrix[curtindex][kk].deposite (0.);
 	  }
 	}
       }
@@ -305,23 +321,35 @@ int main(int argc, char * argv[])
     for (unsigned jj = 0; jj < numCluster; ++jj){
       mmatrix[ii][jj].calculate();
       tmatrix[ii][jj].calculate();
+      // cout << tmatrix[ii][jj].getAvg() << endl;
+      // cout << mmatrix[ii][jj].getAvg() << endl;     
     }
   }
 
   FILE * fp = fopen (otmfile.c_str(), "w");
+  if (fp == NULL){
+    std::cerr << "cannot open file " << otmfile << std::endl;
+    return 1;
+  }
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < numCluster; ++jj){
-      fprintf (fp, "%f\n", tmatrix[ii][jj].getAvg());
+      fprintf (fp, "%f ", tmatrix[ii][jj].getAvg());
     }
+    fprintf (fp, "\n");
   }
   fclose (fp);
-  fp = fopen (ommfile.c_str(), "w");
+  FILE * fp1 = fopen (ommfile.c_str(), "w");
+  if (fp1 == NULL){
+    std::cerr << "cannot open file " << ommfile << std::endl;
+    return 1;
+  }
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < numCluster; ++jj){
-      fprintf (fp, "%f\n", tmatrix[ii][jj].getAvg());
+      fprintf (fp1, "%f ", mmatrix[ii][jj].getAvg());
     }
+    fprintf (fp1, "\n");
   }
-  fclose (fp);
+  fclose (fp1);
   
   
   return 0;
