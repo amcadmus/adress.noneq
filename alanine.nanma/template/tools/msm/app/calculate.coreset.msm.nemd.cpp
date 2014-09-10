@@ -352,9 +352,12 @@ int main(int argc, char * argv[])
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < numCluster; ++jj){
       fprintf (fp, "%f ", tmatrix[ii][jj].getAvg());
+      printf ("%f ", tmatrix[ii][jj].getAvgError());
     }
     fprintf (fp, "\n");
+    printf("\n");
   }
+    printf("\n");
   fclose (fp);
   FILE * fp1 = fopen (ommfile.c_str(), "w");
   if (fp1 == NULL){
@@ -364,8 +367,10 @@ int main(int argc, char * argv[])
   for (unsigned ii = 0; ii < numCluster; ++ii){
     for (unsigned jj = 0; jj < numCluster; ++jj){
       fprintf (fp1, "%f ", mmatrix[ii][jj].getAvg());
+      printf ("%f ", mmatrix[ii][jj].getAvgError());
     }
     fprintf (fp1, "\n");
+    printf("\n");
   }
   fclose (fp1);
   
