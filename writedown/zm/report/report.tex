@@ -97,7 +97,7 @@ when the coupling is very strong.
 The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system $\systemla$.
 \begin{figure}
   \centering
-  \includegraphics[]{pressure-methods.eps}
+  \includegraphics[]{fig/nvt.pressure.1/pressure-methods.eps}
   \caption{The pressure convergence with respect to the cut-off radius.
     For ZM method, the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
   }
@@ -302,8 +302,8 @@ using larger cut-off radius can substantially improve the accuracy.
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig-gkr-small.eps}
-  \includegraphics[]{fig-gkr-small-conv.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-gkr-small.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-gkr-small-conv.eps}
   \includegraphics[]{fig/result.nvt.small/fig-eps-t-3000.eps}
   \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-3000.eps}
   \includegraphics[]{fig/result.nvt.small/fig-eps-t-10000.eps}
@@ -321,8 +321,8 @@ using larger cut-off radius can substantially improve the accuracy.
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig-gkr.eps}
-  \includegraphics[]{fig-gkr-conv.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr-conv.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-3000.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-3000.eps}
   \caption{The Kirkwood G-factor calculated for system $\systemlb$.
@@ -338,8 +338,8 @@ using larger cut-off radius can substantially improve the accuracy.
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig-gkr-10000.eps}
-  \includegraphics[]{fig-gkr-conv-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr-conv-10000.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-10000.eps}
   \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-10000.eps}
   \caption{The Kirkwood G-factor calculated for system $\systemlb$. Equilibriation time is 10~ns, and the production simulation time is 10~ns.
@@ -506,13 +506,14 @@ with error bars are presented in Fig.~\ref{fig:dih-dist}. It can be easily seen
 from the distribution $P(\psi)$ and $P(\psi)$ that the ZM method with
 $l=2$ and 3 reproduce the over-all probability of the main
 conformations, i.e.~the $\alpha$-helix (right-handed), $\beta$-sheet and
-the left-handed $\alpha$-helix with satisfactory accuracy.  For these
-methods, deviations of $P(\phi)$ at $\phi = -75^\circ$ and $\phi =
--140^\circ$ are observed. They correspond to the double-peak structure
-of the right-handed $\alpha$-helix and $\beta$-sheet, which means the
-error happens at the sub-structure of the right-handed $\alpha$-helix
-and $\beta$-sheet, which are of relatively smaller biological interest
-comparing with the main conformations.
+the left-handed $\alpha$-helix with satisfactory accuracy.
+% For these
+% methods, deviations of $P(\phi)$ at $\phi = -75^\circ$ and $\phi =
+% -140^\circ$ are observed. They correspond to the double-peak structure
+% of the right-handed $\alpha$-helix and $\beta$-sheet, which means the
+% error happens at the sub-structure of the right-handed $\alpha$-helix
+% and $\beta$-sheet, which are of relatively smaller biological interest
+% comparing with the main conformations.
 
 
 
@@ -522,12 +523,12 @@ comparing with the main conformations.
   }
   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}c   ccc}\hline\hline
     Method      &        $t_2$ [ps]  & $t_3$ [ps] &  $t_4$ [ps] \\\hline
-    SPME        &         1292  (148)     &          69.95  (0.76)  &         36.0 (4.7)    \\
-    RF          & \textbf{1615} (155)     &  \textbf{68.48} (0.37)  &         34.1 (1.6)    \\
-    ZM $l=1$    & \textbf{1607} (218)     &  \textbf{72.08} (0.50)  &         31.4 (1.9)    \\
-    ZM $l=2$    &         1324  (110)     &          69.97  (0.58)  &         40.4 (2.8)    \\
-    ZM $l=3$    &         1312  (157)     &          70.50  (0.72)  &         37.1 (4.3)    \\
-    ZM $l=4$    & \textbf{1635} (156)     &          69.71  (0.54)  &         39.2 (3.6)    \\
+    SPME        &         1374  (235)     &          70.03  (0.64)  &         39.2  (4.3)    \\
+    RF          &        {1615} (177)     &  \textbf{68.49} (0.42)  & \textbf{34.1} (2.2)    \\
+    ZM $l=1$    &        {1244} (099)     &         {71.00} (0.46)  &         36.2  (4.4)    \\
+    ZM $l=2$    &         1407  (194)     &          70.46  (0.76)  &         38.7  (2.4)    \\
+    ZM $l=3$    &         1449  (116)     &          70.20  (0.57)  &         37.4  (2.5)    \\
+    ZM $l=4$    &        {1119} (129)     &          70.05  (0.71)  &         34.6  (1.8)    \\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp3}
@@ -551,57 +552,85 @@ comparing with the main conformations.
 % \end{table}
 
 
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-2.eps}\\
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-3.eps}\\
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-4.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-2-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-3-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-5.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-2.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-2.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-3.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-3.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-4.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5.eps}\\
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-4.eps}\\
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-5.eps}\\
+%   \caption{The eigenfunctions corresponding to the largest three
+%     non-trivial timescales, computed with lag-time 20~ps.}
+%   \label{fig:tmp5}
+% \end{figure}
+
 \begin{figure}
   \centering
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-2.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-3.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2-comp.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3-comp.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4-comp.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-4.eps}
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2-comp.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3-comp.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4-comp.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5-comp.eps}\\
-  \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-4.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-5.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-2.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-3.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-4.eps}
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2-comp.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3-comp.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4-comp.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5.eps}\\
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2-comp.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3-comp.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4-comp.eps}
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5-comp.eps}\\
-  % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-4.eps}\\
-  % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-5.eps}\\
+  \includegraphics[width=0.24\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-2.eps}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-2-phi.eps}}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-2-psi.eps}}\\
+  \includegraphics[width=0.24\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-3.eps}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-3-phi.eps}}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-3-psi.eps}}\\
+  \includegraphics[width=0.24\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-4.eps}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-4-phi.eps}}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-4-psi.eps}}\\
   \caption{The eigenfunctions corresponding to the largest three
-    non-trivial timescales, computed with lag-time 20~ps.}
+    non-trivial timescales, computed with lag-time 20~ps.  The left
+    colume shows the eigenfunctions computed by SPME method. The right colume
+    shows the deviation of RF, ZM ($l=1,\cdots,4$) with respect to
+    SPME.  To present the statistical uncertainty, the second
+    eigenfunction is projected on to dihedral angle $\phi$, while the
+    third and fourth eigenfunctions are projected on $\psi$.  The red
+    shadow region presents the statistical uncertainty of SPME. For
+    clarity, only the statistical uncertainty of RF and ZM $l=3$ are
+    presented by error bars.  }
   \label{fig:tmp5}
 \end{figure}
+
 
 The leading timescales and corresponding eigenfunctions are given in
 Tab.~\label{tab:tmp3} and Fig.~\ref{fig:tmp5}. The ZM method with

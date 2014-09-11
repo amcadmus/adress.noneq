@@ -127,6 +127,13 @@ of TIP3P water at 300~K was bounded by 8~nm/ps. The time step was
 $d_{COG}$ is estimated to be bounded by $0.001 \times 5 \times 8 = 0.04$~nm,
 which satisfies Eq.~\eqref{eqn:tmp2}.
 
+A looser condition can be considered. Since only 0.16\% of the molecules
+has velocity larger than 5~nm/ps at a certain time frame, the velocity can be
+roughly bounded by  5~nm/ps.
+If the neighbor list is updated every 10 time-steps, 
+$d_{COG}$ is estimated to be roughly bounded $0.001 \times 10 \times 5 = 0.05$~nm.
+We can set  $\rlist - \rcoulomb = 0.26$~nm, then we need $d_{COG} < 0.052\ \textrm{nm}$, which is satisfied.
+
 Since all of our simulations had $\rlist - \rcoulomb = 0.3$~nm, the ZM
 interaction was indeed treated in an atomistic way.
 
