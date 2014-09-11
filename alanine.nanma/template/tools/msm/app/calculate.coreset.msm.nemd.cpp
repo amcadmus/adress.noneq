@@ -237,7 +237,7 @@ int main(int argc, char * argv[])
       ("help,h", "print this message")
       ("input,f",  po::value<std::string > (&ifile)->default_value ("traj.dih.disc.periodT"), "the file of file names")
       ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
-      ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
+      ("n-data-block", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
       ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
       ("output-matrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
@@ -303,12 +303,13 @@ int main(int argc, char * argv[])
     // cout << endl;
     // cout << endl;
     unsigned curtposi = 0;
+    while (milestone_traj[curtposi] == 0) curtposi ++;
     while (curtposi < disc_traj.size()){
       unsigned curtindex = milestone_traj[curtposi] - 1;
       int nextindex = compute_next_index (disc_traj, clusterMap, curtposi);
       int next2index = compute_next_index (disc_traj, clusterMap, curtposi + 1);
       if (nextindex < 0 ) break;
-      for (int kk = 0; kk < numCluster; ++kk){
+      for (int kk = 0; kk < int(numCluster); ++kk){
 	if ((kk) == nextindex){
 	  mmatrix[curtindex][kk].deposite (1.);
 	}
@@ -317,12 +318,12 @@ int main(int argc, char * argv[])
 	}
       }
       if (next2index >= 0){
-	for (int kk = 0; kk < numCluster; ++kk){
+	for (int kk = 0; kk < int(numCluster); ++kk){
 	  if (kk == next2index){
-	    mmatrix[curtindex][kk].deposite (1.);
+	    tmatrix[curtindex][kk].deposite (1.);
 	  }
 	  else{
-	    mmatrix[curtindex][kk].deposite (0.);
+	    tmatrix[curtindex][kk].deposite (0.);
 	  }
 	}	
       }

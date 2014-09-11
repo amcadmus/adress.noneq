@@ -55,6 +55,10 @@ mycommand="$msm_dir/calculate.coreset.msm --num-bin $msm_dih_nbin --input-larges
 echo "# calculate coreset msm tmatrix by command: $mycommand"
 $mycommand
 
+mycommand="$msm_dir/calculate.coreset.msm.nemd --num-bin $msm_dih_nbin --input traj.dih.disc.periodT --input-dir dir.name --n-data-block 100 --input-cluster-map $target_dir/cluster.map.out --output-matrix-t $target_dir/coreset.t.out --output-matrix-m $target_dir/coreset.m.out"
+echo "# calculate coreset t and m matrices by command: $mycommand"
+$mycommand
+
 if [ -f $target_dir/bf.prob.dih.out ]; then
     sed -n "1~${period_frame}p" $target_dir/bf.prob.dih.out > $target_dir/bf.prob.dih.periodT.out
     mycommand="$msm_dir/calculate.coreset.proj --input $target_dir/bf.prob.dih.periodT.out --input-largest-set $target_dir/largestSet.dih --input-bw $target_dir/commitor.bw.out.orig --output $target_dir/coreset.prob.out"
