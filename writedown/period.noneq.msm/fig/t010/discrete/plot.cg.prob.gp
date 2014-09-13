@@ -45,6 +45,8 @@ set xlabel "t [ ps ]"
 
 # # set key at 1100, 0.5
 set key right bottom
+set key spacing 1.3
+set key font "Helvetica, 14"
 # set label 't_{init}=10 ps' at 10, 0.7
 set grid
 
@@ -73,7 +75,10 @@ set xtics 10 font "Helvetica, 8"
 set ytics 0.01 font "Helvetica, 8"
 set mxtics 2
 set mytics 1
-set size 0.38,0.38
+set size 0.32,0.29
+set origin 0.2,0.2
+clear
+set size 0.42,0.38
 set origin 0.13,0.13
 set xrange [0:40]
 set yrange [0.05: 0.10]
@@ -83,8 +88,11 @@ set ytics 0.01 font "Helvetica, 8"
 set mytics 2
 set xtics 10
 set mytics 1
-set size 0.35,0.33
-set origin 0.63,0.52
+set size 0.20,0.23
+set origin 0.72,0.53
+clear
+set size 0.38,0.38
+set origin 0.6,0.46
 set xrange [320:340]
 set yrange [0.135: 0.165]
 rep

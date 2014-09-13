@@ -313,9 +313,14 @@ q^\bwd_j(i) & =  0,\quad i\in C_l,l\not=j\nonumber
 where $P^b$ denotes the transition matrix of the time-reversed process
 given by $P^b_{ji}=\mu_i P_{ij}/\mu_j$.
 
-Following
-Ref.~\cite{djurdjevac2010markov}, Thm. 3.1, the one-step transition
-matrix $\hat{\vect P}$ associated with the milestone process $\hat{X}_m)$ is given by
+\recheck{
+We define the one-step transition matrix $\hat{\vect P}$ for the milestone process by
+\begin{equation}\label{hatP_prob}
+\hat{\vect P}_{jl}=\prob_\mu\Big(\hat{X}_{m+1}=l\vert \hat{X}_m=j\Big).
+\end{equation}
+Then Following
+Ref.~\cite{djurdjevac2010markov}, Thm.~3.1, 
+$\hat{\vect P}$ is associated with the milestone process $(\hat{X}_m)$ in terms of committors by}
   \begin{align}
     \label{eq:msm-tmatrix-00}
     \begin{split}      
@@ -329,11 +334,8 @@ matrix $\hat{\vect P}$ associated with the milestone process $\hat{X}_m)$ is giv
     \end{split}
   \end{align}
 where the inner product is defined by
-$\langle u,v \rangle_\mu=\sum_{i\in S} u_i v_i \mu_i$. More precisely, we have
-\begin{equation}\label{hatP_prob}
-\hat{\vect P}_{jl}=\prob_\mu\Big(\hat{X}_{m+1}=l\vert \hat{X}_m=j\Big).
-\end{equation}
-In general the milestone process need not be a Markov process. The results in \cite{A1-31,sarich2014utilizing} show, however, that it is an approximate Markov process as long as the core sets are proper metastable sets, i.e., if the typical timecale on which $(X_m)$ leaves $C$ is much smaller than the typical expected hitting times between the core sets.
+$\langle u,v \rangle_\mu=\sum_{i\in S} u_i v_i \mu_i$. 
+In general the milestone process need not be a Markov process. The results in \cite{A19-31,sarich2014utilizing} show, however, that it is an approximate Markov process as long as the core sets are proper metastable sets, i.e., if the typical timecale on which $(X_m)$ leaves $C$ is much smaller than the typical expected hitting times between the core sets.
 Thus, by taking $\hat{P}$ as our MSM transition matrix, we introduce an additional modelling error that is the smaller the more metastable the core sets are.
 With this MSM transition matrix, we can define the MSM kinetics:
 If we start from some initial probability $\hat{p}(l,0)$ of being in state $l$ at time $t=0$ then its evolution $\hat{p}(l,t)$ in time is discrete in multiples of period $T$ and given by
@@ -366,16 +368,21 @@ That can be seen by means of direct computation: For the off-diagonal entries we
   = \hat P_{jk}, \quad j\neq k
 \end{align}
 Stochasticity yields
-$\hat T_{jj} - \hat M_{jj} + 1 = \hat P_{jj}$ for the diagonal entries.  Furthermore, as shown in the Appendix $\hat{T}$ as well as $\hat{M}$ can be computed from trajectories without need to have the committors. 
+$\hat T_{jj} - \hat M_{jj} + 1 = \hat P_{jj}$ for the diagonal entries.  Furthermore, as shown in the Appendix~\ref{sec:app-prove}, $\hat{T}$ as well as $\hat{M}$ can be computed from trajectories without need to have the committors. 
 The importance of the pair $\hat{T}$ and $\hat{M}$ for MSM building comes from the following observation: The main NEMD relaxation timescales are given by the dominant eigenvalues of $P$ \cite{A19-31, A19-1}.
 These dominant eigenvalues can be approximated by discretizing the related eigenvalue problem $Pu=\lambda u$ by means of a Galerkin approximation with the finite dimensional ansatz space 
 spanned by the forward committors $q^+_j$, $j=1,\ldots,k$ together  with the finite dimensional test function space spanned by the backward committors $q^-_j$, $j=1,\ldots,k$ (test functions multiplied from the left by the inner product $\langle\cdot,\cdot\rangle_\mu$). The thus discretize eigenproblem takes the form  of a generalized eigenproblem
-\[
-\hat{T}\hat{u}=\hat{\lambda}\hat{M}\hat{u}.
-\]
-For the reversible case it is known that its $k$ eigenvalues $\hat{\lambda}$ are very good approximation of the dominant eigenvalues $\lambda$ of the original problem if the core sets are proper metastable sets \cite{Eigenvalues}. Whether this is true for the non-reversible case is not known yet, but if the deviation from reversibility is weak and the dominant eigenvalues of $P$ are real-valued then the results should hold analogously, see \cite{A19-31}, Thm. 4.19. 
+\begin{align}
+  \label{eq:msm-gen-ev}
+\hat{T}\hat{u}=\hat{\lambda}\hat{M}\hat{u}.  
+\end{align}
+For the reversible case it is known that its $k$ eigenvalues $\hat{\lambda}$ are very good approximation of the dominant eigenvalues $\lambda$ of the original problem if the core sets are proper metastable sets~\cite{Eigenvalues}. Whether this is true for the non-reversible case is not known yet, but if the deviation from reversibility is weak and the dominant eigenvalues of $P$ are real-valued then the results should hold analogously, see~\cite{A19-31}, Thm.~4.19. 
 
-The pair $\hat{T}$ and $\hat{M}$, or the matrix $\hat{M}^{-1}\hat{T}$ (if all of its entries are positive such that it is a stochastic matrix), thus can also be taken as MSM transition matrices. In the case of  $\hat{T}$ and $\hat{M}$ the MSM modelling error results from Galerkin discretization, while the MSM modelling error of $\hat{P}$ results from ignoring the potential non-Markovianity of $\hat{X}_m$. The lesson learnt in the reversible case are that $\hat{P}$ is better suited to approximate the molecular kinetics on large timescales while $\hat{T}$ and $\hat{M}$ should be used for approximating eigenvalues and long relaxation timescales.
+\textbf{Remark 3:}
+The pair $\hat{T}$ and $\hat{M}$, or the matrix $\hat{T}\hat{M}^{-1}$ (if all of its entries are positive such that it is a stochastic matrix), thus can also be taken as MSM transition matrices. In the case of  $\hat{T}$ and $\hat{M}$ the MSM modelling error results from Galerkin discretization, while the MSM modelling error of $\hat{P}$ results from ignoring the potential non-Markovianity of $\hat{X}_m$.
+\recheck{As a matter fact, if $\hat X_m$ is Markovian, we prove the identity of the transition matrices: $\hat P = \hat T \hat M^{-1}$ (see~Appendix~\ref{sec:app-ptm} for detail).
+Therefore, in practice, the deviation of the eigenvalues of $\hat P$ from those of $\hat{T}\hat{M}^{-1}$ indicates the non-Markovianity implied in the process $\hat{X}_m$.}
+The lesson learnt in the reversible case are that $\hat{P}$ is better suited to approximate the molecular kinetics on large timescales while $\hat{T}$ and $\hat{M}$ should be used for approximating eigenvalues and long relaxation timescales.
 
 % Given coresets $\{C_1, \cdots, C_k\}$, the procedure \eqref{eq:msm-ht}--\eqref{eq:msm-tmatrix-10}
 % If assuming that we have the coresets $\{C_1, \cdots, C_k\}$, no matter how they are identified,
@@ -753,34 +760,37 @@ MSM out of the committors of the  discretized process.
 Following the process described in Sec.~\ref{sec:build-msm}, we are able to build a 
 three state MSM for the externally driven alanine dipeptide system,
 where the quasi-stationary probability distribution $\mu$, the three core sets, and the forward and backward committors are
-estimated as described above, and the MSM transition matrices $\hat P$, $\hat{M}$, and $\hat{T}$ is then evaluated using Eq.~\eqref{eq:msm-tmatrix-00}and \eqref{eq:msm-ht-1}.
+estimated as described above, and the MSM transition matrices $\hat P$, $\hat{T}$, and $\hat{M}$ is then evaluated using Eq.~\eqref{eq:msm-tmatrix-00}, \eqref{eq:msm-ht-1} and \eqref{eq:msm-hm-1}, correspondingly.
 Alternatively, the MSM  transition matrix $\hat P$ is calculated directly from the NEMD trajectories using Eq.~\eqref{hatP_prob} (very good agreement with the one computed from the committors).
-The leading eigenvalues of $P=\myphi^T(T)$ are compared with those of $\hat P$ and $\hat{M}^{-1}\hat{T}$ in
+The leading eigenvalues of $P=\myphi^T(T)$ are compared with those of $\hat P$ and $\hat{T}\hat{M}^{-1}$ in
 Tab.~\ref{tab:tmp1}.
 Without surprising, the two approaches for MSM building are consitent.
 The MSM is able to accurately reproduce
 the largest non-trivial eigenvalue, which means a precise reproduction
 of the longest non-trivial implied time-scale. The accuracy of the second non-trivial
-time-scale is not as good as the first, but is still acceptable (even good for $\hat{M}^{-1}\hat{T}$). The reason
-for the lower accuracy is that
+time-scale is not as good as the first, but is still acceptable (even good for $\hat{T}\hat{M}^{-1}$).
+\recheck{The difference between the eigenvalues of $\hat P$ and $\hat T\hat{M}^{-1}$
+  is an indication for the non-Markovianity of the milestone process $\hat X_m$. This
+  non-Markovianity present more significant influence in the second non-trivial time-scale.}
+The reason
+for the lower accuracy may also be that
 the corresponding time scale is 26.5~ps (calculated by $-T/\log(\lambda_2)$),
 which is NOT significantly longer than the temporal resolution given by the period $T=10$~ps of the external driving force.
 Numerically the two MSM transition matrices are:
 \[
-\hat{M}^{-1}\hat{T}=\left(\begin{array}{ccc}
-   0.866 &   0.128 &   0.006 \\
-    0.183  &  0.783  &  0.034\\
-    0.018   & 0.067 &   0.915
+\hat{T}\hat{M}^{-1}=\left(\begin{array}{ccc}
+   0.860 &   0.134 &   0.007 \\
+    0.190  &  0.775  &  0.034\\
+    0.020   & 0.065 &   0.915
 \end{array}
 \right),\qquad \hat{P}=\left(\begin{array}{ccc}
-   0.888 &   0.105 &   0.007 \\
+   0.888 &   0.104 &   0.007 \\
     0.149  &  0.822  &  0.029\\
-    0.021   & 0.055 &   0.923
+    0.021   & 0.056 &   0.923
 \end{array}
 \right),
 \]
-from which we see that the longest relaxation timescale results from  the dominant metastability of the left-handed alpha-helix conformations of the peptide.
- 
+from which we see that the longest relaxation timescale results from  the dominant metastability of the left-handed alpha-helix conformations of the peptide. 
 It is worth noting that although the discretized process $\tilde X_m$ is irreversible,
 the MSM built out of it is almost reversible:
 The magnitude of the anti-symmetric part of the
@@ -794,8 +804,8 @@ matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}c rrr}\hline\hline
       &  $\lambda_2$ & $\lambda_3$ & $\lambda_4$ \\\hline
     $P$                 &0.907  &0.686 & 0.553       \\
-    $\hat P$     & 0.911  &0.724 & --       \\
-    $\hat{M}^{-1}\hat{T}$    & 0.903  &0.662 & --       \\
+    $\hat P$     & 0.911  &0.723 & --       \\
+    $\hat{T}\hat{M}^{-1}$    & 0.901  &0.649 & --       \\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp1}
@@ -813,7 +823,13 @@ matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
 \begin{figure}
   \centering
   \includegraphics[width=0.85\textwidth]{fig/t010/cluster.marco.3/fig-coreset-prob.eps}
-  \caption{Comparison of NEMD and MSM long-term kinetics of alanine dipeptide in an oscillatory electrc field. The plots show the time-dependent probability $p_j=\hat p(j,t)$ to be assigned to core set $C_j$ (corresponding to the observable $\mathcal A$ given in (\ref{A}) with $\alpha_j=1$ and $\alpha_i=0$ for $i\not= j$). Solid lines are from brute force NEMD simulations, while the dashed lines are from our MSM.}
+  \caption{Comparison of NEMD and MSM long-term kinetics of alanine
+    dipeptide in an oscillatory electrc field. The plots show the
+    time-dependent probability $p_j=\hat p(j,t)$ to be assigned to
+    core set $C_j$ (corresponding to the observable $\mathcal A$ given
+    in (\ref{A}) with $\alpha_j=1$ and $\alpha_i=0$ for $i\not=
+    j$). Solid lines are from brute force NEMD simulations, while the
+    dashed lines are from our MSM.}
   \label{fig:num-7}
 \end{figure}
 
@@ -1201,27 +1217,27 @@ From Eq.~\eqref{eqn:tmp18} we have
 \label{sec:app-prove}
 
 In order to show how to compute $\hat{T}$ and $\hat{M}$ directly from trajectories let us start by denoting the first hitting time of set $A$ starting at time $t$ by $h_t(A)$.
-In addition we define $\hat q^\bwd_j (i) = P (X_t = i \vert \hat X_t =
+In addition we define $\hat q^\bwd_j (i) = \prob (X_t = i \vert \hat X_t =
 j)$, and always assume $t = mT$. Then due to the Bayes' Theorem we have
 \begin{align}
   \hat q^\bwd_j (i) =
-  \frac{P (\hat X_t = j \vert X_t = i) P(X_t = i)}{ P(\hat X_t = j) } =
+  \frac{\prob (\hat X_t = j \vert X_t = i) \prob(X_t = i)}{ \prob(\hat X_t = j) } =
   \frac{q^\bwd_j(i) \mu(i)}{\hat \mu(j)}
 \end{align}
 Then
 \begin{align*}
-  P& [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\
+  \prob& [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\
   &=
   \sum_{i=1}^n
-  \frac{P [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) , X_t = i, \hat X_t = j\,]}
-  { P(\hat X_t = j )} \\
+  \frac{\prob [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) , X_t = i, \hat X_t = j\,]}
+  { \prob(\hat X_t = j )} \\
   &=
   \sum_{i=1}^n
-  {P [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, X_t = i, \hat X_t = j\,]}\,
+  {\prob [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, X_t = i, \hat X_t = j\,]}\,
   \hat q^\bwd_j(i) \\
   &=
   \sum_{i=1}^n
-  {P [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, X_t = i\,]}\,
+  {\prob [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, X_t = i\,]}\,
   \hat q^\bwd_j(i)  \\
   &=
   \sum_{i=1}^n
@@ -1232,48 +1248,50 @@ The interpretation of the result is that when starting with the milestone proces
 
 To see the same for $\hat{T}$, we first need
 \begin{align*}
-  P & [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, X_t = i\,]\\
+  \prob & [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, X_t = i\,]\\
   &=
   \sum_{l=1}^n
-  \frac{P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), X_{t+T} = l, X_t = i\,]}
-  {X_t = i} \\
+  \frac{\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), X_{t+T} = l, X_t = i\,]}
+  {\prob (X_t = i)} \\
   &=
   \sum_{l=1}^n
-  {P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \vert X_{t+T} = l, X_t = i\,]}
-  {P( X_{t+T} = l \vert X_t = i)}\\
+  {\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \vert X_{t+T} = l, X_t = i\,]}\,
+  {\prob( X_{t+T} = l \vert X_t = i)}\\
   & =
   \sum_{l=1}^n
-  {P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \vert X_{t+T} = l\,]}
-  {P( X_{t+T} = l \vert X_t = i)}  = \sum_{l=1}^n
+  {\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \vert X_{t+T} = l\,]}\,
+  {\prob( X_{t+T} = l \vert X_t = i)}  = \sum_{l=1}^n
   q^\fwd_k(l) P_{il}
 \end{align*}
 We used the Markovianity of $X_T$ at the third equation,
 and the time-homogeneity in the fourth equation.
 Therefore, following the same procedure as before we have
 \begin{align*}
-  P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]=
+  \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]=
   \sum_{i=1}^n\sum_{l=1}^n
   q^\fwd_k(l) P_{il}
   \frac{q^\bwd_j(i) \mu(i)}{\hat \mu(i)} = \frac{\langle q_j^\bwd, P q_k^\fwd\rangle_\mu}{\hat \mu(j)}  = {\hat T}_{jk}
 \end{align*}
 Thus, when starting with the milestone process in state $j$ at some time $t$ we have to determine the fraction of all trajectories of length at least $T$ that hit core set $C_k$ first of all core sets to estimate $\hat{T}_{jk}$.
 
-\section{The equivalence}
+\section{The prove of identity $\hat P = \hat T\hat M^{-1}$}
+\label{sec:app-ptm}
 \begin{align*}
   \hat T_{jk} &=
-  P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\
+  \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\
   &=
-  \frac{P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), \hat X_t = j\,] }{P(\hat X_t = j)}\\
+  \frac{\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), \hat X_t = j\,] }{\prob(\hat X_t = j)}\\
   & =
-  \sum_l \frac{P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), \hat X_{t+T} = l, \hat X_t = j\,] }{P(\hat X_t = j)}\\
+  \sum_l \frac{\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), \hat X_{t+T} = l, \hat X_t = j\,] }{\prob(\hat X_t = j)}\\
   & =
-  \sum_l P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l)\vert \hat X_{t+T} = l, \hat X_t = j\,] \hat P_{jl}\\  
+  \sum_l \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l)\vert \hat X_{t+T} = l, \hat X_t = j\,] \hat P_{jl}\\  
   & =
-  \sum_l P [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l)\vert \hat X_{t+T} = l\,] \hat P_{jl}\\
+  \sum_l \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l)\vert \hat X_{t+T} = l\,] \hat P_{jl}\\
   &= 
   \sum_l  \hat P_{jl}\hat M_{lk}
 \end{align*}
-  
+This proves the identity $\hat P = \hat T\hat M^{-1}$.
+Notice that in the fifth equation we assumes the Markovianity of the milestone process $\hat X_m$.
 
 
 \bibliography{ref}{}

@@ -73,8 +73,11 @@ set xtics 10 font "Helvetica, 8"
 set ytics 0.01 font "Helvetica, 8"
 set mxtics 2
 set mytics 1
-set size 0.38,0.40
-set origin 0.13,0.13
+set size 0.34,0.30
+set origin 0.23,0.20
+clear
+set size 0.45,0.40
+set origin 0.15,0.13
 set xrange [0:40]
 set yrange [0.05: 0.10]
 rep
@@ -82,6 +85,9 @@ rep
 set ytics 0.01 font "Helvetica, 8"
 set mytics 2
 set xtics 10
+set size 0.25,0.22
+set origin 0.67,0.51
+clear
 set size 0.4,0.38
 set origin 0.55,0.41
 set xrange [320:340]
