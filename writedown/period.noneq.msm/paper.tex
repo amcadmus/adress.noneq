@@ -38,6 +38,7 @@
 \newcommand{\myphi}{\Phi}
 \newcommand{\mymu}{\mu}
 \newcommand{\prob}{\textrm{P}}
+\newcommand{\dih}{\textrm{dih}}
 
 \newcommand{\confaa}[0]{{\alpha_{\textrm{R}}}}
 \newcommand{\confab}[0]{{\alpha_{\textrm{R}}'}}
@@ -112,14 +113,14 @@ i.e.~$\ml(t) = \ml(t+T)$.
 We will now introduce an appropriate spatial discretization of this kind of non-equilibirium MD -- this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.
 For achieving this discretization, we 
 introduce a partition of state space $\Omega$ into a finite number of disjoint
-sets $\{ \Omega_1, \cdots, \Omega_n\}$ satisfying $\Omega = \cup_i \Omega_i$,
+sets $\{ \Omega_1, \cdots, \Omega_N\}$ satisfying $\Omega = \cup_i \Omega_i$,
 $\Omega_j\cap \Omega_j = \emptyset,\ \forall i\neq j$.
 Utilizing the procedure described in Ref.~\cite{latorre2011structure} the original Fokker-Planck equation~(\ref{eq:disc-fp})
 is discretized, resulting in a time-inhomogeneous Markov jump process in state
-space $S = \{1, \cdots, n\}$ with time-dependent rate
-matrix $\vect L(t) \in \mathbb R^{n\times n}$ satisfying
+space $S = \{1, \cdots, N\}$ with time-dependent rate
+matrix $\vect L(t) \in \mathbb R^{N\times N}$ satisfying
 \begin{align}\label{eq:disc-4}
-\sum\limits_{j=1}^n L_{ij}(t) & =  0\\ \label{eq:disc-5}
+\sum\limits_{j=1}^N L_{ij}(t) & =  0\\ \label{eq:disc-5}
 L_{ij}(t) & \ge  0, \quad i\not= j\\
 L_{ij}(t) & =  L_{ij}(t+T)
 \end{align}
@@ -132,8 +133,7 @@ $\vect L(t)$ transports probability distributions according to the associated Ma
   \label{eq:disc-master}
   \frac{d\vect p(t)}{dt} = \vect L^T(t)\cdot \vect p(t)
 \end{align}
-where $\vect L(t)^T$ denotes the matrix transpose of $\vect L(t)$, $\vect p(t)$ is an $n$-vector denoting the probability distribution on $S$ at time $t$, and
-$p_i(t)$, for example, the probability to be in state $i$ (which corresponds to set $\Omega_i$) at time $t$.
+where $\vect L^T(t)$ denotes the matrix transpose of $\vect L(t)$, $\vect p(t)$ is an $N$-vector denoting the probability distribution on $S$ at time $t$, $p_i(t)$, for example, the probability to be in state $i$ (which corresponds to set $\Omega_i$) at time $t$.
 As usual the properties (\ref{eq:disc-4}) and (\ref{eq:disc-5}) of
 $\vect L(t)$ guarantee that the total probability mass is conserved,
 i.e., if $p_i(0)\ge 0$ componentwise, then $p_i(t)\ge 0$ and $\sum_i
@@ -145,17 +145,17 @@ The temporal evolution of the probability distribution $\vect p(t)$ can be forma
 \vect p(t)=\myphi(t)\vect p(0)
 \end{align}
 by using the
-associated propagator matrix $\myphi(t)\in\mathbb R^{n\times n}$ that solves
+associated propagator matrix $\myphi(t)\in\mathbb R^{N\times N}$ that solves
 \begin{align}
   \label{eq:disc-master-phi}
   \frac{d}{dt}\myphi(t) = \vect L^T(t)\myphi(t), \quad \myphi(0) = \id .
 \end{align}
 Since the last equation can be considered column-wise, the propagator matrix inherits column-wise conservation properties:
 $\Phi_{ij}(t) \ge  0$
-and $\sum\limits_{i=1}^n \Phi_{ij}(t)  =  1$,
+and $\sum\limits_{i=1}^N \Phi_{ij}(t)  =  1$,
 that is, $\myphi^T(t)$ is a
 stochastic matrix satisfying $\myphi^T(t)\vect e=\vect e$
-with $\vect e=(1,\ldots,1)^T\in \mathbb R^n$.
+with $\vect e=(1,\ldots,1)^T\in \mathbb R^N$.
 Regarding these considerations, we find
 \begin{align}
 \label{eq:disc-10}  
@@ -181,7 +181,7 @@ satisfies
 \end{equation}
 for all $t\ge 0$. This can be seen by considering $\vect Y(t)=\myphi(t+T)$. It satisfies
 \[
-\frac{d\ }{dt}\vect Y(t)=\vect L(t+T)^T \vect Y(t)=\vect L(t)^T\vect Y(t),\quad \vect Y(0)=\myphi(T).
+\frac{d\ }{dt}\vect Y(t)=\vect L^T(t+T) \vect Y(t)=\vect L^T(t)\vect Y(t),\quad \vect Y(0)=\myphi(T).
 \]
 When we consider this identity column-wise and use the propagator property of $\myphi(t)$ we get $\myphi(t+T)=\vect Y(t)=\myphi(t)\myphi(T)$. As a consequence of (\ref{compo-1}) we get for all integers $m=0,1,2,\ldots$ that 
 \begin{equation}\label{compo-2}
@@ -247,16 +247,16 @@ statistically uncertainty in calculating the observables of interest.
 
 
 % \subsection{Building the Markov State Model from the Floquet transition matrix}
-If the discretization cells $\Omega_i$, $i=1,\ldots,n$ form a fine
+If the discretization cells $\Omega_i$, $i=1,\ldots,N$ form a fine
 partition of the molecular state space, the Markov chain defined via
 the transition matrix 
 \begin{equation}\label{P}
 \vect P=\myphi^T(T)
 \end{equation}
  is discrete in time but in space it still is a fine-scale description of the transport properties of the
-dynamics with a very large number $n$ of states.  Now we want to coarsen our description much further by
-constructing a Markov State Model (MSM) for $\vect P$ with $k\ll n$
-\emph{macrostates} that should be the metastable states of the system: The resulting $k\times k$ MSM transition matrix $\hat{\vect P}$
+dynamics with a very large number $N$ of states.  Now we want to coarsen our description much further by
+constructing a Markov State Model (MSM) for $\vect P$ with $K\ll N$
+\emph{macrostates} that should be the metastable states of the system: The resulting $K\times K$ MSM transition matrix $\hat{\vect P}$
 then defines the coarse grained long term kinetics that shall
 approximate the original long term kinetics well. 
 The idea behind MSM building is that given the molecular system under consideration exhibits metastable conformations then it is usually possible to construct a
@@ -279,44 +279,48 @@ the original dynamics between the metastable regions.
 However, since we cannot assume $P$ to satisfy detailed balance, we
 instead follow the approach to non-standard MSMs recently proposed in Ref.~\cite{sarich2014utilizing} which allows to identify the metastable core sets for the
 non-reversible transition matrix $P$. Assume that this approach leads
-to the $k$ core sets $C_1,\ldots, C_k\subset S$ that are appropriate metastable sets. 
-Following \cite{A19-31,schuette2011markov} the process $(X_m)$ associated with $P$ is coarse grained into the so-called milestone process $(\hat{X}_m)$ in the following way: 
+to the $K$ core sets $C_1,\ldots, C_K\subset S$ that are appropriate metastable sets. 
+Following~\cite{A19-31,schuette2011markov} the process $(\tilde X_m)$ associated with $P$ is coarse grained into the so-called milestone process $(\hat{X}_m)$ in the following way: 
 \begin{itemize}
-\item $\hat{X}_m$ just has $k$ states associated with the sets $C_j$, $j=1,\ldots,k$. 
-\item The sequence of random variables $(\hat{X}_m)$ is defined via the sequence $(X_m)$, i.e., trajectories of $(X_m)$ induce trajectories of $(\hat{X}_m)$: We set $\hat{X}_m=j$ if the last core set that the process $(X_m)$ entered prior to or at time $m$ has been the core set $C_j$.
+\item $\hat{X}_m$ just has $K$ states associated with the sets $C_j$, $j=1,\ldots,K$. 
+\item The sequence of random variables $(\hat{X}_m)$ is defined via the sequence $(\tilde X_m)$, i.e., trajectories of $(\tilde X_m)$ induce trajectories of $(\hat{X}_m)$: We set $\hat{X}_m=j$ if the last core set that the process $(\tilde X_m)$ entered prior to or at time $m$ has been the core set $C_j$.
 \end{itemize}
-Now consider infinitely long trajectory of $(X_m)$. Because of ergodicity we know that the states in this trajectory will be distributed due to the quasi-stationary distribution $\mu$. Based on such an infinitely long trajectory we can consider the probability $q_j^\bwd(i)$ that conditioned on $X_m=i$ the last core set hit has been $C_j$.
-This function is called the backward committor of $(X_m)$ associated with the set $C_j$ and is associated with the milestone process via
+Now consider infinitely long trajectory of $(\tilde X_m)$. Because of ergodicity we know that the states in this trajectory will be distributed due to the quasi-stationary distribution $\mu$. Based on such an infinitely long trajectory we can consider the probability $q_j^\bwd(i)$ that conditioned on $\tilde X_m=i$ the last core set hit has been $C_j$.
+This function is called the backward committor of $(\tilde X_m)$ associated with the set $C_j$ and is associated with the milestone process via
 \[
 q^\bwd_j(i)=\prob_\mu(\hat{X}_m=j|X_m=i),
-\] 
+\]
 where  the index $\mu$ refers to the fact that $\hat{X}_m$ is distributed due to $\mu$.
+\recheck{COMMENT: Here it is a \emph{conditional} probability,
+  due to the time-homogeneity,
+  it does not matter whether it is defined from quasi-stationary probability
+  or not.}
 From the last equation we get that the stationary distribution of the milestone process is given by
 \[
-\hat{\mu}(j)=\sum_{i\in S} q^\bwd_j(i)\mu(i),
+\hat{\mu}_j=\sum_{i\in S} q^\bwd_j(i)\mu(i),
 \]
-that is, the probability to find $\hat{X}_m=j$ in (infinitely) long trajectories of the milestoning process is $\hat{\mu}(j)$.
+that is, the probability to find $\hat{X}_m=j$ in (infinitely) long trajectories of the milestoning process is $\hat{\mu}_j$.
 
-Following \cite{discreteTPT} one also has to consider the forward committor $q^\fwd_j(i)$ identical to the probability  that conditioned on $X_m=i$ the next core set to be hit will be $C_j$.
+Following \cite{discreteTPT} one also has to consider the forward committor $q^\fwd_j(i)$ identical to the probability  that conditioned on $\tilde X_m=i$ the next core set to be hit will be $C_j$.
 The forward and backward committors $q^\fwd_j$ and $q^\bwd_j$  for each core set $C_j$ can be computed from $P$ by solving the linear equations \cite{discreteTPT}
 \begin{align}
 (P-\id) q^\fwd_j(i) & =  0, \quad i\in C\label{qfwd}\\
 q^\fwd_j(i) & =  1,\quad i\in C_j\nonumber\\
-q^\fwd_j(i) & =  0,\quad i\in C_l,l\not=j\nonumber
+q^\fwd_j(i) & =  0,\quad i\in C_k,k\not=j\nonumber
 \end{align}
 where $C=S\setminus\cup_j C_j$, and
 \begin{align}
 (P^b-\id) q^\bwd_j(i) & =  0, \quad i\in C\label{qbwd}\\
 q^\bwd_j(i) & =  1,\quad i\in C_j\nonumber \\
-q^\bwd_j(i) & =  0,\quad i\in C_l,l\not=j\nonumber
+q^\bwd_j(i) & =  0,\quad i\in C_k,k\not=j\nonumber
 \end{align}
 where $P^b$ denotes the transition matrix of the time-reversed process
-given by $P^b_{ji}=\mu_i P_{ij}/\mu_j$.
+given by $P^b_{ji}=\mu(i) P_{ij}/\mu(j)$.
 
 \recheck{
 We define the one-step transition matrix $\hat{\vect P}$ for the milestone process by
 \begin{equation}\label{hatP_prob}
-\hat{\vect P}_{jl}=\prob_\mu\Big(\hat{X}_{m+1}=l\vert \hat{X}_m=j\Big).
+\hat{\vect P}_{jk}=\prob_\mu\Big(\hat{X}_{m+1}=k\,\vert\, \hat{X}_m=j\Big).
 \end{equation}
 Then Following
 Ref.~\cite{djurdjevac2010markov}, Thm.~3.1, 
@@ -324,36 +328,36 @@ $\hat{\vect P}$ is associated with the milestone process $(\hat{X}_m)$ in terms 
   \begin{align}
     \label{eq:msm-tmatrix-00}
     \begin{split}      
-    \hat{\vect P}_{jl}
+    \hat{\vect P}_{jk}
     = &
     \frac{1}{\hat{\mu}(j)}
-    \langle (\vect P^b - \id) q^\bwd_j,q^\fwd_l \rangle_\mu,\qquad j\not= l, \\    %\label{eq:msm-tmatrix-01}
+    \langle (\vect P^b - \id) q^\bwd_j,q^\fwd_k \rangle_\mu,\qquad j\not= k, \\    %\label{eq:msm-tmatrix-01}
     \hat{\vect P}_{jj}
     =&
-    1-\sum_{l\not=j} \hat{\vect P}_{jl}
+    1-\sum_{k\not=j} \hat{\vect P}_{jk}
     \end{split}
   \end{align}
 where the inner product is defined by
-$\langle u,v \rangle_\mu=\sum_{i\in S} u_i v_i \mu_i$. 
+$\langle u,v \rangle_\mu=\sum_{i\in S} u(i) v(i) \mu(i)$. 
 In general the milestone process need not be a Markov process. The results in \cite{A19-31,sarich2014utilizing} show, however, that it is an approximate Markov process as long as the core sets are proper metastable sets, i.e., if the typical timecale on which $(X_m)$ leaves $C$ is much smaller than the typical expected hitting times between the core sets.
 Thus, by taking $\hat{P}$ as our MSM transition matrix, we introduce an additional modelling error that is the smaller the more metastable the core sets are.
 With this MSM transition matrix, we can define the MSM kinetics:
-If we start from some initial probability $\hat{p}(l,0)$ of being in state $l$ at time $t=0$ then its evolution $\hat{p}(l,t)$ in time is discrete in multiples of period $T$ and given by
+If we start from some initial probability $\hat{p}_j(0)$ of being in state $j$ at time $t=0$ then its evolution $\hat{p}_j(t)$ in time is discrete in multiples of period $T$ and given by
 \recheck{
 \begin{equation}\label{eq:num-29}
-\hat{p}(l,T)=\sum_j \hat{p}(j,0)\,\,\hat{\vect P}_{jl}.
+\hat{p}_j(T)=\sum_k \hat{p}_k(0)\hat{\vect P}_{kj}.
 \end{equation}}
-In our approach $p(j,mT)$ is a good approximation of $\prob(\hat{X}_m=j)$.
+In our approach $\hat p_j(mT)$ is a good approximation of $\prob(\hat{X}_m=j)$.
 
-\textbf{Remark 1:} Our definition of the milestoning process in terms of the process $(X_m)$ generated by $P$ guarantees that we can directly compute $\hat{P}$ via (\ref{hatP_prob})  from trajectories of $(X_m)$ without computing the committor functions. 
-This is of importance if the spatial discretization underlying $(X_m)$ is fine enough, because then the kinetics of $(X_m)$
+\textbf{Remark 1:} Our definition of the milestoning process in terms of the process $(\tilde X_m)$ generated by $P$ guarantees that we can directly compute $\hat{P}$ via (\ref{hatP_prob})  from trajectories of $(\tilde X_m)$ without computing the committor functions. 
+This is of importance if the spatial discretization underlying $(\tilde X_m)$ is fine enough, because then the kinetics of $(\tilde X_m)$
 approximates the original kinetics of $(x_{mT})$ so that we can directly compute   $\hat{P}$ via (\ref{hatP_prob})  from NEMD trajectories without computing $P$ first (which substantially simplified the MSM building if the core sets are already known).
 
 \textbf{Remark 2:}
 Following \cite{A19-31} we can also define another pair of stochastic MSM matrices: 
 \begin{align}\label{eq:msm-ht-1}
-  \hat T_{jk} &= \frac{\langle q_j^\bwd, P q_k^\fwd \rangle_\mu}{\hat \mu(j)},\\\label{eq:msm-hm-1}
-  \hat M_{jk} &= \frac{\langle q_j^\bwd, q_k^\fwd \rangle_\mu}{\hat \mu(j)},
+  \hat T_{jk} &= \frac{\langle q_j^\bwd, P q_k^\fwd \rangle_\mu}{\hat \mu_j},\\\label{eq:msm-hm-1}
+  \hat M_{jk} &= \frac{\langle q_j^\bwd, q_k^\fwd \rangle_\mu}{\hat \mu_j},
 \end{align}
 that are connected to $\hat{P}$ by the following identity
 \[
@@ -361,17 +365,17 @@ that are connected to $\hat{P}$ by the following identity
 \]
 That can be seen by means of direct computation: For the off-diagonal entries we have
 \begin{align}\label{eq:msm-tmp26}
-  \hat T_{ij} - \hat M_{ij}
-  = \frac{\langle q_j^\bwd, P q_k^\fwd \rangle_\mu}{\hat \mu(j)}
-  - \frac{\langle q_j^\bwd,  q_k^\fwd \rangle_\mu}{\hat \mu(j)}
-  = \frac{\langle (P^b - \id) q_j^\bwd, q_k^\fwd \rangle_\mu}{\hat \mu(j)}
+  \hat T_{jk} - \hat M_{jk}
+  = \frac{\langle q_j^\bwd, P q_k^\fwd \rangle_\mu}{\hat \mu_j}
+  - \frac{\langle q_j^\bwd,  q_k^\fwd \rangle_\mu}{\hat \mu_j}
+  = \frac{\langle (P^b - \id) q_j^\bwd, q_k^\fwd \rangle_\mu}{\hat \mu_j}
   = \hat P_{jk}, \quad j\neq k
 \end{align}
 Stochasticity yields
 $\hat T_{jj} - \hat M_{jj} + 1 = \hat P_{jj}$ for the diagonal entries.  Furthermore, as shown in the Appendix~\ref{sec:app-prove}, $\hat{T}$ as well as $\hat{M}$ can be computed from trajectories without need to have the committors. 
 The importance of the pair $\hat{T}$ and $\hat{M}$ for MSM building comes from the following observation: The main NEMD relaxation timescales are given by the dominant eigenvalues of $P$ \cite{A19-31, A19-1}.
 These dominant eigenvalues can be approximated by discretizing the related eigenvalue problem $Pu=\lambda u$ by means of a Galerkin approximation with the finite dimensional ansatz space 
-spanned by the forward committors $q^+_j$, $j=1,\ldots,k$ together  with the finite dimensional test function space spanned by the backward committors $q^-_j$, $j=1,\ldots,k$ (test functions multiplied from the left by the inner product $\langle\cdot,\cdot\rangle_\mu$). The thus discretize eigenproblem takes the form  of a generalized eigenproblem
+spanned by the forward committors $q^+_j$, $j=1,\ldots,K$ together  with the finite dimensional test function space spanned by the backward committors $q^-_j$, $j=1,\ldots,K$ (test functions multiplied from the left by the inner product $\langle\cdot,\cdot\rangle_\mu$). The thus discretize eigenproblem takes the form  of a generalized eigenproblem
 \begin{align}
   \label{eq:msm-gen-ev}
 \hat{T}\hat{u}=\hat{\lambda}\hat{M}\hat{u}.  
@@ -380,7 +384,7 @@ For the reversible case it is known that its $k$ eigenvalues $\hat{\lambda}$ are
 
 \textbf{Remark 3:}
 The pair $\hat{T}$ and $\hat{M}$, or the matrix $\hat{T}\hat{M}^{-1}$ (if all of its entries are positive such that it is a stochastic matrix), thus can also be taken as MSM transition matrices. In the case of  $\hat{T}$ and $\hat{M}$ the MSM modelling error results from Galerkin discretization, while the MSM modelling error of $\hat{P}$ results from ignoring the potential non-Markovianity of $\hat{X}_m$.
-\recheck{As a matter fact, if $\hat X_m$ is Markovian, we prove the identity of the transition matrices: $\hat P = \hat T \hat M^{-1}$ (see~Appendix~\ref{sec:app-ptm} for detail).
+\recheck{As a matter fact, if $\hat X_m$ is Markovian, the identity of the transition matrices holds: $\hat P = \hat T \hat M^{-1}$ (see~Appendix~\ref{sec:app-ptm} for the prove).
 Therefore, in practice, the deviation of the eigenvalues of $\hat P$ from those of $\hat{T}\hat{M}^{-1}$ indicates the non-Markovianity implied in the process $\hat{X}_m$.}
 The lesson learnt in the reversible case are that $\hat{P}$ is better suited to approximate the molecular kinetics on large timescales while $\hat{T}$ and $\hat{M}$ should be used for approximating eigenvalues and long relaxation timescales.
 
@@ -400,7 +404,7 @@ We know that --in theory-- whenever the spatial discretization is fine enough, t
 process $X_t$ associated with the Master equation \eqref{eq:disc-master} is a good approximation to the original
 MD process $x_t$ governed by \eqref{eq:disc-1}.  In practice, however, it is difficult to predict
 how many discrete sets we need to be fine enough. Moreover, since the
-total dimension of $x_t$ is $3N$ ($N$ being the number of atoms), it is prohibitive to do a really fine discretization
+total dimension of $x_t$ is $3N_{\textrm{atom}}$ ($N_{\textrm{atom}}$ being the number of atoms), it is prohibitive to do a really fine discretization
 over all DOFs for most systems of practical interest.
 
 One possible way to define appropriate discretization sets is firstly to find a few collective
@@ -480,12 +484,12 @@ We choose the
 two dihedral angles $\phi$ and $\psi$ as collective variables (see
 Fig.~\ref{fig:tmp1}), and the discretization is a uniform partition of
 the $\phi$--$\psi$ plane. We denote the number of discretization intervals on each
-dihedral by $K$, then we get $K^2$ discretization sets 
-$\{\Omega_i\},\ i\in S = \{1,\cdots,K^2\}$.
+dihedral by $N_\dih$, then we get $N = N_\dih^2$ discretization sets 
+$\{\Omega_i\},\ i\in S = \{1,\cdots,N_\dih^2\}$.
 
 Based on a given spatial discretization we can aggregate the transition matrix $\vect P=\myphi^T(T)$ just by counting the transition behavior of MD trajectories 
 \[
-\vect P_{ij}=\prob\left(\vect x_T=j\mid \vect x_0=i \right).
+\vect P_{ij}=\prob\left(\vect X_T=j\mid \vect X_0=i \right).
 \]
 However, $\vect P$ allows to approximate the original dynamics on multiples $mT$ of the period only. In order to have a time-continuos description we need the generator $L(t)$ of the Master equation. 
 If the discretization is fine enough one possible approximation to $L(t)$ is via
@@ -493,13 +497,13 @@ the following forward finite difference scheme:
 \begin{align}
   \label{eqn:tmp4}
   L_{ij}(t) \approx \frac{1}{\tau}
-  \,[\, \prob (\vect x_{t+\tau} = i \vert \vect x_{t} = j) - \delta_{ij} \,],
+  \,[\, \prob (\vect X_{t+\tau} = j \mid \vect X_{t} = i) - \delta_{ji} \,],
   \quad i,j\in S
 \end{align}
 and $\tau$ is an appropriate small enough lag-time.
 In the following 
 we investigate the discretization
-quality with respect to  the choice of $K$ and  lag-time $\tau$.
+quality with respect to  the choice of $N_\dih$ and  lag-time $\tau$.
 
 
 
@@ -508,8 +512,7 @@ quality with respect to  the choice of $K$ and  lag-time $\tau$.
 \begin{figure}
   \centering
   \includegraphics[width=0.7\textwidth]{fig/t010/discrete/fig-cg-prob.eps}  
-  \caption{Time-dependent probability $\mathbb
-    P\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The brute force NEMD simulation is compared with different
+  \caption{Time-dependent probability $\prob\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The brute force NEMD simulation is compared with different
     spatial discretization methods. The red shadow region indicates the
     statistical uncertainty of the NEMD simulation.}
   \label{fig:tmp2}
@@ -522,22 +525,22 @@ Whenever the discretization is fine enough the discretized dynamics approximates
 dynamics well, and the time-periodic generator $L(t)$ should not depend on the choice of the interval $[t_1,t_2]$ in the estimation procedure (\ref{eqn:tmp4}), provided that the initial state of the system
 is not very far from the stationary state at long-time limit.
 Therefore, this is an indicator for calibrating the discretization quality.
-We compute $L(t)$ by two discretizations $K=2$ and $K=20$, and two
+We compute $L(t)$ by two discretizations $N_\dih=2$ and $N_\dih=20$, and two
 choices of time intervals $[0, 80]$~ps and $[320, 400]$~ps, and then
 compare the time-dependent probability $\prob\big(\phi_t\in[0,180), \psi_t\in [0,180)\big)$
 with the (brute force) NEMD result in Fig.~\ref{fig:tmp2} using a lag-time $\tau=0.5$~ps.
-Using $K=2$ the dynamics depends on the time interval used for
+Using $N_\dih=2$ the dynamics depends on the time interval used for
 calculating the generator: using time interval $[0, 80]$~ps the discretized
 dynamics deviates from the NEMD result,
 while using time interval $[320, 400]$~ps the discretized dynamics can only
 reproduces the NEMD result after 300~ps.  This therefore indicates poor 
-approximations to the original dynamics with $K=2$. The reason is that the
-discretization with $K=2$ is too coarse so that the dynamics cannot be fully
+approximations to the original dynamics with $N_\dih=2$. The reason is that the
+discretization with $N_\dih=2$ is too coarse so that the dynamics cannot be fully
 equilibriated within the lag-time $\tau$ in each discretized set,
 therefore, the discretization presents state dependency.  For
-$K=20$, the discretized dynamics does not depend on the time interval of
+$N_\dih=20$, the discretized dynamics does not depend on the time interval of
 calculating the generator, and is consistent with the
-NEMD simulation within the error bar. Therefore, throughout this paper we use $K=20$
+NEMD simulation within the error bar. Therefore, throughout this paper we use $N_\dih=20$
 to discretize  the dihedral angle space of alanine dipeptide.
 %For a good statistical accuracy, if not stated otherwise,
 %we will use the full trajectories, i.e.~a time interval of
@@ -547,15 +550,14 @@ to discretize  the dihedral angle space of alanine dipeptide.
 \begin{figure}
   \centering
   \includegraphics[width=0.7\textwidth]{fig/t010/discrete/fig-cg-prob-tau.eps}  
-  \caption{Time-dependent probability $\mathbb
-    P\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The NEMD simulation is compared with the Master equation using generators discretized with $K=20$ and different lag time $\tau$. The red shadow region indicates the
+  \caption{Time-dependent probability $\prob\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The NEMD simulation is compared with the Master equation using generators discretized with $N_\dih=20$ and different lag time $\tau$. The red shadow region indicates the
     statistical uncertainty of the NEMD simulation.}
   \label{fig:tmp3}
 \end{figure}
 
 Next we discuss the effect of the lag time $\tau$ on the estimation of the generator. Therefore, we consider 
 different choices of $\tau$ (0.5, 1.0, 2.0 and 5.0~ps)
-(see Fig.~\ref{fig:tmp3}), all based on the identical dihedral angle discretization using $K=20$.
+(see Fig.~\ref{fig:tmp3}), all based on the identical dihedral angle discretization using $N_\dih=20$.
 It is clear that when the lag-time is close to the period (10~ps), the
 discretized dynamics cannot resolve the probability change within a
 period. However, it is surprising  that even quite large lag-times are able to capture the
@@ -578,7 +580,7 @@ Therefore, throughout this paper $\tau=0.5$~ps will be used.
   \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3/fig-floquet-vec-1.eps}
   \caption{The color scale plot of the logarithmic quasi-stationary distribution $\mymu$
     of (a) the NEMD  and (b)
-    the Floquet matrix $\vect P=\myphi^T(T)$.
+    the discretized dynamics governed by Floquet transition matrix $\vect P=\myphi^T(T)$.
   }
   \label{fig:num-1}
 \end{figure}
@@ -610,7 +612,7 @@ Boltzmann constant and $\mathcal T$ is the temperature of the system.
 % Under the aformentioned discretization, the stationary distribution is
 % defined for the each bin of the dihedral angle space, i.e.~$F_{pq} =
 % \int_{ph}^{(p+1)h}d\phi\int_{qh}^{(q+1)h}d\psi
-% F_{\textrm{st}}(\phi,\psi), \ 0\leq p,q<K-1$, where $h = 360/K$ being
+% F_{\textrm{st}}(\phi,\psi), \ 0\leq p,q<N_\dih-1$, where $h = 360/N_\dih$ being
 % the size of the bin, $p$ and $q$ here being the bin indexes.
 The
 results are  compared in Fig.~\ref{fig:num-1}. A good consistency between
@@ -629,9 +631,9 @@ $\Phi(T)$ is observed.
   \label{fig:cluster}
 \end{figure}
 
-The procedure for identifying good metastable core sets of the irreversible Markov process associated with $\vect P$ is described in detail in Ref.~\cite{sarich2014utilizing}; here we just provide the fundamental idea behind it: If  strong metastable sets $C_j$, $j=1,\ldots,k$ exist they should have one main property: When starting from a state in $C_i$ the expected hitting time of a state in $C_i$ should be much shorter than that of any state in one of the other sets $C_j$, $j\not=i$; in fact, the hitting time distribution should exhibit roughly constant levels in each set $C_j$ and should vary significantly in the transition region $C=\Omega\setminus\cup_j C_j$ between the metastable sets. If starting from some randomly chosen initial states, one thus can identify the metastable core sets and the transition region by analyzing the hitting time distributions. This procedure is similar to the procedures used for reversible processes \cite{PCCAplus,A19-1,prinz2011markov} but utilizes hitting time distributions instead of any eigenvector information.
+The procedure for identifying good metastable core sets of the irreversible Markov process associated with $\vect P$ is described in detail in Ref.~\cite{sarich2014utilizing}; here we just provide the fundamental idea behind it: If  strong metastable sets $C_j$, $j=1,\ldots,K$ exist they should have one main property: When starting from a state in $C_i$ the expected hitting time of a state in $C_i$ should be much shorter than that of any state in one of the other sets $C_j$, $j\not=i$; in fact, the hitting time distribution should exhibit roughly constant levels in each set $C_j$ and should vary significantly in the transition region $C=\Omega\setminus\cup_j C_j$ between the metastable sets. If starting from some randomly chosen initial states, one thus can identify the metastable core sets and the transition region by analyzing the hitting time distributions. This procedure is similar to the procedures used for reversible processes \cite{PCCAplus,A19-1,prinz2011markov} but utilizes hitting time distributions instead of any eigenvector information.
 
-The metastable core sets identified by this procedure based on the estimate of $\vect P$ are illustrated in Fig.~\ref{fig:cluster} and denoted by $C_{\confaa}$ (yellow), $C_\beta$ (red) and $C_{\confc}$ (green). They correspond to the centers of the wells in the free energy landscapes shown in Fig.~\ref{fig:num-1} and to the
+The metastable core sets identified by this procedure based on the estimate of $\vect P$ are illustrated in Fig.~\ref{fig:cluster} and denoted by $C_{\confaa}$ (green), $C_\beta$ (yellow) and $C_{\confc}$ (red). They correspond to the centers of the wells in the free energy landscapes shown in Fig.~\ref{fig:num-1} and to the
 right-handed alpha-helix, beta-sheet and left-handed alpha-helix conformations of the peptide, respectively.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -663,20 +665,20 @@ time (starting from states in coreset $\confaa$ and hitting $\confc$) is longer 
 600~ps the results will be biased if we use the NEMD trajectories of length 4000~ps for brute force Monte Carlo estimation of the hitting time. 
 Therefore, we base our Monte Carlo estimate on 100 NEMD
 trajectories of $2\times 10^5$~ps instead. For comparison we compute the first mean hitting
-time of the discretized dynamics via its transition matrix $\vect P$: the first mean hitting time $h_C(i)$ of core set $C$ starting in $\Omega_i$ can  be computed by means of solving the linear problem \cite{A19-31}
+time of the discretized dynamics via its transition matrix $\vect P$: the first mean hitting time $h_{C_j}(i)$ of core set $C_j$ starting in $\Omega_i$ can  be computed by means of solving the linear problem \cite{A19-31}
 \[
-(\vect P-\id) h_C(i) = -1,\qquad \mathrm{if} \, C\cap \Omega_i=\emptyset.
+(\vect P-\id) h_{C_j}(i) = -1,\qquad \mathrm{if} \, C\cap \Omega_i=\emptyset.
 \] 
 The resulting first mean hitting times are presented in Fig.~\ref{fig:num-6}.  The
 good consistency between the NEMD and the discretized Markov process
 $\tilde X_{m}$ indicates a good approximation quality.
-One should note that the NEMD estimate of the first mean hitting time is subject to statistical sampling errors while the first mean hitting times $h_C$ only contain the statistical errors coming from the estimation of $\vect P$. 
+One should note that the NEMD estimate of the first mean hitting time is subject to statistical sampling errors while the first mean hitting times $h_{C_j}$ only contain the statistical errors coming from the estimation of $\vect P$. 
 Thus, using $P$ helps in calculating the observables
 in a smoother  manner (less statistical error, no additional sampling).
 Additionally, the computational cost of the
 discretized process, if the cost for estimating $\Phi(T)$ is not included, is
 essentially smaller than NEMD:
-the computation of $h_C$ is an issue of miiliseconds on a laptop, while the
+the computation of $h_{C_j}$ is an issue of miiliseconds on a laptop, while the
 NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
 
 
@@ -729,17 +731,17 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
 Committors are very important statistical properties of Markov processes \cite{PrinzHeldSmithNoe_Committorprep,PNAS09}, and play
 an important role in MSM building \cite{A19-31,A19-29,djurdjevac2010markov} (see below), therefore, it is worth
 checking if the discretized process $\tilde X_m$ reproduces the NEMD committors.
-The forward committor $q^\fwd_i(\phi,\psi)$ of a coreset $C_i,\
-i\in\{\confaa, \beta, \confc\}$ is defined as the probability of
-visiting coreset $C_i$ next conditioned on starting at conformation
-$(\phi,\psi)$.  The backward committor $q^\bwd_i(\phi,\psi)$ of a
-coreset $C_i,\ i\in\{\confaa, \beta, \confc\}$ is defined as the
-probability of last coming from $C_i$ conditioned on having arrived presently at
-configuration $(\phi,\psi)$.
+The forward committor $q^\fwd_j(i)$ of a coreset $C_j,\
+j\in\{\confaa, \beta, \confc\}$ is defined as the probability of
+visiting coreset $C_j$ next conditioned on starting at conformation
+$(\phi,\psi)\in\Omega_i$.  The backward committor $q^\bwd_j(i)$ of a
+coreset $C_j,\ j\in\{\confaa, \beta, \confc\}$ is defined as the
+probability of last coming from $C_j$ conditioned on having arrived presently at
+configuration $(\phi,\psi)\in\Omega_i$.
 For reversible Markov processes, the
 forward and backward committors are identical, however, it is in
 general not the case for irreversible processes.
-The committors estimated from NEMD simulations ($20000$ trajectories $4000$~ps each) are compared with
+The committors estimated from NEMD simulations ($20000$ trajectories, $4000$~ps each) are compared with
 those computed from $P$ by means of solving the linear equations (\ref{qfwd}) and (\ref{qbwd}).
 Fig.~\ref{fig:num-3}--\ref{fig:num-5} presents both
 committors as well as their difference corresponding to different core sets.
@@ -769,13 +771,13 @@ The MSM is able to accurately reproduce
 the largest non-trivial eigenvalue, which means a precise reproduction
 of the longest non-trivial implied time-scale. The accuracy of the second non-trivial
 time-scale is not as good as the first, but is still acceptable (even good for $\hat{T}\hat{M}^{-1}$).
-\recheck{The difference between the eigenvalues of $\hat P$ and $\hat T\hat{M}^{-1}$
-  is an indication for the non-Markovianity of the milestone process $\hat X_m$. This
-  non-Markovianity present more significant influence in the second non-trivial time-scale.}
 The reason
 for the lower accuracy may also be that
 the corresponding time scale is 26.5~ps (calculated by $-T/\log(\lambda_2)$),
 which is NOT significantly longer than the temporal resolution given by the period $T=10$~ps of the external driving force.
+\recheck{The difference between the eigenvalues of $\hat P$ and $\hat T\hat{M}^{-1}$
+  is an indication for the non-Markovianity of the milestone process $\hat X_m$. This
+  non-Markovianity present more significant influence in the second non-trivial time-scale.}
 Numerically the two MSM transition matrices are:
 \[
 \hat{T}\hat{M}^{-1}=\left(\begin{array}{ccc}
@@ -842,24 +844,24 @@ the form
 where $p_i(t)=\prob(X_t=i)$ denotes the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is spanned by the backward
 committors, i.e.,
 \begin{align}\label{A}
-  A(i) = \sum_{l=1}^k \alpha_l q^\bwd_l(i).
+  A(i) = \sum_{l=1}^K \alpha_l q^\bwd_l(i).
 \end{align}
 Then
 \begin{align}\nonumber
   \mathcal A(t) &=
-  \sum_{i\in S} \sum_{l=1}^k \alpha_l q^\bwd_l(i)  p(i,t)=\sum_{i\in S} \sum_{l=1}^k \alpha_l \prob (\hat X_t = l \vert X_t = i) \prob (X_t = i) \\
+  \sum_{i\in S} \sum_{j=1}^K \alpha_j q^\bwd_j(i)  p(i,t)=\sum_{i\in S} \sum_{j=1}^K \alpha_j \prob (\hat X_t = j \vert X_t = i) \prob (X_t = i) \\
   & =
-  \sum_{i\in S} \sum_{l=1}^k \alpha_l \prob (\hat X_t = l ,X_t = i)  =
-  \sum_{l=1}^k \alpha_l \prob (\hat X_t = l) 
+  \sum_{i\in S} \sum_{j=1}^K \alpha_j \prob (\hat X_t = j ,X_t = i)  =
+  \sum_{j=1}^K \alpha_j \prob (\hat X_t = j) 
  =
-   \sum_{l=1}^k \alpha_l \,\hat p (l, t), \label{eq:num-28}
+   \sum_{j=1}^K \alpha_j \,\hat p_j (t), \label{eq:num-28}
 \end{align}
-where the time-dependent probability $\hat{p}(i,t)$ of being assigned to MSM macrostate $i$ at time $t$ can be computed  by means of the MSM via simple matrix multiplications using (\ref{eq:num-29}).
+where the time-dependent probability $\hat{p}_j(t)$ of being assigned to MSM macrostate $j$ at time $t$ can be computed  by means of the MSM via simple matrix multiplications using (\ref{eq:num-29}).
 
-In Fig.~\ref{fig:num-7} we compare the numerical calculation of $\hat p (l, mT), \ m\in\mathbb N$ from NEMD and MSM calculations.
-In the NEMD case, the backward committor and the probability density $\hat p (l, mT) = \sum_{i\in S}  q^\bwd_l(i)  p(i,mT) $
+In Fig.~\ref{fig:num-7} we compare the numerical calculation of $\hat p_j (mT), \ m\in\mathbb N$ from NEMD and MSM calculations.
+In the NEMD case, the backward committor and the probability density $\hat p_j (mT) = \sum_{i\in S}  q^\bwd_j(i)  p(i,mT) $
 are estimated directly from the
-NEMD trajectories. For the MSM, the projection of the initial probability is applied, $\hat p (l, 0) = \sum_{i\in S}  q^\bwd_l(i)  p(i,0) $, then
+NEMD trajectories. For the MSM, the projection of the initial probability is applied, $\hat p_j (0) = \sum_{i\in S}  q^\bwd_j(i)  p(i,0) $, then
 the time-dependent probability at $mT$ is generated by Eq.~\eqref{eq:num-29}, i.e., by simple matrix multiplication. The agreement is almost perfect.
 % The projected probability, e.g.~$\hat p (l', mT)$ is calculated
 % by Eq.~\eqref{eq:num-28} letting $\alpha_l = \delta_{l'l}$.
@@ -1222,27 +1224,27 @@ j)$, and always assume $t = mT$. Then due to the Bayes' Theorem we have
 \begin{align}
   \hat q^\bwd_j (i) =
   \frac{\prob (\hat X_t = j \vert X_t = i) \prob(X_t = i)}{ \prob(\hat X_t = j) } =
-  \frac{q^\bwd_j(i) \mu(i)}{\hat \mu(j)}
+  \frac{q^\bwd_j(i) \mu(i)}{\hat \mu_j}
 \end{align}
 Then
-\begin{align*}
-  \prob& [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\
+\begin{align}\nonumber
+  \prob& [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\\nonumber
   &=
-  \sum_{i=1}^n
+  \sum_{i=1}^N
   \frac{\prob [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) , X_t = i, \hat X_t = j\,]}
-  { \prob(\hat X_t = j )} \\
+  { \prob(\hat X_t = j )} \\\nonumber
   &=
-  \sum_{i=1}^n
+  \sum_{i=1}^N
   {\prob [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, X_t = i, \hat X_t = j\,]}\,
-  \hat q^\bwd_j(i) \\
+  \hat q^\bwd_j(i) \\\nonumber
   &=
-  \sum_{i=1}^n
+  \sum_{i=1}^N
   {\prob [\,h_t(C_k) < h_t(\cup_{l\neq k} C_l) \,\vert\, X_t = i\,]}\,
-  \hat q^\bwd_j(i)  \\
+  \hat q^\bwd_j(i)  \\\label{eq:appb-m}
   &=
-  \sum_{i=1}^n
-  q^\fwd_k(i) \frac{q^\bwd_j(i) \mu(i)}{\hat \mu(i)} =\frac{\langle q_j^\bwd, q_k^\fwd\rangle_\mu}{\hat \mu(j)}={\hat M}_{jk}
-\end{align*}
+  \sum_{i=1}^N
+  q^\fwd_k(i) \frac{q^\bwd_j(i) \mu(i)}{\hat \mu_j} =\frac{\langle q_j^\bwd, q_k^\fwd\rangle_\mu}{\hat \mu_j}={\hat M}_{jk}
+\end{align}
 where the third equation holds because of the Markovianity of the process $X_t$, and the fourth equation is due to the definition of the forward committor.
 The interpretation of the result is that when starting with the milestone process in state $j$ we have to determine the fraction of all trajectories that hit core set $C_k$ first of all core sets to estimate $\hat{M}_{jk}$.
 
@@ -1250,32 +1252,34 @@ To see the same for $\hat{T}$, we first need
 \begin{align*}
   \prob & [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, X_t = i\,]\\
   &=
-  \sum_{l=1}^n
+  \sum_{l=1}^N
   \frac{\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l), X_{t+T} = l, X_t = i\,]}
   {\prob (X_t = i)} \\
   &=
-  \sum_{l=1}^n
+  \sum_{l=1}^N
   {\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \vert X_{t+T} = l, X_t = i\,]}\,
   {\prob( X_{t+T} = l \vert X_t = i)}\\
   & =
-  \sum_{l=1}^n
+  \sum_{l=1}^N
   {\prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \vert X_{t+T} = l\,]}\,
-  {\prob( X_{t+T} = l \vert X_t = i)}  = \sum_{l=1}^n
+  {\prob( X_{t+T} = l \vert X_t = i)}  = \sum_{l=1}^N
   q^\fwd_k(l) P_{il}
 \end{align*}
 We used the Markovianity of $X_T$ at the third equation,
 and the time-homogeneity in the fourth equation.
 Therefore, following the same procedure as before we have
-\begin{align*}
+\begin{align}\label{eq:appb-t}
   \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]=
-  \sum_{i=1}^n\sum_{l=1}^n
+  \sum_{i=1}^N\sum_{l=1}^N
   q^\fwd_k(l) P_{il}
-  \frac{q^\bwd_j(i) \mu(i)}{\hat \mu(i)} = \frac{\langle q_j^\bwd, P q_k^\fwd\rangle_\mu}{\hat \mu(j)}  = {\hat T}_{jk}
-\end{align*}
+  \frac{q^\bwd_j(i) \mu(i)}{\hat \mu_j} = \frac{\langle q_j^\bwd, P q_k^\fwd\rangle_\mu}{\hat \mu_j}  = {\hat T}_{jk}
+\end{align}
 Thus, when starting with the milestone process in state $j$ at some time $t$ we have to determine the fraction of all trajectories of length at least $T$ that hit core set $C_k$ first of all core sets to estimate $\hat{T}_{jk}$.
 
 \section{The prove of identity $\hat P = \hat T\hat M^{-1}$}
 \label{sec:app-ptm}
+In this section we prove the identity  $\hat P = \hat T\hat M^{-1}$. Starting from the
+result Eq.~\eqref{eq:appb-t},
 \begin{align*}
   \hat T_{jk} &=
   \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l) \,\vert\, \hat X_t = j\,]\\
@@ -1288,10 +1292,10 @@ Thus, when starting with the milestone process in state $j$ at some time $t$ we 
   & =
   \sum_l \prob [\,h_{t+T}(C_k) < h_{t+T}(\cup_{l\neq k} C_l)\vert \hat X_{t+T} = l\,] \hat P_{jl}\\
   &= 
-  \sum_l  \hat P_{jl}\hat M_{lk}
+  \sum_l  \hat P_{jl}\hat M_{lk}.
 \end{align*}
 This proves the identity $\hat P = \hat T\hat M^{-1}$.
-Notice that in the fifth equation we assumes the Markovianity of the milestone process $\hat X_m$.
+Notice that in the fifth equation we assumes the Markovianity of the milestone process $\hat X_m$. In the sixth equation we use the result Eq.~\eqref{eq:appb-m}, and the time-homogeneity of the milestone process.
 
 
 \bibliography{ref}{}

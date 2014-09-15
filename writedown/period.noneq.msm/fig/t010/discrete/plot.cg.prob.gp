@@ -56,13 +56,13 @@ pl \
 u 1:5 every 1 w l ls 11 t 'Brute force', \
 '' u 1:($5-$9*2):($5+$9*2) every 1 w filledcu ls 111 not,\
 'dis.dih2.tau0.5.b0.e80.5/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 22 t '[0,80] K=2', \
+u 1:5 every 1 w l ls 22 t '[0,80] N_{dih}=2', \
 'dis.dih2.tau0.5.b320.e400.5/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 12 t '[320,400] K=2', \
+u 1:5 every 1 w l ls 12 t '[320,400] N_{dih}=2', \
 'dis.dih20.tau0.5.b0.e80.5/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 23 t '[0,80] K=20', \
+u 1:5 every 1 w l ls 23 t '[0,80] N_{dih}=20', \
 'dis.dih20.tau0.5.b320.e400.5/cg.prob.dih.5sets.out' \
-u 1:5 every 1 w l ls 13 t '[320,400] K=20', \
+u 1:5 every 1 w l ls 13 t '[320,400] N_{dih}=20', \
 'metastable.out' \
 u 1:5 every 1 w l ls 11 not
 
