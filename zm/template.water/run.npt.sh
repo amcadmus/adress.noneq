@@ -24,6 +24,16 @@ fi
 fi
 fi
 
+
+if echo "$gmx_thermostat" | grep sd &> /dev/null; then
+    gmx_integrator=sd
+    gmx_tcouple=no
+else if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
+    gmx_integrator=md
+    gmx_tcouple=nose-hoover
+fi
+fi
+
 echo "# copy files"
 if test -d npt; then
     mv -f npt npt.`date +%s`
@@ -72,6 +82,9 @@ sed -e "/^tau_t /s/=.*/= $gmx_taut/g"|\
 sed -e "/^tau_p /s/=.*/= $gmx_taup/g"|\
 sed -e "/^epsilon_rf /s/=.*/= $gmx_e_rf/g"|\
 sed -e "/^gen_vel /s/=.*/= no/g"|\
+sed -e "/^couple-moltype /s/=.*/= /g"|\
+sed -e "/^integrator /s/=.*/= $gmx_integrator/g"|\
+sed -e "/^Tcoupl /s/=.*/= $gmx_tcouple/g"|\
 sed -e "/^table-extension /s/=.*/= $gmx_tab_ext/g"> tmp.mdp
 mv -f tmp.mdp grompp.mdp
 cd ..
