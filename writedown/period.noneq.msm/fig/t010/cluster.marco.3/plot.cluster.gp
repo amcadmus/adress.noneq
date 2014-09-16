@@ -37,6 +37,9 @@
 
 
 reset
+
+set term post eps enh color solid font 18 size 8cm,8cm 
+
 set view map
 set xlabel "{/Symbol f} [deg.]" 
 set ylabel "{/Symbol y} [deg.]"
@@ -55,13 +58,14 @@ set size ratio 1.0
 set xrange [-180:180]
 set yrange [-180:180]
 
-set term post eps enh color solid font 18 size 8cm,8cm 
 #set term post eps enh color solid font 32 size 16cm,16cm 
-set cbrange [-0.5:4.5]
+# set cbrange [-0.5:4.5]
 # set format cb "%d"
 
-set cbrange [-0.5:3.5]
+# set cbrange [-0.5:3.5]
 set palette maxcolors 4
+unset colorbox
+set tics out
 set out 'fig-cluster.eps'
-set title 'Clustering'
-splot 'cluster.out' u 1:2:3 not w p pt 5 palette
+set title 'Core sets'
+splot 'cluster.out' u 1:2:3 not w p pt 5 ps 2.0 palette

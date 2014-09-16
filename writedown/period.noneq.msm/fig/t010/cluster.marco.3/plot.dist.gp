@@ -223,6 +223,7 @@ set term post eps enh color solid font 18 size 9cm,8cm
 set label "[kJ/mol]" at 210,215
 set out 'fig-floquet-vec-1.eps'
 set title '(b) F_{st} of {/Symbol F}(T)'
+set title '(b) F_{st} of discretized dyn.'
 set tics out
 pl 'img.dist.2d.dat' with image, 'cont.dist.2d.dat' w l lc 0 not 
 
