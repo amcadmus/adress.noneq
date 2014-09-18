@@ -36,7 +36,6 @@ int main(int argc, char * argv[])
   std::string ofile, ifile, isfile, idfile, opfile;
   double dt, period, begin, end;
   unsigned ndataBlock;
-  double maxRelError;
   
   po::options_description desc ("Allow options");
   desc.add_options()
@@ -45,7 +44,6 @@ int main(int argc, char * argv[])
       ("input-dir,d", po::value<std::string > (&idfile)->default_value ("dir.name"), "the output of metastable propulation")
       ("input-largest-set,s", po::value<std::string > (&isfile)->default_value ("largestSet"), "the input file of largest set.")
       ("n-data-block,n", po::value<unsigned > (&ndataBlock)->default_value (1), "num data in each block.")
-      ("max-rel-error,m", po::value<double > (&maxRelError)->default_value (2e-0), "maximum relative error.")
       ("dt,t", po::value<double > (&dt)->default_value (1.0), "time step of disc traj.")
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
       ("begin,b", po::value<double > (&begin)->default_value (0), "the begin of using data.")
