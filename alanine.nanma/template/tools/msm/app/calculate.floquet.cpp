@@ -48,7 +48,7 @@ int main(int argc, char * argv[])
       ("period,p", po::value<double > (&period)->default_value (40.0), "the period, in ps. should be multiples of dt")
       ("begin,b", po::value<double > (&begin)->default_value (0), "the begin of using data.")
       ("end,e", po::value<double > (&end)->default_value (0), "the end of using data.")
-      ("output,o", po::value<string > (&ofile)->default_value ("floquet.p.out"), "the output transition matrix.");
+      ("output,o", po::value<string > (&ofile)->default_value ("direct.floquet.out"), "the output transition matrix.");
   
 
   po::variables_map vm;
@@ -151,6 +151,21 @@ int main(int argc, char * argv[])
     cpTmatrix[ii].resize(nstate);
     for (unsigned jj = 0; jj < nstate; ++jj){
       cpTmatrix[ii][jj] = tmatrix[ii][jj].getAvg();
+    }
+  }
+
+  for (unsigned kk = 0; kk < nstate; ++kk){
+    double sum = 0;
+    for (unsigned jj = 0; jj < nstate; ++jj){
+      sum += cpTmatrix[kk][jj];
+    }
+    if (fabs(sum - 1) > 1e-12){
+      if (fabs(sum) < 1e-12){
+	cpTmatrix[kk][kk] = 1.;
+      }
+      else {
+	cerr << "sum is " << sum << " problematic" << endl;
+      }
     }
   }
 
