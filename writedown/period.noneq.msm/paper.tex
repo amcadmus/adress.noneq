@@ -336,7 +336,7 @@ $\hat{\vect P}$ can be computed by matrix multiplication using the committors:
     \begin{split}      
     \hat{\vect P}_{jk}
     = &
-    \frac{1}{\hat{\mu}(j)}
+    \frac{1}{\hat{\mu}_j}
     \langle (\vect P^b - \id) q^\bwd_j,q^\fwd_k \rangle_\mu,\qquad j\not= k, \\    %\label{eq:msm-tmatrix-01}
     \hat{\vect P}_{jj}
     =&
@@ -780,7 +780,7 @@ estimated as described above, and the MSM transition matrices $\hat P$, $\hat{M}
 Alternatively, the MSM  transition matrix $\hat P$ is calculated directly from the NEMD trajectories using Eq.~\eqref{hatP_prob} (very good agreement with the one computed from the committors).
 The leading eigenvalues of $P=\myphi^{\top}(T)$ are compared with those of $\hat P$ and $\hat{M}^{-1}\hat{T}$ in
 Tab.~\ref{tab:tmp1}.
-Without surprising, the two approaches for MSM building are consitent, \recheck{and the latter is slightly better}.
+Without surprising, the two approaches for MSM building are consitent.
 The MSM is able to accurately reproduce
 the largest non-trivial eigenvalue, which means a precise reproduction
 of the longest non-trivial implied time-scale. The accuracy of the second non-trivial
@@ -795,9 +795,9 @@ The difference between the eigenvalues of $\hat P$ and $\hat{M}^{-1}\hat T$
 Numerically the two MSM transition matrices are:
 \[
 \hat{M}^{-1}\hat{T}=\left(\begin{array}{ccc}
-   0.860 &   0.134 &   0.007 \\
-    0.190  &  0.775  &  0.034\\
-    0.020   & 0.065 &   0.915
+   0.860 &   0.133 &   0.008 \\
+    0.192  &  0.775  &  0.033\\
+    0.019   & 0.066 &   0.915
 \end{array}
 \right),\qquad \hat{P}=\left(\begin{array}{ccc}
    0.882 &   0.110 &   0.008 \\
