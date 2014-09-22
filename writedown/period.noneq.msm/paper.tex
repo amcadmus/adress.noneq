@@ -900,83 +900,90 @@ non-equilibrium system. By a numerical example
 of the alanine dipeptide under periodically oscillatory EF,
 the methods are shown  to be
 valid and be able to capture the long-time behavior of the original
-non-equilibrium dynamics. We have provided and verified two equivalent
-pathways of building MSM, as is shown by the two branches in
-Fig.~\ref{fig:flowchart}.
+non-equilibrium dynamics.
 
-The the key steps of the first pathway are
-summarized as following:
-\begin{enumerate}
-\item By a fine discretization of the molecular configuration space,
-  the original NEMD dynamics is discretized into a (in principle)
-  time-continuous \recheck{Markov} jump process with a time-dependent generator $L(t)$.
-  If the discretization is good enough, then the discretized
-  dynamics is expected to reproduce the original dynamics.
-  In principle most of the discretiztion methods for the
-  equilibirum case can be generalized to  non-equilibrium without
-  substantial difficulty, however,
-  we have not discussed which discretiztion method is the best choice,
-  since it is out of the scope of the present work.
-  \recheck{It should be noticed that
-    we assume the jump process is Markovian, althogh in
-    general it is not true. However, if (1) the system present time-scale
-    seperation; (2) the spatial discretiztion is fine enough; (3)
-    we approximately consider a discretizted time
-    (can be very fine, and in computer the molecular configurations are
-    saved at discretizted time steps)
-    by lag-time $\tau$, so that within the lag-time
-    the fast dynamics of the system is fully relaxed; then
-    the Markovianity is a good assumption for the discretizted dynamics.
-  }
-  We show that, by numerical example, a uniform $20\times20$ discretiztion 
-  over the dihedral angles $\phi$--$\psi$ space is a good choice for
-  alanine dipeptide.
-  In the tests, the state independency in computing $L(t)$
-  is used as an indicator for
-  the quality of the discretiztion.
-\item By the Floquet thoerem, the time-inhomogeneous process generated
-  by $L(t)$ is temporally discretized in to a time-homogeneous,
-  but not necessarily reversible, jump process that has a transition
-  matrix denoted by $P$. This temporal discretiztion only  considers
-  the state of the system at integral periods, therefore all information
-  within the period is not preserved. This is, however, not a serious
-  problem whenever the long-time hehaviors of the system is of interst, and
-  their corresponding time-scales are significantly longer than one period.
-  The advantage of this discretiztion
-  is also obvious: All well-developed theories and computational tools
-  for time-homogeneous Markov processes
-  can be directly appled. In the
-  alanine dipeptide system, we compare
-  the the quasi-stationary probability,
-  first mean hitting time, and the forward and backward committors
-  of the discretized dynamics with those computed directly from the
-  NEMD simulation. An almost perfect consistency 
-  indicates a good approximation quality of the discretized dynamics.
-\item From the disretized dynamics, building the MSM is straightforward
-  by using Eq.~\eqref{eq:msm-tmatrix-00} and a set of coresets.
-  Numerical results shows that a 3-state MSM can reporduce the leading
-  non-trivial eigenvalue with very good accuracy, while the second
-  non-trivial eigenvalue with acceptable accuracy. The lower accuracy
-  regarding the second non-trivial eigenvalue may be due to the fact that
-  the second slowest time-scale is not significantly longer than the
-  period. Using this three state MSM, we can also reproduce, with
-  almost perfect accuracy, the 
-  time-evolution of the metastable state
-  pobabilities from equilibirum (no external driven)
-  to the non-equilibrium quasi-stationary state.
-\end{enumerate}
+We firstly provide effective methods for discretizing the original NEMD trajectories
+both temporally and spacially, and the end-product is a time-homogeneous
+(not necessarily reversible) Markov jump process.
+There are two equivalent approaches discussed in the paper:
+one can either do a two-steps discretization,
+i.e.~firstly spacial and then temperoal,
+or a single step  involes both discretizations simulteneously.
+They are exhibited by the left-most and middle branches in Fig.~\ref{fig:flowchart}.
 
-The right branch in Fig.~\ref{fig:flowchart} presents a
+By a fine discretization of the molecular configuration space, the
+original NEMD dynamics is discretized into a (in principle)
+continuous and time-inhomogeneous {Markov} jump process.
+In principle most of the discretiztion methods for the equilibirum
+case can be generalized to non-equilibrium without substantial
+difficulty, however, we have not compare different discretiztion methods
+regarding the accuracy, since it is out of the scope of the present work.
+We show that, by numerical example, a uniform $20\times20$
+discretiztion over the dihedral angles $\phi$--$\psi$ space is a good
+choice for alanine dipeptide.  In the tests, the state independency in
+computing the generator is used as an indicator for the quality of the
+discretiztion.
+
+The Floquet thoerem discretize a periodic process by taking only
+integral periods, so that
+the time-inhomogeneous process
+is discretized in to a time-homogeneous, but not
+necessarily reversible process.
+The advantage of this discretiztion is  obvious: All
+well-developed theories and computational tools for time-homogeneous
+Markov processes can be directly appled. In the alanine dipeptide
+system, we compare the the quasi-stationary probability, first mean
+hitting time, and the forward and backward committors of the
+discretized dynamics with those computed directly from the NEMD
+simulation. An almost perfect consistency indicates a good
+approximation quality of the discretized dynamics.
+
+Although the end-product of the two-step and one-step discretiztions are equivalent,
+it is clear that the one-step discretiztion does not preserve any information
+within one period, because only the states
+at integral periods are considered. This is not a serious problem
+whenever the long-time hehaviors of the system is of interst, and
+their corresponding time-scales are significantly longer than one
+period. However, if the time-scale of any interested behavior
+is comparable to, or even shorter than the period, the two-step
+discretiztion is prefered, so that one can recover the dynamics within
+one period no matter when it is necessary. If the longest non-trivial
+time-scale is comparable to one period, thenn the Floquet theorem
+is not preferable, and the non-equilibrium dynamics may be well
+described by the quasi-equilibrium approximation.
+
+Building the MSM from the time-homogeneous disretized dynamics is straightforward by
+using Eq.~\eqref{eq:msm-tmatrix-00} and a set of coresets that are
+derived from the discretized dynamics.  Numerical
+results shows that a 3-state MSM can reporduce the leading non-trivial
+eigenvalue with very good accuracy, while the second non-trivial
+eigenvalue with acceptable accuracy. The lower accuracy regarding the
+second non-trivial eigenvalue may be due to the fact that the second
+slowest time-scale is not significantly longer than the period. Using
+this three state MSM, we can also reproduce, with almost perfect
+accuracy, the time-evolution of the metastable state pobabilities from
+equilibirum (no external driven) to the non-equilibrium
+quasi-stationary state.
+
+
+The right-most branch in Fig.~\ref{fig:flowchart} presents an
 equivalent, and seemingly
-much simpler alternative to the left branch, provided the
-coresets are known. Neverthless, in pactice, identifying
-the coresets is not a trivial task, especially for the
+much simpler alternative to the middle branch, i.e. building
+the MSM directly from the NEMD trajectories.
+In practice, however, this method may not be applicable, because
+it requires known coresets, and the coresets identification 
+is usually not a trivial task, especially for the
 non-equilibrium molecular systems.
-Therefore, a good discretization is  usually a must for computing the coreset.
-For example, in the present work, we computed the coresets by
-finding the roughly constant levels of the hitting time distribution.
-This method only works for the discretized dynamics $P$, and its continuous
-counterpart is still an open question.
+This task is substantially
+simplified when an accurate time-homogeneous discretiztion 
+to the original time-inhomogeneous NEMD is accessible.
+In the present work, we computed the coresets by
+finding the roughly constant levels of the hitting time distribution 
+of the discretized dynamics.
+It should be noticed that the continuous
+counterpart of the current coresets identification method is still an open question.
+% This method only works for the discretized dynamics. and its
+% Therefore, a good discretization is  usually a must for computing the coreset.
 
 In this paper, we mainly focus on the methodology development for MSM
 building in non-equilibrium systems. It is worth noting that the
@@ -996,6 +1003,9 @@ in order to achieve a certain population of  the left-handed $\alpha$-helix,
 what kind of EF should be used to drive the system.
 In this work, we have not investigated in this direction, however, it will
 be treated in the future studies.
+
+
+  
 
 
 
