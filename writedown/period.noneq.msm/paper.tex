@@ -133,11 +133,11 @@ $\vect L(t)$ transports probability distributions according to the associated Ma
   \label{eq:disc-master}
   \frac{d\vect p(t)}{dt} = \vect L^{\top}(t)\cdot \vect p(t)
 \end{align}
-where $\vect L^{\top}(t)$ denotes the matrix transpose of $\vect L(t)$, $\vect p(t)$ is an $N$-vector denoting the probability distribution on $S$ at time $t$, $p_i(t)$, for example, the probability to be in state $i$ (which corresponds to set $\Omega_i$) at time $t$.
+where $\vect L^{\top}(t)$ denotes the matrix transpose of $\vect L(t)$, $\vect p(t)$ is an $N$-vector denoting the probability distribution on $S$ at time $t$, $p(i,t)$, for example, the probability to be in state $i$ (which corresponds to set $\Omega_i$) at time $t$.
 As usual the properties (\ref{eq:disc-4}) and (\ref{eq:disc-5}) of
 $\vect L(t)$ guarantee that the total probability mass is conserved,
-i.e., if $p_i(0)\ge 0$ componentwise, then $p_i(t)\ge 0$ and $\sum_i
-p_i(t) = \sum_ip_i(0)$.
+i.e., if $p(i,0)\ge 0$ componentwise, then $p(i,t)\ge 0$ and $\sum_i
+p(i,t) = \sum_ip(i,0)$.
 % The solution of the master equation need no be
 % periodic.
 The temporal evolution of the probability distribution $\vect p(t)$ can be formally written
@@ -167,7 +167,7 @@ The discretization sets that we used to go from $\vect x_t$ and $\ml(t)$ to $\ve
 and $\vect L(t)$, respectively, can be assumed to provide an arbitrarily fine
 partition of the original state space; then the transport properties
 of $\vect L(t)$ are almost perfect approximations of the transport properties
-of $\ml(t)$, in particular the approximation $p_i(t)\approx \prob(x_t\in \Omega_i)$ is almost perfect.
+of $\ml(t)$, in particular the approximation $p(i,t)\approx \prob(x_t\in \Omega_i)$ is almost perfect.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -228,7 +228,7 @@ satisfies $|\lambda|\le 1$. Furthermore $\lambda=1$ is an
 eigenvalue with right eigenvector $\vect e=(1,\ldots,1)^{\top}$ and a left eigenvector $\mymu$
 satisfying
 $\mymu^{\top}P=\mymu^{\top}$.
-From now on, we assume $P$ to be irreducible and aperiodic such that the Perron Frobenius theorem the eigenvalue $\lambda=1$ is  non-negative componentwise, and unique (up to normalization $\sum_j\mu_j=1$). In this case $\mymu$ is the stationary measure in the sense that
+From now on, we assume $P$ to be irreducible and aperiodic such that the Perron Frobenius theorem the eigenvalue $\lambda=1$ is  non-negative componentwise, and unique (up to normalization $\sum_i\mu(i)=1$). In this case $\mymu$ is the stationary measure in the sense that
 $
  \mymu^{\top} P^m = \mymu^{\top},\ m\in\mathbb N
 $,
@@ -271,7 +271,7 @@ correctly describe the slow  dynamics, and
 in each set the fast dynamics relaxes on some timescales significantly shorter than the metastable timescales.
 Then if the MSM dynamics reproduces the slow timescales and the corresponding transitions
 of the original dynamics~\eqref{eq:disc-1},
-the former is considered to be a good approximation of the later.
+the former is considered to be a good approximation of the latter.
 
 MSM building has been attracted a lot of attention recently, and theory  \cite{A19-31} as well as algorithms \cite{A19-1}, applications (see e.g. \cite{A19-26,PNAS09} for two of hundreds of articles) and software \cite{A19-49, MSMBuilder} have been developed to quite an extend. However, 
 by far most of the literature is related to building \emph{standard} MSMs for equilibirium MD. In standard MSM also the transition region has to be discretized, a feature that often forces the user to incorporate more macrostates than essentially needed to approximate the long-term kinetics.
@@ -780,7 +780,7 @@ estimated as described above, and the MSM transition matrices $\hat P$, $\hat{M}
 Alternatively, the MSM  transition matrix $\hat P$ is calculated directly from the NEMD trajectories using Eq.~\eqref{hatP_prob} (very good agreement with the one computed from the committors).
 The leading eigenvalues of $P=\myphi^{\top}(T)$ are compared with those of $\hat P$ and $\hat{M}^{-1}\hat{T}$ in
 Tab.~\ref{tab:tmp1}.
-Without surprising, the two approaches for MSM building are consitent.
+Without surprising, the two approaches for MSM building are consitent, \recheck{and the latter is slightly better}.
 The MSM is able to accurately reproduce
 the largest non-trivial eigenvalue, which means a precise reproduction
 of the longest non-trivial implied time-scale. The accuracy of the second non-trivial
@@ -800,9 +800,9 @@ Numerically the two MSM transition matrices are:
     0.020   & 0.065 &   0.915
 \end{array}
 \right),\qquad \hat{P}=\left(\begin{array}{ccc}
-   0.888 &   0.104 &   0.007 \\
-    0.149  &  0.822  &  0.029\\
-    0.021   & 0.056 &   0.923
+   0.882 &   0.110 &   0.008 \\
+    0.158  &  0.815  &  0.028\\
+    0.023   & 0.055 &   0.922
 \end{array}
 \right),
 \]
@@ -820,8 +820,8 @@ matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
   }
   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}c rrr}\hline\hline
       &  $\lambda_2$ & $\lambda_3$ & $\lambda_4$ \\\hline
-    $P$                 &0.907  &0.686 & 0.553       \\
-    $\hat P$     & 0.911  &0.723 & --       \\
+    $P$                 &0.905  &0.668 & 0.551       \\
+    $\hat P$     & 0.909  &0.710 & --       \\
     $\hat{M}^{-1}\hat{T}$    & 0.901  &0.649 & --       \\
     \hline\hline
   \end{tabular*}
@@ -856,7 +856,7 @@ the form
 \begin{align}
   \mathcal A(t) = \langle A(i)\rangle_t = \sum_{i\in S} A(i) p(i,t),
 \end{align}
-where $p(i,t) = p_i(t)=\prob(X_t=i)$ denotes the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is spanned by the backward
+where $p(i,t)=\prob(X_t=i)$ is the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is spanned by the backward
 committors, i.e.,
 \begin{align}\label{A}
   A(i) = \sum_{j=1}^K \alpha_j q^\bwd_j(i).
@@ -882,7 +882,7 @@ the time-dependent probability at $mT$ is generated by Eq.~\eqref{eq:num-29}, i.
 % The projected probability, e.g.~$\hat p (l', mT)$ is calculated
 % by Eq.~\eqref{eq:num-28} letting $\alpha_l = \delta_{l'l}$.
 
-\recheck{Han: Here we have $p_j(t)$, $p(j,t)$ and $\hat p_j (0)$. That's a little confusing since I do not see a clear distinction between the former two. What can we do? What do you want to express?}
+% \recheck{Han: Here we have $p_j(t)$, $p(j,t)$ and $\hat p_j (0)$. That's a little confusing since I do not see a clear distinction between the former two. What can we do? What do you want to express?}
 
 
 \section{Concluding remarks and discussions}
