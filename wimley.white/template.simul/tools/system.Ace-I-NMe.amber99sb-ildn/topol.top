@@ -1,0 +1,327 @@
+;
+;	File 'isoleucine.top' was generated
+;	By user: vitalini (213883)
+;	On host: adagio
+;	At date: Wed Feb 13 10:23:01 2013
+;
+;	This is a standalone topology file
+;
+;	It was generated using program:
+;	pdb2gmx - VERSION 4.5.5
+;
+;	Command line was:
+;	pdb2gmx -f isoleucine.gro -o isoleucine.gro -p isoleucine.top -i isoleucine.itp -ignh 
+;
+;	Force field was read from the standard Gromacs share directory.
+;
+
+; Include forcefield parameters
+#include "amber99sb-ildn.ff/forcefield.itp"
+
+[ moleculetype ]
+; Name            nrexcl
+Protein             3
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr     charge       mass  typeB    chargeB      massB
+; residue   1 ACE rtp ACE  q  0.0
+     1         CT      1    ACE    CH3      1    -0.3662      12.01   ; qtot -0.3662
+     2         HC      1    ACE   HH31      2     0.1123      1.008   ; qtot -0.2539
+     3         HC      1    ACE   HH32      3     0.1123      1.008   ; qtot -0.1416
+     4         HC      1    ACE   HH33      4     0.1123      1.008   ; qtot -0.0293
+     5          C      1    ACE      C      5     0.5972      12.01   ; qtot 0.5679
+     6          O      1    ACE      O      6    -0.5679         16   ; qtot 0
+; residue   2 ILE rtp ILE  q  0.0
+     7          N      2    ILE      N      7    -0.4157      14.01   ; qtot -0.4157
+     8          H      2    ILE      H      8     0.2719      1.008   ; qtot -0.1438
+     9         CT      2    ILE     CA      9    -0.0597      12.01   ; qtot -0.2035
+    10         H1      2    ILE     HA     10     0.0869      1.008   ; qtot -0.1166
+    11         CT      2    ILE     CB     11     0.1303      12.01   ; qtot 0.0137
+    12         HC      2    ILE     HB     12     0.0187      1.008   ; qtot 0.0324
+    13         CT      2    ILE    CG2     13    -0.3204      12.01   ; qtot -0.288
+    14         HC      2    ILE   HG21     14     0.0882      1.008   ; qtot -0.1998
+    15         HC      2    ILE   HG22     15     0.0882      1.008   ; qtot -0.1116
+    16         HC      2    ILE   HG23     16     0.0882      1.008   ; qtot -0.0234
+    17         CT      2    ILE    CG1     17     -0.043      12.01   ; qtot -0.0664
+    18         HC      2    ILE   HG11     18     0.0236      1.008   ; qtot -0.0428
+    19         HC      2    ILE   HG12     19     0.0236      1.008   ; qtot -0.0192
+    20         CT      2    ILE     CD     20     -0.066      12.01   ; qtot -0.0852
+    21         HC      2    ILE    HD1     21     0.0186      1.008   ; qtot -0.0666
+    22         HC      2    ILE    HD2     22     0.0186      1.008   ; qtot -0.048
+    23         HC      2    ILE    HD3     23     0.0186      1.008   ; qtot -0.0294
+    24          C      2    ILE      C     24     0.5973      12.01   ; qtot 0.5679
+    25          O      2    ILE      O     25    -0.5679         16   ; qtot 0
+; residue   3 NME rtp NME  q  0.0
+    26          N      3    NME      N     26    -0.4157      14.01   ; qtot -0.4157
+    27          H      3    NME      H     27     0.2719      1.008   ; qtot -0.1438
+    28         CT      3    NME    CH3     28     -0.149      12.01   ; qtot -0.2928
+    29         H1      3    NME   HH31     29     0.0976      1.008   ; qtot -0.1952
+    30         H1      3    NME   HH32     30     0.0976      1.008   ; qtot -0.0976
+    31         H1      3    NME   HH33     31     0.0976      1.008   ; qtot 0
+
+[ bonds ]
+;  ai    aj funct            c0            c1            c2            c3
+    1     2     1 
+    1     3     1 
+    1     4     1 
+    1     5     1 
+    5     6     1 
+    5     7     1 
+    7     8     1 
+    7     9     1 
+    9    10     1 
+    9    11     1 
+    9    24     1 
+   11    12     1 
+   11    13     1 
+   11    17     1 
+   13    14     1 
+   13    15     1 
+   13    16     1 
+   17    18     1 
+   17    19     1 
+   17    20     1 
+   20    21     1 
+   20    22     1 
+   20    23     1 
+   24    25     1 
+   24    26     1 
+   26    27     1 
+   26    28     1 
+   28    29     1 
+   28    30     1 
+   28    31     1 
+
+[ pairs ]
+;  ai    aj funct            c0            c1            c2            c3
+    1     8     1 
+    1     9     1 
+    2     6     1 
+    2     7     1 
+    3     6     1 
+    3     7     1 
+    4     6     1 
+    4     7     1 
+    5    10     1 
+    5    11     1 
+    5    24     1 
+    6     8     1 
+    6     9     1 
+    7    12     1 
+    7    13     1 
+    7    17     1 
+    7    25     1 
+    7    26     1 
+    8    10     1 
+    8    11     1 
+    8    24     1 
+    9    14     1 
+    9    15     1 
+    9    16     1 
+    9    18     1 
+    9    19     1 
+    9    20     1 
+    9    27     1 
+    9    28     1 
+   10    12     1 
+   10    13     1 
+   10    17     1 
+   10    25     1 
+   10    26     1 
+   11    21     1 
+   11    22     1 
+   11    23     1 
+   11    25     1 
+   11    26     1 
+   12    14     1 
+   12    15     1 
+   12    16     1 
+   12    18     1 
+   12    19     1 
+   12    20     1 
+   12    24     1 
+   13    18     1 
+   13    19     1 
+   13    20     1 
+   13    24     1 
+   14    17     1 
+   15    17     1 
+   16    17     1 
+   17    24     1 
+   18    21     1 
+   18    22     1 
+   18    23     1 
+   19    21     1 
+   19    22     1 
+   19    23     1 
+   24    29     1 
+   24    30     1 
+   24    31     1 
+   25    27     1 
+   25    28     1 
+   27    29     1 
+   27    30     1 
+   27    31     1 
+
+[ angles ]
+;  ai    aj    ak funct            c0            c1            c2            c3
+    2     1     3     1 
+    2     1     4     1 
+    2     1     5     1 
+    3     1     4     1 
+    3     1     5     1 
+    4     1     5     1 
+    1     5     6     1 
+    1     5     7     1 
+    6     5     7     1 
+    5     7     8     1 
+    5     7     9     1 
+    8     7     9     1 
+    7     9    10     1 
+    7     9    11     1 
+    7     9    24     1 
+   10     9    11     1 
+   10     9    24     1 
+   11     9    24     1 
+    9    11    12     1 
+    9    11    13     1 
+    9    11    17     1 
+   12    11    13     1 
+   12    11    17     1 
+   13    11    17     1 
+   11    13    14     1 
+   11    13    15     1 
+   11    13    16     1 
+   14    13    15     1 
+   14    13    16     1 
+   15    13    16     1 
+   11    17    18     1 
+   11    17    19     1 
+   11    17    20     1 
+   18    17    19     1 
+   18    17    20     1 
+   19    17    20     1 
+   17    20    21     1 
+   17    20    22     1 
+   17    20    23     1 
+   21    20    22     1 
+   21    20    23     1 
+   22    20    23     1 
+    9    24    25     1 
+    9    24    26     1 
+   25    24    26     1 
+   24    26    27     1 
+   24    26    28     1 
+   27    26    28     1 
+   26    28    29     1 
+   26    28    30     1 
+   26    28    31     1 
+   29    28    30     1 
+   29    28    31     1 
+   30    28    31     1 
+
+[ dihedrals ]
+;  ai    aj    ak    al funct            c0            c1            c2            c3            c4            c5
+    2     1     5     6     9 
+    2     1     5     7     9 
+    3     1     5     6     9 
+    3     1     5     7     9 
+    4     1     5     6     9 
+    4     1     5     7     9 
+    1     5     7     8     9 
+    1     5     7     9     9 
+    6     5     7     8     9 
+    6     5     7     9     9 
+    5     7     9    10     9 
+    5     7     9    11     9 
+    5     7     9    24     9 
+    8     7     9    10     9 
+    8     7     9    11     9 
+    8     7     9    24     9 
+    7     9    11    13     9    torsion_ILE_N_CA_CB_CG2_mult1
+    7     9    11    13     9    torsion_ILE_N_CA_CB_CG2_mult2
+    7     9    11    12     9 
+    7     9    11    17     9 
+   10     9    11    12     9 
+   10     9    11    13     9 
+   10     9    11    17     9 
+   24     9    11    12     9 
+   24     9    11    13     9 
+   24     9    11    17     9 
+    7     9    24    25     9 
+    7     9    24    26     9 
+   10     9    24    25     9 
+   10     9    24    26     9 
+   11     9    24    25     9 
+   11     9    24    26     9 
+    9    11    13    14     9 
+    9    11    13    15     9 
+    9    11    13    16     9 
+   12    11    13    14     9 
+   12    11    13    15     9 
+   12    11    13    16     9 
+   17    11    13    14     9 
+   17    11    13    15     9 
+   17    11    13    16     9 
+    9    11    17    18     9 
+    9    11    17    19     9 
+    9    11    17    20     9 
+   12    11    17    18     9 
+   12    11    17    19     9 
+   12    11    17    20     9 
+   13    11    17    18     9 
+   13    11    17    19     9 
+   13    11    17    20     9 
+   11    17    20    21     9 
+   11    17    20    22     9 
+   11    17    20    23     9 
+   18    17    20    21     9 
+   18    17    20    22     9 
+   18    17    20    23     9 
+   19    17    20    21     9 
+   19    17    20    22     9 
+   19    17    20    23     9 
+    9    24    26    27     9 
+    9    24    26    28     9 
+   25    24    26    27     9 
+   25    24    26    28     9 
+   24    26    28    29     9 
+   24    26    28    30     9 
+   24    26    28    31     9 
+   27    26    28    29     9 
+   27    26    28    30     9 
+   27    26    28    31     9 
+
+[ dihedrals ]
+;  ai    aj    ak    al funct            c0            c1            c2            c3
+    1     7     5     6     4 
+    5     9     7     8     4 
+    9    26    24    25     4 
+   24    28    26    27     4 
+
+; Include Position restraint file
+#ifdef POSRES
+#include "isoleucine.itp"
+#endif
+
+; Include water topology
+#include "amber99sb-ildn.ff/tip3p.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "amber99sb-ildn.ff/ions.itp"
+
+[ system ]
+; Name
+Generated by trjconv : L-isoleucine t=   0.00000 in water
+
+[ molecules ]
+; Compound        #mols
+Protein             1
+SOL               766

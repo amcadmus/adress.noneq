@@ -1,0 +1,300 @@
+;
+;	File '/home/cocktail/vitalini/Aminoacids/Proline/proline.top' was generated
+;	By user: vitalini (213883)
+;	On host: adagio
+;	At date: Tue Dec 18 13:41:31 2012
+;
+;	This is a standalone topology file
+;
+;	It was generated using program:
+;	pdb2gmx - VERSION 4.5.5
+;
+;	Command line was:
+;	pdb2gmx -f /home/cocktail/vitalini/Aminoacids/Proline/proline.pdb -o /home/cocktail/vitalini/Aminoacids/Proline/proline.gro -p /home/cocktail/vitalini/Aminoacids/Proline/proline.top -i /home/cocktail/vitalini/Aminoacids/Proline/proline.itp -ignh 
+;
+;	Force field was read from the standard Gromacs share directory.
+;
+
+; Include forcefield parameters
+#include "amber99sb-ildn.ff/forcefield.itp"
+
+[ moleculetype ]
+; Name            nrexcl
+Protein             3
+
+[ atoms ]
+;   nr       type  resnr residue  atom   cgnr     charge       mass  typeB    chargeB      massB
+; residue   1 ACE rtp ACE  q  0.0
+     1         CT      1    ACE    CH3      1    -0.3662      12.01   ; qtot -0.3662
+     2         HC      1    ACE   HH31      2     0.1123      1.008   ; qtot -0.2539
+     3         HC      1    ACE   HH32      3     0.1123      1.008   ; qtot -0.1416
+     4         HC      1    ACE   HH33      4     0.1123      1.008   ; qtot -0.0293
+     5          C      1    ACE      C      5     0.5972      12.01   ; qtot 0.5679
+     6          O      1    ACE      O      6    -0.5679         16   ; qtot 0
+; residue   2 PRO rtp PRO  q  0.0
+     7          N      2    PRO      N      7    -0.2548      14.01   ; qtot -0.2548
+     8         CT      2    PRO     CD      8     0.0192      12.01   ; qtot -0.2356
+     9         H1      2    PRO    HD1      9     0.0391      1.008   ; qtot -0.1965
+    10         H1      2    PRO    HD2     10     0.0391      1.008   ; qtot -0.1574
+    11         CT      2    PRO     CG     11     0.0189      12.01   ; qtot -0.1385
+    12         HC      2    PRO    HG1     12     0.0213      1.008   ; qtot -0.1172
+    13         HC      2    PRO    HG2     13     0.0213      1.008   ; qtot -0.0959
+    14         CT      2    PRO     CB     14     -0.007      12.01   ; qtot -0.1029
+    15         HC      2    PRO    HB1     15     0.0253      1.008   ; qtot -0.0776
+    16         HC      2    PRO    HB2     16     0.0253      1.008   ; qtot -0.0523
+    17         CT      2    PRO     CA     17    -0.0266      12.01   ; qtot -0.0789
+    18         H1      2    PRO     HA     18     0.0641      1.008   ; qtot -0.0148
+    19          C      2    PRO      C     19     0.5896      12.01   ; qtot 0.5748
+    20          O      2    PRO      O     20    -0.5748         16   ; qtot 0
+; residue   3 NME rtp NME  q  0.0
+    21          N      3    NME      N     21    -0.4157      14.01   ; qtot -0.4157
+    22          H      3    NME      H     22     0.2719      1.008   ; qtot -0.1438
+    23         CT      3    NME    CH3     23     -0.149      12.01   ; qtot -0.2928
+    24         H1      3    NME   HH31     24     0.0976      1.008   ; qtot -0.1952
+    25         H1      3    NME   HH32     25     0.0976      1.008   ; qtot -0.0976
+    26         H1      3    NME   HH33     26     0.0976      1.008   ; qtot 0
+
+[ bonds ]
+;  ai    aj funct            c0            c1            c2            c3
+    1     2     1 
+    1     3     1 
+    1     4     1 
+    1     5     1 
+    5     6     1 
+    5     7     1 
+    7     8     1 
+    7    17     1 
+    8     9     1 
+    8    10     1 
+    8    11     1 
+   11    12     1 
+   11    13     1 
+   11    14     1 
+   14    15     1 
+   14    16     1 
+   14    17     1 
+   17    18     1 
+   17    19     1 
+   19    20     1 
+   19    21     1 
+   21    22     1 
+   21    23     1 
+   23    24     1 
+   23    25     1 
+   23    26     1 
+
+[ pairs ]
+;  ai    aj funct            c0            c1            c2            c3
+    1     8     1 
+    1    17     1 
+    2     6     1 
+    2     7     1 
+    3     6     1 
+    3     7     1 
+    4     6     1 
+    4     7     1 
+    5     9     1 
+    5    10     1 
+    5    11     1 
+    5    14     1 
+    5    18     1 
+    5    19     1 
+    6     8     1 
+    6    17     1 
+    7    12     1 
+    7    13     1 
+    7    15     1 
+    7    16     1 
+    7    20     1 
+    7    21     1 
+    8    15     1 
+    8    16     1 
+    8    18     1 
+    8    19     1 
+    9    12     1 
+    9    13     1 
+    9    14     1 
+    9    17     1 
+   10    12     1 
+   10    13     1 
+   10    14     1 
+   10    17     1 
+   11    18     1 
+   11    19     1 
+   12    15     1 
+   12    16     1 
+   12    17     1 
+   13    15     1 
+   13    16     1 
+   13    17     1 
+   14    20     1 
+   14    21     1 
+   15    18     1 
+   15    19     1 
+   16    18     1 
+   16    19     1 
+   17    22     1 
+   17    23     1 
+   18    20     1 
+   18    21     1 
+   19    24     1 
+   19    25     1 
+   19    26     1 
+   20    22     1 
+   20    23     1 
+   22    24     1 
+   22    25     1 
+   22    26     1 
+
+[ angles ]
+;  ai    aj    ak funct            c0            c1            c2            c3
+    2     1     3     1 
+    2     1     4     1 
+    2     1     5     1 
+    3     1     4     1 
+    3     1     5     1 
+    4     1     5     1 
+    1     5     6     1 
+    1     5     7     1 
+    6     5     7     1 
+    5     7     8     1 
+    5     7    17     1 
+    8     7    17     1 
+    7     8     9     1 
+    7     8    10     1 
+    7     8    11     1 
+    9     8    10     1 
+    9     8    11     1 
+   10     8    11     1 
+    8    11    12     1 
+    8    11    13     1 
+    8    11    14     1 
+   12    11    13     1 
+   12    11    14     1 
+   13    11    14     1 
+   11    14    15     1 
+   11    14    16     1 
+   11    14    17     1 
+   15    14    16     1 
+   15    14    17     1 
+   16    14    17     1 
+    7    17    14     1 
+    7    17    18     1 
+    7    17    19     1 
+   14    17    18     1 
+   14    17    19     1 
+   18    17    19     1 
+   17    19    20     1 
+   17    19    21     1 
+   20    19    21     1 
+   19    21    22     1 
+   19    21    23     1 
+   22    21    23     1 
+   21    23    24     1 
+   21    23    25     1 
+   21    23    26     1 
+   24    23    25     1 
+   24    23    26     1 
+   25    23    26     1 
+
+[ dihedrals ]
+;  ai    aj    ak    al funct            c0            c1            c2            c3            c4            c5
+    2     1     5     6     9 
+    2     1     5     7     9 
+    3     1     5     6     9 
+    3     1     5     7     9 
+    4     1     5     6     9 
+    4     1     5     7     9 
+    1     5     7     8     9 
+    1     5     7    17     9 
+    6     5     7     8     9 
+    6     5     7    17     9 
+    5     7     8     9     9 
+    5     7     8    10     9 
+    5     7     8    11     9 
+   17     7     8     9     9 
+   17     7     8    10     9 
+   17     7     8    11     9 
+    5     7    17    14     9 
+    5     7    17    18     9 
+    5     7    17    19     9 
+    8     7    17    14     9 
+    8     7    17    18     9 
+    8     7    17    19     9 
+    7     8    11    12     9 
+    7     8    11    13     9 
+    7     8    11    14     9 
+    9     8    11    12     9 
+    9     8    11    13     9 
+    9     8    11    14     9 
+   10     8    11    12     9 
+   10     8    11    13     9 
+   10     8    11    14     9 
+    8    11    14    15     9 
+    8    11    14    16     9 
+    8    11    14    17     9 
+   12    11    14    15     9 
+   12    11    14    16     9 
+   12    11    14    17     9 
+   13    11    14    15     9 
+   13    11    14    16     9 
+   13    11    14    17     9 
+   11    14    17     7     9 
+   11    14    17    18     9 
+   11    14    17    19     9 
+   15    14    17     7     9 
+   15    14    17    18     9 
+   15    14    17    19     9 
+   16    14    17     7     9 
+   16    14    17    18     9 
+   16    14    17    19     9 
+    7    17    19    20     9 
+    7    17    19    21     9 
+   14    17    19    20     9 
+   14    17    19    21     9 
+   18    17    19    20     9 
+   18    17    19    21     9 
+   17    19    21    22     9 
+   17    19    21    23     9 
+   20    19    21    22     9 
+   20    19    21    23     9 
+   19    21    23    24     9 
+   19    21    23    25     9 
+   19    21    23    26     9 
+   22    21    23    24     9 
+   22    21    23    25     9 
+   22    21    23    26     9 
+
+[ dihedrals ]
+;  ai    aj    ak    al funct            c0            c1            c2            c3
+    1     7     5     6     4 
+    5     8     7    17     4 
+   17    21    19    20     4 
+   19    23    21    22     4 
+
+; Include Position restraint file
+#ifdef POSRES
+#include "/home/cocktail/vitalini/Aminoacids/Proline/proline.itp"
+#endif
+
+; Include water topology
+#include "amber99sb-ildn.ff/tip3p.itp"
+
+#ifdef POSRES_WATER
+; Position restraint for each water oxygen
+[ position_restraints ]
+;  i funct       fcx        fcy        fcz
+   1    1       1000       1000       1000
+#endif
+
+; Include topology for ions
+#include "amber99sb-ildn.ff/ions.itp"
+
+[ system ]
+; Name
+PROLINE (PRO or P) in water
+
+[ molecules ]
+; Compound        #mols
+Protein             1
+SOL               860
