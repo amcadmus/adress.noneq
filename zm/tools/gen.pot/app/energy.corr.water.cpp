@@ -53,6 +53,7 @@ int main(int argc, char * argv[])
 
   sum += 2. * qo * qh * (potzm.ulpot(roh) - 1./roh);
   sum += qh * qh * (potzm.ulpot(rhh) - 1./rhh);
+  sum -= alpha / sqrt(M_PI) * (qo*qo + qh*qh*2.);
 
   // cout << potzm.ulpot(roh) - 1./roh << endl;
   // cout << potzm.ulpot(rhh) - 1./rhh << endl;
