@@ -1,0 +1,10 @@
+#define FLEXIBLE
+#include "charmm27.ff/forcefield.itp"
+#include "charmm27.ff/tip3p.itp"
+;#include "ins.itp"
+
+[ system ]
+Pure Water
+
+[ molecules ]
+SOL 1000

@@ -7,7 +7,7 @@ source parameters.sh
 
 wwd=`pwd`
 
-if echo "$gmx_npt" | grep yes &> /dev/null ; then
+if echo "$gmx_npt" | grep -v no &> /dev/null ; then
     job_dir=gromacs.traj.npt
 else
     job_dir=gromacs.traj.nvt
@@ -38,8 +38,12 @@ if echo "$gmx_thermostat" | grep sd &> /dev/null; then
     gmx_integrator=$gmx_thermostat
     gmx_tcouple=no
 else if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
-    gmx_integrator=md
+#    gmx_integrator=md
     gmx_tcouple=nose-hoover
+else if echo "$gmx_thermostat" | grep langevin-thermo &> /dev/null; then
+#    gmx_integrator=md
+    gmx_tcouple=langevin-thermo
+fi
 fi
 fi
 
@@ -141,6 +145,14 @@ if echo "$gmx_npt" | grep yes &> /dev/null ; then
     sed -e "/^Pcoupl /s/=.*/= parrinello-rahman/g" |\
     sed -e "/^DispCorr /s/=.*/= EnerPres/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
+else if echo "$gmx_npt" | grep no &> /dev/null ; then
+    echo "# no barostat"
+else
+    cat grompp.mdp |\
+    sed -e "/^Pcoupl /s/=.*/= $gmx_npt/g" |\
+    sed -e "/^DispCorr /s/=.*/= EnerPres/g" > tmp.mdp
+    mv -f tmp.mdp grompp.mdp
+fi
 fi
 cd $wwd
 
@@ -193,11 +205,18 @@ if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
     cd $job_dir
     sed -e "/^gen-vel /s/=.*/= yes/g" grompp.mdp |\
     sed -e "/^nsteps /s/=.*/= 20000/g" |\
+    sed -e "/^integrator /s/=.*/= md/g"|\
     sed -e "/^gen-seed /s/=.*/= $gmx_seed/g" > tmp.mdp
     mv -f tmp.mdp grompp.mdp
     if echo "$gmx_npt" | grep yes &>/dev/null; then
 	sed -e "/^Pcoupl /s/=.*/= berendsen/g" grompp.mdp > tmp.mdp
 	mv -f tmp.mdp grompp.mdp
+    else if echo "$gmx_npt" | grep no &> /dev/null ; then
+	echo "# no barostat"
+    else
+	cat grompp.mdp | sed -e "/^Pcoupl /s/=.*/= berendsen/g" grompp.mdp > tmp.mdp
+	mv -f tmp.mdp grompp.mdp
+    fi
     fi
     if test -f index.ndx; then
 	$gmx_grompp_command -n index.ndx -maxwarn 1
@@ -215,11 +234,18 @@ if echo "$gmx_thermostat" | grep nose-hoover &> /dev/null; then
     fi
     mv -f confout.gro conf.gro
     sed -e "/^gen-vel /s/=.*/= no/g" grompp.mdp |\
+    sed -e "/^integrator /s/=.*/= $gmx_integrator/g"|\
     sed -e "/^nsteps /s/=.*/= $gmx_nsteps/g"  > tmp.mdp
     mv -f tmp.mdp grompp.mdp
     if echo "$gmx_npt" | grep yes &>/dev/null; then
 	sed -e "/^Pcoupl /s/=.*/= parrinello-rahman/g" grompp.mdp > tmp.mdp
 	mv -f tmp.mdp grompp.mdp
+    else if echo "$gmx_npt" | grep no &> /dev/null ; then
+	echo "# no barostat"
+    else
+	cat grompp.mdp | sed -e "/^Pcoupl /s/=.*/= $gmx_npt/g" grompp.mdp > tmp.mdp
+	mv -f tmp.mdp grompp.mdp
+    fi
     fi
     cd $wwd
 fi    
