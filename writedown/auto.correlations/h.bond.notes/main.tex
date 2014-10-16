@@ -1,0 +1,191 @@
+\documentclass[unsortedaddress,a4paper,onecolumn]{revtex4}
+% \documentclass[aps, pre, preprint,unsortedaddress,a4paper,twocolumn]{revtex4}
+% \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
+% \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
+% \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
+
+\usepackage[fleqn]{amsmath}
+\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+\makeatletter
+\makeatother
+
+\newcommand{\recheck}[1]{{\color{red} #1}}
+\newcommand{\redc}[1]{{\color{red} #1}}
+\newcommand{\bluec}[1]{{\color{red} #1}}
+\newcommand{\greenc}[1]{{\color{green} #1}}
+\newcommand{\vect}[1]{\textbf{\textit{#1}}}
+\newcommand{\dd}[1]{\textsf{#1}}
+\newcommand{\fwd}[0]{\textrm{fw}}
+\newcommand{\bwd}[0]{\textrm{bw}}
+\newcommand{\period}[0]{T_{\textrm{P}}}
+\newcommand{\ml}[0]{\mathcal {L}}
+\newcommand{\mo}[0]{\mathcal {O}}
+\newcommand{\mbp}[0]{\mathbb {P}}
+\newcommand{\mc}[0]{\mathcal {C}}
+\newcommand{\dt}[0]{\Delta t}
+
+\newcommand{\confaa}[0]{{\alpha_{\textrm{R}}}}
+\newcommand{\confab}[0]{{\alpha_{\textrm{R}}'}}
+\newcommand{\confba}[0]{{\textrm{C}7_{\textrm{eq}}}}
+\newcommand{\confbb}[0]{{\textrm{C}5}}
+\newcommand{\confc}[0]{{\alpha_{\textrm{L}}}}
+
+\newcommand{\oxy}[0]{{\textrm{O}}}
+\newcommand{\hyd}[0]{{\textrm{H}}}
+
+
+\begin{document}
+
+\title{Notes on the hydrogen-bond auto-correlation}
+\author{Han Wang}
+\email{han.wang@fu-berlin.de}
+\affiliation{Zuse Institut Berlin, Germany}
+   
+\begin{abstract}
+  In this note I describe the implmentational details of the hydrogen-bond auto-correlations.
+\end{abstract}
+
+\maketitle
+
+\section{Definitions}
+Here I use the definition of hydrogen-bond population from
+Ref.~\cite{luzar1996effect, luzar1996hydrogen}.  The population $h(t)$
+is defined to be 1 if a certain pair of molecules forms hydrogen-bond,
+otherwise is defined to be 0. Therefore, the averaged total number of
+hydrogen-bond in an equilibrium system is $\frac12 N(N-1)\langle
+h\rangle$, where $\langle\cdot\rangle$ denotes the ensemble average.
+The auto-correlation
+\begin{align}
+  c(t) = \frac{\langle h(0) h(t)\rangle}{\langle h\rangle}
+\end{align}
+is studied. The physical meaning is that given a hydrogen-bond formed
+at time $0$, the probability of observing a hydrogen-bond between the
+same pair at time $t$.
+The rate of relaxation to equilibrium is of paricular interest:
+\begin{align}\label{eqn:k-def}
+  k(t) &= -\frac{dc}{dt}\\\label{eqn:k-exp}
+  &= -\frac{\langle \dot h(0) [1 - h(t)] \rangle}{\langle h\rangle}
+\end{align}
+where $\dot h(0) = (dh/dt)\vert_{t=0}$. The Eq.~\eqref{eqn:k-exp} holds because
+\begin{align} \label{eqn:tmp3}
+  \langle h(0) \dot h(t) \rangle &= - \langle \dot h(0) h(t)\rangle \\\label{eqn:tmp4}
+  \langle \dot h(0) \rangle &= 0
+\end{align}
+Eq.~\eqref{eqn:tmp4} is obvious because the system is in equilibrium. Eq.~\eqref{eqn:tmp3} holds because
+\begin{align}
+  0 = \frac{d [ h(\tau) h(\tau+t) ] }{d\tau} =  \langle h(\tau) \dot h(\tau+t)\rangle  + \langle \dot h(\tau) h(\tau+t)\rangle.
+\end{align}
+Letting $\tau \rightarrow 0$ on both sides yields Eq.~\eqref{eqn:tmp3}.
+
+\section{Implementation details regarding the rate of relaxation}
+
+The rate of relaxation to equilibrium $k(t)$ can be calculated by
+definition~\eqref{eqn:k-def}, or calculated from Eq.~\eqref{eqn:k-exp}
+with an explicit estimation of the function $\dot h$. We want to discuss the second way.
+
+Two water molecules are hydrogen-bonded if (1) the O--O distance is less than a cut-off $r_c$, \emph{and} (2)
+the O--H...O angle is less than a cut-off $\theta_c$. To mathematically define the function $h$, we introduce
+the Heaviside function:
+\begin{equation}\label{eqn:heavi}
+  H(x) =
+  \left\{
+    \begin{alignedat}{3}
+      &1 &\quad& x\geq0, \\
+      &0 &     & x < 0.
+    \end{alignedat}
+  \right.
+\end{equation}
+And important property of the Heaviside function is that
+\begin{align}
+  \delta (x) = \frac{dH(x)}{dx}
+\end{align}
+If we denote the DOFs of two water molecules by $\vect x_1$ and $\vect x_2$, then the hydrogen-bond population function $h$ is expressed by
+\begin{align}
+  h(\vect x_1, \vect x_2) = H [r_c - R(\vect x_1, \vect x_2)] \cdot H [\theta_c - \theta(\vect x_1, \vect x_2)]
+\end{align}
+where function $R(\vect x_1, \vect x_2)$ computes the O--O distance
+between the molecules, while $\theta(\vect x_1, \vect x_2)$ computes
+the O--H...O angle. In practice, it is not easy to calcualte the
+angle, but the cosine angle is relatively easy. Therefore we use the
+definition 
+\begin{align}
+  h(\vect x_1, \vect x_2) = H [r_c - R(\vect x_1, \vect x_2)] \cdot H[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c]
+\end{align}
+If we notice the fact that the DOFs of the molecules are functions of
+time, i.e.~$\vect x_1 = \vect x_1(t)$, and $\vect x_2 = \vect x_2(t)$, then
+taking the derivative w.r.t.~time on both sides of the equation, we have
+\begin{align}
+  \frac{d h}{dt}
+  =
+  \frac{dH [r_c - R(\vect x_1, \vect x_2)]}{dt} \cdot H[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c] +
+  H [r_c - R(\vect x_1, \vect x_2)] \cdot \frac{dH[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c]}{dt}
+\end{align}
+We compute the two derivatives in the equation:
+\begin{align}
+  \frac{dH [r_c - R(\vect x_1, \vect x_2)]}{dt}
+  &=
+  -\delta[r_c - R(\vect x_1, \vect x_2)]
+  \cdot  \frac{dR(\vect x_1, \vect x_2)}{dt} \\
+  \frac{dH[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c]}{dt}
+  &=
+  \delta[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c]
+  \cdot \frac{d \cos(\theta(\vect x_1, \vect x_2))}{dt}
+\end{align}
+In practice, the delta function can be approximated by
+\begin{align}
+  \delta(x) =
+  \left\{
+    \begin{alignedat}{3}
+      &\frac 1{2\Delta L}, &\qquad& -\frac{\Delta L}{2} \leq x < \frac{\Delta L}{2}, \\
+      & 0, &     & \textrm{otherwise},
+    \end{alignedat}
+  \right.
+\end{align}
+with a small enough $\Delta L$.
+Now the problem is to compute $dR(\vect x_1, \vect x_2)/dt$ and $d
+\cos(\theta(\vect x_1, \vect x_2))/dt$. To compute $dR(\vect x_1,
+\vect x_2)/dt$, we fristly derive the derivative w.r.t.~the distance
+between any two positions $\vert \vect r_1 - \vect r_2\vert$:
+\begin{align} 
+  \frac{d\vert \vect r_1(t) - \vect r_2(t)\vert}{dt}
+  &=
+  \frac{( \vect r_1(t) - \vect r_2(t) )}{  \vert \vect r_1(t) - \vect r_2(t)\vert} \cdot
+  \frac{ d( \vect x_1(t) - \vect x_2(t) )}{dt}  
+  =
+  \frac{( \vect r_1(t) - \vect r_2(t) ) \cdot (\vect v_1(t) - \vect v_2(t))}{  \vert \vect r_1(t) - \vect r_2(t)\vert} 
+  =
+  \frac{\vect r_{12}\cdot \vect v_{12}}{r_{12}}.
+\end{align}
+Then
+\begin{align}
+  \frac{dR(\vect x_1, \vect x_2)}{dt} = \frac{d r^{\oxy\oxy}_{12}}{dt} = \frac{\vect r^{\oxy\oxy}_{12}\cdot \vect v^{\oxy\oxy}_{12}}{r^{\oxy\oxy}_{12}}.
+\end{align}
+where $\vect r_{12}^{\oxy\oxy}$ denotes the oxygen--oxygen distance between molecules 1 and 2. For the derivative of the cosine angle:
+\begin{align}\nonumber
+  \frac{d \cos(\theta(\vect x_1, \vect x_2))}{dt}
+  &=
+  \frac{d}{dt}
+  \Big (
+  \frac{\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy}}{r_{11}^{\oxy\hyd} \, r_{12}^{\oxy\oxy}}
+  \Big ) \\\nonumber
+  &=
+  \frac{(\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy})'r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} - \vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy} (r_{11}^{\oxy\hyd}\cdot r_{12}^{\oxy\oxy})'}{ ( r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} )^2} \\\nonumber
+  & =
+  \frac{\vect v_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy}  + \vect r_{11}^{\oxy\hyd}\cdot \vect v_{12}^{\oxy\oxy}}{ r_{11}^{\oxy\hyd}r_{12}^{\oxy\oxy}}
+  -
+  \frac{\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy} } { ( r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} )^2 } \times
+  \frac{ \vect r_{11}^{\oxy\hyd}\cdot \vect v_{11}^{\oxy\hyd} (r_{12}^{\oxy\oxy})^2 + \vect r_{12}^{\oxy\oxy}\cdot \vect v_{12}^{\oxy\oxy} (r_{11}^{\oxy\hyd})^2  }{ r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} }
+  \\\nonumber  
+\end{align}
+
+
+\bibliography{ref}{}
+\bibliographystyle{unsrt}
+
+\end{document}
