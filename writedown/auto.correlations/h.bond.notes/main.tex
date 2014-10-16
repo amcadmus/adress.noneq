@@ -48,7 +48,7 @@
 \affiliation{Zuse Institut Berlin, Germany}
    
 \begin{abstract}
-  In this note I describe the implmentational details of the hydrogen-bond auto-correlations.
+  In this note I describe the implementation details of the hydrogen-bond auto-correlations.
 \end{abstract}
 
 \maketitle
@@ -67,7 +67,7 @@ The auto-correlation
 is studied. The physical meaning is that given a hydrogen-bond formed
 at time $0$, the probability of observing a hydrogen-bond between the
 same pair at time $t$.
-The rate of relaxation to equilibrium is of paricular interest:
+The rate of relaxation to equilibrium is of particular interest:
 \begin{align}\label{eqn:k-def}
   k(t) &= -\frac{dc}{dt}\\\label{eqn:k-exp}
   &= -\frac{\langle \dot h(0) [1 - h(t)] \rangle}{\langle h\rangle}
@@ -87,10 +87,10 @@ Letting $\tau \rightarrow 0$ on both sides yields Eq.~\eqref{eqn:tmp3}.
 
 The rate of relaxation to equilibrium $k(t)$ can be calculated by
 definition~\eqref{eqn:k-def}, or calculated from Eq.~\eqref{eqn:k-exp}
-with an explicit estimation of the function $\dot h$. We want to discuss the second way.
+with an explicit estimation of the function $\dot h$. I want to discuss the second way.
 
 Two water molecules are hydrogen-bonded if (1) the O--O distance is less than a cut-off $r_c$, \emph{and} (2)
-the O--H...O angle is less than a cut-off $\theta_c$. To mathematically define the function $h$, we introduce
+the O--H...O angle is less than a cut-off $\theta_c$. To mathematically define the function $h$, I introduce
 the Heaviside function:
 \begin{equation}\label{eqn:heavi}
   H(x) =
@@ -105,19 +105,19 @@ And important property of the Heaviside function is that
 \begin{align}
   \delta (x) = \frac{dH(x)}{dx}
 \end{align}
-If we denote the DOFs of two water molecules by $\vect x_1$ and $\vect x_2$, then the hydrogen-bond population function $h$ is expressed by
+If I denote the DOFs of two water molecules by $\vect x_1$ and $\vect x_2$, then the hydrogen-bond population function $h$ is expressed by
 \begin{align}
   h(\vect x_1, \vect x_2) = H [r_c - R(\vect x_1, \vect x_2)] \cdot H [\theta_c - \theta(\vect x_1, \vect x_2)]
 \end{align}
 where function $R(\vect x_1, \vect x_2)$ computes the O--O distance
 between the molecules, while $\theta(\vect x_1, \vect x_2)$ computes
-the O--H...O angle. In practice, it is not easy to calcualte the
-angle, but the cosine angle is relatively easy. Therefore we use the
+the O--H...O angle. In practice, it is not easy to calculate the
+angle, but the cosine angle is relatively easy. Therefore I use the
 definition 
 \begin{align}
   h(\vect x_1, \vect x_2) = H [r_c - R(\vect x_1, \vect x_2)] \cdot H[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c]
 \end{align}
-If we notice the fact that the DOFs of the molecules are functions of
+If noticing the fact that the DOFs of the molecules are functions of
 time, i.e.~$\vect x_1 = \vect x_1(t)$, and $\vect x_2 = \vect x_2(t)$, then
 taking the derivative w.r.t.~time on both sides of the equation, we have
 \begin{align}
@@ -126,7 +126,7 @@ taking the derivative w.r.t.~time on both sides of the equation, we have
   \frac{dH [r_c - R(\vect x_1, \vect x_2)]}{dt} \cdot H[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c] +
   H [r_c - R(\vect x_1, \vect x_2)] \cdot \frac{dH[\cos(\theta(\vect x_1, \vect x_2)) - \cos \theta_c]}{dt}
 \end{align}
-We compute the two derivatives in the equation:
+The two derivatives in the equation is computed by:
 \begin{align}
   \frac{dH [r_c - R(\vect x_1, \vect x_2)]}{dt}
   &=
@@ -142,7 +142,7 @@ In practice, the delta function can be approximated by
   \delta(x) =
   \left\{
     \begin{alignedat}{3}
-      &\frac 1{2\Delta L}, &\qquad& -\frac{\Delta L}{2} \leq x < \frac{\Delta L}{2}, \\
+      &\frac 1{\Delta L}, &\qquad& -\frac{\Delta L}{2} \leq x < \frac{\Delta L}{2}, \\
       & 0, &     & \textrm{otherwise},
     \end{alignedat}
   \right.
@@ -150,15 +150,15 @@ In practice, the delta function can be approximated by
 with a small enough $\Delta L$.
 Now the problem is to compute $dR(\vect x_1, \vect x_2)/dt$ and $d
 \cos(\theta(\vect x_1, \vect x_2))/dt$. To compute $dR(\vect x_1,
-\vect x_2)/dt$, we fristly derive the derivative w.r.t.~the distance
-between any two positions $\vert \vect r_1 - \vect r_2\vert$:
+\vect x_2)/dt$, I firstly derive the time-derivative of the distance
+between any two positions $r_{12} = \vert \vect r_{12}\vert  = \vert \vect r_2 - \vect r_1\vert$:
 \begin{align} 
-  \frac{d\vert \vect r_1(t) - \vect r_2(t)\vert}{dt}
+  \frac{d\vert \vect r_2(t) - \vect r_1(t)\vert}{dt}
   &=
-  \frac{( \vect r_1(t) - \vect r_2(t) )}{  \vert \vect r_1(t) - \vect r_2(t)\vert} \cdot
-  \frac{ d( \vect x_1(t) - \vect x_2(t) )}{dt}  
+  \frac{( \vect r_2(t) - \vect r_1(t) )}{  \vert \vect r_2(t) - \vect r_1(t)\vert} \cdot
+  \frac{ d( \vect x_2(t) - \vect x_1(t) )}{dt}  
   =
-  \frac{( \vect r_1(t) - \vect r_2(t) ) \cdot (\vect v_1(t) - \vect v_2(t))}{  \vert \vect r_1(t) - \vect r_2(t)\vert} 
+  \frac{( \vect r_2(t) - \vect r_1(t) ) \cdot (\vect v_2(t) - \vect v_1(t))}{  \vert \vect r_2(t) - \vect r_1(t)\vert} 
   =
   \frac{\vect r_{12}\cdot \vect v_{12}}{r_{12}}.
 \end{align}
@@ -166,7 +166,7 @@ Then
 \begin{align}
   \frac{dR(\vect x_1, \vect x_2)}{dt} = \frac{d r^{\oxy\oxy}_{12}}{dt} = \frac{\vect r^{\oxy\oxy}_{12}\cdot \vect v^{\oxy\oxy}_{12}}{r^{\oxy\oxy}_{12}}.
 \end{align}
-where $\vect r_{12}^{\oxy\oxy}$ denotes the oxygen--oxygen distance between molecules 1 and 2. For the derivative of the cosine angle:
+where $r_{12}^{\oxy\oxy}$ denotes the oxygen--oxygen distance between molecules 1 and 2. For the derivative of the cosine angle:
 \begin{align}\nonumber
   \frac{d \cos(\theta(\vect x_1, \vect x_2))}{dt}
   &=
@@ -183,7 +183,7 @@ where $\vect r_{12}^{\oxy\oxy}$ denotes the oxygen--oxygen distance between mole
   \frac{ \vect r_{11}^{\oxy\hyd}\cdot \vect v_{11}^{\oxy\hyd} (r_{12}^{\oxy\oxy})^2 + \vect r_{12}^{\oxy\oxy}\cdot \vect v_{12}^{\oxy\oxy} (r_{11}^{\oxy\hyd})^2  }{ r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} }
   \\\nonumber  
 \end{align}
-
+The meaning of the notations should be self-explanatory.
 
 \bibliography{ref}{}
 \bibliographystyle{unsrt}
