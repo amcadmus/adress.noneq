@@ -43,7 +43,7 @@ do
 done
 
 if echo $gmx_ele_method | grep zm &> /dev/null; then    
-    energy_corr=`$zm_gen_dir/energy.corr -l $zm_l --alpha $zm_alpha --rc $gmx_rcut_ele `
+    energy_corr=`$zm_gen_dir/energy.corr -l $zm_l --alpha $zm_alpha --rc $gmx_rcut_ele | grep -v \#`
 else
     energy_corr=0.0
 fi
