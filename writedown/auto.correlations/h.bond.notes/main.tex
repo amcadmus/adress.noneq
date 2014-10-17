@@ -42,13 +42,13 @@
 
 \begin{document}
 
-\title{Notes on the hydrogen-bond auto-correlation}
+\title{Note on the hydrogen-bond auto-correlation}
 \author{Han Wang}
 \email{han.wang@fu-berlin.de}
 \affiliation{Zuse Institut Berlin, Germany}
    
 \begin{abstract}
-  In this note I describe the implementation details of the hydrogen-bond auto-correlations.
+  In this note I describe the implementation details of the hydrogen-bond auto-correlation.
 \end{abstract}
 
 \maketitle
@@ -175,13 +175,12 @@ where $r_{12}^{\oxy\oxy}$ denotes the oxygen--oxygen distance between molecules 
   \frac{\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy}}{r_{11}^{\oxy\hyd} \, r_{12}^{\oxy\oxy}}
   \Big ) \\\nonumber
   &=
-  \frac{(\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy})'r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} - \vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy} (r_{11}^{\oxy\hyd}\cdot r_{12}^{\oxy\oxy})'}{ ( r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} )^2} \\\nonumber
+  \frac{(\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy})'r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} - \vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy} (r_{11}^{\oxy\hyd}\cdot r_{12}^{\oxy\oxy})'}{ ( r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} )^2} \\
   & =
   \frac{\vect v_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy}  + \vect r_{11}^{\oxy\hyd}\cdot \vect v_{12}^{\oxy\oxy}}{ r_{11}^{\oxy\hyd}r_{12}^{\oxy\oxy}}
   -
   \frac{\vect r_{11}^{\oxy\hyd}\cdot \vect r_{12}^{\oxy\oxy} } { ( r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} )^2 } \times
   \frac{ \vect r_{11}^{\oxy\hyd}\cdot \vect v_{11}^{\oxy\hyd} (r_{12}^{\oxy\oxy})^2 + \vect r_{12}^{\oxy\oxy}\cdot \vect v_{12}^{\oxy\oxy} (r_{11}^{\oxy\hyd})^2  }{ r_{11}^{\oxy\hyd}\, r_{12}^{\oxy\oxy} }
-  \\\nonumber  
 \end{align}
 The meaning of the notations should be self-explanatory.
 
