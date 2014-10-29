@@ -1,4 +1,5 @@
 set term post eps enh color solid
+set term post eps enh color solid font 14 size 8.5cm,6cm
 set out 'pressure.eps'
 
 set ls 100 lc 0 lw 3 pt 5
@@ -22,7 +23,8 @@ set grid
 set xlabel 'r_c [ nm ]'
 set ylabel 'Pressure [ Bar ]'
 
-set out 'pressure.l1.eps'
+set title 'ZM l=1'
+set out 'pressure-l1.eps'
 
 pl \
 1 w l ls 100,\
@@ -33,7 +35,8 @@ pl \
 'pressure.l1.alpha2.00.out' w l ls 51 not 'order=1, {/Symbol a}=1.2', '' u 1:2:($3*2)  w e ls 51 t 'order=1, {/Symbol a}=2.0',\
 'pressure.rf.out' w l ls 61 not 'RF', '' u 1:2:($3*2)  w e ls 61 t 'RF'
 
-set out 'pressure.l2.eps'
+set title 'ZM l=2'
+set out 'pressure-l2.eps'
 
 pl \
 1 w l ls 100,\
@@ -43,7 +46,8 @@ pl \
 'pressure.l2.alpha1.50.out' w l ls 41 not 'order=1, {/Symbol a}=1.2', '' u 1:2:($3*2)  w e ls 41 t 'order=2, {/Symbol a}=1.5',\
 'pressure.l2.alpha2.00.out' w l ls 51 not 'order=1, {/Symbol a}=1.2', '' u 1:2:($3*2)  w e ls 51 t 'order=2, {/Symbol a}=2.0'
 
-set out 'pressure.l3.eps'
+set title 'ZM l=3'
+set out 'pressure-l3.eps'
 
 pl \
 1 w l ls 100,\
@@ -54,7 +58,8 @@ pl \
 'pressure.l3.alpha2.00.out' w l ls 51 not 'order=1, {/Symbol a}=1.2', '' u 1:2:($3*2)  w e ls 51 t 'order=3, {/Symbol a}=2.0'
 
 
-set out 'pressure.l4.eps'
+set title 'ZM l=4'
+set out 'pressure-l4.eps'
 
 pl \
 1 w l ls 100,\
@@ -67,12 +72,14 @@ pl \
 
 # 'pressure.l3.out' w l ls 31 t 'order=3', '' u 1:2:($3*2)  w e ls 31 not,\
 
+set title 'RF'
 set out 'pressure.rf.eps'
 
 pl \
 1 w l ls 100,\
 'pressure.rf.out' w l ls 11 not 'RF', '' u 1:2:($3*2)  w e ls 11 t 'RF'
 
+unset title
 set term post eps enh color solid font 14 size 8.5cm,6cm
 set out 'pressure-methods.eps'
 
