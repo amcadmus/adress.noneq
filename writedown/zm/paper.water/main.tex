@@ -5,6 +5,7 @@
 \usepackage[dvips]{graphicx}
 \usepackage{color}
 \usepackage{indentfirst} 
+\usepackage{rotating,booktabs}
 
 \newcommand{\eps}{\varepsilon}
 \newcommand{\recheck}[1]{{\color{red} #1}}
@@ -131,65 +132,95 @@ are equally distributed in $[0.05, 1]$. Therefore, in total 47
 simulations are performed for all $\lambda$ values. The simulation was
 in system $\systemla$.
 
-\begin{table}
+\begin{sidewaystable}
   \centering
-  \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$ and viscosity $\eta$
-    calculated by different methods.    
-    The parenthesises in the last column show the statistical uncertainty
-    at the confidence level of 95~\%.
-    The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
-  }
-  \begin{tabular*}{0.95\textwidth}{@{\extracolsep{\fill}}cccc ccccc}\hline\hline
-    Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$ \\
-                &    [nm] &        & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
-    % Method      &   $r_c$ [nm] &    $l$      & $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
-    SPME        &1.9 & -- &    & $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
-    RF          &1.2 & -- &--  & $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\\hline
-    ZM          &1.2 & 1  &0.0 & $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
-    ZM          &1.2 & 1  &0.5 & $-26.36$ (0.30) & 72.25 (0.78)  & 97.1 (2.2)  & \textbf{5.52} (0.25)   & \textbf{0.339} (0.008)\\ 
-    ZM          &1.2 & 1  &1.0 & $-26.01$ (0.22) & 72.44 (0.84)  & 96.2 (2.3)  &        {5.78} (0.25)   & \textbf{0.330} (0.011)\\ 
-    ZM          &1.2 & 1  &1.5 & $-26.03$ (0.24) & 71.31 (0.78)  & 99.1 (2.5)  & \textbf{5.71} (0.09)   &        {0.312} (0.008)\\ 
-    ZM          &1.2 & 1  &2.0 & $-26.14$ (0.34) & 71.27 (0.78)  & 95.9 (2.5)  &        {5.90} (0.04)   &        {0.307} (0.007)\\ \hline
-    ZM          &1.2 & 2  &0.0 & $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
-    ZM          &1.2 & 3  &0.0 & $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
-    ZM          &1.2 & 4  &0.0 & $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
-    \hline\hline
-  \end{tabular*}
-  \label{tab:tmp3}
-\end{table}
-    % SPME        &         1.9     &       --      & 1.67049 (0.00014)     $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
-    % RF          &         1.2     & --            & 1.66733 (0.00016)      $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
-    % ZM          &         1.2     &       1       & 1.67052 (0.00022)     $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
-    % ZM          &         1.2     &       2       & 1.67029 (0.00013)     $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
-    % ZM          &         1.2     &       3       & 1.67024 (0.00018)     $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
-    % ZM          &         1.2     &       4       & 1.67031 (0.00010)     $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
-
-\begin{table}
-  \centering
-  \caption{The constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
+  \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$, viscosity $\eta$, constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
     thermal expansion coefficient $\alpha$
     calculated by different methods.    
     The parenthesises in the last column show the statistical uncertainty
     at the confidence level of 95~\%.
     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
   }
-  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc ccc}\hline\hline
-    Method      &   $r_c$ [nm] &    $l$ & $\alpha$ [$\textrm{nm}^{-1}$]     & $\kappa_T$ [$10^{-10}\textrm{m}^2/\textrm{N}$] & $C_{p,m}$ [J/(mol K)] & $\alpha$ [$10^{-3}\textrm{K}^{-1}$]\\\hline
-    SPME        &  1.9     &       -- &    & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
-    RF          &  1.2     & --       &    & \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\\hline
-    ZM          &  1.2     &       1  & 0.0& 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\
-    ZM          &  1.2     &       1  & 0.5& 5.920 (0.050)               &78.90 (0.92)           &\textbf{1.003} (0.016) \\
-    ZM          &  1.2     &       1  & 1.0& 5.946 (0.050)               &78.37 (0.92)           &1.008 (0.016)          \\
-    ZM          &  1.2     &       1  & 1.5& 5.974 (0.050)               &80.23 (0.86)           &1.040 (0.017)          \\
-    ZM          &  1.2     &       1  & 2.0& \textbf{6.052} (0.051)      &79.41 (0.91)           &1.045 (0.016)          \\\hline
-    ZM          &  1.2     &       2  & 0.0& 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
-    ZM          &  1.2     &       3  & 0.0& 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
-    ZM          &  1.2     &       4  & 0.0& 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
+  \bigskip
+  \centering\small\setlength\tabcolsep{2pt}
+  \begin{tabular*}{0.99\textwidth}{@{\extracolsep{\fill}}cccc cccccccc}\hline\hline
+    Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$  &  $\kappa_T$  & $C_{p,m}$ & $\alpha$ \\
+                &    [nm] &        & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$]  & [$10^{-10}\textrm{m}^2/\textrm{N}$] & [J/(mol K)] & [$10^{-3}\textrm{K}^{-1}$]\\\hline
+    SPME        &1.9 & -- &    & $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)          & 5.86 (0.07)         & 0.315 (0.007)         & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
+    RF          &1.2 & -- &--  & $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3) & \textbf{6.27} (0.19)& \textbf{0.449} (0.020)& \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\\hline
+    ZM          &1.2 & 1  &0.0 & $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)          & \textbf{5.53} (0.11)& \textbf{0.346} (0.006)& 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\ 
+    ZM          &1.2 & 1  &0.5 & $-26.36$ (0.30) & 72.25 (0.78)  & 97.1 (2.2)          & \textbf{5.52} (0.25)& \textbf{0.339} (0.008)& 5.920 (0.050)               &78.90 (0.92)           &\textbf{1.003} (0.016) \\ 
+    ZM          &1.2 & 1  &1.0 & $-26.01$ (0.22) & 72.44 (0.84)  & 96.2 (2.3)          &        {5.78} (0.25)& \textbf{0.330} (0.011)& 5.946 (0.050)               &78.37 (0.92)           &1.008 (0.016)          \\ 
+    ZM          &1.2 & 1  &1.5 & $-26.03$ (0.24) & 71.31 (0.78)  & 99.1 (2.5)          & \textbf{5.71} (0.09)&        {0.312} (0.008)& 5.974 (0.050)               &80.23 (0.86)           &1.040 (0.017)          \\ 
+    ZM          &1.2 & 1  &2.0 & $-26.14$ (0.34) & 71.27 (0.78)  & 95.9 (2.5)          &        {5.90} (0.04)&        {0.307} (0.007)& \textbf{6.052} (0.051)      &79.41 (0.91)           &1.045 (0.016)          \\\hline
+    ZM          &1.2 & 2  &0.0 & $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)          & 5.82 (0.27)         & 0.318 (0.012)         & 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
+    ZM          &1.2 & 3  &0.0 & $-26.18$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)          & 5.79 (0.09)         & 0.321 (0.008)         & 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
+    ZM          &1.2 & 4  &0.0 & $-26.01$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)          & 5.89 (0.09)         & 0.318 (0.013)         & 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
     \hline\hline
   \end{tabular*}
-  \label{tab:tmp3a}
-\end{table}
+  \label{tab:tmp3}
+\end{sidewaystable}
 
+
+% \begin{table}
+%   \centering
+%   \caption{The constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
+%     thermal expansion coefficient $\alpha$
+%     calculated by different methods.    
+%     The parenthesises in the last column show the statistical uncertainty
+%     at the confidence level of 95~\%.
+%     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
+%   }
+%   \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc ccc}\hline\hline
+%     Method      &   $r_c$ [nm] &    $l$ & $\alpha$ [$\textrm{nm}^{-1}$]     &  $\kappa_T$ [$10^{-10}\textrm{m}^2/\textrm{N}$] & $C_{p,m}$ [J/(mol K)] & $\alpha$ [$10^{-3}\textrm{K}^{-1}$]\\\hline
+%     SPME        &  1.9     &       -- &    & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
+%     RF          &  1.2     & --       &    & \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\\hline
+%     ZM          &  1.2     &       1  & 0.0& 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\
+%     ZM          &  1.2     &       1  & 0.5& 5.920 (0.050)               &78.90 (0.92)           &\textbf{1.003} (0.016) \\
+%     ZM          &  1.2     &       1  & 1.0& 5.946 (0.050)               &78.37 (0.92)           &1.008 (0.016)          \\
+%     ZM          &  1.2     &       1  & 1.5& 5.974 (0.050)               &80.23 (0.86)           &1.040 (0.017)          \\
+%     ZM          &  1.2     &       1  & 2.0& \textbf{6.052} (0.051)      &79.41 (0.91)           &1.045 (0.016)          \\\hline
+%     ZM          &  1.2     &       2  & 0.0& 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
+%     ZM          &  1.2     &       3  & 0.0& 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
+%     ZM          &  1.2     &       4  & 0.0& 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
+%     \hline\hline
+%   \end{tabular*}
+%   \label{tab:tmp3a}
+% \end{table}
+
+
+% \begin{table}
+%   \centering
+%   \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$ and viscosity $\eta$
+%     calculated by different methods.    
+%     The parenthesises in the last column show the statistical uncertainty
+%     at the confidence level of 95~\%.
+%     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
+%   }
+%   \begin{tabular*}{0.95\textwidth}{@{\extracolsep{\fill}}cccc ccccc}\hline\hline
+%     Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$ \\
+%                 &    [nm] &        & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+%     % Method      &   $r_c$ [nm] &    $l$      & $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+%     SPME        &1.9 & -- &    & $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+%     RF          &1.2 & -- &--  & $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\\hline
+%     ZM          &1.2 & 1  &0.0 & $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+%     ZM          &1.2 & 1  &0.5 & $-26.36$ (0.30) & 72.25 (0.78)  & 97.1 (2.2)  & \textbf{5.52} (0.25)   & \textbf{0.339} (0.008)\\ 
+%     ZM          &1.2 & 1  &1.0 & $-26.01$ (0.22) & 72.44 (0.84)  & 96.2 (2.3)  &        {5.78} (0.25)   & \textbf{0.330} (0.011)\\ 
+%     ZM          &1.2 & 1  &1.5 & $-26.03$ (0.24) & 71.31 (0.78)  & 99.1 (2.5)  & \textbf{5.71} (0.09)   &        {0.312} (0.008)\\ 
+%     ZM          &1.2 & 1  &2.0 & $-26.14$ (0.34) & 71.27 (0.78)  & 95.9 (2.5)  &        {5.90} (0.04)   &        {0.307} (0.007)\\ \hline
+%     ZM          &1.2 & 2  &0.0 & $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+%     ZM          &1.2 & 3  &0.0 & $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+%     ZM          &1.2 & 4  &0.0 & $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
+%     \hline\hline
+%   \end{tabular*}
+%   \label{tab:tmp3}
+% \end{table}
+    % SPME        &         1.9     &       --      & 1.67049 (0.00014)     $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+    % RF          &         1.2     & --            & 1.66733 (0.00016)      $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
+    % ZM          &         1.2     &       1       & 1.67052 (0.00022)     $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+    % ZM          &         1.2     &       2       & 1.67029 (0.00013)     $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+    % ZM          &         1.2     &       3       & 1.67024 (0.00018)     $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+    % ZM          &         1.2     &       4       & 1.67031 (0.00010)     $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
 % \subsubsection{Hydrogen bonding}
 % We count 
 
