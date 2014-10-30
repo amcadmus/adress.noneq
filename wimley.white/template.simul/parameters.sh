@@ -3,9 +3,9 @@
 # simulation result from spme.tune
 # nvt_num_density=32.90917546138462644658
 
-gmx_init_conf=./confs/conf.Ace-R-NMe.amber99sb-ildn.gro
+gmx_init_conf=./confs/conf.vglapg.amber99sb-ildn.gro
 gmx_init_index=./
-gmx_sys_tempalte_dir=./tools/system.Ace-R-NMe.amber99sb-ildn
+gmx_sys_tempalte_dir=./tools/system.vglapg.amber99sb-ildn
 gmx_dt=0.002
 gmx_time=100			# in ps
 gmx_equi_skip=100		# in ps
