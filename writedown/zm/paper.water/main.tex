@@ -1,0 +1,697 @@
+\documentclass[aip,jcp,a4paper,preprint,unsortedaddress,onecolumn,fleqn]{revtex4-1}
+% \documentclass[reprint,unsortedadress,oneclumn]{revtex4-1}
+
+\usepackage{amsmath,amssymb,amsfonts,latexsym}
+\usepackage[dvips]{graphicx}
+\usepackage{color}
+\usepackage{indentfirst} 
+
+\newcommand{\eps}{\varepsilon}
+\newcommand{\recheck}[1]{{\color{red} #1}}
+\newcommand{\redc}[1]{{\color{red} #1}}            
+\newcommand{\bluec}[1]{{\color{blue} #1}}            
+\newcommand{\vect}[1]{\textbf{\textit{#1}}}
+\newcommand{\exc}{\textrm{ex}}
+\newcommand{\systemsa}{S_0}
+\newcommand{\systemsb}{S_1}
+\newcommand{\systemsbp}{S'_1}
+\newcommand{\systemma}{M_0}
+\newcommand{\systemmb}{M_1}
+\newcommand{\systemmbp}{M'_1}
+\newcommand{\systemla}{L_0}
+\newcommand{\systemlbp}{L'_1}
+\newcommand{\systemlb}{L_1}
+
+
+\begin{document}
+
+\title{A Critical Appraisal of Zero-Multiple Method in Simulation Biomolecular Systems}
+\author{Han Wang}
+\email{han.wang@fu-berlin.de}
+\affiliation{CAEP Software Center for High Performance Numerical Simulation, Beijing, China}
+\author{Ikuo Fukuda}
+\email{ifukuda@protein.osaka-u.ac.jp}
+\affiliation{Institute for Protein Research, Osaka University, Japan}
+
+\begin{abstract}
+\end{abstract}
+
+\maketitle
+
+\section{Simulation protocols}
+
+\begin{table}
+  \centering
+  \caption{A list of systems tested in this work. We report, from left to right, the number of water
+    molecules in the system (TIP3P model), box size, length of equilibriation, length of productive trajectory, the thermostat and the coupling time scale of the thermostat.
+    }
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c rrrrrr}\hline\hline
+    System      & $N$ & $V$ [$\textrm{nm}^3$]  & $T_{eq}$ [ps] & Traj. Length [ps] & Thermostat & $\tau$ [ps]  \\\hline
+    $\systemsb$          & 2,500          & $4.24^3$              & 3,000        & 27,000        & Nose-Hoover & 1.0 \\
+    $\systemsbp$         &   2,500        & $4.24^3$              & --           &  6,000        & Nose-Hoover & 1.0\\
+    $\systemmb$          & 4,500          & $5.15^3$              & 3,000        & 17,000        & Langevin & 0.1\\
+    $\systemmbp$         &   4,500        & $5.15^3$              & --           &  6,000        & Langevin & 0.1\\
+    $\systemla$          &   13,824       & $7.49^3$              & 200          & 1,800         & Langevin & 0.1\\
+    $\systemlb$          &   13,824       & $7.49^3$              & 3,000        & 17,000        & Langevin & 0.1\\
+    $\systemlbp$         &   13,824       & $7.49^3$              & --           & 10,000        & Langevin & 0.1\\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp1}
+\end{table}
+
+The systems used for MD simulations are listed in
+Table.\ref{tab:tmp1}.  The initial configurations are prepared by in
+the following steps: (1) A NPT simulation of system $\systemla$ with SPME~\cite{darden1993pme, essmann1995spm}
+electrostatic. The equilibrium density of the system is calculated
+from this simulation. (2) Initial configurations that has 4,500 and
+13,824 molecules are generated at the calculated equilibrium
+density. (3) NVT simulations with SPME electrostatic for system $\systemmbp$
+and $\systemlbp$ are performed. (4) The output configuration of $\systemmbp$ is used as
+initial configuration for system $\systemmb$, and the output configuration of
+$\systemlbp$ is used as initial configuration for system $\systemla$ and $\systemlb$.  The SPME
+parameters for all simulations reported by this work is: real space
+cut-off 1.90~nm. The cut-off is smoothed from 1.85 to 1.90~nm by the
+``\texttt{switch}'' method provide by Gromacs
+4.6~\cite{hess2008gromacs, pronk2013gromacs}. The reciprocal space
+grid spacing is 0.06~nm. The B-Spline interpolation order is 6. The
+splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
+
+We add a new system $\systemsb$, and use the Nose-Hoover
+thermostat. The reason is that for the fluctuation properties (in this
+work heat capacity, dielectric constant, diffusion constant and
+viscosity are fluctuation properties), simply increase the size of the
+system does not improve the accuracy of the
+simulation~\cite{ferrenberg1991statistical}. The only way to improve
+the accuracy is to run longer simulation to do more
+time-average. Therefore, the optimal way of measuring these properties
+is to use smaller system (as far as the finite size effect is not
+important) and run as long simulation as possible, as the equilibrium
+state is reached. The reason of using Nose-Hoover thermostat is that
+it perturbs the dynamics of the system only slightly, while the
+Langevin thermostat is likely to substantially change the dynamics
+when the coupling is very strong.
+
+\subsection{Static properties}
+
+\subsubsection{Pressure}
+The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system $\systemla$.
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/nvt.pressure.1/pressure-methods.eps}
+  \caption{The pressure convergence with respect to the cut-off radius.
+    For ZM method, the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+  }
+  \label{fig:tmp0}
+\end{figure}
+
+\subsubsection{Chemical potential}
+
+The chemical potential of the NVT system is defined by
+\begin{align}
+  \mu = \frac{\partial A}{\partial N}\Big\vert_{V,T}
+\end{align}
+In practice the excess chemical potential $\mu^\exc$, which is the
+chemical potential abstracted by the kinetic contribution, is of
+special interest. We calculate the excess chemical potential by the
+thermodynamic integration (TI). In this approach, the interaction
+between an inserted molecule and the rest of the system is controlled
+by a coupling parameter $\lambda$. $\lambda$ goes from 0 to 1, where 0
+indicates no coupling while 1 indicates full coupling. Therefore the
+Hamiltonian of the system is function of the coupling parameter. The
+excess chemical is calculated by:
+\begin{align}
+  \mu^\exc = \int_0^1 \Big\langle \frac{\partial \mathcal H(\lambda)}{\partial \lambda} \Big\rangle_\lambda d\lambda
+\end{align}
+We use a two step coupling approach: firstly couple the van der Waals
+interaction (stage vdw), and then couple the electrostatic interaction
+(stage ele).  During stage vdw, 21 $\lambda$ values are equally
+distributed in $[0,1]$.  During stage ele, 6 $\lambda$ values are
+equally distributed in $[0,0.05]$, while the other 20 $\lambda$ values
+are equally distributed in $[0.05, 1]$. Therefore, in total 47
+simulations are performed for all $\lambda$ values. The simulation was
+in system $\systemla$.
+
+\begin{table}
+  \centering
+  \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$ and viscosity $\eta$
+    calculated by different methods.    
+    The parenthesises in the last column show the statistical uncertainty
+    at the confidence level of 95~\%.
+    The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
+  }
+  \begin{tabular*}{0.95\textwidth}{@{\extracolsep{\fill}}cccc ccccc}\hline\hline
+    Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$ \\
+                &    [nm] &        & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+    % Method      &   $r_c$ [nm] &    $l$      & $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
+    SPME        &1.9 & -- &    & $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+    RF          &1.2 & -- &--  & $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\\hline
+    ZM          &1.2 & 1  &0.0 & $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+    ZM          &1.2 & 1  &0.5 & $-26.36$ (0.30) & 72.25 (0.78)  & 97.1 (2.2)  & \textbf{5.52} (0.25)   & \textbf{0.339} (0.008)\\ 
+    ZM          &1.2 & 1  &1.0 & $-26.01$ (0.22) & 72.44 (0.84)  & 96.2 (2.3)  &        {5.78} (0.25)   & \textbf{0.330} (0.011)\\ 
+    ZM          &1.2 & 1  &1.5 & $-26.03$ (0.24) & 71.31 (0.78)  & 99.1 (2.5)  & \textbf{5.71} (0.09)   &        {0.312} (0.008)\\ 
+    ZM          &1.2 & 1  &2.0 & $-26.14$ (0.34) & 71.27 (0.78)  & 95.9 (2.5)  &        {5.90} (0.04)   &        {0.307} (0.007)\\ \hline
+    ZM          &1.2 & 2  &0.0 & $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+    ZM          &1.2 & 3  &0.0 & $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+    ZM          &1.2 & 4  &0.0 & $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp3}
+\end{table}
+    % SPME        &         1.9     &       --      & 1.67049 (0.00014)     $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
+    % RF          &         1.2     & --            & 1.66733 (0.00016)      $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
+    % ZM          &         1.2     &       1       & 1.67052 (0.00022)     $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
+    % ZM          &         1.2     &       2       & 1.67029 (0.00013)     $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
+    % ZM          &         1.2     &       3       & 1.67024 (0.00018)     $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
+    % ZM          &         1.2     &       4       & 1.67031 (0.00010)     $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
+
+\begin{table}
+  \centering
+  \caption{The constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
+    thermal expansion coefficient $\alpha$
+    calculated by different methods.    
+    The parenthesises in the last column show the statistical uncertainty
+    at the confidence level of 95~\%.
+    The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
+  }
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc ccc}\hline\hline
+    Method      &   $r_c$ [nm] &    $l$ & $\alpha$ [$\textrm{nm}^{-1}$]     & $\kappa_T$ [$10^{-10}\textrm{m}^2/\textrm{N}$] & $C_{p,m}$ [J/(mol K)] & $\alpha$ [$10^{-3}\textrm{K}^{-1}$]\\\hline
+    SPME        &  1.9     &       -- &    & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
+    RF          &  1.2     & --       &    & \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\\hline
+    ZM          &  1.2     &       1  & 0.0& 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\
+    ZM          &  1.2     &       1  & 0.5& 5.920 (0.050)               &78.90 (0.92)           &\textbf{1.003} (0.016) \\
+    ZM          &  1.2     &       1  & 1.0& 5.946 (0.050)               &78.37 (0.92)           &1.008 (0.016)          \\
+    ZM          &  1.2     &       1  & 1.5& 5.974 (0.050)               &80.23 (0.86)           &1.040 (0.017)          \\
+    ZM          &  1.2     &       1  & 2.0& \textbf{6.052} (0.051)      &79.41 (0.91)           &1.045 (0.016)          \\\hline
+    ZM          &  1.2     &       2  & 0.0& 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
+    ZM          &  1.2     &       3  & 0.0& 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
+    ZM          &  1.2     &       4  & 0.0& 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp3a}
+\end{table}
+
+% \subsubsection{Hydrogen bonding}
+% We count 
+
+\subsubsection{Constant volume molar heat capacity}
+The constant volume molar heat capacity is defined by:
+\begin{align}
+  C_{v,m} = \frac{1}{k_BT^2 N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
+\end{align}
+where $\mathcal H$ is the Hamiltonian of the system. Since constant
+volume heat capacity is a extensive thermodynamics quantity, it is
+normalized by the number molecules in the system.
+It is calculated in system $\systemsb$.
+
+\subsubsection{Constant pressure molar heat capacity}
+The constant pressure molar heat capacity is defined by:
+\begin{align}
+  C_{p,m} = \frac{1}{k_BT^2 N} \langle ( H - \langle H\rangle)^2 \rangle,
+\end{align}
+where $ H$ is the enthalpy of the system, defined by $H = \mathcal H + PV$. Since constant
+pressure heat capacity is a extensive thermodynamics quantity, it is
+normalized by the number molecules in the system.
+It is calculated by a NPT simulation of  system $\systemsb$.
+
+
+\subsubsection{Isothermal heat capacity}
+The isothermal heat capacity is defined by
+\begin{align}
+  \kappa_T = \frac{1}{k_BT} \frac{\langle (V - \langle V\rangle)^2 \rangle}{\langle V\rangle}.
+\end{align}
+It is calculated by a NPT simulation of  system $\systemsb$.
+
+
+\subsubsection{Thermal expansion coefficient}
+The thermal expansion coefficient is defined by
+\begin{align}
+  \alpha = \frac{1}{k_BT^2\langle V\rangle} \langle (H - \langle H\rangle)\cdot(V - \langle V\rangle) \rangle
+\end{align}
+It is calculated by a NPT simulation of  system $\systemsb$.
+
+
+\subsubsection{The dielectric constant}
+
+The dielectric constant:
+\begin{align}
+  \eps = 1 + \frac{1}{3L^3 k_BT} ( \langle \vert \vect M\vert^2\rangle - \vert\langle \vect M\rangle\vert^2 )
+\end{align}
+where
+\begin{align}
+  \vect M = \sum_i\boldsymbol\mu_i = \sum_{\alpha\in i} q_\alpha\vect r_\alpha
+\end{align}
+The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:tmp3}.
+
+\begin{table}
+  \centering
+  \caption{A list of the dielectric constant calculated for different systems by different methods.
+    The parameters are provided. The parenthesises in the last column show the statistical uncertainty
+    of the last two digits up to the confidence level of 95~\%.}
+  \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}cccc rr}\hline\hline
+    System & Method      &       $\alpha$ [$\textrm{nm}^{-1}$] & $r_c$ [nm] &    $l$     &       $\eps$ \\\hline
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       1       &       99.8 (3.8)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       2       &       95.2 (3.6)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       3       &       93.9 (3.7)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.5     &       3       &       98.7 (3.8)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.8     &       3       &      100.7 (3.6)\\ 
+    $\systemmb$  &       ZM          &       0.00    &       1.2     &       4       &       94.7 (3.6)\\
+    $\systemmb$   & SPME          & 2.09  & 1.9   &       --      &       98.8 (4.0) \\
+    $\systemmb$  & RF             & --  & 1.2 & -- & 60.6   (1.7) \\
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       1       &       97.1 (3.2)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       2       &       95.6 (3.5)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       3       &       95.8 (4.6)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.5     &       3       &       98.0 (3.3)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.8     &       3       &       98.9 (4.2)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       2.1     &       3       &       98.8 (3.9)\\ 
+    $\systemlb$  &       ZM          &       0.00    &       1.2     &       4       &       97.8 (3.9)\\
+   $\systemlb$   & SPME          & 2.09  & 1.9   &       --      &       98.7 (3.5) \\
+    $\systemlb$  & RF             & --  & 1.2 & -- & 60.8   (2.0) \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp2}
+\end{table}
+
+
+
+\subsubsection{Radial distribution function}
+The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{fig/result.nvt/fig-rdf.eps}  
+  \caption{The RDF of different method. The insert is a zoom-in of range 0.9 -- 1.5~nm. In the insert, the position of the cut-off (1.2~nm) is indicated by a vertical black line.}
+  \label{fig:rdf}
+\end{figure}
+
+
+\subsubsection{Kirkwood G-factor}
+
+The Kirkwood G-factor is defined by~\cite{vanderSpoel2006origin}
+\begin{align}
+  G_k(r) =
+  \Big\langle
+  \frac 1N
+  \sum_{i=1}^N \sum_{j, r_{ij} < r}
+  \frac {\boldsymbol\mu_i \cdot \boldsymbol\mu_j}{\vert \boldsymbol\mu_i\vert \cdot \vert\boldsymbol\mu_j\vert}
+  \Big\rangle,
+\end{align}
+where $r_{ij}$ denotes the oxygen-oxygen distance between two water
+molecules.  It is well know that the G-factor is system size
+dependent~\cite{vanderSpoel2006origin}. Here we show the G-factor for
+both a smaller system $\systemmb$ (Fig.~\ref{fig:tmp1}) and a larger system $\systemlb$
+(Fig.~\ref{fig:tmp2}).  In the figures, the statistical uncertainty of
+the SPME method is denoted by the red error bar, while those of the
+other methods are essentially the same, so they are not presented for
+clarity.  In both the system, the RF method is qualitatively
+wrong. The results of the ZM method are consistent with SPME
+method. The lower order produces better consistency.  An artificial
+oscillation around the cut-off radius presents for $l=1$, but it is
+not obvious for $l\geq 2$.  For high order ZM (here $l=3$ is investigated),
+using larger cut-off radius can substantially improve the accuracy.
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.nvt.small/fig-gkr-small.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-gkr-small-conv.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-3000.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-3000.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-10000.eps}
+  \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-10000.eps}
+  \caption{The Kirkwood G-factor calculated for system $\systemmb$.
+    % The result of different methods are compared in the left plot.
+    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
+    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
+    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
+    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
+  }
+  \label{fig:tmp1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.nvt/fig-gkr.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr-conv.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-3000.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-3000.eps}
+  \caption{The Kirkwood G-factor calculated for system $\systemlb$.
+    % The result of different methods are compared in the left plot.
+    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
+    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
+    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
+    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
+  }
+  \label{fig:tmp2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.nvt/fig-gkr-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr-conv-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-10000.eps}
+  \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-10000.eps}
+  \caption{The Kirkwood G-factor calculated for system $\systemlb$. Equilibriation time is 10~ns, and the production simulation time is 10~ns.
+    % The result of different methods are compared in the left plot.
+    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
+    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
+    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
+    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
+  }
+  \label{fig:tmp3}
+\end{figure}
+
+
+
+\subsection{Dynamical properties}
+
+\subsubsection{Diffusion constant}
+The diffusion constant is calculated from the Einstein relation:
+\begin{align}
+  D = \lim_{t\rightarrow \infty}\frac {1}{6t} \langle \vert \vect r_i(t) - \vect r_i(0)\vert^2\rangle.
+\end{align}
+In practice, the mean-square-displacement $\langle\vert \vect r_i(t) - \vect
+r_i(0)\vert^2\rangle$ is calculated, then the value is linearly fitted. The
+resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:tmp3}.
+The ZM method $l\geq 2$ is consistent with the SPME
+result, while the RF method is off. The system for simulation is $\systemsb$.
+
+\subsubsection{Viscosity}
+The viscosity is calculated from the Green-Kubo relation:
+\begin{align}
+  \eta = \frac{V}{k_BT}\int_0^\infty\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt, \quad \alpha,\beta \in \{x, y, z\}
+\end{align}
+where $\alpha$ and $\beta$ denote the directions, and
+$P_{\alpha\beta}$ denotes the off-diagonal components of the pressure
+tensor. Since we used the isotropic system setting, then it is obvious
+that $P_{xy}$, $P_{yz}$ and $P_{xz}$ are equivalent. Moreover, it has
+been pointed out that in addition $(P_{xx} - P_{yy})/2$ and $(P_{xx} -
+P_{yy})/2$ are two independent components that are equivalent to the
+first three~\cite{alfe1998first}. Therefore, the viscosity is
+calculated from the auto-correlation functions of five independent
+components, and the statistical error is estimated from the standard
+deviation of the viscosities calculated from the five components.
+
+We investigate the convergence of the integral of the auto-correlation function w.r.t.~time:
+\begin{align}
+  I_\eta(T) = \frac{V}{k_BT}\int_0^T\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt,
+\end{align}
+and plot the function $I_\eta(T) $ for all method in
+Fig.~\ref{fig:tmp4}.  It is clear the integral for the RF method
+converges at 6~ps, while the ZM method converges only in 2~ps, which
+is consistent with the SPME result.  The value of ZM $l=1$ method is
+different from the rest ZM method an SPME result.  The value
+$I_\eta(10\,\textrm{ps})$ is given in Table~\ref{tab:tmp3}.  The
+system for simulation is $\systemsb$.
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.tiny/fig-vis.eps}
+  \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method.}
+  \label{fig:tmp4}
+\end{figure}
+
+
+\subsection{Damping effect}
+
+In this section we investigate the damping effect. The pressure is plotted as a function of  the cut-off radius is plotted for different choices of
+the splitting parameter $\alpha$ in Fig.~\ref{fig:damp-pres}. The system for the simulation was $L_0$.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l1.eps}
+  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l2.eps}\\
+  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l3.eps}
+  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l4.eps}
+  \caption{The pressure convergence with respect to the cut-off radius.
+    For ZM method, different splitting parameter $\alpha$ (in unit of $\textrm{nm}^{-1}$) are shown for different orders:  $l=1$, 2, 4, and 4.
+  }
+  \label{fig:damp-pres}
+\end{figure}
+
+The convergence of the integrated auto-correlation function $I_\eta(T) $ is shown in Fig.~\ref{fig:damp-vis-l1}.
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.tiny/fig-vis-l1-damp.eps}
+  \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method. The different splitting parameters for ZM $l=1$ method are plotted}
+  \label{fig:damp-vis-l1}
+\end{figure}
+
+
+The RDF is plotted for different splitting parameters $\alpha$ for ZM $l=2$ and 3 in Fig.~\ref{fig:damp-rdf-l23}. Higher $\alpha$ reproduces the RDF better.
+The system was $L_1$.
+\begin{figure}[]
+  \centering
+  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-rdf-l2-damp.eps}
+  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-rdf-l3-damp.eps}
+  \caption{Radial distribution function for different splitting parameters $\alpha$ for ZM $l=2$ (left) and $l=3$ (right).}
+  \label{fig:damp-rdf-l23}
+\end{figure}
+
+The Kirkwood G-factor is plotted for different splitting parameters $\alpha$ for ZM $l=2$ and 3 in Fig.~\ref{fig:damp-gkr-l23}. 
+The system was $L_1$.
+\begin{figure}[]
+  \centering
+  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-gkr-l2-damp.eps}
+  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-gkr-l3-damp.eps}
+  \caption{Kirkwood G-factor for different splitting parameters $\alpha$ for ZM $l=2$ (left) and 3 (right).}
+  \label{fig:damp-gkr-l23}
+\end{figure}
+
+
+\subsection{Simulation with alanine dipeptide}
+
+Here we denote the full phase space by $\Omega$, and the phase space
+variable by $\vect x$. We assume that 1, the trajectory $\vect x(t)$
+is Markovian; 2, it is ergodic and as $t\rightarrow\infty$ the phase
+space probability density $p(\vect x)$ converges to the unique
+equilibrium probability density $\mu(\vect x)$ and 3, the trajectory
+is reversible (detailed balance condition is satisfied). One can
+easily write down a propagator for the probability density
+\begin{equation}
+\label{eq:propagator}  
+p_{t+\tau}(\vect x) = \mathcal Q(\tau)\circ
+p_t(\vect x),
+\end{equation}
+where the constant $\tau$ is called the lag time. Due to the
+Markovianity of the system, the propagator satisfies the
+Chapman-Kolmogorov equation:
+\begin{equation}
+  \label{eq:chapman}
+  p_{t+k\tau}(\vect x) = \mathcal Q^k(\tau)\circ p_t(\vect x).
+\end{equation}
+Since the dynamics is reversible, the eigenvalues of $\mathcal
+Q(\tau)$ are real-valued. We consider the first $m$ dominant
+eigenvalues from the spectrum: $1 = \lambda_1 > \lambda_2 \geq
+\lambda_3 \geq \cdots \geq \lambda_m$. For most of the biomolecule
+systems, it is reasonable to assume a spectrum gap, i.e.~for a certain
+$m$ $\lambda_m$ is much larger than the magnitude of the rest
+eigenvalues. For the first $m$ leading eigenvalues one define the
+corresponding timescales by
+\begin{equation}
+  \label{eq:timescale}
+  t_i = -\frac{\tau}{\log \lambda_i}, \quad i= 2,\cdots, m
+\end{equation}
+Usually the first $m$ leading timescales can be identified with the
+slowest conformational changes of the biomolecule. The spectrum gap is
+considered as a timescale separation between the slow conformational
+changes and the fast motion in the system, e.g.~bond vibration, angle
+vibration, solvent motion, and other relatively fast conformational
+changes. The eigenfunction of the first eigenvalue is nothing but the
+equilibrium probability density $\mu(\vect x)$. We denote the
+eigenfunctions corresponding to $\lambda_2, \cdot, \lambda_m$ by
+$\phi_2(\vect x), \cdots, \phi_m(\vect x)$, then the original dynamics
+of the system~\eqref{eq:chapman} is approximated by
+\begin{equation}
+  \label{eq:app-dynamics}
+  p_{t+k\tau}(\vect x) = \mu(\vect x) + \sum_{i=2}^m e^{-\frac{k\tau}{t_i}} a_i \phi_i(\vect x) + \textrm{fast decaying dynamics}
+\end{equation}
+where $a_i$ are constants calculated by $a_i = \int \frac{1}{\mu(\vect
+  x)} p_t(\vect x)\phi_i(\vect x) d\vect x$. This means that the
+evolution of the phase space probability is a summation of the
+time-independent equilibrium probability and a series of slow decaying
+processes that are defined by the timescales $t_i$ and eigenfunctions
+$\phi_i(\vect x)$. The eigenfunctions indicates how the conformational
+change happens.
+The slowest timescales and the corresponding conformational
+changes are usually of the most biological interest.  Since the
+slowest timescales determine the convergence speed of the system with
+respect to the equilibrium probability distribution, they are the most
+difficult part to sample and estimate in molecular dynamics
+simulations.
+
+In practice, it is not easy to directly calculate the eigenvalues and
+eigenfunctions from molecular trajectories. Therefore, the continuous
+trajectories are usually projected on to a finite number of sets, so
+that the original dynamics is reduced to a Markov jump process that is
+also called the Markov state model. We expect the Markov jump process
+is a good approximate to the original dynamics in the sense that the
+eigen pairs of the reduced process accurately reproduce those of the
+original dynamics. How to do the discretized and the accuracy are
+explained in detailed in Ref.~\cite{prinz2011markov}.
+
+\begin{figure}
+  \centering  
+  \includegraphics[width=0.49\textwidth]{fig/result.alanine.amber/c-2.eps}
+  \caption{(a) A schematic plot of the alanine dipeptide and the
+    dihedral angles $\phi$ and $\psi$. (b) The free energy landscape on the
+    $\phi$-$\psi$ dihedral angle space.}
+  \label{fig:free-energy}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.40\textwidth]{fig/result.alanine.amber/fig-dih-dist-phi.eps}\\
+  \includegraphics[width=0.40\textwidth]{fig/result.alanine.amber/fig-dih-dist-psi.eps}
+  \caption{The probability distributions of the dihedral angles.}
+  \label{fig:dih-dist}
+\end{figure}
+
+
+We simulate the alanine dipeptide with the Amber
+ff-99SB-ILDN~\cite{lindorff2010improved} force field.  The dihedral
+angles $\phi$ and $\psi$ (see Fig.~\ref{fig:free-energy}~(a)) are
+widely accepted as collective variables that can describe the
+conformational dynamics of the system.  The free energy landscape
+on $\phi$-$\psi$ space is given in Fig.~\ref{fig:free-energy}~(b).  The projected
+probability distributions on both dihedral angles
+with error bars are presented in Fig.~\ref{fig:dih-dist}. It can be easily seen
+from the distribution $P(\psi)$ and $P(\psi)$ that the ZM method with
+$l=2$ and 3 reproduce the over-all probability of the main
+conformations, i.e.~the $\alpha$-helix (right-handed), $\beta$-sheet and
+the left-handed $\alpha$-helix with satisfactory accuracy.
+% For these
+% methods, deviations of $P(\phi)$ at $\phi = -75^\circ$ and $\phi =
+% -140^\circ$ are observed. They correspond to the double-peak structure
+% of the right-handed $\alpha$-helix and $\beta$-sheet, which means the
+% error happens at the sub-structure of the right-handed $\alpha$-helix
+% and $\beta$-sheet, which are of relatively smaller biological interest
+% comparing with the main conformations.
+
+
+
+\begin{table}
+  \centering
+  \caption{The first three non-trivial timescales in ps computed at lag-time $\tau = 20$~ps.
+  }
+  \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}c   ccc}\hline\hline
+    Method      &        $t_2$ [ps]  & $t_3$ [ps] &  $t_4$ [ps] \\\hline
+    SPME        &         1374  (235)     &          70.03  (0.64)  &         39.2  (4.3)    \\
+    RF          &        {1615} (177)     &  \textbf{68.49} (0.42)  & \textbf{34.1} (2.2)    \\
+    ZM $l=1$    &        {1244} (099)     &         {71.00} (0.46)  &         36.2  (4.4)    \\
+    ZM $l=2$    &         1407  (194)     &          70.46  (0.76)  &         38.7  (2.4)    \\
+    ZM $l=3$    &         1449  (116)     &          70.20  (0.57)  &         37.4  (2.5)    \\
+    ZM $l=4$    &        {1119} (129)     &          70.05  (0.71)  &         34.6  (1.8)    \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp3}
+\end{table}
+
+% \begin{table}
+%   \centering
+%   \caption{The leading time scales in ps.
+%   }
+%   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}ccc ccc}\hline\hline
+%     Method      &   $r_c$ &    $l$      & $t_2$  & $t_3$ &  $t_4$ \\\hline
+%     SPME        &         1.9     &       --      &         1292  (148)     &          69.95  (0.76)  &         36.0 (4.7)    \\
+%     RF          &         1.2     & --            & \textbf{1615} (155)     &  \textbf{68.48} (0.37)  &         34.1 (1.6)    \\
+%     ZM          &         1.2     &       1       & \textbf{1607} (218)     &  \textbf{72.08} (0.50)  &         31.4 (1.9)    \\
+%     ZM          &         1.2     &       2       &         1324  (110)     &          69.97  (0.58)  &         40.4 (2.8)    \\
+%     ZM          &         1.2     &       3       &         1312  (157)     &          70.50  (0.72)  &         37.1 (4.3)    \\
+%     ZM          &         1.2     &       4       & \textbf{1635} (156)     &          69.71  (0.54)  &         39.2 (3.6)    \\
+%     \hline\hline
+%   \end{tabular*}
+%   \label{tab:tmp3}
+% \end{table}
+
+
+% \begin{figure}
+%   \centering
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-2.eps}\\
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-3.eps}\\
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4.eps}
+%   \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-4.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-2-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-3-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-rf-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-2-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-3-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm2-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-2-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-3-comp.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm3-eig-vec-5-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.amber/fig-zm4-eig-vec-5.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-2.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-2.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-3.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-3.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-spme-eig-vec-4.eps}
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-2-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-3-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-rf-eig-vec-4-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5.eps}\\
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-2-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-3-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-4-comp.eps}
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm3-eig-vec-5-comp.eps}\\
+%   % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-4.eps}\\
+%   % % \includegraphics[width=0.19\textwidth]{fig/result.alanine.charmm27/fig-zm4-eig-vec-5.eps}\\
+%   \caption{The eigenfunctions corresponding to the largest three
+%     non-trivial timescales, computed with lag-time 20~ps.}
+%   \label{fig:tmp5}
+% \end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.24\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-2.eps}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-2-phi.eps}}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-2-psi.eps}}\\
+  \includegraphics[width=0.24\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-3.eps}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-3-phi.eps}}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-3-psi.eps}}\\
+  \includegraphics[width=0.24\textwidth]{fig/result.alanine.amber/fig-spme-eig-vec-4.eps}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-4-phi.eps}}
+  \raisebox{.35cm}{\includegraphics[width=0.21\textwidth]{fig/result.alanine.amber/fig-eig-vec-error-4-psi.eps}}\\
+  \caption{The eigenfunctions corresponding to the largest three
+    non-trivial timescales, computed with lag-time 20~ps.  The left
+    colume shows the eigenfunctions computed by SPME method. The right colume
+    shows the deviation of RF, ZM ($l=1,\cdots,4$) with respect to
+    SPME.  To present the statistical uncertainty, the second
+    eigenfunction is projected on to dihedral angle $\phi$, while the
+    third and fourth eigenfunctions are projected on $\psi$.  The red
+    shadow region presents the statistical uncertainty of SPME. For
+    clarity, only the statistical uncertainty of RF and ZM $l=3$ are
+    presented by error bars.  }
+  \label{fig:tmp5}
+\end{figure}
+
+
+The leading timescales and corresponding eigenfunctions are given in
+Tab.~\label{tab:tmp3} and Fig.~\ref{fig:tmp5}. The ZM method with
+order 2 and 3 presents best accuracy.
+
+
+
+\newpage
+\bibliography{ref}{}
+\bibliographystyle{unsrt}
+
+\end{document}
