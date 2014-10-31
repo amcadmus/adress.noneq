@@ -86,11 +86,12 @@ in Appendix.~\ref{appendix:benchmark}.
 
 In this work, we investigate the water system modeled by
 TIP3P~\cite{jorgensen1983comparison} point-charge water model.
+All simulations were performed by Gromacs~4.6~\cite{hess2008gromacs, pronk2013gromacs} complied by GNU C compiler with single float precision.
 The size of the systems and corresponding number of molecules used for MD simulations are summarized in Tab.~\ref{tab:tmp1}.
-The benchmark quantities were calculated in either  canonical (NVT) or isothermal-isobaric (NPT) ensemble.
-In order to equilibriate the temperature,
-the systems were coupled to either Nose-Hoover~\cite{nose1984molecular,hoover1985canonical} or Langevin thermostat (Tab.~\ref{tab:tmp1})
-at 300~K.
+The benchmark quantities were calculated in either  canonical (NVT) or isothermal-isobaric (NPT) ensemble, with equilibrium temperature $T=300$~K.
+In order to simulate at the desired temperature,
+the systems $\systemsb$ and $\systemsbp$ were coupled to either Nose-Hoover~\cite{nose1984molecular,hoover1985canonical} thermostat with time-scale $\tau_T = 1.0$~ps,
+while systems $\systemmb$, $\systemmbp$, $\systemla$, $\systemlb$ and $\systemlbp$ were coupled to Langevin thermostat with time-scale $\tau_T = 0.1$~ps.
 In the NPT simulations, the systems were further coupled
 to the Parrinello-Rahman barostat~\cite{parrinello1980crystal,parrinello1981polymorphic} (in Gromacs implementation)
 with time-scale $\tau_P = 0.5$~ps to equilibriate the system at 1~Bar.
@@ -104,8 +105,10 @@ To make sure the van der Waals interactions were cut-off in a smooth way,
 they are modified in a shell of $0.05$~nm width near the cut-off sphere by the Gromacs ``\texttt{shift}'' method.
 The short-range part of SPME method is also smoothed in a shell of $0.05$~nm width  by the Gromacs ``\texttt{pme-switch}'' method.
 The reciprocal space
-grid spacing is 0.06~nm. The B-Spline interpolation order is 6. The
-splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
+grid spacing is 0.06~nm. The B-Spline interpolation order is 6.
+These parameters are chosen to be more accurate than the Gromacs default choices (grid spacing 0.12~nm and interpolation order 4).
+The splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
+The optimized real space and reciprocal space force computing errors are both $1.4\times10^{-4}$~kJ/(mol nm).
 In the simulations of the RF method, the interactoins were cut-off in the group manner,
 so the radius for neighbor list building is set identical to the cut-off radius.
 No cut-off smoothing was applied in the cases of RF simulation.
@@ -168,21 +171,51 @@ The quantities that
 are ensemble averages (in this work, pressure, chemical potential, radial distribution function and Kirkwood-G factor are of this type)
 were computed by the largest system $\systemlb$,
 in order to achieve higher parallel efficiency.
-The system $\sustemmb$ is simulated to investigate the size-dependency of the
+The system $\systemmb$ is simulated to investigate the size-dependency of the
 Kirkwood-G factor~\cite{vanderSpoel2006origin}.
 
 \section{Results and discussions}
 
-The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system $\systemla$.
+In this section we compare the benchmark quantities of the ZM method
+to the SPME method to investigate the accuracy of the former.
+The comparison to the RF method will also be mentioned, to show that
+the ZM is a promising replacement of the RF method.
+
+\subsection{Thermodynamic properties}
+
 \begin{figure}
   \centering
   \includegraphics[]{fig/nvt.pressure.1/pressure-methods.eps}
   \caption{The pressure convergence with respect to the cut-off radius.
-    For ZM method, the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    The ZM methods with order from 1 to 4 are compared with the RF. 
+    The splitting parameter of ZM method is set to be $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    The black solid line indicates the maganitude  of the correct pressure: 1~Bar.
+    The error bars present the statistical uncertainty at 95\% confidence level.
   }
-  \label{fig:tmp0}
+  \label{fig:pres-comp}
 \end{figure}
 
+The equilibrium density of the system was determined by an NPT SPME
+simulation.  In the NVT simulation the SPME electrostatic, computed
+pressure ($-0.4\pm 1.5$~Bar) is reproducing the target pressure of
+1.0~Bar.  The accuracy of ZM method, can be investigate by checking if
+the NVT pressure is consistent with the target pressure.  In
+Fig.~\ref{fig:pres-comp}, the pressure calculated by ZM method of
+order $l=1,2,3$ and 4 are plotted against the cut-off radius.
+All the  simulations are done with system $\systemla$.
+It is concluded from the Figure that all ZM methods converges to the
+target pressure at large enough cut-off radius.
+ZM $l=1$ converges from an under-estimate of the pressure, while ZM $l=2,3$ and 4 converges
+from an over-estimate.
+The higher order of ZM presents an larger error in the pressure calculation than
+the lower order ZM method. The ZM method is also compared with
+the RF method using the experimental dielectric constant $\varepsilon_{\textrm{rf}} = 80$, 
+from which it is concluded that the accuracy of ZM in pressure calculation is much higher
+than the RF method.
+It should be noted that even with the largest system of 13824 water molecules,
+the fluctuation (measured by standard deviation) of the pressure is roughly 100~Bar, which means that it is
+very difficult achieve very accurate estimate for this quantity. In practice a pressure error of 20~Bar is
+still acceptable. 
 
 \begin{sidewaystable}
   \centering
@@ -211,110 +244,75 @@ The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are do
     ZM          &1.2 & 4  &0.0 & $-26.0$ (0.3) & 71.1 (0.8)  &79.5 (1.0)           & 5.96 (0.05)               &1.03 (0.02)          &100 (2)          &         5.89  (0.09)&         0.318  (0.013)\\
     \hline\hline
   \end{tabular*}
-  \label{tab:tmp3}
+  \label{tab:thermo}
 \end{sidewaystable}
 
+Ohter thermodynamic quantities including the chemical potential,
+constant volume/pressure molar heat capacity, isothermal
+compressibility and heat expansion coefficient are compared in
+Tab.~\ref{tab:thermo}.
+The ZM results are in good consistency with the SPME results, and out-perform
+the RF method.
+
+\recheck{Discussion of the energy correction in the chemical potential calculation. TO be added later}
 
 % \begin{table}
 %   \centering
-%   \caption{The constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
-%     thermal expansion coefficient $\alpha$
-%     calculated by different methods.    
-%     The parenthesises in the last column show the statistical uncertainty
-%     at the confidence level of 95~\%.
-%     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
-%   }
-%   \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}cccc ccc}\hline\hline
-%     Method      &   $r_c$ [nm] &    $l$ & $\alpha$ [$\textrm{nm}^{-1}$]     &  $\kappa_T$ [$10^{-10}\textrm{m}^2/\textrm{N}$] & $C_{p,m}$ [J/(mol K)] & $\alpha$ [$10^{-3}\textrm{K}^{-1}$]\\\hline
-%     SPME        &  1.9     &       -- &    & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
-%     RF          &  1.2     & --       &    & \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\\hline
-%     ZM          &  1.2     &       1  & 0.0& 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\
-%     ZM          &  1.2     &       1  & 0.5& 5.920 (0.050)               &78.90 (0.92)           &\textbf{1.003} (0.016) \\
-%     ZM          &  1.2     &       1  & 1.0& 5.946 (0.050)               &78.37 (0.92)           &1.008 (0.016)          \\
-%     ZM          &  1.2     &       1  & 1.5& 5.974 (0.050)               &80.23 (0.86)           &1.040 (0.017)          \\
-%     ZM          &  1.2     &       1  & 2.0& \textbf{6.052} (0.051)      &79.41 (0.91)           &1.045 (0.016)          \\\hline
-%     ZM          &  1.2     &       2  & 0.0& 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
-%     ZM          &  1.2     &       3  & 0.0& 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
-%     ZM          &  1.2     &       4  & 0.0& 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
+%   \caption{A list of the dielectric constant calculated for different systems by different methods.
+%     The parameters are provided. The parenthesises in the last column show the statistical uncertainty
+%     of the last two digits up to the confidence level of 95~\%.}
+%   \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}cccc rr}\hline\hline
+%     System & Method      &       $\alpha$ [$\textrm{nm}^{-1}$] & $r_c$ [nm] &    $l$     &       $\eps$ \\\hline
+%     $\systemmb$  &       ZM          &       0.00    &       1.2     &       1       &       99.8 (3.8)\\ 
+%     $\systemmb$  &       ZM          &       0.00    &       1.2     &       2       &       95.2 (3.6)\\ 
+%     $\systemmb$  &       ZM          &       0.00    &       1.2     &       3       &       93.9 (3.7)\\ 
+%     $\systemmb$  &       ZM          &       0.00    &       1.5     &       3       &       98.7 (3.8)\\ 
+%     $\systemmb$  &       ZM          &       0.00    &       1.8     &       3       &      100.7 (3.6)\\ 
+%     $\systemmb$  &       ZM          &       0.00    &       1.2     &       4       &       94.7 (3.6)\\
+%     $\systemmb$   & SPME          & 2.09  & 1.9   &       --      &       98.8 (4.0) \\
+%     $\systemmb$  & RF             & --  & 1.2 & -- & 60.6   (1.7) \\
+%     $\systemlb$  &       ZM          &       0.00    &       1.2     &       1       &       97.1 (3.2)\\ 
+%     $\systemlb$  &       ZM          &       0.00    &       1.2     &       2       &       95.6 (3.5)\\ 
+%     $\systemlb$  &       ZM          &       0.00    &       1.2     &       3       &       95.8 (4.6)\\ 
+%     $\systemlb$  &       ZM          &       0.00    &       1.5     &       3       &       98.0 (3.3)\\ 
+%     $\systemlb$  &       ZM          &       0.00    &       1.8     &       3       &       98.9 (4.2)\\ 
+%     $\systemlb$  &       ZM          &       0.00    &       2.1     &       3       &       98.8 (3.9)\\ 
+%     $\systemlb$  &       ZM          &       0.00    &       1.2     &       4       &       97.8 (3.9)\\
+%    $\systemlb$   & SPME          & 2.09  & 1.9   &       --      &       98.7 (3.5) \\
+%     $\systemlb$  & RF             & --  & 1.2 & -- & 60.8   (2.0) \\
 %     \hline\hline
 %   \end{tabular*}
-%   \label{tab:tmp3a}
+%   \label{tab:tmp2}
 % \end{table}
 
-
-% \begin{table}
-%   \centering
-%   \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$ and viscosity $\eta$
-%     calculated by different methods.    
-%     The parenthesises in the last column show the statistical uncertainty
-%     at the confidence level of 95~\%.
-%     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
-%   }
-%   \begin{tabular*}{0.95\textwidth}{@{\extracolsep{\fill}}cccc ccccc}\hline\hline
-%     Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$ \\
-%                 &    [nm] &        & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
-%     % Method      &   $r_c$ [nm] &    $l$      & $\mu^\exc$ [kJ/mol] &$C_{v,m}$ [J/(mol K)] & $\eps$ (Sys.~$\systemsb$) & $D$ [$10^{-9}\textrm{m}^2/\textrm{s}$] &  $\eta$ [$10^{-3}\textrm{Pa}\cdot\textrm{s}$] \\\hline
-%     SPME        &1.9 & -- &    & $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
-%     RF          &1.2 & -- &--  & $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\\hline
-%     ZM          &1.2 & 1  &0.0 & $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
-%     ZM          &1.2 & 1  &0.5 & $-26.36$ (0.30) & 72.25 (0.78)  & 97.1 (2.2)  & \textbf{5.52} (0.25)   & \textbf{0.339} (0.008)\\ 
-%     ZM          &1.2 & 1  &1.0 & $-26.01$ (0.22) & 72.44 (0.84)  & 96.2 (2.3)  &        {5.78} (0.25)   & \textbf{0.330} (0.011)\\ 
-%     ZM          &1.2 & 1  &1.5 & $-26.03$ (0.24) & 71.31 (0.78)  & 99.1 (2.5)  & \textbf{5.71} (0.09)   &        {0.312} (0.008)\\ 
-%     ZM          &1.2 & 1  &2.0 & $-26.14$ (0.34) & 71.27 (0.78)  & 95.9 (2.5)  &        {5.90} (0.04)   &        {0.307} (0.007)\\ \hline
-%     ZM          &1.2 & 2  &0.0 & $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
-%     ZM          &1.2 & 3  &0.0 & $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
-%     ZM          &1.2 & 4  &0.0 & $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
-%     \hline\hline
-%   \end{tabular*}
-%   \label{tab:tmp3}
-% \end{table}
-    % SPME        &         1.9     &       --      & 1.67049 (0.00014)     $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)  & 5.86 (0.07)   & 0.315 (0.007)\\
-    % RF          &         1.2     & --            & 1.66733 (0.00016)      $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3)  & \textbf{6.27} (0.19)   & \textbf{0.449} (0.020)\\
-    % ZM          &         1.2     &       1       & 1.67052 (0.00022)     $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)  & \textbf{5.53} (0.11)   & \textbf{0.346} (0.006)\\ 
-    % ZM          &         1.2     &       2       & 1.67029 (0.00013)     $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)  & 5.82 (0.27)   & 0.318 (0.012)\\ 
-    % ZM          &         1.2     &       3       & 1.67024 (0.00018)     $-{26.18}$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)  & 5.79 (0.09)   & 0.321 (0.008)\\ 
-    % ZM          &         1.2     &       4       & 1.67031 (0.00010)     $-{26.01}$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)  & 5.89 (0.09)   & 0.318 (0.013)\\
-% \subsubsection{Hydrogen bonding}
-% We count 
-
-
-\begin{table}
-  \centering
-  \caption{A list of the dielectric constant calculated for different systems by different methods.
-    The parameters are provided. The parenthesises in the last column show the statistical uncertainty
-    of the last two digits up to the confidence level of 95~\%.}
-  \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}cccc rr}\hline\hline
-    System & Method      &       $\alpha$ [$\textrm{nm}^{-1}$] & $r_c$ [nm] &    $l$     &       $\eps$ \\\hline
-    $\systemmb$  &       ZM          &       0.00    &       1.2     &       1       &       99.8 (3.8)\\ 
-    $\systemmb$  &       ZM          &       0.00    &       1.2     &       2       &       95.2 (3.6)\\ 
-    $\systemmb$  &       ZM          &       0.00    &       1.2     &       3       &       93.9 (3.7)\\ 
-    $\systemmb$  &       ZM          &       0.00    &       1.5     &       3       &       98.7 (3.8)\\ 
-    $\systemmb$  &       ZM          &       0.00    &       1.8     &       3       &      100.7 (3.6)\\ 
-    $\systemmb$  &       ZM          &       0.00    &       1.2     &       4       &       94.7 (3.6)\\
-    $\systemmb$   & SPME          & 2.09  & 1.9   &       --      &       98.8 (4.0) \\
-    $\systemmb$  & RF             & --  & 1.2 & -- & 60.6   (1.7) \\
-    $\systemlb$  &       ZM          &       0.00    &       1.2     &       1       &       97.1 (3.2)\\ 
-    $\systemlb$  &       ZM          &       0.00    &       1.2     &       2       &       95.6 (3.5)\\ 
-    $\systemlb$  &       ZM          &       0.00    &       1.2     &       3       &       95.8 (4.6)\\ 
-    $\systemlb$  &       ZM          &       0.00    &       1.5     &       3       &       98.0 (3.3)\\ 
-    $\systemlb$  &       ZM          &       0.00    &       1.8     &       3       &       98.9 (4.2)\\ 
-    $\systemlb$  &       ZM          &       0.00    &       2.1     &       3       &       98.8 (3.9)\\ 
-    $\systemlb$  &       ZM          &       0.00    &       1.2     &       4       &       97.8 (3.9)\\
-   $\systemlb$   & SPME          & 2.09  & 1.9   &       --      &       98.7 (3.5) \\
-    $\systemlb$  & RF             & --  & 1.2 & -- & 60.8   (2.0) \\
-    \hline\hline
-  \end{tabular*}
-  \label{tab:tmp2}
-\end{table}
-
-
+\subsection{Radial distribution function}
 
 \begin{figure}
   \centering
   \includegraphics[]{fig/result.nvt/fig-rdf.eps}  
-  \caption{The RDF of different method. The insert is a zoom-in of range 0.9 -- 1.5~nm. In the insert, the position of the cut-off (1.2~nm) is indicated by a vertical black line.}
+  \caption{The comparison of the center-of-mass radial distribution functions
+    calculated by SPME, ZM and RF methods. The insert is a zoom-in of
+    range 0.9 -- 1.5~nm. In the insert, the position of the cut-off
+    (1.2~nm) is indicated by a vertical black line.
+    For ZM method, the splitting parameter $\alpha$ was set to 0.
+  }
   \label{fig:rdf}
 \end{figure}
+
+We plot in Fig.~\ref{fig:rdf} the center-of-mass radial distribution functions (RDFs) of TIP3P water
+calculated by the SPME, ZM ($l=1,2,3$ and 4) and RF method.  The RDFs
+are computed from NVT simulations of system $\systemlb$. It is
+observed from the Figure that the ZM RDFs are consistency very well
+with the SPME RDF, except an artificial oscillation around the
+cut-off radius. Higher orders of ZM method present lower oscillation, and when
+$l\geq 3$, the oscillation is almost negligible. Therefore, for the sake
+of high accuracy RDF computation, the ZM method of order at least 3 should be used.
+
+\recheck{Shall we comment here on the fact that group cut-off produces smoother RDF?}
+
+
+
+\subsection{Dielectric quantities}
 
 
 \begin{figure}
@@ -435,7 +433,7 @@ not obvious for $l\geq 2$.  For high order ZM (here $l=3$ is investigated),
 using larger cut-off radius can substantially improve the accuracy.
 
 The
-resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:tmp3}.
+resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:thermo}.
 The ZM method $l\geq 2$ is consistent with the SPME
 result, while the RF method is off. 
 
@@ -588,7 +586,7 @@ where
   \vect M = \sum_i\boldsymbol\mu_i = \sum_{\alpha\in i} q_\alpha\vect r_\alpha
 \end{align}
 is the total dipole moment of the system. Since it is a fluctuation, the simulated system is $\systemsb$.
-% The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:tmp3}.
+% The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:thermo}.
 
 \subsection{Kirkwood G-factor}
 
@@ -637,7 +635,7 @@ Fig.~\ref{fig:conv-vis}.  It is clear the integral for the RF method
 converges at 6~ps, while the ZM method converges only in 2~ps, which
 is consistent with the SPME result.  The value of ZM $l=1$ method is
 different from the rest ZM method an SPME result.
-The values listed  in Table~\ref{tab:tmp3} are computed with $I_\eta(10\,\textrm{ps})$.
+The values listed  in Table~\ref{tab:thermo} are computed with $I_\eta(10\,\textrm{ps})$.
 The
 system for simulation is $\systemsb$.
 
