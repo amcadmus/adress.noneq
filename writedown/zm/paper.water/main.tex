@@ -26,75 +26,153 @@
 
 \begin{document}
 
-\title{A Critical Appraisal of Zero-Multiple Method in Simulation Biomolecular Systems}
+\title{A Critical Appraisal of Zero-Multiple Method in Classical Water Simulation}
 \author{Han Wang}
 \email{han.wang@fu-berlin.de}
-\affiliation{CAEP Software Center for High Performance Numerical Simulation, Beijing, China}
+\affiliation{CAEP Software Center for High Performance Numerical Simulation, Huayuan Road 6, 100088 Beijing, China}
 \author{Ikuo Fukuda}
 \email{ifukuda@protein.osaka-u.ac.jp}
-\affiliation{Institute for Protein Research, Osaka University, Japan}
+\affiliation{Institute for Protein Research, Osaka University, 3-2 Yamadaoka, Suita, Osaka 565-0871, Japan}
+\affiliation{RIKEN (The Institute of Physical and Chemical Research), 2-1 Hirosawa, Wako, Saitama 351-0198, Japan}
 
 \begin{abstract}
 \end{abstract}
 
 \maketitle
 
+\section{Introduction}
+
+A very short overview of the existing electrostatic interaction methods.
+Long-range treatment, Ewald and derived methods like SPME.
+Short-range treatment.
+
+The importance of developing a short-range method for the electrostatic interaction.
+
+Zero-Multiple method, an overview, achievements, sucessful applications.
+
+The propuse of this work: Extensive and strict tests investigating the reliablility of Zero-Multiple method in water simulation, which is the most important solvent.
+
+The structure of the paper.
+
+\section{Zero-Multiple Method}
+
+Introduction of the ZM method, formula...
+
+A short mention of the group cut-off v.s.~the atom cut-off method. (will discuss the implmentation in gromacs later)
+
+
+
+\section{Benchmark quantities}
+
+In order to investigate the performance of ZM method, we simulation
+the water system by using both SPME and ZM method, and calculate a set
+of \emph{benchmark quantities}.  This set covers a broad range of
+water propertis that are of general interest, and includes the
+structure property (radial distribution function), the thermodynamic
+properties (pressure, excess chemical potential, constant
+volume/pressure heat capacity, isothermal compressibility, thermal
+expansion coefficient), dielectric properties (dielectric constant and
+Kirkwood-G factor) and dynamical properties (diffusion coefficient and
+viscosity).  By comparing ZM to SPME, a good consistency in computing
+the benchmark quantities would indicate a good accuracy of the ZM
+method.  Moreover, being aware of the weakness of the ZM method also
+prevents the application the method in wrong applications.  The ZM
+method is also compared to the traditional short-range method: RF.
+The definitions for computing these quantities are provided in details
+in Appendix.~\ref{appendix:benchmark}.
+
+
 \section{Simulation protocols}
+
+In this work, we investigate the water system modeled by
+TIP3P~\cite{jorgensen1983comparison} point-charge water model.
+The size of the systems and corresponding number of molecules used for MD simulations are summarized in Tab.~\ref{tab:tmp1}.
+The benchmark quantities were calculated in either  canonical (NVT) or isothermal-isobaric (NPT) ensemble.
+In order to equilibriate the temperature,
+the systems were coupled to either Nose-Hoover~\cite{nose1984molecular,hoover1985canonical} or Langevin thermostat (Tab.~\ref{tab:tmp1})
+at 300~K.
+In the NPT simulations, the systems were further coupled
+to the Parrinello-Rahman barostat~\cite{parrinello1980crystal,parrinello1981polymorphic} (in Gromacs implementation)
+with time-scale $\tau_P = 0.5$~ps to equilibriate the system at 1~Bar.
+All systems were integrated with leap-frog scheme at the time-step of 0.001~ps.
+For the ZM and SPME methods,
+the neighbor lists were updated every 5 time-steps.
+The ``\texttt{group}'' cut-off scheme in Gromacs was used. In order to mimic the atomistic
+cut-off manner, the radius for neighbor list building was set 0.3~nm
+larger than the cut-off radius (the maximum of Coulomb cut-off and the van der Waals cut-off).
+To make sure the van der Waals interactions were cut-off in a smooth way,
+they are modified in a shell of $0.05$~nm width near the cut-off sphere by the Gromacs ``\texttt{shift}'' method.
+The short-range part of SPME method is also smoothed in a shell of $0.05$~nm width  by the Gromacs ``\texttt{pme-switch}'' method.
+The reciprocal space
+grid spacing is 0.06~nm. The B-Spline interpolation order is 6. The
+splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
+In the simulations of the RF method, the interactoins were cut-off in the group manner,
+so the radius for neighbor list building is set identical to the cut-off radius.
+No cut-off smoothing was applied in the cases of RF simulation.
 
 \begin{table}
   \centering
-  \caption{A list of systems tested in this work. We report, from left to right, the number of water
-    molecules in the system (TIP3P model), box size, length of equilibriation, length of productive trajectory, the thermostat and the coupling time scale of the thermostat.
-    }
+  \caption{A list of systems simulated in this work. We report, from left to right, the number of water
+    molecules in the system (TIP3P model), equilibrium box size, length of equilibriation, length of productive trajectory, the thermostats and the corresponding coupling time-scales.
+  }
+  \vskip .5cm
   \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}c rrrrrr}\hline\hline
     System      & $N$ & $V$ [$\textrm{nm}^3$]  & $T_{eq}$ [ps] & Traj. Length [ps] & Thermostat & $\tau$ [ps]  \\\hline
-    $\systemsb$          & 2,500          & $4.24^3$              & 3,000        & 27,000        & Nose-Hoover & 1.0 \\
     $\systemsbp$         &   2,500        & $4.24^3$              & --           &  6,000        & Nose-Hoover & 1.0\\
-    $\systemmb$          & 4,500          & $5.15^3$              & 3,000        & 17,000        & Langevin & 0.1\\
+    $\systemsb$          & 2,500          & $4.24^3$              & 3,000        & 27,000        & Nose-Hoover & 1.0 \\\hline
     $\systemmbp$         &   4,500        & $5.15^3$              & --           &  6,000        & Langevin & 0.1\\
+    $\systemmb$          & 4,500          & $5.15^3$              & 3,000        & 17,000        & Langevin & 0.1\\\hline
     $\systemla$          &   13,824       & $7.49^3$              & 200          & 1,800         & Langevin & 0.1\\
-    $\systemlb$          &   13,824       & $7.49^3$              & 3,000        & 17,000        & Langevin & 0.1\\
     $\systemlbp$         &   13,824       & $7.49^3$              & --           & 10,000        & Langevin & 0.1\\
+    $\systemlb$          &   13,824       & $7.49^3$              & 3,000        & 17,000        & Langevin & 0.1\\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp1}
 \end{table}
 
-The systems used for MD simulations are listed in
-Table.\ref{tab:tmp1}.  The initial configurations are prepared by in
-the following steps: (1) A NPT simulation of system $\systemla$ with SPME~\cite{darden1993pme, essmann1995spm}
-electrostatic. The equilibrium density of the system is calculated
-from this simulation. (2) Initial configurations that has 4,500 and
-13,824 molecules are generated at the calculated equilibrium
-density. (3) NVT simulations with SPME electrostatic for system $\systemmbp$
-and $\systemlbp$ are performed. (4) The output configuration of $\systemmbp$ is used as
-initial configuration for system $\systemmb$, and the output configuration of
-$\systemlbp$ is used as initial configuration for system $\systemla$ and $\systemlb$.  The SPME
-parameters for all simulations reported by this work is: real space
-cut-off 1.90~nm. The cut-off is smoothed from 1.85 to 1.90~nm by the
-``\texttt{switch}'' method provide by Gromacs
-4.6~\cite{hess2008gromacs, pronk2013gromacs}. The reciprocal space
-grid spacing is 0.06~nm. The B-Spline interpolation order is 6. The
-splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
+The initial configurations were prepared by in
+the following steps:
+(1) An NPT simulation of system $\systemla$ with SPME
+electrostatic was performed. The equilibrium density (984.1~$\textrm{kg}/\textrm{m}^{-3}$) of the system is calculated
+from this simulation.
+(2) Initial configurations that contains 2500, 4500 and
+13824 molecules were generated at the calculated equilibrium
+density.
+(3) NVT simulations with SPME electrostatic for system $\systemsbp$, $\systemmbp$
+and $\systemlbp$ are performed.
+(4) The output configurations of $\systemsbp$ and $\systemmbp$ were used as
+initial configurations for system $\systemsb$ and $\systemmb$, respectively.  The output configuration of
+$\systemlbp$ was used as initial configurations for system $\systemla$ and $\systemlb$.
+% The SPME
+% parameters for all simulations reported by this work is: real space
+% cut-off 1.90~nm.
 
-We add a new system $\systemsb$, and use the Nose-Hoover
-thermostat. The reason is that for the fluctuation properties (in this
-work heat capacity, dielectric constant, diffusion constant and
-viscosity are fluctuation properties), simply increase the size of the
-system does not improve the accuracy of the
-simulation~\cite{ferrenberg1991statistical}. The only way to improve
-the accuracy is to run longer simulation to do more
-time-average. Therefore, the optimal way of measuring these properties
-is to use smaller system (as far as the finite size effect is not
-important) and run as long simulation as possible, as the equilibrium
-state is reached. The reason of using Nose-Hoover thermostat is that
+% The cut-off is smoothed from 1.85 to 1.90~nm by the
+% ``\texttt{switch}'' method provide by Gromacs
+% 4.6~\cite{hess2008gromacs, pronk2013gromacs}. 
+
+The smallest system $\systemsb$ was adopted,
+because for the quantities that are computed  by estimating fluctuations (in this
+work heat capacities, compressibility, thermal expansion coefficient, dielectric constant, diffusion constant and
+viscosity are fluctuations. See details in Appendix~\ref{appendix:benchmark}), simply increase the size of the
+system does not improve the accuracy of the 
+simulation~\cite{milchev1986fluctuations,ferrenberg1991statistical}.
+The optimal way of measuring these properties
+is to simulate with smaller systems (as far as the finite size effect is negligible) and run longer simulations for longer time-averages.
+The reason of using Nose-Hoover thermostat is that
 it perturbs the dynamics of the system only slightly, while the
 Langevin thermostat is likely to substantially change the dynamics
-when the coupling is very strong.
+when the coupling is very strong, therefore, the former was used in computing the dynamical
+properties like the diffusion constant and viscosity.
+The quantities that
+are ensemble averages (in this work, pressure, chemical potential, radial distribution function and Kirkwood-G factor are of this type)
+were computed by the largest system $\systemlb$,
+in order to achieve higher parallel efficiency.
+The system $\sustemmb$ is simulated to investigate the size-dependency of the
+Kirkwood-G factor~\cite{vanderSpoel2006origin}.
 
-\subsection{Static properties}
+\section{Results and discussions}
 
-\subsubsection{Pressure}
 The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are done with system $\systemla$.
 \begin{figure}
   \centering
@@ -105,32 +183,6 @@ The results are plotted in Fig.~\ref{fig:tmp0}. All pressure calculations are do
   \label{fig:tmp0}
 \end{figure}
 
-\subsubsection{Chemical potential}
-
-The chemical potential of the NVT system is defined by
-\begin{align}
-  \mu = \frac{\partial A}{\partial N}\Big\vert_{V,T}
-\end{align}
-In practice the excess chemical potential $\mu^\exc$, which is the
-chemical potential abstracted by the kinetic contribution, is of
-special interest. We calculate the excess chemical potential by the
-thermodynamic integration (TI). In this approach, the interaction
-between an inserted molecule and the rest of the system is controlled
-by a coupling parameter $\lambda$. $\lambda$ goes from 0 to 1, where 0
-indicates no coupling while 1 indicates full coupling. Therefore the
-Hamiltonian of the system is function of the coupling parameter. The
-excess chemical is calculated by:
-\begin{align}
-  \mu^\exc = \int_0^1 \Big\langle \frac{\partial \mathcal H(\lambda)}{\partial \lambda} \Big\rangle_\lambda d\lambda
-\end{align}
-We use a two step coupling approach: firstly couple the van der Waals
-interaction (stage vdw), and then couple the electrostatic interaction
-(stage ele).  During stage vdw, 21 $\lambda$ values are equally
-distributed in $[0,1]$.  During stage ele, 6 $\lambda$ values are
-equally distributed in $[0,0.05]$, while the other 20 $\lambda$ values
-are equally distributed in $[0.05, 1]$. Therefore, in total 47
-simulations are performed for all $\lambda$ values. The simulation was
-in system $\systemla$.
 
 \begin{sidewaystable}
   \centering
@@ -144,18 +196,19 @@ in system $\systemla$.
   \bigskip
   \centering\small\setlength\tabcolsep{2pt}
   \begin{tabular*}{0.99\textwidth}{@{\extracolsep{\fill}}cccc cccccccc}\hline\hline
-    Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ &  $\eps$ & $D$ &  $\eta$  &  $\kappa_T$  & $C_{p,m}$ & $\alpha$ \\
-                &    [nm] &        & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & (Sys.~$\systemsb$) & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$]  & [$10^{-10}\textrm{m}^2/\textrm{N}$] & [J/(mol K)] & [$10^{-3}\textrm{K}^{-1}$]\\\hline
-    SPME        &1.9 & -- &    & $-26.08$ (0.24) & 72.21 (0.97)  & 97.6 (3.4)          & 5.86 (0.07)         & 0.315 (0.007)         & 5.941 (0.050)               &79.18 (0.94)           &1.026 (0.016)          \\
-    RF          &1.2 & -- &--  & $-26.03$ (0.32) & 72.28 (0.81)  & \textbf{59.4} (1.3) & \textbf{6.27} (0.19)& \textbf{0.449} (0.020)& \textbf{6.508} (0.058)      &\textbf{82.34} (0.95)  &\textbf{1.149} (0.018) \\\hline
-    ZM          &1.2 & 1  &0.0 & $-26.22$ (0.30) & 71.75 (0.89)  & 95.5 (2.4)          & \textbf{5.53} (0.11)& \textbf{0.346} (0.006)& 5.872 (0.050)               &78.91 (0.95)           &1.009 (0.018)          \\ 
-    ZM          &1.2 & 1  &0.5 & $-26.36$ (0.30) & 72.25 (0.78)  & 97.1 (2.2)          & \textbf{5.52} (0.25)& \textbf{0.339} (0.008)& 5.920 (0.050)               &78.90 (0.92)           &\textbf{1.003} (0.016) \\ 
-    ZM          &1.2 & 1  &1.0 & $-26.01$ (0.22) & 72.44 (0.84)  & 96.2 (2.3)          &        {5.78} (0.25)& \textbf{0.330} (0.011)& 5.946 (0.050)               &78.37 (0.92)           &1.008 (0.016)          \\ 
-    ZM          &1.2 & 1  &1.5 & $-26.03$ (0.24) & 71.31 (0.78)  & 99.1 (2.5)          & \textbf{5.71} (0.09)&        {0.312} (0.008)& 5.974 (0.050)               &80.23 (0.86)           &1.040 (0.017)          \\ 
-    ZM          &1.2 & 1  &2.0 & $-26.14$ (0.34) & 71.27 (0.78)  & 95.9 (2.5)          &        {5.90} (0.04)&        {0.307} (0.007)& \textbf{6.052} (0.051)      &79.41 (0.91)           &1.045 (0.016)          \\\hline
-    ZM          &1.2 & 2  &0.0 & $-26.24$ (0.24) & 71.53 (0.88)  & 95.4 (2.5)          & 5.82 (0.27)         & 0.318 (0.012)         & 5.952 (0.051)               &79.70 (0.96)           &1.033 (0.016)          \\
-    ZM          &1.2 & 3  &0.0 & $-26.18$ (0.20) & 71.58 (0.88)  & 96.0 (2.7)          & 5.79 (0.09)         & 0.321 (0.008)         & 5.991 (0.050)               &79.49 (1.01)           &1.024 (0.019)          \\
-    ZM          &1.2 & 4  &0.0 & $-26.01$ (0.26) & 71.07 (0.84)  & 99.7 (2.2)          & 5.89 (0.09)         & 0.318 (0.013)         & 5.961 (0.054)               &79.46 (0.98)           &1.034 (0.017)          \\
+    Method      &   $r_c$ &    $l$ & $\alpha$  & $\mu^\exc$  &$C_{v,m}$ & $C_{p,m}$ &   $\kappa_T$  &$\alpha$ &  $\eps$ & $D$ &  $\eta$  \\
+                & [nm] & & [$\textrm{nm}^{-1}$] &   [kJ/mol] &[J/(mol K)] & [J/(mol K)] & [$10^{-10}\textrm{m}^2/\textrm{N}$] &  [$10^{-3}\textrm{K}^{-1}$]&  & [$10^{-9}\textrm{m}^2/\textrm{s}$] &  [$10^{-3}\textrm{Pa}\cdot\textrm{s}$]  \\
+                &    &    &    &NVT $\systemla$&NVT $\systemsb$&  NPT $\systemsb$          &  NPT $\systemsb$    &  NPT $\systemsb$    & NVT $\systemsb$& NVT $\systemsb$    & NVT $\systemsb$       \\\hline
+    SPME        &1.9 & -- &2.1 & $-26.1$ (0.2) & 72.2 (1.0)  &79.2 (0.9)           & 5.94 (0.05)               &1.03 (0.02)          & 98 (3)          &         5.86  (0.07)&         0.315  (0.007)\\
+    RF          &1.2 & -- &--  & $-26.0$ (0.3) & 72.3 (0.8)  &\textbf{82.3} (1.0)  & \textbf{6.51} (0.06)      &\textbf{1.15} (0.02) & \textbf{59} (1) & \textbf{6.27} (0.19)& \textbf{0.449} (0.020)\\\hline
+    ZM          &1.2 & 1  &0.0 & $-26.2$ (0.3) & 71.8 (0.9)  &78.9 (1.0)           & 5.87 (0.05)               &1.01 (0.02)          & 96 (2)          & \textbf{5.53} (0.11)& \textbf{0.346} (0.006)\\ 
+    ZM          &1.2 & 1  &0.5 & $-26.4$ (0.3) & 72.3 (0.8)  &78.9 (0.9)           & 5.92 (0.05)               &\textbf{1.00} (0.02) & 97 (2)          & \textbf{5.52} (0.25)& \textbf{0.339} (0.008)\\ 
+    ZM          &1.2 & 1  &1.0 & $-26.0$ (0.2) & 72.4 (0.8)  &78.4 (0.9)           & 5.95 (0.05)               &1.01 (0.02)          & 96 (2)          &        {5.78} (0.25)& \textbf{0.330} (0.011)\\ 
+    ZM          &1.2 & 1  &1.5 & $-26.0$ (0.2) & 71.3 (0.8)  &80.2 (0.9)           & 5.97 (0.05)               &1.04 (0.02)          & 99 (3)          & \textbf{5.71} (0.09)&        {0.312} (0.008)\\ 
+    ZM          &1.2 & 1  &2.0 & $-26.1$ (0.3) & 71.3 (0.8)  &79.4 (0.9)           & \textbf{6.05} (0.05)      &1.05 (0.02)          & 96 (3)          &        {5.90} (0.04)&        {0.307} (0.007)\\\hline
+    ZM          &1.2 & 2  &0.0 & $-26.2$ (0.2) & 71.5 (0.9)  &79.7 (1.0)           & 5.95 (0.05)               &1.03 (0.02)          & 95 (3)          &         5.82  (0.27)&         0.318  (0.012)\\
+    ZM          &1.2 & 3  &0.0 & $-26.2$ (0.2) & 71.6 (0.9)  &79.5 (1.0)           & 5.99 (0.05)               &1.02 (0.02)          & 96 (3)          &         5.79  (0.09)&         0.321  (0.008)\\
+    ZM          &1.2 & 4  &0.0 & $-26.0$ (0.3) & 71.1 (0.8)  &79.5 (1.0)           & 5.96 (0.05)               &1.03 (0.02)          &100 (2)          &         5.89  (0.09)&         0.318  (0.013)\\
     \hline\hline
   \end{tabular*}
   \label{tab:tmp3}
@@ -224,54 +277,6 @@ in system $\systemla$.
 % \subsubsection{Hydrogen bonding}
 % We count 
 
-\subsubsection{Constant volume molar heat capacity}
-The constant volume molar heat capacity is defined by:
-\begin{align}
-  C_{v,m} = \frac{1}{k_BT^2 N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
-\end{align}
-where $\mathcal H$ is the Hamiltonian of the system. Since constant
-volume heat capacity is a extensive thermodynamics quantity, it is
-normalized by the number molecules in the system.
-It is calculated in system $\systemsb$.
-
-\subsubsection{Constant pressure molar heat capacity}
-The constant pressure molar heat capacity is defined by:
-\begin{align}
-  C_{p,m} = \frac{1}{k_BT^2 N} \langle ( H - \langle H\rangle)^2 \rangle,
-\end{align}
-where $ H$ is the enthalpy of the system, defined by $H = \mathcal H + PV$. Since constant
-pressure heat capacity is a extensive thermodynamics quantity, it is
-normalized by the number molecules in the system.
-It is calculated by a NPT simulation of  system $\systemsb$.
-
-
-\subsubsection{Isothermal heat capacity}
-The isothermal heat capacity is defined by
-\begin{align}
-  \kappa_T = \frac{1}{k_BT} \frac{\langle (V - \langle V\rangle)^2 \rangle}{\langle V\rangle}.
-\end{align}
-It is calculated by a NPT simulation of  system $\systemsb$.
-
-
-\subsubsection{Thermal expansion coefficient}
-The thermal expansion coefficient is defined by
-\begin{align}
-  \alpha = \frac{1}{k_BT^2\langle V\rangle} \langle (H - \langle H\rangle)\cdot(V - \langle V\rangle) \rangle
-\end{align}
-It is calculated by a NPT simulation of  system $\systemsb$.
-
-
-\subsubsection{The dielectric constant}
-
-The dielectric constant:
-\begin{align}
-  \eps = 1 + \frac{1}{3L^3 k_BT} ( \langle \vert \vect M\vert^2\rangle - \vert\langle \vect M\rangle\vert^2 )
-\end{align}
-where
-\begin{align}
-  \vect M = \sum_i\boldsymbol\mu_i = \sum_{\alpha\in i} q_\alpha\vect r_\alpha
-\end{align}
-The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:tmp3}.
 
 \begin{table}
   \centering
@@ -304,40 +309,13 @@ The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculate
 
 
 
-\subsubsection{Radial distribution function}
-The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
 \begin{figure}
   \centering
-  \includegraphics[width=0.4\textwidth]{fig/result.nvt/fig-rdf.eps}  
+  \includegraphics[]{fig/result.nvt/fig-rdf.eps}  
   \caption{The RDF of different method. The insert is a zoom-in of range 0.9 -- 1.5~nm. In the insert, the position of the cut-off (1.2~nm) is indicated by a vertical black line.}
   \label{fig:rdf}
 \end{figure}
 
-
-\subsubsection{Kirkwood G-factor}
-
-The Kirkwood G-factor is defined by~\cite{vanderSpoel2006origin}
-\begin{align}
-  G_k(r) =
-  \Big\langle
-  \frac 1N
-  \sum_{i=1}^N \sum_{j, r_{ij} < r}
-  \frac {\boldsymbol\mu_i \cdot \boldsymbol\mu_j}{\vert \boldsymbol\mu_i\vert \cdot \vert\boldsymbol\mu_j\vert}
-  \Big\rangle,
-\end{align}
-where $r_{ij}$ denotes the oxygen-oxygen distance between two water
-molecules.  It is well know that the G-factor is system size
-dependent~\cite{vanderSpoel2006origin}. Here we show the G-factor for
-both a smaller system $\systemmb$ (Fig.~\ref{fig:tmp1}) and a larger system $\systemlb$
-(Fig.~\ref{fig:tmp2}).  In the figures, the statistical uncertainty of
-the SPME method is denoted by the red error bar, while those of the
-other methods are essentially the same, so they are not presented for
-clarity.  In both the system, the RF method is qualitatively
-wrong. The results of the ZM method are consistent with SPME
-method. The lower order produces better consistency.  An artificial
-oscillation around the cut-off radius presents for $l=1$, but it is
-not obvious for $l\geq 2$.  For high order ZM (here $l=3$ is investigated),
-using larger cut-off radius can substantially improve the accuracy.
 
 \begin{figure}
   \centering
@@ -394,53 +372,7 @@ using larger cut-off radius can substantially improve the accuracy.
 
 
 
-\subsection{Dynamical properties}
 
-\subsubsection{Diffusion constant}
-The diffusion constant is calculated from the Einstein relation:
-\begin{align}
-  D = \lim_{t\rightarrow \infty}\frac {1}{6t} \langle \vert \vect r_i(t) - \vect r_i(0)\vert^2\rangle.
-\end{align}
-In practice, the mean-square-displacement $\langle\vert \vect r_i(t) - \vect
-r_i(0)\vert^2\rangle$ is calculated, then the value is linearly fitted. The
-resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:tmp3}.
-The ZM method $l\geq 2$ is consistent with the SPME
-result, while the RF method is off. The system for simulation is $\systemsb$.
-
-\subsubsection{Viscosity}
-The viscosity is calculated from the Green-Kubo relation:
-\begin{align}
-  \eta = \frac{V}{k_BT}\int_0^\infty\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt, \quad \alpha,\beta \in \{x, y, z\}
-\end{align}
-where $\alpha$ and $\beta$ denote the directions, and
-$P_{\alpha\beta}$ denotes the off-diagonal components of the pressure
-tensor. Since we used the isotropic system setting, then it is obvious
-that $P_{xy}$, $P_{yz}$ and $P_{xz}$ are equivalent. Moreover, it has
-been pointed out that in addition $(P_{xx} - P_{yy})/2$ and $(P_{xx} -
-P_{yy})/2$ are two independent components that are equivalent to the
-first three~\cite{alfe1998first}. Therefore, the viscosity is
-calculated from the auto-correlation functions of five independent
-components, and the statistical error is estimated from the standard
-deviation of the viscosities calculated from the five components.
-
-We investigate the convergence of the integral of the auto-correlation function w.r.t.~time:
-\begin{align}
-  I_\eta(T) = \frac{V}{k_BT}\int_0^T\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt,
-\end{align}
-and plot the function $I_\eta(T) $ for all method in
-Fig.~\ref{fig:tmp4}.  It is clear the integral for the RF method
-converges at 6~ps, while the ZM method converges only in 2~ps, which
-is consistent with the SPME result.  The value of ZM $l=1$ method is
-different from the rest ZM method an SPME result.  The value
-$I_\eta(10\,\textrm{ps})$ is given in Table~\ref{tab:tmp3}.  The
-system for simulation is $\systemsb$.
-
-\begin{figure}
-  \centering
-  \includegraphics[]{fig/result.tiny/fig-vis.eps}
-  \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method.}
-  \label{fig:tmp4}
-\end{figure}
 
 
 \subsection{Damping effect}
@@ -489,6 +421,232 @@ The system was $L_1$.
 \end{figure}
 
 
+It is well know that the G-factor is system size
+dependent~\cite{vanderSpoel2006origin}. Here we show the G-factor for
+both a smaller system $\systemmb$ (Fig.~\ref{fig:tmp1}) and a larger system $\systemlb$
+(Fig.~\ref{fig:tmp2}).  In the figures, the statistical uncertainty of
+the SPME method is denoted by the red error bar, while those of the
+other methods are essentially the same, so they are not presented for
+clarity.  In both the system, the RF method is qualitatively
+wrong. The results of the ZM method are consistent with SPME
+method. The lower order produces better consistency.  An artificial
+oscillation around the cut-off radius presents for $l=1$, but it is
+not obvious for $l\geq 2$.  For high order ZM (here $l=3$ is investigated),
+using larger cut-off radius can substantially improve the accuracy.
+
+The
+resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:tmp3}.
+The ZM method $l\geq 2$ is consistent with the SPME
+result, while the RF method is off. 
+
+\appendix
+
+\section{The computation of benchmark quantities}
+\label{appendix:benchmark}
+
+In this section we proivde the formula used for computing the benchmark quantities. We assume that there are
+$N$ molecules in the water system. The position and configuration of each molecule are fully described
+by $\{\vect r_{3i},\vect r_{3i+1}, \vect r_{3i+2}\},\, i\in 1,\cdots,N$, and the corresponding velocities
+are denoted by $\{\vect v_{3i},\vect v_{3i+1}, \vect v_{3i+2}\},\, i\in 1,\cdots,N$. The mass of each
+atom is denoted by $m_i$.
+
+\subsection{Radial distribution function}
+The radial distribution function (RDF) $g(r)$ is a scalor function of distance $r$, which indicates the
+probability of finding two atoms of distance $r$ apart.  It is a very
+impotant equilibrium structure property, by which the X-ray scattering
+intensity and a mount of thermodynamic properties can be computed.
+In this work, we investigate the center-of-mass RDF in the water
+system.
+
+% The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
+
+\subsection{Pressure}
+The pressure of the system calculated by the virial formulus:
+\begin{align}
+  P = \frac1{3V}
+  \Bigg\langle
+  \sum_{i=1}^{3N} \Big( m_i\vect v_i^2 + \vect r_i\cdot \vect F_i \Big)
+  \Bigg\rangle,
+\end{align}
+where $V$ is the volume of the system.
+
+\subsection{Chemical potential}
+
+The chemical potential is defined by
+\begin{align}
+  \mu = \Big(\frac{\partial A}{\partial N}\Big)_{V,T}
+\end{align}
+In practice the excess chemical potential $\mu^\exc$, which is the
+chemical potential abstracted by the kinetic contribution, is of
+special interest. We calculate the excess chemical potential by the
+thermodynamic integration (TI). In this approach, the interaction
+between an inserted testing molecule and the system is
+denotedd by $U_t(\lambda)$, where $\lambda$
+is a coupling parameter in range $[0,1]$.
+When $\lambda = 1$ the testing molecule is fully coupled to the system
+with the TIP3P interaction. When $\lambda=0$, the testing molecule
+is decoupled with the system.
+Therefore the
+Hamiltonian of the system is function of the coupling parameter. The
+excess chemical is calculated by the free energy difference between
+the fully coupled and decoupled states:
+\begin{align}
+  \mu^\exc = \int_0^1 \Big\langle \frac{\partial U_t(\lambda)}{\partial \lambda} \Big\rangle_\lambda d\lambda
+\end{align}
+This integral is usually calculated by numerical integration, which
+equally paritions the range of $\lambda$, simulates the system at each
+discretized $\lambda$, and computes chemical potential by trapezoidal formulus.
+Here for the sake of accuracy, 
+we adopt a two step coupling approach: firstly couple the van der Waals
+interaction of the testing particle with the rest of the system (stage vdw),
+and then couple the electrostatic interaction (stage ele).
+During stage vdw, 21 $\lambda$ values are equally
+distributed in $[0,1]$.  During stage ele, 6 $\lambda$ values are
+equally distributed in $[0,0.05]$, while the other 20 $\lambda$ values
+are equally distributed in $(0.05, 1]$. Therefore, in total 47
+simulations are performed for all $\lambda$ values.
+The free energy differences and the error estimates are calculated
+by the Bennet's acceptance ratio method (BAR)~\cite{bennett1976efficient}. 
+The simulation was
+in system $\systemla$.
+
+\subsection{Constant volume/pressure molar heat capacity}
+
+The constant volume heat capacity is defined by the infiniesimal
+increment of the energy due to an infiniesimal increment of the temperature
+at constnat volume condition: 
+\begin{align}
+  C_V = \Big(\frac{\partial E}{\partial T}\Big)_V
+\end{align}
+Since it is a extensive thermodynamics quantity, we  normalize
+it by the number molecules in the system $N$ to obtain the
+constnat volume molar heat capacity $C_{V,m} = C_V/N$.
+In the MD simlations, 
+the constant volume molar heat capacity is calculated by estimating the
+fulctuation of the Hamiltonian in an NVT simulation:
+\begin{align}
+  C_{V,m} = \frac{1}{k_BT^2 N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
+\end{align}
+where $\mathcal H$ is the 
+Hamiltonian of the system. 
+% It is calculated in system $\systemsb$.
+
+The constant pressure molar heat capacity is defined in
+a similar way, but at constant pressure
+condition. 
+It is calculated by estimating
+the fluctuation of the enthalpy in an NPT simulation~\cite{wang2011existence}:
+\begin{align}
+  C_{p,m} = \frac{1}{k_BT^2 N} \langle ( H - \langle H\rangle)^2 \rangle,
+\end{align}
+where $ H$ is the enthalpy of the system,
+defined by $H = \mathcal H + P\mathcal V$, and $\mathcal V$ is the instantaneous volume
+of the system.
+It has been shown that the statistical error in estimating
+the fluctuations does not decrease with
+respect to the system size~\cite{milchev1986fluctuations,ferrenberg1991statistical}.
+Therefore, both constant volume and pressure molar heat capacities
+are calculated from the simulation of the smallest system: $\systemsb$.
+
+\subsection{Isothermal heat capacity}
+The isothermal heat capacity is defined
+by the normalized increment of volume due to an infiniesimal
+decrement of pressure under constant temperature condition:
+\begin{align}
+  \kappa_T = - \frac 1V \Big(\frac{\partial V}{\partial P}\Big)_T
+\end{align}
+It can be calculated by estimating the fluctuation
+of the instantaneous volume in an NPT simulation~\cite{wang2011existence}:
+\begin{align}
+  \kappa_T = \frac{1}{k_BT} \frac{\langle (\mathcal V - \langle \mathcal V\rangle)^2 \rangle}{\langle \mathcal V\rangle}.
+\end{align}
+Since it is also a fluctuation, the system $\systemsb$ is adopted for simulation.
+
+\subsection{Thermal expansion coefficient}
+The thermal expansion coefficient is defined by
+the normalized increment of volume due to an infiniesimal
+increment of temperature under the constant pressure condition:
+\begin{align}
+  \alpha_V = - \frac 1V \Big(\frac{\partial V}{\partial T}\Big)_P
+\end{align}
+It can be calculated by estimating the cross fluctuation
+of the enthalpy and instantaneous volume  in an NPT simulation:
+\begin{align}
+  \alpha_V = \frac{1}{k_BT^2\langle \mathcal V\rangle} \langle (H - \langle H\rangle)\cdot(\mathcal V - \langle \mathcal V\rangle) \rangle
+\end{align}
+The system $\systemsb$ adopted for simulation.
+
+
+\subsection{The dielectric constant}
+
+The dielectric constant can be estimated in a direct manner:
+\begin{align}
+  \eps = 1 + \frac{1}{3L^3 k_BT} ( \langle \vert \vect M\vert^2\rangle - \vert\langle \vect M\rangle\vert^2 )
+\end{align}
+where
+\begin{align}
+  \vect M = \sum_i\boldsymbol\mu_i = \sum_{\alpha\in i} q_\alpha\vect r_\alpha
+\end{align}
+is the total dipole moment of the system. Since it is a fluctuation, the simulated system is $\systemsb$.
+% The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:tmp3}.
+
+\subsection{Kirkwood G-factor}
+
+The Kirkwood G-factor is defined by~\cite{vanderSpoel2006origin}
+\begin{align}
+  G_k(r) =
+  \Big\langle
+  \frac 1N
+  \sum_{i=1}^N \sum_{j, r_{ij} < r}
+  \frac {\boldsymbol\mu_i \cdot \boldsymbol\mu_j}{\vert \boldsymbol\mu_i\vert \cdot \vert\boldsymbol\mu_j\vert}
+  \Big\rangle,
+\end{align}
+where $r_{ij}$ denotes the oxygen-oxygen distance between two water
+molecules.  
+
+\subsection{Diffusion constant}
+The diffusion constant is calculated from the Einstein relation:
+\begin{align}
+  D = \lim_{t\rightarrow \infty}\frac {1}{6t} \langle \vert \vect r_i(t) - \vect r_i(0)\vert^2\rangle.
+\end{align}
+In practice, the mean-square-displacement $\langle\vert \vect r_i(t) - \vect
+r_i(0)\vert^2\rangle$ is calculated, then the value is linearly fitted. The system for simulation is $\systemsb$.
+
+\subsection{Viscosity}
+The viscosity is calculated from the Green-Kubo relation:
+\begin{align}
+  \eta = \frac{V}{k_BT}\int_0^\infty\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt, \quad \alpha,\beta \in \{x, y, z\}
+\end{align}
+where $\alpha$ and $\beta$ denote the directions, and
+$P_{\alpha\beta}$ denotes the off-diagonal components of the pressure
+tensor. Since we used the isotropic system setting, then it is obvious
+that $P_{xy}$, $P_{yz}$ and $P_{xz}$ are equivalent. Moreover, it has
+been pointed out that in addition $(P_{xx} - P_{yy})/2$ and $(P_{xx} -
+P_{yy})/2$ are two independent components that are equivalent to the
+first three~\cite{alfe1998first}. Therefore, the viscosity is
+calculated from the auto-correlation functions of five independent
+components, and the statistical error is estimated from the standard
+deviation of the viscosities calculated from the five components.
+
+We investigate the convergence of the integral of the auto-correlation function w.r.t.~time:
+\begin{align}
+  I_\eta(T) = \frac{V}{k_BT}\int_0^T\langle P_{\alpha\beta}(0) P_{\alpha\beta}(t)\rangle\,dt,
+\end{align}
+and plot the function $I_\eta(T) $ for all method in
+Fig.~\ref{fig:conv-vis}.  It is clear the integral for the RF method
+converges at 6~ps, while the ZM method converges only in 2~ps, which
+is consistent with the SPME result.  The value of ZM $l=1$ method is
+different from the rest ZM method an SPME result.
+The values listed  in Table~\ref{tab:tmp3} are computed with $I_\eta(10\,\textrm{ps})$.
+The
+system for simulation is $\systemsb$.
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.tiny/fig-vis.eps}
+  \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method.}
+  \label{fig:conv-vis}
+\end{figure}
 
 
 \newpage
