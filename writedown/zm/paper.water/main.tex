@@ -205,10 +205,11 @@ order $l=1,2,3$ and 4 are plotted against the cut-off radius.
 All the  simulations are done with system $\systemla$.
 It is concluded from the Figure that all ZM methods converges to the
 target pressure at large enough cut-off radius.
-ZM $l=1$ converges from an under-estimate of the pressure, while ZM $l=2,3$ and 4 converges
-from an over-estimate.
-The higher order of ZM presents an larger error in the pressure calculation than
-the lower order ZM method. The ZM method is also compared with
+In general, the higher order of ZM presents an larger error in the pressure calculation than
+the lower order ZM method.
+Higher order are also more sensitve in the  cut-off radius dependency.
+ZM $l=1$ tends to under-estimate the pressure, while ZM $l=2,3$ and 4 tends to over-estimate.
+The ZM method is also compared with
 the RF method using the experimental dielectric constant $\varepsilon_{\textrm{rf}} = 80$, 
 from which it is concluded that the accuracy of ZM in pressure calculation is much higher
 than the RF method.
@@ -216,6 +217,30 @@ It should be noted that even with the largest system of 13824 water molecules,
 the fluctuation (measured by standard deviation) of the pressure is roughly 100~Bar, which means that it is
 very difficult achieve very accurate estimate for this quantity. In practice a pressure error of 20~Bar is
 still acceptable. 
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.24\textwidth]{fig/nvt.pressure.1/pressure-l1.eps}
+  \includegraphics[width=0.24\textwidth]{fig/nvt.pressure.1/pressure-l2.eps}\\
+  \includegraphics[width=0.24\textwidth]{fig/nvt.pressure.1/pressure-l3.eps}
+  \includegraphics[width=0.24\textwidth]{fig/nvt.pressure.1/pressure-l4.eps}
+  \caption{The pressure convergence with respect to the cut-off radius
+    for ZM methods with  splitting parameter from $0.0$ to $2.0\,\textrm{nm}^{-1}$.
+    From left to right, up to down presensts the ZM method of order 1 to 4.
+    The black solid line indicates the maganitude  of the correct pressure: 1~Bar.
+    The error bars present the statistical uncertainty at 95\% confidence level.
+  }
+  \label{fig:pres-l1}
+\end{figure}
+
+The effect of using different splitting parameter on the convergence
+of the pressure is investigate in Fig.~\ref{fig:pres-l1}.
+In general, the higher order indicates less significant dependency on the splitting parameter.
+In the case of $l=1$, the splitting parameter 0.0 is consistent with  $0.5\,\textrm{nm}^{-1}$, and
+by using higher splitting parameter, the pressure shifts to the higher pressure side.
+For $l=2,3$ and 4, the convergence is not sensitive to $\alpha$ upto  $1.0\,\textrm{nm}^{-1}$.
+More importantly, for all orders,
+the pressure does not converges to the desired value 1~Bar by using $\alpha = 1.5$ or $2.0\,\textrm{nm}^{-1}$.
 
 \begin{sidewaystable}
   \centering
@@ -247,13 +272,13 @@ still acceptable.
   \label{tab:thermo}
 \end{sidewaystable}
 
-Ohter thermodynamic quantities including the chemical potential,
+Other thermodynamic quantities including the chemical potential,
 constant volume/pressure molar heat capacity, isothermal
 compressibility and heat expansion coefficient are compared in
 Tab.~\ref{tab:thermo}.
 The ZM results are in good consistency with the SPME results, and out-perform
 the RF method.
-
+The splitting parameter does not have significant influence on these thermodynamic quantities.
 \recheck{Discussion of the energy correction in the chemical potential calculation. TO be added later}
 
 % \begin{table}
@@ -294,7 +319,7 @@ the RF method.
     calculated by SPME, ZM and RF methods. The insert is a zoom-in of
     range 0.9 -- 1.5~nm. In the insert, the position of the cut-off
     (1.2~nm) is indicated by a vertical black line.
-    For ZM method, the splitting parameter $\alpha$ was set to 0.
+    For ZM method, the splitting parameter $\alpha$ was set to 0.0~$\textrm{nm}^{-1}$.
   }
   \label{fig:rdf}
 \end{figure}
@@ -308,134 +333,118 @@ cut-off radius. Higher orders of ZM method present lower oscillation, and when
 $l\geq 3$, the oscillation is almost negligible. Therefore, for the sake
 of high accuracy RDF computation, the ZM method of order at least 3 should be used.
 
-\recheck{Shall we comment here on the fact that group cut-off produces smoother RDF?}
-
-
-
-\subsection{Dielectric quantities}
-
+\recheck{Shall we comment here on the fact that group cut-off produces smoother RDF? Add figures in Supplementary material}
 
 \begin{figure}
   \centering
-  \includegraphics[]{fig/result.nvt.small/fig-gkr-small.eps}
-  \includegraphics[]{fig/result.nvt.small/fig-gkr-small-conv.eps}
-  \includegraphics[]{fig/result.nvt.small/fig-eps-t-3000.eps}
-  \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-3000.eps}
-  \includegraphics[]{fig/result.nvt.small/fig-eps-t-10000.eps}
-  \includegraphics[]{fig/result.nvt.small/fig-eps-t-zm3-10000.eps}
-  \caption{The Kirkwood G-factor calculated for system $\systemmb$.
-    % The result of different methods are compared in the left plot.
-    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
-    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
-    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
-    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
-    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
+  \includegraphics[]{fig/result.nvt/fig-rdf-l1-damp.eps}  
+  \caption{
+    The splitting parameter dependency in calculating the center-of-mass RDF for
+    ZM method $l=1$. The insert is a zoom-in of
+    range 0.9 -- 1.5~nm. In the insert, the position of the cut-off
+    (1.2~nm) is indicated by a vertical black line.
   }
-  \label{fig:tmp1}
+  \label{fig:rdf-damp}
 \end{figure}
+
+The artificial oscillation can be substantially improved by using larger splitting parameter $\alpha$.
+In Fig.~\ref{fig:rdf-damp} presents the RDF of ZM $l=1$ with splitting parameter from 0.0 to 2.0~$\textrm{nm}^{-1}$.
+A clear trend of better RDF by using larger splitting parameter is observed.
+At $\alpha = 2.0\ \textrm{nm}^{-1}$ the RDF is almost overlapping with the SPME result.
+
+\recheck{If we want $l=2,3$, add in supplementary material..}
+
+\subsection{Dielectric quantities}
+
+The dielectric constant computed by ZM method at different orders are listed in Tab.~\ref{tab:thermo},
+and are consistent with the SPME computed results. In contrast, the RF method has poor accuracy in
+the dielectric constant.
 
 \begin{figure}
   \centering
   \includegraphics[]{fig/result.nvt/fig-gkr.eps}
-  \includegraphics[]{fig/result.nvt/fig-gkr-conv.eps}
-  \includegraphics[]{fig/result.nvt/fig-eps-t-3000.eps}
-  \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-3000.eps}
-  \caption{The Kirkwood G-factor calculated for system $\systemlb$.
-    % The result of different methods are compared in the left plot.
-    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
-    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
-    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
-    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
-    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
+  \includegraphics[]{fig/result.nvt.small/fig-gkr-small.eps}
+  \caption{The Kirkwood G-factor calculated for system $\systemlb$ (a) and $\systemmb$ (b).
+    ZM method of orders $l=1,2,3$ and 4 with the cut-off 1.2~nm and splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$ are plotted.
+    The RF method is shown as an comparison, which uses a cut-off radius of 1.2~nm and dielectric constant of 80.
+    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red error bars.
   }
-  \label{fig:tmp2}
+  \label{fig:gkr}
 \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[]{fig/result.nvt/fig-gkr-10000.eps}
-  \includegraphics[]{fig/result.nvt/fig-gkr-conv-10000.eps}
-  \includegraphics[]{fig/result.nvt/fig-eps-t-10000.eps}
-  \includegraphics[]{fig/result.nvt/fig-eps-t-zm3-10000.eps}
-  \caption{The Kirkwood G-factor calculated for system $\systemlb$. Equilibriation time is 10~ns, and the production simulation time is 10~ns.
-    % The result of different methods are compared in the left plot.
-    For all ZM methods the splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
-    In the left plot the cut-off radius for all orders is set to $1.2$~nm, while
-    in the right plot, only the order $l=3$ is considered and different cut-off radii are compared.
-    The RF method uses a cut-off radius of 1.2~nm, and dielectric constant of 80.
-    The statistical uncertainty of the SPME method is presented at 95~\% confidence level with the red bar.
-  }
-  \label{fig:tmp3}
-\end{figure}
-
-
-
-
-
-
-\subsection{Damping effect}
-
-In this section we investigate the damping effect. The pressure is plotted as a function of  the cut-off radius is plotted for different choices of
-the splitting parameter $\alpha$ in Fig.~\ref{fig:damp-pres}. The system for the simulation was $L_0$.
-\begin{figure}
-  \centering
-  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l1.eps}
-  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l2.eps}\\
-  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l3.eps}
-  \includegraphics[width=0.49\textwidth]{fig/nvt.pressure.1/pressure-l4.eps}
-  \caption{The pressure convergence with respect to the cut-off radius.
-    For ZM method, different splitting parameter $\alpha$ (in unit of $\textrm{nm}^{-1}$) are shown for different orders:  $l=1$, 2, 4, and 4.
-  }
-  \label{fig:damp-pres}
-\end{figure}
-
-The convergence of the integrated auto-correlation function $I_\eta(T) $ is shown in Fig.~\ref{fig:damp-vis-l1}.
-\begin{figure}
-  \centering
-  \includegraphics[]{fig/result.tiny/fig-vis-l1-damp.eps}
-  \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method. The different splitting parameters for ZM $l=1$ method are plotted}
-  \label{fig:damp-vis-l1}
-\end{figure}
-
-
-The RDF is plotted for different splitting parameters $\alpha$ for ZM $l=2$ and 3 in Fig.~\ref{fig:damp-rdf-l23}. Higher $\alpha$ reproduces the RDF better.
-The system was $L_1$.
-\begin{figure}[]
-  \centering
-  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-rdf-l2-damp.eps}
-  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-rdf-l3-damp.eps}
-  \caption{Radial distribution function for different splitting parameters $\alpha$ for ZM $l=2$ (left) and $l=3$ (right).}
-  \label{fig:damp-rdf-l23}
-\end{figure}
-
-The Kirkwood G-factor is plotted for different splitting parameters $\alpha$ for ZM $l=2$ and 3 in Fig.~\ref{fig:damp-gkr-l23}. 
-The system was $L_1$.
-\begin{figure}[]
-  \centering
-  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-gkr-l2-damp.eps}
-  \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-gkr-l3-damp.eps}
-  \caption{Kirkwood G-factor for different splitting parameters $\alpha$ for ZM $l=2$ (left) and 3 (right).}
-  \label{fig:damp-gkr-l23}
-\end{figure}
-
-
+As a measurement of the dipole correlation as a function of molecular distance, the Kirkwood-G factor
+is an important qnantity of the water system.
 It is well know that the G-factor is system size
-dependent~\cite{vanderSpoel2006origin}. Here we show the G-factor for
-both a smaller system $\systemmb$ (Fig.~\ref{fig:tmp1}) and a larger system $\systemlb$
-(Fig.~\ref{fig:tmp2}).  In the figures, the statistical uncertainty of
-the SPME method is denoted by the red error bar, while those of the
-other methods are essentially the same, so they are not presented for
-clarity.  In both the system, the RF method is qualitatively
-wrong. The results of the ZM method are consistent with SPME
-method. The lower order produces better consistency.  An artificial
-oscillation around the cut-off radius presents for $l=1$, but it is
-not obvious for $l\geq 2$.  For high order ZM (here $l=3$ is investigated),
-using larger cut-off radius can substantially improve the accuracy.
+dependent~\cite{vanderSpoel2006origin}, therefore we show the G-factor for
+both  system $\systemlb$ in FIg.~\ref{fig:gkr}~(a) and a smaller system $\systemmb$
+Fig.~\ref{fig:gkr} (b).  In the figures, the statistical uncertainty of
+the SPME method is denoted by the red error bars. The statistical uncertainties of the
+other methods are essentially of the same size as the SPME, so they are not presented in the figure for
+clarity.  In the figure, ZM adaopts a cut-off radius of 1.2~nm and a splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+RF uses a cut-off 1.2~nm and a dielectric constant of 80.
 
-The
-resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:thermo}.
-The ZM method $l\geq 2$ is consistent with the SPME
-result, while the RF method is off. 
+In both the system, the RF method is qualitatively
+wrong. The accuracy of the ZM method is much higher than RF.
+In the system of larger size ($\systemlb$), the ZM mehtod of $l=1$ is in consistency with the SPME mehtod. However
+order $l=2,3$ and 4  present less but still acceptable accuracy.
+In the system of smaller size ($\systemmb$), ZM method of all orders are consistent with the SPME result.
+This means ZM performs better in calculated Kirkwood-G factor for smaller systems.
+In both systems, ZM $l=1$ presents  an artificial
+oscillation around the cut-off radius (1.2~nm), while this oscillation is
+not obvious for $l\geq 2$.
+
+\begin{figure}
+  \centering
+  \includegraphics[]{fig/result.nvt/fig-gkr-conv.eps}
+  \includegraphics[]{fig/result.nvt/fig-gkr-l3-damp.eps} 
+  \caption{
+    The cut-off (a) and spliting parameter (b) dependency in calculating the Kirkwood-G factor.
+    The order of ZM method is $l=3$. In plot (a) the spliting parameter is $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    in plot (b) the cut-off radius is 1.2~nm.
+    The statistical uncertainty is presented at 95~\% confidence level with the  error bars.
+  }
+  \label{fig:gkr-conv}
+\end{figure}
+
+The cut-off and spliting parameter dependency in calculating the Kirkwood-G factor
+is presented in Fig.~\ref{fig:gkr-conv}  for ZM method of order $l=3$. With out surprising,
+the Kirkwood-G factor converges to the SPME result when using increasing cut-off radius. 
+However, unlike the case of calculating RDF, the accuracy Kirkwood-G factor is not improved
+with increasing spliting parameter. This fact should be noticed in choosing parameters for
+high accuracy calcualtion of Kirkwood-G factor.
+
+\subsection{Dynamical quantities}
+
+The dynamical quantities, diffusion constant and viscosity, are listed in Tab.~\ref{tab:thermo}.
+The ZM method of order $l\geq 2$ can almost perfactly reproduce the SPME dynamical quantities.
+The ZM order $l=1$ is of less accurate than higher orders, but is more accurate than the RF.
+Using larger spliting parameters improves the accuracy, and the value $\alpha= 2.0\ \textrm{nm}^{-1}$ is
+sugguested for calculating the dynamical quantities.
+
+% \subsection{Damping effect}
+
+% The convergence of the integrated auto-correlation function $I_\eta(T) $ is shown in Fig.~\ref{fig:damp-vis-l1}.
+% \begin{figure}
+%   \centering
+%   \includegraphics[]{fig/result.tiny/fig-vis-l1-damp.eps}
+%   \caption{The convergence of the integrated auto-correlation function $I_\eta(T) $. The error bars indicating 95\% confidence level are plotted with the SPME method. The different splitting parameters for ZM $l=1$ method are plotted}
+%   \label{fig:damp-vis-l1}
+% \end{figure}
+
+% The RDF is plotted for different splitting parameters $\alpha$ for ZM $l=2$ and 3 in Fig.~\ref{fig:damp-rdf-l23}. Higher $\alpha$ reproduces the RDF better.
+% The system was $L_1$.
+% \begin{figure}[]
+%   \centering
+%   \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-rdf-l2-damp.eps}
+%   \includegraphics[width=0.49\textwidth]{fig/result.nvt/fig-rdf-l3-damp.eps}
+%   \caption{Radial distribution function for different splitting parameters $\alpha$ for ZM $l=2$ (left) and $l=3$ (right).}
+%   \label{fig:damp-rdf-l23}
+% \end{figure}
+
+% The
+% resulting slop is used to calculate the diffusion constant. The results are listed in Table~\ref{tab:thermo}.
+% The ZM method $l\geq 2$ is consistent with the SPME
+% result, while the RF method is off. 
 
 \appendix
 
@@ -454,7 +463,7 @@ probability of finding two atoms of distance $r$ apart.  It is a very
 impotant equilibrium structure property, by which the X-ray scattering
 intensity and a mount of thermodynamic properties can be computed.
 In this work, we investigate the center-of-mass RDF in the water
-system.
+system. The RDFs presented in the main text were computed in system $\systemlb$.
 
 % The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
 
@@ -466,14 +475,15 @@ The pressure of the system calculated by the virial formulus:
   \sum_{i=1}^{3N} \Big( m_i\vect v_i^2 + \vect r_i\cdot \vect F_i \Big)
   \Bigg\rangle,
 \end{align}
-where $V$ is the volume of the system.
+where $V$ is the volume of the system. The presented pressures were computed in system $\systemla$.
 
 \subsection{Chemical potential}
 
 The chemical potential is defined by
 \begin{align}
-  \mu = \Big(\frac{\partial A}{\partial N}\Big)_{V,T}
+  \mu = \Big(\frac{\partial A}{\partial N}\Big)_{V,T},
 \end{align}
+where $A$ is the Helmholtz free energy.
 In practice the excess chemical potential $\mu^\exc$, which is the
 chemical potential abstracted by the kinetic contribution, is of
 special interest. We calculate the excess chemical potential by the
@@ -505,8 +515,7 @@ are equally distributed in $(0.05, 1]$. Therefore, in total 47
 simulations are performed for all $\lambda$ values.
 The free energy differences and the error estimates are calculated
 by the Bennet's acceptance ratio method (BAR)~\cite{bennett1976efficient}. 
-The simulation was
-in system $\systemla$.
+The simulations were performed with system $\systemla$.
 
 \subsection{Constant volume/pressure molar heat capacity}
 
@@ -544,7 +553,7 @@ It has been shown that the statistical error in estimating
 the fluctuations does not decrease with
 respect to the system size~\cite{milchev1986fluctuations,ferrenberg1991statistical}.
 Therefore, both constant volume and pressure molar heat capacities
-are calculated from the simulation of the smallest system: $\systemsb$.
+were calculated from the simulation of the smallest system: $\systemsb$.
 
 \subsection{Isothermal heat capacity}
 The isothermal heat capacity is defined
@@ -558,7 +567,7 @@ of the instantaneous volume in an NPT simulation~\cite{wang2011existence}:
 \begin{align}
   \kappa_T = \frac{1}{k_BT} \frac{\langle (\mathcal V - \langle \mathcal V\rangle)^2 \rangle}{\langle \mathcal V\rangle}.
 \end{align}
-Since it is also a fluctuation, the system $\systemsb$ is adopted for simulation.
+Since it is also a fluctuation, the system $\systemsb$ was adopted for simulation.
 
 \subsection{Thermal expansion coefficient}
 The thermal expansion coefficient is defined by
@@ -572,7 +581,7 @@ of the enthalpy and instantaneous volume  in an NPT simulation:
 \begin{align}
   \alpha_V = \frac{1}{k_BT^2\langle \mathcal V\rangle} \langle (H - \langle H\rangle)\cdot(\mathcal V - \langle \mathcal V\rangle) \rangle
 \end{align}
-The system $\systemsb$ adopted for simulation.
+The system $\systemsb$ was adopted for simulation.
 
 
 \subsection{The dielectric constant}
@@ -585,7 +594,7 @@ where
 \begin{align}
   \vect M = \sum_i\boldsymbol\mu_i = \sum_{\alpha\in i} q_\alpha\vect r_\alpha
 \end{align}
-is the total dipole moment of the system. Since it is a fluctuation, the simulated system is $\systemsb$.
+is the total dipole moment of the system. Since it is a fluctuation, the simulated system was $\systemsb$.
 % The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:thermo}.
 
 \subsection{Kirkwood G-factor}
@@ -600,7 +609,7 @@ The Kirkwood G-factor is defined by~\cite{vanderSpoel2006origin}
   \Big\rangle,
 \end{align}
 where $r_{ij}$ denotes the oxygen-oxygen distance between two water
-molecules.  
+molecules.  The system for computing this quantity is $\systemlb$.
 
 \subsection{Diffusion constant}
 The diffusion constant is calculated from the Einstein relation:
@@ -608,7 +617,7 @@ The diffusion constant is calculated from the Einstein relation:
   D = \lim_{t\rightarrow \infty}\frac {1}{6t} \langle \vert \vect r_i(t) - \vect r_i(0)\vert^2\rangle.
 \end{align}
 In practice, the mean-square-displacement $\langle\vert \vect r_i(t) - \vect
-r_i(0)\vert^2\rangle$ is calculated, then the value is linearly fitted. The system for simulation is $\systemsb$.
+r_i(0)\vert^2\rangle$ is calculated, then the value is linearly fitted. The system for simulation was $\systemsb$.
 
 \subsection{Viscosity}
 The viscosity is calculated from the Green-Kubo relation:
@@ -637,7 +646,7 @@ is consistent with the SPME result.  The value of ZM $l=1$ method is
 different from the rest ZM method an SPME result.
 The values listed  in Table~\ref{tab:thermo} are computed with $I_\eta(10\,\textrm{ps})$.
 The
-system for simulation is $\systemsb$.
+system for simulation was $\systemsb$.
 
 \begin{figure}
   \centering
