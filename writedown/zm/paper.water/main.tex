@@ -48,9 +48,9 @@ Short-range treatment.
 
 The importance of developing a short-range method for the electrostatic interaction.
 
-Zero-Multiple method, an overview, achievements, sucessful applications.
+Zero-Multiple method, an overview, achievements, successful applications.
 
-The propuse of this work: Extensive and strict tests investigating the reliablility of Zero-Multiple method in water simulation, which is the most important solvent.
+The purpose of this work: Extensive and strict tests investigating the reliability of Zero-Multiple method in water simulation, which is the most important solvent.
 
 The structure of the paper.
 
@@ -58,7 +58,7 @@ The structure of the paper.
 
 Introduction of the ZM method, formula...
 
-A short mention of the group cut-off v.s.~the atom cut-off method. (will discuss the implmentation in gromacs later)
+A short mention of the group cut-off v.s.~the atom cut-off method. (will discuss the implementation in gromacs later)
 
 
 
@@ -67,7 +67,7 @@ A short mention of the group cut-off v.s.~the atom cut-off method. (will discuss
 In order to investigate the performance of ZM method, we simulation
 the water system by using both SPME and ZM method, and calculate a set
 of \emph{benchmark quantities}.  This set covers a broad range of
-water propertis that are of general interest, and includes the
+water properties that are of general interest, and includes the
 structure property (radial distribution function), the thermodynamic
 properties (pressure, excess chemical potential, constant
 volume/pressure heat capacity, isothermal compressibility, thermal
@@ -103,13 +103,14 @@ cut-off manner, the radius for neighbor list building was set 0.3~nm
 larger than the cut-off radius (the maximum of Coulomb cut-off and the van der Waals cut-off).
 To make sure the van der Waals interactions were cut-off in a smooth way,
 they are modified in a shell of $0.05$~nm width near the cut-off sphere by the Gromacs ``\texttt{shift}'' method.
+The ZM method was implemented in Gromacs with the tabulated electrostatic interaction (Home-made codes for generating the interaction tables).
 The short-range part of SPME method is also smoothed in a shell of $0.05$~nm width  by the Gromacs ``\texttt{pme-switch}'' method.
 The reciprocal space
-grid spacing is 0.06~nm. The B-Spline interpolation order is 6.
+grid spacing is set to 0.06~nm, with B-Spline interpolation order of 6.
 These parameters are chosen to be more accurate than the Gromacs default choices (grid spacing 0.12~nm and interpolation order 4).
-The splitting parameter is optimized by the error estimate for the SPME method~\cite{wang2010optimizing}.
-The optimized real space and reciprocal space force computing errors are both $1.4\times10^{-4}$~kJ/(mol nm).
-In the simulations of the RF method, the interactoins were cut-off in the group manner,
+The splitting parameter is optimized by the error estimate for the SPME method, which is implemented in Gromacs by tool ``\texttt{g\_pme\_error}''~\cite{wang2010optimizing}.
+The optimized real space and reciprocal space force computing errors were equally distributed as $1.4\times10^{-4}$~kJ/(mol nm).
+In the simulations of the RF method, the interactions were cut-off in the group manner,
 so the radius for neighbor list building is set identical to the cut-off radius.
 No cut-off smoothing was applied in the cases of RF simulation.
 
@@ -189,7 +190,7 @@ the ZM is a promising replacement of the RF method.
   \caption{The pressure convergence with respect to the cut-off radius.
     The ZM methods with order from 1 to 4 are compared with the RF. 
     The splitting parameter of ZM method is set to be $\alpha = 0.00\,\textrm{nm}^{-1}$.
-    The black solid line indicates the maganitude  of the correct pressure: 1~Bar.
+    The black solid line indicates the magnitude  of the correct pressure: 1~Bar.
     The error bars present the statistical uncertainty at 95\% confidence level.
   }
   \label{fig:pres-comp}
@@ -207,7 +208,7 @@ It is concluded from the Figure that all ZM methods converges to the
 target pressure at large enough cut-off radius.
 In general, the higher order of ZM presents an larger error in the pressure calculation than
 the lower order ZM method.
-Higher order are also more sensitve in the  cut-off radius dependency.
+Higher order are also more sensitive in the  cut-off radius dependency.
 ZM $l=1$ tends to under-estimate the pressure, while ZM $l=2,3$ and 4 tends to over-estimate.
 The ZM method is also compared with
 the RF method using the experimental dielectric constant $\varepsilon_{\textrm{rf}} = 80$, 
@@ -226,8 +227,8 @@ still acceptable.
   \includegraphics[width=0.24\textwidth]{fig/nvt.pressure.1/pressure-l4.eps}
   \caption{The pressure convergence with respect to the cut-off radius
     for ZM methods with  splitting parameter from $0.0$ to $2.0\,\textrm{nm}^{-1}$.
-    From left to right, up to down presensts the ZM method of order 1 to 4.
-    The black solid line indicates the maganitude  of the correct pressure: 1~Bar.
+    From left to right, up to down presents the ZM method of order 1 to 4.
+    The black solid line indicates the magnitude  of the correct pressure: 1~Bar.
     The error bars present the statistical uncertainty at 95\% confidence level.
   }
   \label{fig:pres-l1}
@@ -238,7 +239,7 @@ of the pressure is investigate in Fig.~\ref{fig:pres-l1}.
 In general, the higher order indicates less significant dependency on the splitting parameter.
 In the case of $l=1$, the splitting parameter 0.0 is consistent with  $0.5\,\textrm{nm}^{-1}$, and
 by using higher splitting parameter, the pressure shifts to the higher pressure side.
-For $l=2,3$ and 4, the convergence is not sensitive to $\alpha$ upto  $1.0\,\textrm{nm}^{-1}$.
+For $l=2,3$ and 4, the convergence is not sensitive to $\alpha$ up to  $1.0\,\textrm{nm}^{-1}$.
 More importantly, for all orders,
 the pressure does not converges to the desired value 1~Bar by using $\alpha = 1.5$ or $2.0\,\textrm{nm}^{-1}$.
 
@@ -247,7 +248,7 @@ the pressure does not converges to the desired value 1~Bar by using $\alpha = 1.
   \caption{The excess chemical potential $\mu^\exc$, constant volume molar heat capacity $C_{v,m}$, dielectric constant $\eps$, diffusion constant $D$, viscosity $\eta$, constant pressure molar heat capacity $C_{v,m}$, isothermal compressibility $\kappa_T$ and
     thermal expansion coefficient $\alpha$
     calculated by different methods.    
-    The parenthesises in the last column show the statistical uncertainty
+    The parentheses in the last column show the statistical uncertainty
     at the confidence level of 95~\%.
     The bold numbers indicating that its deviation from the SPME result is larger than the statistical uncertainty.
   }
@@ -373,19 +374,19 @@ the dielectric constant.
 \end{figure}
 
 As a measurement of the dipole correlation as a function of molecular distance, the Kirkwood-G factor
-is an important qnantity of the water system.
+is an important quantity of the water system.
 It is well know that the G-factor is system size
 dependent~\cite{vanderSpoel2006origin}, therefore we show the G-factor for
-both  system $\systemlb$ in FIg.~\ref{fig:gkr}~(a) and a smaller system $\systemmb$
+both  system $\systemlb$ in Fig.~\ref{fig:gkr}~(a) and a smaller system $\systemmb$
 Fig.~\ref{fig:gkr} (b).  In the figures, the statistical uncertainty of
 the SPME method is denoted by the red error bars. The statistical uncertainties of the
 other methods are essentially of the same size as the SPME, so they are not presented in the figure for
-clarity.  In the figure, ZM adaopts a cut-off radius of 1.2~nm and a splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
+clarity.  In the figure, ZM adopts a cut-off radius of 1.2~nm and a splitting parameter $\alpha = 0.00\,\textrm{nm}^{-1}$.
 RF uses a cut-off 1.2~nm and a dielectric constant of 80.
 
 In both the system, the RF method is qualitatively
 wrong. The accuracy of the ZM method is much higher than RF.
-In the system of larger size ($\systemlb$), the ZM mehtod of $l=1$ is in consistency with the SPME mehtod. However
+In the system of larger size ($\systemlb$), the ZM method of $l=1$ is in consistency with the SPME method. However
 order $l=2,3$ and 4  present less but still acceptable accuracy.
 In the system of smaller size ($\systemmb$), ZM method of all orders are consistent with the SPME result.
 This means ZM performs better in calculated Kirkwood-G factor for smaller systems.
@@ -398,28 +399,28 @@ not obvious for $l\geq 2$.
   \includegraphics[]{fig/result.nvt/fig-gkr-conv.eps}
   \includegraphics[]{fig/result.nvt/fig-gkr-l3-damp.eps} 
   \caption{
-    The cut-off (a) and spliting parameter (b) dependency in calculating the Kirkwood-G factor.
-    The order of ZM method is $l=3$. In plot (a) the spliting parameter is $\alpha = 0.00\,\textrm{nm}^{-1}$.
+    The cut-off (a) and splitting parameter (b) dependency in calculating the Kirkwood-G factor.
+    The order of ZM method is $l=3$. In plot (a) the splitting parameter is $\alpha = 0.00\,\textrm{nm}^{-1}$.
     in plot (b) the cut-off radius is 1.2~nm.
     The statistical uncertainty is presented at 95~\% confidence level with the  error bars.
   }
   \label{fig:gkr-conv}
 \end{figure}
 
-The cut-off and spliting parameter dependency in calculating the Kirkwood-G factor
+The cut-off and splitting parameter dependency in calculating the Kirkwood-G factor
 is presented in Fig.~\ref{fig:gkr-conv}  for ZM method of order $l=3$. With out surprising,
 the Kirkwood-G factor converges to the SPME result when using increasing cut-off radius. 
 However, unlike the case of calculating RDF, the accuracy Kirkwood-G factor is not improved
-with increasing spliting parameter. This fact should be noticed in choosing parameters for
-high accuracy calcualtion of Kirkwood-G factor.
+with increasing splitting parameter. This fact should be noticed in choosing parameters for
+high accuracy calculation of Kirkwood-G factor.
 
 \subsection{Dynamical quantities}
 
 The dynamical quantities, diffusion constant and viscosity, are listed in Tab.~\ref{tab:thermo}.
-The ZM method of order $l\geq 2$ can almost perfactly reproduce the SPME dynamical quantities.
+The ZM method of order $l\geq 2$ can almost perfectly reproduce the SPME dynamical quantities.
 The ZM order $l=1$ is of less accurate than higher orders, but is more accurate than the RF.
-Using larger spliting parameters improves the accuracy, and the value $\alpha= 2.0\ \textrm{nm}^{-1}$ is
-sugguested for calculating the dynamical quantities.
+Using larger splitting parameters improves the accuracy, and the value $\alpha= 2.0\ \textrm{nm}^{-1}$ is
+suggested for calculating the dynamical quantities.
 
 % \subsection{Damping effect}
 
@@ -451,16 +452,16 @@ sugguested for calculating the dynamical quantities.
 \section{The computation of benchmark quantities}
 \label{appendix:benchmark}
 
-In this section we proivde the formula used for computing the benchmark quantities. We assume that there are
+In this section we provide the formula used for computing the benchmark quantities. We assume that there are
 $N$ molecules in the water system. The position and configuration of each molecule are fully described
 by $\{\vect r_{3i},\vect r_{3i+1}, \vect r_{3i+2}\},\, i\in 1,\cdots,N$, and the corresponding velocities
 are denoted by $\{\vect v_{3i},\vect v_{3i+1}, \vect v_{3i+2}\},\, i\in 1,\cdots,N$. The mass of each
 atom is denoted by $m_i$.
 
 \subsection{Radial distribution function}
-The radial distribution function (RDF) $g(r)$ is a scalor function of distance $r$, which indicates the
+The radial distribution function (RDF) $g(r)$ is a scalar function of distance $r$, which indicates the
 probability of finding two atoms of distance $r$ apart.  It is a very
-impotant equilibrium structure property, by which the X-ray scattering
+important equilibrium structure property, by which the X-ray scattering
 intensity and a mount of thermodynamic properties can be computed.
 In this work, we investigate the center-of-mass RDF in the water
 system. The RDFs presented in the main text were computed in system $\systemlb$.
@@ -468,7 +469,7 @@ system. The RDFs presented in the main text were computed in system $\systemlb$.
 % The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
 
 \subsection{Pressure}
-The pressure of the system calculated by the virial formulus:
+The pressure of the system calculated by the virial formula:
 \begin{align}
   P = \frac1{3V}
   \Bigg\langle
@@ -489,7 +490,7 @@ chemical potential abstracted by the kinetic contribution, is of
 special interest. We calculate the excess chemical potential by the
 thermodynamic integration (TI). In this approach, the interaction
 between an inserted testing molecule and the system is
-denotedd by $U_t(\lambda)$, where $\lambda$
+denoted by $U_t(\lambda)$, where $\lambda$
 is a coupling parameter in range $[0,1]$.
 When $\lambda = 1$ the testing molecule is fully coupled to the system
 with the TIP3P interaction. When $\lambda=0$, the testing molecule
@@ -502,8 +503,8 @@ the fully coupled and decoupled states:
   \mu^\exc = \int_0^1 \Big\langle \frac{\partial U_t(\lambda)}{\partial \lambda} \Big\rangle_\lambda d\lambda
 \end{align}
 This integral is usually calculated by numerical integration, which
-equally paritions the range of $\lambda$, simulates the system at each
-discretized $\lambda$, and computes chemical potential by trapezoidal formulus.
+equally partitions the range of $\lambda$, simulates the system at each
+discretized $\lambda$, and computes chemical potential by trapezoidal formula.
 Here for the sake of accuracy, 
 we adopt a two step coupling approach: firstly couple the van der Waals
 interaction of the testing particle with the rest of the system (stage vdw),
@@ -519,18 +520,18 @@ The simulations were performed with system $\systemla$.
 
 \subsection{Constant volume/pressure molar heat capacity}
 
-The constant volume heat capacity is defined by the infiniesimal
-increment of the energy due to an infiniesimal increment of the temperature
-at constnat volume condition: 
+The constant volume heat capacity is defined by the infinitesimal
+increment of the energy due to an infinitesimal increment of the temperature
+at constant volume condition: 
 \begin{align}
   C_V = \Big(\frac{\partial E}{\partial T}\Big)_V
 \end{align}
 Since it is a extensive thermodynamics quantity, we  normalize
 it by the number molecules in the system $N$ to obtain the
-constnat volume molar heat capacity $C_{V,m} = C_V/N$.
-In the MD simlations, 
+constant volume molar heat capacity $C_{V,m} = C_V/N$.
+In the MD simulations, 
 the constant volume molar heat capacity is calculated by estimating the
-fulctuation of the Hamiltonian in an NVT simulation:
+fluctuation of the Hamiltonian in an NVT simulation:
 \begin{align}
   C_{V,m} = \frac{1}{k_BT^2 N} \langle (\mathcal H - \langle\mathcal H\rangle)^2 \rangle,
 \end{align}
@@ -557,7 +558,7 @@ were calculated from the simulation of the smallest system: $\systemsb$.
 
 \subsection{Isothermal heat capacity}
 The isothermal heat capacity is defined
-by the normalized increment of volume due to an infiniesimal
+by the normalized increment of volume due to an infinitesimal
 decrement of pressure under constant temperature condition:
 \begin{align}
   \kappa_T = - \frac 1V \Big(\frac{\partial V}{\partial P}\Big)_T
@@ -571,7 +572,7 @@ Since it is also a fluctuation, the system $\systemsb$ was adopted for simulatio
 
 \subsection{Thermal expansion coefficient}
 The thermal expansion coefficient is defined by
-the normalized increment of volume due to an infiniesimal
+the normalized increment of volume due to an infinitesimal
 increment of temperature under the constant pressure condition:
 \begin{align}
   \alpha_V = - \frac 1V \Big(\frac{\partial V}{\partial T}\Big)_P
