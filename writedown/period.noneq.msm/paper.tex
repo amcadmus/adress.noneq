@@ -1,5 +1,5 @@
 \documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn]{revtex4}
-% \documentclass[aps, pre, preprint,unsortedaddress,a4paper,twocolumn]{revtex4}
+% \documentclass[aps, pre, reprint,unsortedaddress,a4paper,twocolumn]{revtex4}
 % \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
 % \documentclass[aps,jcp,groupedaddress,twocolumn,unsortedaddress]{revtex4}
@@ -106,9 +106,9 @@ idea of MSM is to approximate the original high-dimensional system by
 a reduced Markovian dynamics over a finite number of states, from
 which the essential structures and dynamics can be formulated by the spectrum analysis.
 By assigning the spacial and temporal discretizations, 
-the transition probabilities are sampled from MD trajectories, and
-the MSM does not need more information from the MD simulation.
-The quality of the MSM therefore relies on the quality of the discretizations.
+the transition probabilities are sampled from MD trajectories, 
+% the MSM does not need more information from the MD simulation.
+so the quality of the MSM  relies on the quality of the discretizations.
 Moreover, the characteristic of the original dynamics plays a role:
 It has been shown that in principle good approximate accuracy would be achieved
 by using only a few ``coresets'',
@@ -604,7 +604,7 @@ quality with respect to  the choice of $N_\dih$ and  lag-time $\tau$.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{fig/t010/discrete/fig-cg-prob.eps}  
+  \includegraphics[width=0.45\textwidth]{fig/t010/discrete/fig-cg-prob.eps}  
   \caption{Time-dependent probability $\prob\big(\phi_t\in[0,180), \psi_t\in [0,180)\big)$.  The brute force NEMD simulation is compared with different
     spatial discretization methods. The red shadow region indicates the
     statistical uncertainty of the NEMD simulation.}
@@ -642,7 +642,7 @@ to discretize  the dihedral angle space of alanine dipeptide.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{fig/t010/discrete/fig-cg-prob-tau.eps}  
+  \includegraphics[width=0.45\textwidth]{fig/t010/discrete/fig-cg-prob-tau.eps}  
   \caption{Time-dependent probability $\prob\big(\phi\in[0,180), \psi\in [0,180)\big)$.  The NEMD simulation is compared with the Master equation using generators discretized with $N_\dih=20$ and different lag time $\tau$. The red shadow region indicates the
     statistical uncertainty of the NEMD simulation.}
   \label{fig:tmp3}
@@ -668,10 +668,10 @@ Therefore, throughout this paper $\tau=0.5$~ps will be used.
 
 \begin{figure}
   \centering  
-  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3.steadyDist//fig-dist.eps}
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3.steadyDist//fig-dist.eps}\\
   % \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-dist-msm.eps}
   \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3/fig-floquet-vec-1.eps}
-  \caption{The color scale plot of the logarithmic quasi-stationary distribution $\mymu$
+  \caption{The color-scale plot of the logarithmic quasi-stationary distribution $\mymu$
     of (a) the NEMD  and (b)
     the discretized dynamics governed by Floquet transition matrix $\vect P=\myphi^{\top}(T)$.
   }
@@ -718,7 +718,7 @@ $P$ is observed.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{fig/t010/cluster.marco.3/fig-cluster.eps}
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3/fig-cluster.eps}
   \caption{The coreset identification. Different colors indicate different core sets: $C_{\confaa}$ (green), $C_\beta$ (yellow) and $C_{\confc}$ (red).
     The blue color indicates the transition region $C$ that does not belong to one of the core sets.}
   \label{fig:cluster}
@@ -737,14 +737,15 @@ right-handed alpha-helix, beta-sheet and left-handed alpha-helix conformations o
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3.fht/fig-fht-1.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3.fht/fig-fht-msm-1.eps}\\
-  \vskip -.5cm
+  \vskip -.7cm
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3.fht/fig-fht-2.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3.fht/fig-fht-msm-2.eps}\\
-  \vskip -.5cm
+  \vskip -.7cm
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3.fht/fig-fht-3.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3.fht/fig-fht-msm-3.eps}\\
+  \vskip -.5cm
   \caption{Comparisons of the first mean hitting time (FMHT) based on NEMD
-    simulation (first column) and discretized dynamics (second column).  From top
+    simulation (left column) and discretized dynamics (right column).  From top
     to bottom the first mean hitting times to the core sets $C_{\confaa}$, $C_{\beta}$,
     and $C_{\confc}$ are shown, respectively}
   \label{fig:num-6}
@@ -781,42 +782,57 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
 \begin{figure}
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-msm-1.eps}\\
+  \vskip -.7cm
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-1.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-msm-1.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-msm-1.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-msm-1.eps}\\
+  \vskip -.7cm
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-1.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-1.eps}
-  \caption{The forward $q^\fwd_{\confc}$ and backward committors
-    $q^\bwd_{\confc}$ computed by the discretized dynamics (second row) and NEMD simulations (first
-    row).}
+  \vskip -.5cm
+  \caption{The forward $q^\fwd_{\confaa}$ and backward 
+    $q^\bwd_{\confaa}$ committors
+    and their difference $q^\fwd_{\confaa} - q^\bwd_{\confaa}$
+    computed by the NEMD simulations (left
+    column) and the  discretized dynamics (right column).}
   \label{fig:num-3}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-msm-2.eps}\\
+  \vskip -.7cm
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-2.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-msm-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-msm-2.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-2.eps}
-  \caption{The forward $q^\fwd_{\confaa}$ and backward
-    $q^\bwd_{\confaa}$ committors computed by discretized dynamics (second row) and NEMD
-    simulations (first row).}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-msm-2.eps}\\
+  \vskip -.7cm
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-2.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-2.eps}\\
+  \vskip -.5cm
+  \caption{The forward $q^\fwd_{\beta}$ and backward
+    $q^\bwd_{\beta}$ committors
+    and their difference  $q^\fwd_{\beta} - q^\bwd_{\beta}$ 
+    computed by the NEMD simulations (left
+    column) and the  discretized dynamics (right column).}
   \label{fig:num-4}
 \end{figure}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-msm-3.eps}\\
+  \vskip -.7cm
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-3.eps}\\
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-fw-msm-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-msm-3.eps}
-  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-3.eps}
-  \caption{The forward $q^\fwd_{\beta}$ and backward $q^\bwd_{\beta}$
-    committors computed by discretized dynamics (second row) and  NEMD
-    simulations (first row).}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-bw-msm-3.eps}\\
+  \vskip -.7cm
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-3.eps}
+  \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-3.eps}\\
+  \vskip -.5cm
+  \caption{The forward $q^\fwd_{\confc}$ and backward $q^\bwd_{\confc}$
+    committors
+    and their difference  $q^\fwd_{\confc} - q^\bwd_{\confc}$ 
+    computed by the NEMD simulations (left
+    column) and the  discretized dynamics (right column).}
   \label{fig:num-5}
 \end{figure}
 
@@ -897,7 +913,7 @@ matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
   \caption{
     Comparison of second and third eigenvalues of $\vect P$ and $3\times 3$ MSM transition matrices $\hat{P}$ and $\hat{M}^{-1}\hat{T}$, respectively, from the two different MSM approaches.
   }
-  \begin{tabular*}{0.5\textwidth}{@{\extracolsep{\fill}}c rrr}\hline\hline
+  \begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}c rrr}\hline\hline
       &  $\lambda_2$ & $\lambda_3$ & $\lambda_4$ \\\hline
     $P$                 &0.905  &0.668 & 0.551       \\
     $\hat P$     & 0.909  &0.710 & --       \\
@@ -918,7 +934,7 @@ matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.85\textwidth]{fig/t010/cluster.marco.3/fig-coreset-prob.eps}
+  \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3/fig-coreset-prob.eps}
   \caption{Comparison of NEMD and MSM long-term kinetics of alanine
     dipeptide in an oscillatory electric field. The plots show the
     time-dependent probability $\hat p_j(t)$ to be assigned to
@@ -969,9 +985,9 @@ the time-dependent probability at $mT$ is generated by Eq.~\eqref{eq:num-29}, i.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.5\textwidth]{fig/flowchart/flowchart.eps}
+  \includegraphics[width=0.48\textwidth]{fig/flowchart/flowchart.eps}
   \caption{The flowchart of this work. A lighter color indicates
-  a ``more coarse'' approximation to the original NEMD dynamics.}
+  a ``coarser'' approximation to the original NEMD dynamics.}
   \label{fig:flowchart}
 \end{figure}
 

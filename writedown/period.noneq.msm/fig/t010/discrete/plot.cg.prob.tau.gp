@@ -51,7 +51,7 @@ set grid
 set xrange [0:400]
 pl \
 'metastable.out' \
-u 1:5 every 1 w l ls 11 t 'Brute force', \
+u 1:5 every 1 w l ls 11 t 'NEMD', \
 '' u 1:($5-$9*2):($5+$9*2) every 1 w filledcu ls 111 not,\
 'dis.dih20.tau0.5.b0.e4000/cg.prob.dih.5sets.out' \
 u 1:5 every 1 w l ls 12 t '{/Symbol t} = 0.5 ps', \

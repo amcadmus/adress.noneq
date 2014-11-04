@@ -14,13 +14,14 @@ set xrange [-180:180]
 set yrange [-180:180]
 set cbrange [0:1]
 set term post eps enh color solid font 18 size 8cm,8cm 
+set format cb "%.1f"
 
 set table 'img.dist.2d.dat'
 splot 'commitor.fw.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-fw-1.eps'
 set title 'Commitor fw 1'
-set title 'q@^{fw}_{{/Symbol a}_R} by NEMD'
+set title 'q@^{+}_{{/Symbol a}_R} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -28,7 +29,7 @@ splot 'commitor.fw.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-fw-2.eps'
 set title 'Commitor fw 2'
-set title 'q@_{{/Symbol b}}^{fw} by NEMD'
+set title 'q@_{{/Symbol b}}^{+} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -36,7 +37,7 @@ splot 'commitor.fw.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-fw-3.eps'
 set title 'Commitor fw 3'
-set title 'q@^{fw}_{{/Symbol a}_L} by NEMD'
+set title 'q@^{+}_{{/Symbol a}_L} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -44,7 +45,7 @@ splot 'commitor.fw.msm.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-fw-msm-1.eps'
 set title 'Commitor fw 1 MSM'
-set title 'q@^{fw}_{{/Symbol a}_R} by disc.'
+set title 'q@^{+}_{{/Symbol a}_R} by disc.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -52,7 +53,7 @@ splot 'commitor.fw.msm.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-fw-msm-2.eps'
 set title 'Commitor fw 2 MSM'
-set title 'q@_{{/Symbol b}}^{fw} by disc.'
+set title 'q@_{{/Symbol b}}^{+} by disc.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -60,7 +61,7 @@ splot 'commitor.fw.msm.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-fw-msm-3.eps'
 set title 'Commitor fw 3 MSM'
-set title 'q@^{fw}_{{/Symbol a}_L} by disc.'
+set title 'q@^{+}_{{/Symbol a}_L} by disc.'
 plot 'img.dist.2d.dat' with image
 
 
@@ -70,7 +71,7 @@ splot 'commitor.bw.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-bw-1.eps'
 set title 'Commitor bw 1'
-set title 'q@^{bw}_{{/Symbol a}_R} by NEMD'
+set title 'q@^{-}_{{/Symbol a}_R} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -78,7 +79,7 @@ splot 'commitor.bw.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-bw-2.eps'
 set title 'Commitor bw 2'
-set title 'q@_{{/Symbol b}}^{bw} by NEMD'
+set title 'q@_{{/Symbol b}}^{-} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -86,7 +87,7 @@ splot 'commitor.bw.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-bw-3.eps'
 set title 'Commitor bw 3'
-set title 'q@^{bw}_{{/Symbol a}_L} by NEMD'
+set title 'q@^{-}_{{/Symbol a}_L} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -94,7 +95,7 @@ splot 'commitor.bw.msm.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-bw-msm-1.eps'
 set title 'Commitor bw 1 MSM'
-set title 'q@^{bw}_{{/Symbol a}_R} by disc.'
+set title 'q@^{-}_{{/Symbol a}_R} by disc.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -102,7 +103,7 @@ splot 'commitor.bw.msm.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-bw-msm-2.eps'
 set title 'Commitor bw 2 MSM'
-set title 'q@_{{/Symbol b}}^{bw} by disc.'
+set title 'q@_{{/Symbol b}}^{-} by disc.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -110,7 +111,7 @@ splot 'commitor.bw.msm.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-bw-msm-3.eps'
 set title 'Commitor bw 3 MSM'
-set title 'q@^{bw}_{{/Symbol a}_L} by disc.'
+set title 'q@^{-}_{{/Symbol a}_L} by disc.'
 plot 'img.dist.2d.dat' with image
 
 
@@ -158,14 +159,14 @@ unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-1.eps'
 set title 'Commitor diff 1 MSM'
-set title 'q@^{fw}_{{/Symbol a}_R} - q@^{bw}_{{/Symbol a}_R} by disc.'
+set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by disc.'
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($3-$11) not
 unset table
 set out 'fig-commitor-diff-1.eps'
 set title 'Commitor diff 1'
-set title 'q@^{fw}_{{/Symbol a}_R} - q@^{bw}_{{/Symbol a}_R} by NEMD'
+set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -174,14 +175,14 @@ unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-2.eps'
 set title 'Commitor diff 2 MSM'
-set title 'q@_{{/Symbol b}}^{fw} - q@_{{/Symbol b}}^{bw} by disc.'
+set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by disc.'
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($5-$13) not
 unset table
 set out 'fig-commitor-diff-2.eps'
 set title 'Commitor diff 2'
-set title 'q@_{{/Symbol b}}^{fw} - q@_{{/Symbol b}}^{bw} by NEMD'
+set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by NEMD'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -190,14 +191,14 @@ unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-3.eps'
 set title 'Commitor diff 3 MSM'
-set title 'q@^{fw}_{{/Symbol a}_L} - q@^{bw}_{{/Symbol a}_L} by disc.'
+set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L} by disc.'
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($7-$15) not
 unset table
 set out 'fig-commitor-diff-3.eps'
 set title 'Commitor diff 3'
-set title 'q@^{fw}_{{/Symbol a}_L} - q@^{bw}_{{/Symbol a}_L}  by NEMD'
+set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L}  by NEMD'
 plot 'img.dist.2d.dat' with image
 
 # set cbrange [0:1]
