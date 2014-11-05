@@ -1,0 +1,23 @@
+Building Markov State Models for Periodically Driven Non-Equilibrium Systems.
+
+Han Wang
+
+CAEP Software Center for High Performance Numerical Simulation, Beijing, China
+and
+Zuse Institute Berlin, Germany
+
+Biomolecular systems under non-equilibrium conditions like external
+fields have attracted increased interest recently. In this talk, we
+firstly introduce a non-equilibrium molecular dynamics (NEMD)
+simulation method that samples the non-equilibrium system in a
+statistically reliable and thermodynamically consistent way. Then we
+demonstrate how to build the Markov state model (MSM) for the
+non-equilibrium systems under a periodic external driving.  The MSM
+reproduces the essential long timescale conformational dynamics of the
+original system, and at the same time it does not require the
+ergodicity of each single molecular trajectory.  Therefore, it does
+not only describes, but also provides more insightful understanding of
+the non-equilibrium system than the standard analyses of the molecular
+trajectories.  Our methods are tested and validated by an example
+non-equilibrium system: The alanine dipeptide under periodic electric
+field.
