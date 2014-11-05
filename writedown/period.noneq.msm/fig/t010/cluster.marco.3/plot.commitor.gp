@@ -45,7 +45,7 @@ splot 'commitor.fw.msm.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-fw-msm-1.eps'
 set title 'Commitor fw 1 MSM'
-set title 'q@^{+}_{{/Symbol a}_R} by disc.'
+set title 'q@^{+}_{{/Symbol a}_R} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -53,7 +53,7 @@ splot 'commitor.fw.msm.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-fw-msm-2.eps'
 set title 'Commitor fw 2 MSM'
-set title 'q@_{{/Symbol b}}^{+} by disc.'
+set title 'q@_{{/Symbol b}}^{+} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -61,7 +61,7 @@ splot 'commitor.fw.msm.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-fw-msm-3.eps'
 set title 'Commitor fw 3 MSM'
-set title 'q@^{+}_{{/Symbol a}_L} by disc.'
+set title 'q@^{+}_{{/Symbol a}_L} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 
 
@@ -95,7 +95,7 @@ splot 'commitor.bw.msm.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-bw-msm-1.eps'
 set title 'Commitor bw 1 MSM'
-set title 'q@^{-}_{{/Symbol a}_R} by disc.'
+set title 'q@^{-}_{{/Symbol a}_R} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -103,7 +103,7 @@ splot 'commitor.bw.msm.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-bw-msm-2.eps'
 set title 'Commitor bw 2 MSM'
-set title 'q@_{{/Symbol b}}^{-} by disc.'
+set title 'q@_{{/Symbol b}}^{-} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -111,7 +111,7 @@ splot 'commitor.bw.msm.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-bw-msm-3.eps'
 set title 'Commitor bw 3 MSM'
-set title 'q@^{-}_{{/Symbol a}_L} by disc.'
+set title 'q@^{-}_{{/Symbol a}_L} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 
 
@@ -159,7 +159,7 @@ unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-1.eps'
 set title 'Commitor diff 1 MSM'
-set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by disc.'
+set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($3-$11) not
@@ -175,7 +175,7 @@ unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-2.eps'
 set title 'Commitor diff 2 MSM'
-set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by disc.'
+set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($5-$13) not
@@ -191,7 +191,7 @@ unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-3.eps'
 set title 'Commitor diff 3 MSM'
-set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L} by disc.'
+set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L} by discr. dyn.'
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($7-$15) not

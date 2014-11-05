@@ -17,7 +17,7 @@
 
 \newcommand{\recheck}[1]{{\color{red} #1}}
 \newcommand{\redc}[1]{{\color{red} #1}}
-\newcommand{\bluec}[1]{{\color{red} #1}}
+\newcommand{\bluec}[1]{{\color{blue} #1}}
 \newcommand{\greenc}[1]{{\color{green} #1}}
 % \newcommand{\vect}[1]{\textbf{\textit{#1}}}
 \newcommand{\vect}[1]{#1}
@@ -53,13 +53,16 @@
 \title{Building Markov State Models for Periodically Driven Non-Equilibrium Systems}
 \author{Han Wang}
 \email{han.wang@fu-berlin.de}
-\affiliation{Zuse Institut Berlin, Germany}
+\affiliation{CAEP Software Center for High Performance Numerical Simulation, Beijing, China}
+\affiliation{Zuse Institute Berlin, Germany}
 \author{Christof Sch\"utte}
 \email{Christof.Schuette@fu-berlin.de}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
-\affiliation{Zuse Institut Berlin, Germany}
+\affiliation{Zuse Institute Berlin, Germany}
    
 \begin{abstract}
+Recent years have seen an increased interest in non-equilibrium molecular dynamics (NEMD) simulations, especially for molecular systems with periodic forcing by external fields, e.g., in the context of studying  effects of electromagnetic radiation on the human body tissue. Lately, an NEMD methods with local thermostating has been proposed that allows for studying 
+non-equilibrium processes in a statistically reliable and thermodynamically consistent way. In this article, we demonstrate how to construct Markov State Models (MSMs) for such NEMD simulations. MSM building has been well-established for systems in equilibrium where MSMs with just a few (macro-)states allow for accurate reproduction of the essential kinetics of the molecular system under consideration. Non-equilibrium MSMs have been lacking so far. The article presents how to construct such MSMs and illustrates their validity and usefulness for the case of conformation dynamics of alanine dipeptide in an external electric field.  
 \end{abstract}
 
 \maketitle
@@ -67,57 +70,39 @@
 \section{Introduction}
 % \textbf{Non-equilibrium, especially periodically driven system. Interesting.}
 
-The non-equilibrium biomolecular systems, especially
-those systems under periodic driven, are attracting increasing
-interest.  For example, the potential effects of an electromagnetic
+Biomolecular systems under non-equilibrium conditions caused by external fields, especially
+systems under periodic forcing, have attracted increasing
+interest recently.  For example, the potential effects of electromagnetic
 radiation on the human body tissue (e.g.~DNA, protein, and membrane)  has been extensively
-investigated by a vast number of literatures, and a very limited
-subset of them is Ref.~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
+investigated in a vast number of articles, with the following list just representing an incomplete selection~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
   dePomerai2003microwave, mancinelli2004non, inskip2001cellular, bekard2013electric, budi2005electric,
   budi2007effect, budi2008comparative, astrakas2012structural,
-  damm2012can, english2009nonequilibrium, solomentsev2012effects,
-  wang2014exploring}.  Among those theoretical investigations, the
-molecular dynamics (MD) has been shown  useful in understanding
-the response of the biomolecular conformation to the external electric field,
-due to its ability of resolving the molecular
-details, which are sometimes not achievable in experiments. Only
-recently, a dynamical non-equilibrium MD simulation (D-NEMD) method has
-been proposed.  With the local thermostating technique, the D-NEMD
-method is able to sample the non-equilibrium probability density at the
-constant temperature, therefore opens the possibility of studying the
-non-equilibrium processes in a statistically reliable and
-thermodynamically consistent way. 
+  damm2012can, english2009nonequilibrium, solomentsev2012effects}.  Molecular dynamics (MD) simulations have proved particularly useful for understanding
+the response of biomolecular conformations to external fields because of their ability to  resolve molecular
+details that \recheck{sometimes} cannot be resolved in experiments. Only
+recently, a \recheck{dynamical} non-equilibrium MD simulation (D-NEMD) method with local thermostating has been proposed~\cite{wang2014exploring} that allows for studying 
+non-equilibrium processes in a statistically reliable and thermodynamically consistent way. 
+Despite the significance of the non-equilibrium phenomena, the
+analysis of the non-equilibrium MD simulations mainly follows standard approaches, and reliable tools for quantitative description of
+the essential conformational dynamics of the molecular system under external forcing are still lacking. 
 
 % \textbf{MSM tools for analyzing, provide profound understanding.}
 
-Despite their high resolution in presenting a molecular system, MD the
-trajectories including the time-dependent position and velocity of every atom
-sometimes impose non-trivial challenge for data analyzing, in the sense that 
-extracting the essential structure and dynamical properties is
-becoming increasingly difficult as the  system size and trajectory length grow.
-% by merely visulizing (not only molecular cartoons but also order parameters)
-% and observing the molecules.
-The Markov state model
-(MSM)~\cite{A19-31}, which is a promising method for data analyzing of
-the high-dimensional MD trajectories, has been well developed over the
-past decade in theory and applications \cite{A19-31, A19-1}, and in
-the software implementations~\cite{A19-49, MSMBuilder}.  The principal
-idea of MSM is to approximate the original high-dimensional system by
-a reduced Markovian dynamics over a finite number of states, from
-which the essential structures and dynamics can be formulated by the spectrum analysis.
-By assigning the spacial and temporal discretizations, 
-the transition probabilities are sampled from MD trajectories, 
-% the MSM does not need more information from the MD simulation.
-so the quality of the MSM  relies on the quality of the discretizations.
-Moreover, the characteristic of the original dynamics plays a role:
-It has been shown that in principle good approximate accuracy would be achieved
-by using only a few ``coresets'',
-if the system is dominated by a few metastable states, in the sense that
-the MD trajectories stay in the vicinity of a metastable state substantially longer than
-transform to another such state~\cite{schuette2011markov}.
-Besides the applications in analyzing the MD trajectories, it worth noting that MSM is
-also used for designing initial configurations for massively parallel MD
-simulations~\cite{kohlhoff2014cloud}.
+Despite their many advantages, MD simulations have severe limitations. For example, one has to assume that the underlying force fields are appropriately describing the internal and external molecular interactions, and the maximal possible simulation length often is shorter than the timescale of interest. 
+This article is mainly concerned with circumventing the latter obstacle by introducing non-equilibrium Markov State Models. Markov State Models
+(MSM) have been well developed over the
+past decade in theory~\cite{A19-31,prinz2011markov} and applications (see the recent book~\cite{A19-1} for an overview), and software implementations~\cite{A19-49, MSMBuilder}, but for systems under equilibrium conditions only!  
+The principal idea of equilibrium MSMs is to approximate the original high-dimensional MD system by
+a reduced Markovian dynamics over a finite number of (macro-)states. These (macro-)states
+have to be identified with the dominant metastable sets, in the sense that
+typical MD trajectories stay in the vicinity of a metastable set substantially longer than
+the systems needs for a transition to another such state~\cite{A19-31,schuette2011markov}. In this case, the metastable sets are the main conformations of the molecular system under consideration which, often enough, are given by the main wells in the energy landscape. 
+It has been shown that for molecular systems exhibiting such metastable sets the Markovian dynamics given by an MSM allows very close approximation of the longest relaxation processes of the underlying molecular system, at least under equilibrium conditions~\cite{sarich2010approximation,Eigenvalues}. 
+Moreover, it has been demonstrated that in such cases MSM building requires short MD trajectories only, much shorter than the timescales of interest~\cite{PNAS09,kohlhoff2014cloud}.  
+Thus, MSM building often allows to study the dynamical behavior on long timescales without requiring MD trajectories of comparable length.
+Moreover, MSMs are utilized for understanding very long MD simulations: Extracting the essential structures and dynamical properties from long MD runs is
+becoming increasingly difficult as the system size and trajectory length grow; MSMs have been used to construct kinetic fingerprints from MD simulations~\cite{A19-39} that help understanding the essential dynamics and in comparison with experiments~\cite{PrinzKellerNoe_PCCP11_Perspective}.
+
 
 % Current achievement of MSM in equilibrium cases:
 % \begin{itemize}
@@ -126,33 +111,23 @@ simulations~\cite{kohlhoff2014cloud}.
 % \end{itemize}
 
 % \textbf{Importance: first application of MSM in a non-equilibrium system.}
+To the knowledge of the authors this work is the first attempt of using MSMs for analyzing non-equilibrium systems under periodic external forcing.
+More precisely, we will demonstrate how to use MSMs for investigate the conformational dynamics of a peptide (alanine dipeptide) under an oscillating electric field (EF).
+To this end, we will show how to generalize Markov state modeling to periodic non-equilibrium conditions where one cannot assume reversibility of the dynamics as it is mostly done in the literature on MSM building.
 
-Despite the significance of the non-equilibrium phenomena, the
-analysis of the non-equilibrium MD simulations mainly follows the
-visualizing (not only molecular cartoons but also order parameters)
-and observing approach, and the quantitative description of
-the essential conformational dynamics is still lacking. On the other
-hand, the MSM, to the best of our knowledge, has only been applied to
-equilibrium systems,  and most of them are assumed reversible. This work is the first attempt
-of using the MSM in analyzing a class of truly non-equilibrium systems:
-periodic external driven. Being more specifically,
-we investigate the protein conformational dynamics
-under the oscillating electric field (EF).
-In Sec.~\ref{sec:disc}, we discuss the temporal and spacial
-discretizations of the non-equilibrium dynamics. The spacial discretization
-is on the dihedral angle space, which can be interpreted as a
-MSM in the traditional sense of full spacial partition.
+The outline of the article is as follows: 
+In Sec.~\ref{sec:disc}, we discuss the temporal and spatial
+discretizations needed to construct an MSM. We consider spatial discretization
+of the dihedral angle space in the traditional sense of full partition MSMs~\cite{pande2010everything,A19-29}.
 In the temporal direction, the non-equilibrium process
-is  discretized by the Floquet theorem into a time-homogeneous
-but not necessarily reversible dynamics. Since the full spacial partition
-is not preferable in high-dimensional system, in Sec.~\ref{sec:build-msm},
-the MSM based on milestoning is introduced for the discretized irreversible process.
-The validity of the discretizations and the MSM is checked in Sec.~\ref{sec:alanine}
-by comparing to the brute force
-non-equilibrium simulation of alanine dipeptide under oscillating EF.
-This work is summarized in Sec.~\ref{sec:conclusion} by a chart presenting
-the workflow of building MSM for non-equilibrium systems,
-and open questions are presented in the end.
+is discretized utilizing Floquet's theorem. This results in a time-homogeneous, 
+but not necessarily reversible, that is, irreversible Markov process. Since  full spatial partition does not make any sense
+for high-dimensional systems, we next show how to construct a \emph{few-state} MSM based on milestoning~\cite{schuette2011markov,A19-29} of the discretized irreversible Markov process in Sec.~\ref{sec:build-msm}.
+The validity of the discretizations and the resulting MSM is checked in Sec.~\ref{sec:alanine}
+by comparing the kinetic fingerprints given by the MSM to brute force
+non-equilibrium \recheck{MD} simulations of alanine dipeptide under oscillating EF.
+The findings are summarized in Sec.~\ref{sec:conclusion} including a chart presenting
+the workflow of MSM building for non-equilibrium systems, and a list of open questions.
 
 
 
@@ -161,7 +136,7 @@ and open questions are presented in the end.
 
 \section{Non-equilibrium molecular dynamics and its discretization}
 \label{sec:disc}
-For the sake of simplicity we consider diffusive molecular dynamics in an energy landscape $V$ driven by the time-dependent external driving force $E(t)D(x_t)$ with the
+\recheck{We consider diffusive molecular dynamics} in an energy landscape $V$ driven by the time-dependent external driving force $E(t)D(x_t)$ with the
 $T$-periodic external field $E(t)$:
 \begin{align}
   \label{eq:disc-1}
@@ -169,6 +144,7 @@ $T$-periodic external field $E(t)$:
 \end{align}
 where $x_t\in\Omega$ denotes the state of the molecular system at time $t$ in state space $\Omega$, $\vect w_t$ denotes standard $n$-dimensional Brownian motion, and $\beta$ the inverse temperature,
 i.e.~$\beta = 1/(k_B\mathcal T)$.
+\recheck{The Hamiltonain or Langevin dynamics can be treated in the same way as that will be presented, so for sake of simplicity we focus on the discussion of diffusive dynamics.}
 The propagation of probability
 densities $\rho=\rho(\vect x,t)$ based on this kind of dynamics in the sense
 of $\rho(\vect x,t)dx=\prob[\vect x_t\in [\vect x,\vect x+d\vect x)]$ is governed by
@@ -189,7 +165,7 @@ i.e.~$\ml(t) = \ml(t+T)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial discretization: Master equation}
-We will now introduce an appropriate spatial discretization of this kind of non-equilibrium MD -- this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.
+We will now introduce an appropriate spatial discretization of this kind of non-equilibrium MD -- \recheck{\bluec{(why saying this red sentence? we need the spatial discretization for calculating the core sets...)} this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.}
 For achieving this discretization, we 
 introduce a partition of state space $\Omega$ into a finite number of disjoint
 sets $\{ \Omega_1, \cdots, \Omega_N\}$ satisfying $\Omega = \cup_i \Omega_i$,
@@ -291,9 +267,9 @@ N$, which is generated by transition matrix
 \end{equation}
 We prefer to consider the discrete-time process $\tilde X_{m}$ instead of the time-continuous process $X_t$
 because the powerful theories and
-computational tools for time-homogeneous Markov processes can be directly applied. It worth noting that many of these tools require the transition matrix $P$ to satisfy the detailed balance condition. The computations in the Appendix~\ref{sec:app-revs} show that $P$ will in general \emph{not} satisfy this condition; in fact  the deviation form reversibility can be estimated from the work of the periodic driving does to the system.
+computational tools for time-homogeneous Markov processes can be directly applied. It worth noting that many of these tools require the transition matrix $P$ to satisfy the detailed balance condition. The computations in the Appendix~\ref{sec:app-revs} show that $P$ will in general \emph{not} satisfy this condition; in fact  the deviation {from} reversibility can be estimated from the work of the periodic driving does to the system.
 There is no doubt that information within one period is lost by using this temporal
-discretization, however, information regarding the long-term behavior of the system on time-scales
+discretization, however, information regarding the long-term behavior of the system on timescales
 much longer than the period will be perfectly described because of $\tilde X_{m} = X_{mT}\approx x_{mT}$ whenever our spatial discretization is fine enough.
 At the same time,
 the computational cost of generating $\tilde X_{m}$ is much less demanding
@@ -307,7 +283,7 @@ satisfies $|\lambda|\le 1$. Furthermore $\lambda=1$ is an
 eigenvalue with right eigenvector $\vect e=(1,\ldots,1)^{\top}$ and a left eigenvector $\mymu$
 satisfying
 $\mymu^{\top}P=\mymu^{\top}$.
-From now on, we assume $P$ to be irreducible and aperiodic such that the Perron Frobenius theorem the eigenvalue $\lambda=1$ is  non-negative componentwise, and unique (up to normalization $\sum_i\mu(i)=1$). In this case $\mymu$ is the stationary measure in the sense that
+From now on, we assume $P$ to be irreducible and aperiodic such that the Perron-Frobenius theorem \recheck{holds, so the eigenvector corresponding to} the eigenvalue $\lambda=1$ is  non-negative componentwise, and unique (up to normalization $\sum_i\mu(i)=1$). In this case $\mymu$ is the stationary measure in the sense that
 $
  \mymu^{\top} P^m = \mymu^{\top},\ m\in\mathbb N
 $,
@@ -321,10 +297,10 @@ $
 % \begin{align}
 % \label{eq:floq-15}  
 % \end{align}
-so that $\mymu$ can be seen as the quasi-stationary distribution of our non-stationary process.
+so that $\mymu$ can be seen as the quasi-stationary distribution of the non-stationary process.
 
 
-% due to the discretization in both the spacial and temperal directions.
+% due to the discretization in both the spacial and temporal directions.
 % In the numercal example in Sec.~\ref{sec:alanine}, we
 % compute the 
 
@@ -472,8 +448,8 @@ If all of its entries are positive such that it is a stochastic matrix, $\hat{M}
 Therefore, in practice, the deviation of the eigenvalues of $\hat P$ from those of $\hat{M}^{-1}\hat{T}$ indicates the deviation from Markovianity regarding the process $\hat{X}_m$.
 %The lesson learnt in the reversible case are that $\hat{P}$ is better suited to approximate the molecular kinetics on large timescales while $\hat{M}^{-1}\hat{T}$ should be used for approximating eigenvalues and long relaxation timescales.
 
-% Given coresets $\{C_1, \cdots, C_k\}$, the procedure \eqref{eq:msm-ht}--\eqref{eq:msm-tmatrix-10}
-% If assuming that we have the coresets $\{C_1, \cdots, C_k\}$, no matter how they are identified,
+% Given core sets $\{C_1, \cdots, C_k\}$, the procedure \eqref{eq:msm-ht}--\eqref{eq:msm-tmatrix-10}
+% If assuming that we have the core sets $\{C_1, \cdots, C_k\}$, no matter how they are identified,
 
 
 
@@ -489,14 +465,14 @@ process $X_t$ associated with the Master equation \eqref{eq:disc-master} is a go
 MD process $x_t$ governed by \eqref{eq:disc-1}.  In practice, however, it is difficult to predict
 how many discrete sets we need to be fine enough. Moreover, since the
 total dimension of $x_t$ is $3N_{\textrm{atom}}$ ($N_{\textrm{atom}}$ being the number of atoms), it is prohibitive to do a really fine discretization
-over all DOFs for most systems of practical interest.
+over all degrees of freedom for most systems of practical interest.
 
 One possible way to define appropriate discretization sets is firstly to find a few collective
 variables, and then to discretize these collective variables as finely as needed either by uniform or adaptive
 discretization~\cite{chodera2007automatic, prinz2011markov}.
 % This process also suggests that the choice of the lag-time should be 
 % shorter than the dominant implied timescale so that they can be resolved,
-% and be longer than the fast time-scales to relax the unresolved dynamics
+% and be longer than the fast timescales to relax the unresolved dynamics
 % within the discretized sets.
 However, it is difficult to give a general answer in prior regarding
 how to choose the collect variables and how fine their discretization should be.
@@ -523,7 +499,7 @@ The alanine dipeptide was put into the local thermostating
 environment, with a spherical dynamical region of radius~1.0~nm
 centered at the alpha-carbon.
 The Langevin thermostat with target temperature $\mathcal T = 300$~K
-and time-scale $\tau_T = 0.1$~ps was
+and timescale $\tau_T = 0.1$~ps was
 coupled to the thermostated region.
 The whole system was coupled to the Parrinello-Rahman barostat~\cite{parrinello1981polymorphic} (in standard Gromacs implementation) with $\tau_P = 2.0$~ps to
 keep the system at 1~Bar. The non-equilibrium trajectories
@@ -533,10 +509,10 @@ The short-range van der Waals interactions were cut-off at 1.00~nm, and were smo
 The energy conserving 
 Particle Mesh Ewald (PME)~\cite{darden1993pme, essmann1995spm} method (``\texttt{pme-switch}'') was
 used to compute the long-range electrostatic interaction,
-with the same real-space cut-off radius as the van der Waals interactions,
-and the Gromacs default Fourier spacing of 0.12~nm.
+with the same real-space cut-off radius as the van der Waals interactions.
+\recheck{The Gromacs default Fourier spacing of 0.12~nm and B-spline interpolation order of 4 were adopted.}
 The splitting
-parameter optimized with respect to the electrostatic force computing
+parameter was optimized with respect to the electrostatic force computing
 accuracy by Gromacs tool \texttt{g\char`_pme\char`_error}~\cite{wang2010optimizing}.
 The neighbor list was updated every 5 time-steps with a list-building radius 1.20~nm.
 All hydrogen involving covalent bonds were constrained by the LINCS algorithm~\cite{hess1997lincs}, except the water molecules that were constrained by the SETTLE algorithm~\cite{miyamoto2004settle}.
@@ -551,14 +527,14 @@ The equilibrium configurations were prepared by an equilibrium MD simulation
 of length $10^6$~ps, along which snapshots were saved every 50~ps.
 % In the
 % equilibrium simulation the system was coupled to a global Langevin thermostat
-% with coupling time-scale $\tau_T = 0.5$~ps.
+% with coupling timescale $\tau_T = 0.5$~ps.
 The branching NEMD
-trajectories were each 4000~ps long, and the system reached
+trajectories were each 4,000~ps long, and the system reached
 non-equilibrium quasi-stationary state in roughly 300~ps.
 
 
-For this periodically driven molecular system we will first show how to choose an appropriately fine discretization. After validating this discretization we will consider
-the discretized dynamics generated by the Floquet transition matrix $\vect P$
+For this periodically driven molecular system we will first show how to choose an appropriately fine \recheck{spatial} discretization. After validating this discretization we will consider
+the \recheck{temporal} discretized dynamics generated by the Floquet transition matrix $\vect P$
 in comparison to the original NEMD simulation. Finally we will coarse grain this description further by construction of a $3$ state Markov State Model that is able to describe the long-term kinetics of the system correctly. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -694,7 +670,7 @@ estimated form the original NEMD simulation,
   \rho_{\textrm{st}}(\phi,\psi) = \lim_{m\rightarrow\infty} \rho (\phi,\psi,mT),
 \end{align}
 On each NEMD branching trajectory the initial 320~ps are discarded and
-the rest of the trajectory in time interval $[320,4000]$~ps is used to estimate
+the rest of the trajectory in time interval $[320,4000]$~ps is \recheck{averaged} to estimate
 the quasi-stationary probability distribution $\rho_{\textrm{st}}$. 
 $P$ is computed as described above, and then $\mymu$ is computed as its leading eigenvector. In order to make it comparable to the free energy in the equilibrium case, we take
 the logarithm of the distributions, i.e.~$F_{\textrm{st}}(\phi,\psi)=
@@ -714,12 +690,12 @@ $P$ is observed.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Core set identification}
+\subsection{Core Set identification}
 
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{fig/t010/cluster.marco.3/fig-cluster.eps}
-  \caption{The coreset identification. Different colors indicate different core sets: $C_{\confaa}$ (green), $C_\beta$ (yellow) and $C_{\confc}$ (red).
+  \caption{The core set identification. Different colors indicate different core sets: $C_{\confaa}$ (green), $C_\beta$ (yellow) and $C_{\confc}$ (red).
     The blue color indicates the transition region $C$ that does not belong to one of the core sets.}
   \label{fig:cluster}
 \end{figure}
@@ -755,7 +731,7 @@ The first mean hitting time as a function of the dihedral angles $(\phi,\psi)$,
 is defined by the expected first time needed for hitting a certain core set $C_j$,
 $j\in\{\alpha_R,\beta,\alpha_L\}$ conditioned on starting from the
 conformation $(\phi,\psi)$, more exactly from equilibrium conformations $(\phi,\psi)\in\Omega_i$.  Since the largest first mean hitting
-time (starting from states in coreset $\confaa$ and hitting $\confc$) is longer than
+time (starting from states in core set $\confaa$ and hitting $\confc$) is longer than
 600~ps the results will be biased if we use the NEMD trajectories of length 4000~ps for brute force Monte Carlo estimation of the hitting time. 
 Therefore, we base our Monte Carlo estimate on 100 NEMD
 trajectories of $2\times 10^5$~ps instead. For comparison we compute the first mean hitting
@@ -790,11 +766,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-1.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-1.eps}
   \vskip -.5cm
-  \caption{The forward $q^\fwd_{\confaa}$ and backward 
+  \caption{\recheck{The forward $q^\fwd_{\confaa}$ and backward 
     $q^\bwd_{\confaa}$ committors
     and their difference $q^\fwd_{\confaa} - q^\bwd_{\confaa}$
     computed by the NEMD simulations (left
-    column) and the  discretized dynamics (right column).}
+    column) and the  discretized dynamics (right column).}}
   \label{fig:num-3}
 \end{figure}
 
@@ -809,11 +785,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-2.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-2.eps}\\
   \vskip -.5cm
-  \caption{The forward $q^\fwd_{\beta}$ and backward
+  \caption{\recheck{The forward $q^\fwd_{\beta}$ and backward
     $q^\bwd_{\beta}$ committors
     and their difference  $q^\fwd_{\beta} - q^\bwd_{\beta}$ 
     computed by the NEMD simulations (left
-    column) and the  discretized dynamics (right column).}
+    column) and the  discretized dynamics (right column).}}
   \label{fig:num-4}
 \end{figure}
 
@@ -828,11 +804,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-3.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-3.eps}\\
   \vskip -.5cm
-  \caption{The forward $q^\fwd_{\confc}$ and backward $q^\bwd_{\confc}$
+  \caption{\recheck{The forward $q^\fwd_{\confc}$ and backward $q^\bwd_{\confc}$
     committors
     and their difference  $q^\fwd_{\confc} - q^\bwd_{\confc}$ 
     computed by the NEMD simulations (left
-    column) and the  discretized dynamics (right column).}
+    column) and the  discretized dynamics (right column).}}
   \label{fig:num-5}
 \end{figure}
 
@@ -840,11 +816,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
 Committors are very important statistical properties of Markov processes \cite{PrinzHeldSmithNoe_Committorprep,PNAS09}, and play
 an important role in MSM building \cite{A19-31,A19-29,djurdjevac2010markov} (see below). Therefore, it is worth
 checking if the discretized process $\tilde X_m$ reproduces the NEMD committors.
-The forward committor $q^\fwd_j(i)$ of a coreset $C_j,\
+The forward committor $q^\fwd_j(i)$ of a core set $C_j,\
 j\in\{\confaa, \beta, \confc\}$ is defined as the probability of
-visiting coreset $C_j$ next conditioned on starting at conformation
+visiting core set $C_j$ next conditioned on starting at conformation
 $(\phi,\psi)\in\Omega_i$.  The backward committor $q^\bwd_j(i)$ of a
-coreset $C_j,\ j\in\{\confaa, \beta, \confc\}$ is defined as the
+core set $C_j,\ j\in\{\confaa, \beta, \confc\}$ is defined as the
 probability of last coming from $C_j$ conditioned on having arrived presently at
 configuration $(\phi,\psi)\in\Omega_i$.
 For reversible Markov processes, the
@@ -878,15 +854,15 @@ Tab.~\ref{tab:tmp1}.
 Without surprising, the two approaches for MSM building are consistent.
 The MSM is able to accurately reproduce
 the largest non-trivial eigenvalue, which means a precise reproduction
-of the longest non-trivial implied time-scale. The accuracy of the second non-trivial
-time-scale is not as good as the first, but is still acceptable.
+of the longest non-trivial implied timescale. The accuracy of the second non-trivial
+timescale is not as good as the first, but is still acceptable.
 The reason
 for the lower accuracy may also be that
 the corresponding time scale is 26.5~ps (calculated by $-T/\log(\lambda_2)$),
 which is NOT significantly longer than the temporal resolution given by the period $T=10$~ps of the external driving force.
 The difference between the eigenvalues of $\hat P$ and $\hat{M}^{-1}\hat T$
   can be taken as an indication for the non-Markovianity of the milestone process $\hat X_m$. This
-  non-Markovianity seems to have stronger influence on the second non-trivial time-scale in comparison to the first one; this may be caused by shorter decorrelation timescales due to weaker metastability of the core sets involved.
+  non-Markovianity seems to have stronger influence on the second non-trivial timescale in comparison to the first one; this may be caused by shorter decorrelation timescales due to weaker metastability of the core sets involved.
 Numerically the two MSM transition matrices are:
 \[
 \hat{M}^{-1}\hat{T}=\left(\begin{array}{ccc}
@@ -945,13 +921,13 @@ matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
   \label{fig:num-7}
 \end{figure}
 
-In fact, $\hat{P}$ can be considered as the fingerprint of the long-term kinetics (cf. \cite{A19-39,PrinzKellerNoe_PCCP11_Perspective}) of alanine dipeptide in an oscillatory electric field.
+In fact, $\hat{P}$ can be considered as the fingerprint of the long-term kinetics (cf.~\cite{A19-39,PrinzKellerNoe_PCCP11_Perspective}) of alanine dipeptide in an oscillatory electric field.
 In order to provide further validation of this statement, we study  time-dependent expectation values of
 the form
 \begin{align}
   \mathcal A(t) = \langle A(i)\rangle_t = \sum_{i\in S} A(i) p(i,t),
 \end{align}
-where $p(i,t)=\prob(X_t=i)$ is the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is spanned by the backward
+where $p(i,t)=\prob(X_t=i)$ is the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is \recheck{linearly} spanned by the backward
 committors, i.e.,
 \begin{align}\label{A}
   A(i) = \sum_{j=1}^K \alpha_j q^\bwd_j(i).
@@ -980,124 +956,83 @@ the time-dependent probability at $mT$ is generated by Eq.~\eqref{eq:num-29}, i.
 % \recheck{Han: Here we have $p_j(t)$, $p(j,t)$ and $\hat p_j (0)$. That's a little confusing since I do not see a clear distinction between the former two. What can we do? What do you want to express?}
 
 
-\section{Concluding remarks and discussions}
+\section{Concluding remarks and discussion}
 \label{sec:conclusion}
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.48\textwidth]{fig/flowchart/flowchart.eps}
-  \caption{The flowchart of this work. A lighter color indicates
-  a ``coarser'' approximation to the original NEMD dynamics.}
+  \includegraphics[width=0.48\textwidth]{fig/flowchart/flowchart2.eps}
+  \caption{Flowchart showing optional procedures for MSM building based on NEMD trajectories. A lighter color indicates
+  a "coarser'' approximation to the original NEMD dynamics. Please note that "equivalence" only means that the respective procedures result in the same matrix/MSM if one assumes perfect sampling.}
   \label{fig:flowchart}
 \end{figure}
 
-In this paper we developed methods of building MSM for a periodically driven
-non-equilibrium system. By a numerical example
-of the alanine dipeptide under periodically oscillatory EF,
-the methods are shown  to be
-valid and be able to capture the long-time behavior of the original
+In this paper we proposed methods of MSM building for a periodically driven
+non-equilibrium system. We demonstrated their validity and performance by application to  alanine dipeptide under an oscillatory electric field. We showed that the proposed 
+methods allow for capturing the long-time behavior of the original
 non-equilibrium dynamics.
 
-We firstly provide effective methods for discretizing the original NEMD trajectories
-both temporally and spatially, and the end-product is a time-homogeneous
-(not necessarily reversible) Markov jump process.
-There are two equivalent approaches discussed in the paper:
-one can either do a two-steps discretization,
-i.e.~firstly spacial and then temporal,
-or a single step  involves both discretizations simultaneously.
-They are exhibited by the left-most and middle branches in Fig.~\ref{fig:flowchart}.
+We provided effective methods for discretizing the original NEMD dynamics
+both temporally and spatially; the end-product is a time-homogeneous, in general irreversible Markov jump process.
+Discretization was done via two equivalent approaches:
+either by a two-step version,
+i.e.~first spatial and then temporal discretization,
+or a one-step version that involves both discretizations simultaneously.
+These two version are shown by the left-most and middle branches of the diagram  in Fig.~\ref{fig:flowchart}.
 
-By a fine discretization of the molecular configuration space, the
-original NEMD dynamics is discretized into a (in principle)
-continuous and time-inhomogeneous {Markov} jump process.
-In principle most of the discretization methods for the equilibrium
-case can be generalized to non-equilibrium without substantial
-difficulty, however, we have not compare different discretization methods
-regarding the accuracy, since it is out of the scope of the present work.
-We show that, by numerical example, a uniform $20\times20$
-discretization over the dihedral angles $\phi$--$\psi$ space is a good
-choice for alanine dipeptide.  In the tests, the state independency in
-computing the generator is used as an indicator for the quality of the
-discretization.
-
-The Floquet theorem discretize a periodic process by taking only
-integral periods, so that
-the time-inhomogeneous process
-is discretized in to a time-homogeneous, but not
-necessarily reversible process.
-The advantage of this discretization is  obvious: All
-well-developed theories and computational tools for time-homogeneous
-Markov processes can be directly applied. In the alanine dipeptide
-system, we compare the the quasi-stationary probability, first mean
-hitting time, and the forward and backward committors of the
-discretized dynamics with those computed directly from the NEMD
-simulation. An almost perfect consistency indicates a good
-approximation quality of the discretized dynamics.
-
-Although the end-product of the two-step and one-step discretizations are equivalent,
+Although the end-product of the two-step and one-step discretization procedures are formally equivalent,
 it is clear that the one-step discretization does not preserve any information
-within one period, because only the states
-at integral periods are considered. This is not a serious problem
-whenever the long-time behaviors of the system is of interest, and
-their corresponding time-scales are significantly longer than one
-period. However, if the time-scale of any interested behavior
-is comparable to, or even shorter than the period, the two-step
-discretization is preferred, so that one can recover the dynamics within
-one period no matter when it is necessary. If the longest non-trivial
-time-scale is comparable to one period, then the Floquet theorem
-is not preferable, and the non-equilibrium dynamics may be well
-described by the quasi-equilibrium approximation.
+\emph{within} one period, because only the states
+at integral multiples of the period of the external forcing are considered. This is no serious problem
+whenever the long-time behavior of the system is of interest, and
+the corresponding timescales are significantly longer than one
+period. However, if the timescale of interest 
+is comparable to the period, the two-step
+discretization is preferable because it allows to recover the dynamics between multiples of
+the period. 
 
-Building the MSM from the time-homogeneous discretized dynamics is straightforward by
-using Eq.~\eqref{eq:msm-tmatrix-00} and a set of coresets that are
-derived from the discretized dynamics.  Numerical
-results shows that a 3-state MSM can reproduce the leading non-trivial
-eigenvalue with very good accuracy, while the second non-trivial
+Building the final MSM based on the time-homogeneous discretized dynamics is straightforward by
+using Eq.~\eqref{eq:msm-tmatrix-00} and a set of core sets that are
+derived from the discretized dynamics.  In application to alanine dipeptide numerical
+results show that a three-state MSM can reproduce the leading non-trivial
+eigenvalue with very good accuracy, and the second non-trivial
 eigenvalue with acceptable accuracy. The lower accuracy regarding the
-second non-trivial eigenvalue may be due to the fact that the second
-slowest time-scale is not significantly longer than the period. Using
-this three state MSM, we can also reproduce, with almost perfect
-accuracy, the time-evolution of the metastable state probabilities from
-equilibrium (no external driven) to the non-equilibrium
-quasi-stationary state.
+second non-trivial eigenvalue may result from the fact that the second
+slowest timescale is not significantly longer than the period. By means of
+this three-state MSM we can reproduce, with almost perfect
+accuracy, the time-evolution of the population of the main conformations induced by the periodic forcing when starting from the  
+equilibrium distribution of the unforced molecular system.
 
 
 The right-most branch in Fig.~\ref{fig:flowchart} presents an
 equivalent, and seemingly
-much simpler alternative to the middle branch, i.e. building
-the MSM directly from the NEMD trajectories.
+much simpler alternative to the middle branch: MSM building directly from NEMD trajectories.
 In practice, however, this method may not be applicable, because
-it requires known coresets, and the coresets identification 
-is usually not a trivial task, especially for the
-non-equilibrium molecular systems.
-This task is substantially
-simplified when an accurate time-homogeneous discretization 
-to the original time-inhomogeneous NEMD is accessible.
-In the present work, we computed the coresets by
-finding the roughly constant levels of the hitting time distribution 
-of the discretized dynamics.
-It should be noticed that the continuous
-counterpart of the current coresets identification method is still an open question.
-% This method only works for the discretized dynamics. and its
-% Therefore, a good discretization is  usually a must for computing the coreset.
+it requires pre-defined core sets, and the identification of core sets 
+usually is no trivial task, especially for molecular dynamics under non-equilibrium conditions.
+This task is substantially simplified when an accurate time-homogeneous discretization 
+to the original NEMD process is available (that is, has been constructed in advance).
+In the present work, we computed the core sets by
+finding almost constant levels of the hitting time distribution for the discretized dynamics. 
+This procedures is itself a novelty since it does not require any spectral information like eigenvectors as in standard approaches, cf.~\cite{prinz2011markov,A19-1}.
 
-In this paper, we mainly focus on the methodology development for MSM
-building in non-equilibrium systems. It is worth noting that the
-numerical example itself presents interesting phenomena: under the
-oscillatory EF, the population of the left-handed $\alpha$-helix
-significantly increases with respect to the equilibrium population
+% This method only works for the discretized dynamics. and its
+% Therefore, a good discretization is  usually a must for computing the core set.
+
+In this paper, we mainly focus on the development of the first available methods for MSM
+building in non-equilibrium systems.
+However, the application of these methods to the conformation dynamics of alanine dipeptide results in some observations that are interesting in itself: Under an
+oscillatory EF, the population of the left-handed $\alpha$-helical conformation
+significantly increases relative to the equilibrium population
 (see also the discussions in Ref.~\cite{wang2014exploring}),
-and the leading time-scale is much shorter than the equilibrium case.
-It is in principle possible to apply the non-equilibrium
-linear response theory~\cite{wang2013linear} to build a MSM for the perturbed
-non-equilibrium system with respect to original
-non-equilibrium system
-(the equilibrium counterpart is provided by Ref.~\cite{schutte2014markov}).
-This makes possible the molecular design under
-oscillatory EF, and could be used to answer the question like:
-in order to achieve a certain population of  the left-handed $\alpha$-helix,
-what kind of EF should be used to drive the system.
-In this work, we have not investigated in this direction, however, it will
+and the leading relaxation timescale of the system is much shorter than in the equilibrium case.
+
+A final remark concerning the utilization of the proposed methodology may be in order. 
+Based on an MSM for a given periodic forcing optimal control problems may come into reach:
+Using available methods like non-equilibrium
+linear response theory~\cite{wang2013linear} or computational alchemy for MSMs ~\cite{schutte2014markov} one can construct the MSM for slightly changed parameters (e.g., period and amplitude) of the external forcing by appropriate reweighting of the MSM for the given forcing. This in principle allows for  answering questions like the following:
+For which parameters of the external forcing does one achieve maximal population of  the left-handed $\alpha$-helix?
+Such questions, however, will
 be treated in the future studies.
 
 
