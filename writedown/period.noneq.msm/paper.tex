@@ -79,8 +79,8 @@ investigated in a vast number of articles, with the following list just represen
   budi2007effect, budi2008comparative, astrakas2012structural,
   damm2012can, english2009nonequilibrium, solomentsev2012effects}.  Molecular dynamics (MD) simulations have proved particularly useful for understanding
 the response of biomolecular conformations to external fields because of their ability to  resolve molecular
-details that \recheck{sometimes} cannot be resolved in experiments. Only
-recently, a \recheck{dynamical} non-equilibrium MD simulation (D-NEMD) method with local thermostating has been proposed~\cite{wang2014exploring} that allows for studying 
+details that sometimes cannot be resolved in experiments. Only
+recently, a non-equilibrium MD simulation (D-NEMD) method with local thermostating has been proposed~\cite{wang2014exploring} that allows for studying 
 non-equilibrium processes in a statistically reliable and thermodynamically consistent way. 
 Despite the significance of the non-equilibrium phenomena, the
 analysis of the non-equilibrium MD simulations mainly follows standard approaches, and reliable tools for quantitative description of
@@ -125,7 +125,7 @@ but not necessarily reversible, that is, irreversible Markov process. Since  ful
 for high-dimensional systems, we next show how to construct a \emph{few-state} MSM based on milestoning~\cite{schuette2011markov,A19-29} of the discretized irreversible Markov process in Sec.~\ref{sec:build-msm}.
 The validity of the discretizations and the resulting MSM is checked in Sec.~\ref{sec:alanine}
 by comparing the kinetic fingerprints given by the MSM to brute force
-non-equilibrium \recheck{MD} simulations of alanine dipeptide under oscillating EF.
+non-equilibrium MD simulations of alanine dipeptide under oscillating EF.
 The findings are summarized in Sec.~\ref{sec:conclusion} including a chart presenting
 the workflow of MSM building for non-equilibrium systems, and a list of open questions.
 
@@ -136,7 +136,7 @@ the workflow of MSM building for non-equilibrium systems, and a list of open que
 
 \section{Non-equilibrium molecular dynamics and its discretization}
 \label{sec:disc}
-\recheck{We consider diffusive molecular dynamics} in an energy landscape $V$ driven by the time-dependent external driving force $E(t)D(x_t)$ with the
+We consider diffusive molecular dynamics in an energy landscape $V$ driven by the time-dependent external driving force $E(t)D(x_t)$ with the
 $T$-periodic external field $E(t)$:
 \begin{align}
   \label{eq:disc-1}
@@ -144,7 +144,7 @@ $T$-periodic external field $E(t)$:
 \end{align}
 where $x_t\in\Omega$ denotes the state of the molecular system at time $t$ in state space $\Omega$, $\vect w_t$ denotes standard $n$-dimensional Brownian motion, and $\beta$ the inverse temperature,
 i.e.~$\beta = 1/(k_B\mathcal T)$.
-\recheck{The Hamiltonain or Langevin dynamics can be treated in the same way as that will be presented, so for sake of simplicity we focus on the discussion of diffusive dynamics.}
+Thermostatted Hamiltonain or Langevin dynamics can be treated in the same way as explained herein, so for sake of simplicity we focus on the discussion of diffusive dynamics.
 The propagation of probability
 densities $\rho=\rho(\vect x,t)$ based on this kind of dynamics in the sense
 of $\rho(\vect x,t)dx=\prob[\vect x_t\in [\vect x,\vect x+d\vect x)]$ is governed by
@@ -165,7 +165,7 @@ i.e.~$\ml(t) = \ml(t+T)$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial discretization: Master equation}
-We will now introduce an appropriate spatial discretization of this kind of non-equilibrium MD -- \recheck{\bluec{(why saying this red sentence? we need the spatial discretization for calculating the core sets...)} this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.}
+We will now introduce an appropriate spatial discretization of this kind of non-equilibrium MD --  this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.
 For achieving this discretization, we 
 introduce a partition of state space $\Omega$ into a finite number of disjoint
 sets $\{ \Omega_1, \cdots, \Omega_N\}$ satisfying $\Omega = \cup_i \Omega_i$,
@@ -283,7 +283,7 @@ satisfies $|\lambda|\le 1$. Furthermore $\lambda=1$ is an
 eigenvalue with right eigenvector $\vect e=(1,\ldots,1)^{\top}$ and a left eigenvector $\mymu$
 satisfying
 $\mymu^{\top}P=\mymu^{\top}$.
-From now on, we assume $P$ to be irreducible and aperiodic such that the Perron-Frobenius theorem \recheck{holds, so the eigenvector corresponding to} the eigenvalue $\lambda=1$ is  non-negative componentwise, and unique (up to normalization $\sum_i\mu(i)=1$). In this case $\mymu$ is the stationary measure in the sense that
+From now on, we assume $P$ to be irreducible and aperiodic such that the Perron-Frobenius theorem holds, so the eigenvector corresponding to the eigenvalue $\lambda=1$ is  non-negative componentwise, and unique (up to normalization $\sum_i\mu(i)=1$). In this case $\mymu$ is the stationary measure in the sense that
 $
  \mymu^{\top} P^m = \mymu^{\top},\ m\in\mathbb N
 $,
@@ -510,7 +510,7 @@ The energy conserving
 Particle Mesh Ewald (PME)~\cite{darden1993pme, essmann1995spm} method (``\texttt{pme-switch}'') was
 used to compute the long-range electrostatic interaction,
 with the same real-space cut-off radius as the van der Waals interactions.
-\recheck{The Gromacs default Fourier spacing of 0.12~nm and B-spline interpolation order of 4 were adopted.}
+The Gromacs default Fourier spacing of 0.12~nm and B-spline interpolation order of 4 were adopted.
 The splitting
 parameter was optimized with respect to the electrostatic force computing
 accuracy by Gromacs tool \texttt{g\char`_pme\char`_error}~\cite{wang2010optimizing}.
@@ -533,8 +533,8 @@ trajectories were each 4,000~ps long, and the system reached
 non-equilibrium quasi-stationary state in roughly 300~ps.
 
 
-For this periodically driven molecular system we will first show how to choose an appropriately fine \recheck{spatial} discretization. After validating this discretization we will consider
-the \recheck{temporal} discretized dynamics generated by the Floquet transition matrix $\vect P$
+For this periodically driven molecular system we will first show how to choose an appropriately fine spatial discretization. After validating this discretization we will consider
+the time-discretized dynamics generated by the Floquet transition matrix $\vect P$
 in comparison to the original NEMD simulation. Finally we will coarse grain this description further by construction of a $3$ state Markov State Model that is able to describe the long-term kinetics of the system correctly. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -670,7 +670,7 @@ estimated form the original NEMD simulation,
   \rho_{\textrm{st}}(\phi,\psi) = \lim_{m\rightarrow\infty} \rho (\phi,\psi,mT),
 \end{align}
 On each NEMD branching trajectory the initial 320~ps are discarded and
-the rest of the trajectory in time interval $[320,4000]$~ps is \recheck{averaged} to estimate
+the rest of the trajectory in time interval $[320,4000]$~ps is averaged to estimate
 the quasi-stationary probability distribution $\rho_{\textrm{st}}$. 
 $P$ is computed as described above, and then $\mymu$ is computed as its leading eigenvector. In order to make it comparable to the free energy in the equilibrium case, we take
 the logarithm of the distributions, i.e.~$F_{\textrm{st}}(\phi,\psi)=
@@ -766,11 +766,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-1.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-1.eps}
   \vskip -.5cm
-  \caption{\recheck{The forward $q^\fwd_{\confaa}$ and backward 
+  \caption{Forward $q^\fwd_{\confaa}$ and backward 
     $q^\bwd_{\confaa}$ committors
     and their difference $q^\fwd_{\confaa} - q^\bwd_{\confaa}$
-    computed by the NEMD simulations (left
-    column) and the  discretized dynamics (right column).}}
+    computed from the NEMD trajectories (left
+    column) and the  discretized dynamics (right column).}
   \label{fig:num-3}
 \end{figure}
 
@@ -785,11 +785,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-2.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-2.eps}\\
   \vskip -.5cm
-  \caption{\recheck{The forward $q^\fwd_{\beta}$ and backward
+  \caption{Forward $q^\fwd_{\beta}$ and backward
     $q^\bwd_{\beta}$ committors
     and their difference  $q^\fwd_{\beta} - q^\bwd_{\beta}$ 
-    computed by the NEMD simulations (left
-    column) and the  discretized dynamics (right column).}}
+    computed from NEMD trajectories (left
+    column) and the  discretized dynamics (right column).}
   \label{fig:num-4}
 \end{figure}
 
@@ -804,11 +804,11 @@ NEMD trajectories took $1.6\times 10^4$ core hours for Intel Xeon E5-4650 CPUs.
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-3.eps}
   \includegraphics[width=0.23\textwidth]{fig/t010/cluster.marco.3/fig-commitor-diff-msm-3.eps}\\
   \vskip -.5cm
-  \caption{\recheck{The forward $q^\fwd_{\confc}$ and backward $q^\bwd_{\confc}$
+  \caption{Forward $q^\fwd_{\confc}$ and backward $q^\bwd_{\confc}$
     committors
     and their difference  $q^\fwd_{\confc} - q^\bwd_{\confc}$ 
-    computed by the NEMD simulations (left
-    column) and the  discretized dynamics (right column).}}
+    computed from NEMD trajectories (left
+    column) and the  discretized dynamics (right column).}
   \label{fig:num-5}
 \end{figure}
 
@@ -927,7 +927,7 @@ the form
 \begin{align}
   \mathcal A(t) = \langle A(i)\rangle_t = \sum_{i\in S} A(i) p(i,t),
 \end{align}
-where $p(i,t)=\prob(X_t=i)$ is the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is \recheck{linearly} spanned by the backward
+where $p(i,t)=\prob(X_t=i)$ is the probability to be in set $\Omega_i$ at time $t$ as governed by the Master equation, and the observable $\mathcal A$ is  spanned by the backward
 committors, i.e.,
 \begin{align}\label{A}
   A(i) = \sum_{j=1}^K \alpha_j q^\bwd_j(i).
