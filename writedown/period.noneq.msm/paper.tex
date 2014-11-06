@@ -1,4 +1,4 @@
-\documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn]{revtex4}
+\documentclass[aps, pre, preprint,unsortedaddress,a4paper,onecolumn,showkeys]{revtex4}
 % \documentclass[aps, pre, reprint,unsortedaddress,a4paper,twocolumn]{revtex4}
 % \documentclass[acs, jctcce, a4paper,preprint,unsortedaddress,onecolumn]{revtex4-1}
 % \documentclass[aps,pre,twocolumn,unsortedaddress]{revtex4-1}
@@ -54,16 +54,19 @@
 \author{Han Wang}
 \email{han.wang@fu-berlin.de}
 \affiliation{CAEP Software Center for High Performance Numerical Simulation, Beijing, China}
-\affiliation{Zuse Institute Berlin, Germany}
+\affiliation{Zuse Institute Berlin (ZIB), Germany}
 \author{Christof Sch\"utte}
-\email{Christof.Schuette@fu-berlin.de}
+\email{schuette@zib.de}
 \affiliation{Institute for Mathematics, Freie Universit\"at Berlin, Germany}
-\affiliation{Zuse Institute Berlin, Germany}
+\affiliation{Zuse Institute Berlin (ZIB), Germany}
    
 \begin{abstract}
 Recent years have seen an increased interest in non-equilibrium molecular dynamics (NEMD) simulations, especially for molecular systems with periodic forcing by external fields, e.g., in the context of studying  effects of electromagnetic radiation on the human body tissue. Lately, an NEMD methods with local thermostating has been proposed that allows for studying 
 non-equilibrium processes in a statistically reliable and thermodynamically consistent way. In this article, we demonstrate how to construct Markov State Models (MSMs) for such NEMD simulations. MSM building has been well-established for systems in equilibrium where MSMs with just a few (macro-)states allow for accurate reproduction of the essential kinetics of the molecular system under consideration. Non-equilibrium MSMs have been lacking so far. The article presents how to construct such MSMs and illustrates their validity and usefulness for the case of conformation dynamics of alanine dipeptide in an external electric field.  
 \end{abstract}
+
+
+\keywords{Non-equilibrium, Markov states model, Alanine dipeptide, Electric field, Floquet theory}
 
 \maketitle
 
@@ -690,7 +693,7 @@ $P$ is observed.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Core Set identification}
+\subsection{Core set identification}
 
 \begin{figure}
   \centering
@@ -1180,7 +1183,7 @@ invariant probability density with respect to potential $V(x,0)$ satisfies $\mym
   \bigg\}
 \end{align}
 
-\subsection{Irreversibility of the periodical symmetrical dynamics}
+\subsection{Irreversibility of the periodic time-symmetric dynamics}
 
 In Eq.~\eqref{eq:dagger-0}, we assume the periodicity of the perturbation $F(x,t) = F(x,t+T)$, and the symmetry of the external perturbation, i.e.~$F(x, -t) = F(x, t)$, we have
 \begin{align}
@@ -1335,7 +1338,7 @@ Therefore, following the same procedure as before we have
 \end{align}
 Thus, when starting with the milestone process in state $j$ at some time $t$ we have to determine the fraction of all trajectories of length at least $T$ that hit core set $C_k$ first of all core sets to estimate $\hat{T}_{jk}$.
 
-\section{The prove of identity $\hat P = \hat T\hat M^{-1}$}
+\section{Prove of the identity $\hat P = \hat T\hat M^{-1}$}
 \label{sec:app-ptm}
 In this section we prove the identity  $\hat P = \hat T\hat M^{-1}$. Starting from the
 result Eq.~\eqref{eq:appb-t},
