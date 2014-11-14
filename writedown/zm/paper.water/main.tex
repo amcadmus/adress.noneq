@@ -2,6 +2,7 @@
 % \documentclass[reprint,unsortedadress,oneclumn]{revtex4-1}
 %\documentclass[aip,jcp,a4paper,preprint,unsortedaddress,onecolumn,fleqn]{revtex4-1}
 % \input{tcilatex}
+% \input{tcilatex}
 
 
 \documentclass[a4paper,preprint,unsortedaddress,onecolumn,fleqn]{revtex4}
@@ -18,7 +19,7 @@
 %TCIDATA{Codepage=932}
 %TCIDATA{<META NAME="SaveForMode" CONTENT="1">}
 %TCIDATA{BibliographyScheme=BibTeX}
-%TCIDATA{LastRevised=Tuesday, November 11, 2014 22:18:30}
+%TCIDATA{LastRevised=Thursday, November 13, 2014 17:19:51}
 %TCIDATA{<META NAME="GraphicsSave" CONTENT="32">}
 %TCIDATA{Language=American English}
 
@@ -56,7 +57,6 @@ Saitama 351-0198, Japan}
 \author{Haruki Nakamura}
 \affiliation{Institute for Protein Research, Osaka University, 3-2 Yamadaoka, Suita,
 Osaka 565-0871, Japan}
-
 \date{\today}
 
 \begin{abstract}
@@ -94,13 +94,13 @@ write here later}]
 introduction of the group cut-off v.s.~the atom cut-off method. (will
 discuss the implementation in gromacs later) }[ {\color{blue} COMMENT: what
 do you mean? {\color{red} I mean the explanation of group and atomistic
-cut-off method. the traditional gromacs uses gropu cut-off as default. We
+cut-off method. the traditional gromacs uses group cut-off as default. We
 need instead the atomistic cut-off}}] [ {\color{blue} COMMENT: OK, the
 matter for {traditional gromacs} will be discussed in Sec. IIIB, and the
 relevant matter of ZM will be discussed around $\bigstar ${\ in Sec. IIIB.
 If we feel the resulted descriptions are too detailed, they will go to SI.}] 
-}
-[\recheck{please see the red part in Sec. III B. The order of the paragraphs are also rearranged.}]
+} [{\color{red} please see the red part in Sec. III B. The order of the
+paragraphs are also rearranged.}][ {\color{blue} I added comments.}]
 
 \section{Material and Methods}
 
@@ -148,41 +148,48 @@ simulations, the systems were further coupled to the Parrinello-Rahman
 barostat~\cite{parrinello1980crystal,parrinello1981polymorphic} (in Gromacs
 implementation) with time-scale $\tau _{P}=0.5$~ps to equilibrate the system
 at 1~Bar. All systems were integrated with leap-frog scheme at a time-step
-of 0.001~ps.
+of $0.001$~ps.
 
-The neighbor lists were updated every 5 time-steps.
-\recheck{The Gromacs by default uses the group cut-off scheme, while the ZM method suggests
-  an atom cut-off scheme~\cite{fukuda2011molecular,fukuda2013zero}. The difference between
-  these cut-off schemes is discussed in detail in e.g.~Ref.~\cite{hunenberger1998alternative,baumketner2009removing}.
-  We adopted the atom based cut-off scheme in the simulations using the
-  SPME (short-range part) and ZM electrostatic methods.
-  In order to mimic the atom cut-off scheme in the Gromacs group cut-off implementation,
-  the radius for neighbor list
-  updating was set 0.3~nm larger than the cut-off radius (the maximum of
-  Coulomb cut-off and the van der Waals cut-off). 
-}
+The neighbor lists were updated every 5 time-steps. {\color{red} The Gromacs
+by default uses the group cut-off scheme, while the ZM method suggests an
+atom cut-off scheme~\cite{fukuda2011molecular,fukuda2013zero}.} [{%
+\color{blue} COMMENT: I am confusing. Is "rcoulomb"="rlist" default in
+gromacs? If so, "Gromacs by default uses the group cut-off scheme" is
+correct. Or, here, you want to say the "neighbor list making" is done by
+group cut-off? (I reread your "cutoff.pdf")} \recheck{the default is rcoulomb = rlist. both
+the neighbor list making and the force computing are in group manner.
+I prefer not describing this issue in the paper in detail, because the reader
+may not be familiar with the terminology (rlist, rcoulomb, and so on) and
+the mechanism behind. I think describing how to use ZM correctly in gromacs is enough.
+}] The difference between these
+cut-off schemes is discussed in detail in e.g.~Ref.~\cite%
+{hunenberger1998alternative,baumketner2009removing}. We adopted the atom
+based cut-off scheme in the simulations using the SPME (short-range part)
+and ZM electrostatic methods. In order to mimic the atom cut-off scheme in
+the Gromacs group cut-off implementation, the radius for neighbor list
+updating was set ${0.3}$~nm larger than the cut-off radius (the maximum of
+Coulomb cut-off and the van der Waals cut-off). 
 
 % The \textquotedblleft 
 % \texttt{group}\textquotedblright\ cut-off scheme in Gromacs was used.[ {\color{blue} COMMENT:
 % Yes,..., this is not easy to understand how we mimic AC. {\color{red} it
 %   should be OK as it is now.}} {\color{blue} Please see COMMENT in SecII.}]
 
-The short-range part of SPME method was cut-offed at 1.9~nm,
-and was smoothed in a shell of $0.05$~nm width by the
-Gromacs \textquotedblleft \texttt{pme-switch}\textquotedblright\ method. The
-reciprocal space grid spacing was set to 0.06~nm, with B-Spline
-interpolation order of 6. These parameters were chosen to be more accurate
-than the Gromacs default choices (grid spacing 0.12~nm and interpolation
-order 4).
-\recheck{The conducting boundary condition was used with SPME.}
-The splitting parameter was optimized by the error estimate, which is implemented in Gromacs by tool \textquotedblleft 
-\texttt{g\_pme\_error}\textquotedblright ~\cite{wang2010optimizing}. The
-optimized real space and reciprocal space force computing errors were
-equally distributed as $1.4\times 10^{-4}$~kJ/(mol nm). Since the magnitude
-of the forces are of order $10^{2}$~kJ/(mol nm), this force computing
-precision almost reaches the limit of the single-precision representation of
-the floating point numbers.
-% [ {\color{blue} COMMENT: Did you use the
+The short-range part of SPME method was cut-offed at $1.9$~nm, and was
+smoothed in a shell of $0.05$~nm width by the Gromacs \textquotedblleft 
+\texttt{pme-switch}\textquotedblright\ method. The reciprocal space grid
+spacing was set to $0.06$~nm, with B-Spline interpolation order of $6$.
+These parameters were chosen to be more accurate than the Gromacs default
+choices (grid spacing $0.12$~nm and interpolation order $4$).
+The conducting boundary condition was used with SPME.
+The splitting parameter was optimized by the error estimate, which is
+implemented in Gromacs by tool \textquotedblleft \texttt{g\_pme\_error}%
+\textquotedblright ~\cite{wang2010optimizing}. The optimized real space and
+reciprocal space force computing errors were equally distributed as $%
+1.4\times 10^{-4}$~kJ/(mol nm). Since the magnitude of the forces are of
+order $10^{2}$~kJ/(mol nm), this force computing precision almost reaches
+the limit of the single-precision representation of the floating point
+numbers. % [ {\color{blue} COMMENT: Did you use the
 % conducting boundary conditions? (maybe it is default in gromacs.) Please
 % state the thing.}]
 
@@ -190,13 +197,14 @@ The ZM method was implemented in Gromacs with the tabulated electrostatic
 interaction. A home-made code was used to generate the interaction tables. {%
 \color{blue} }$\bigstar $
 
-In the simulations of the RF method, the interactions were cut-off in the
-group manner, so the radius for neighbor list building is set identical to
-the cut-off radius. No cut-off smoothing of the electrostatic interaction
-was applied in the cases of RF simulations. We used $1.2$~nm cut-off radius and the
-experimental dielectric constant $\varepsilon _{\text{rf}}=80$.
+In the simulations using RF method, the electrostatic interactions were cut-off in the
+group manner (Gromacs default), so the radius for neighbor list updating is set identical to
+the cut-off radius. [{\color{blue} COMMENT: Is "rcoulomb"="rlist" default
+  for RF? If so, please describe it.} \recheck{Describing "rcoulomb"="rlist" by human languange} ]
+\recheck{We used $1.2$~nm for both of them}, and the experimental dielectric constant $%
+\varepsilon _{\text{rf}}=80$.
 
-The van der Waals interaction was always cut-offed at 1.2~nm, and it was
+The van der Waals interaction was always cut-offed at $1.2$~nm, and it was
 modified in a shell of $0.05$~nm width near the cut-off sphere by the
 Gromacs \textquotedblleft \texttt{shift}\textquotedblright\ method.
 
@@ -238,9 +246,7 @@ configurations for system $L_{0}$ and $L_{1}$. % The SPME
 %   special care, please modify.}]
 Using the density in the NVT simulation with SPME electrostatic, the
 pressure ($-0.4\pm 1.5$~Bar) is reproducing the target pressure of 1.0~Bar,
-which means the system is in desired thermodynamic state. [ {\color{blue}
-COMMENT: If there are any specific conditions only for the pressure
-calculation, please state around here or elsewhere.] [\recheck{No.}]}
+which means the system is in desired thermodynamic state. 
 
 % The cut-off is smoothed from 1.85 to 1.90~nm by the
 % ``\texttt{switch}'' method provide by Gromacs
@@ -313,21 +319,21 @@ are in good consistency with the SPME results. In almost all cases the
 deviations from the SPME results are smaller than the statistical
 uncertainty. The RF was not so bad, but the results of the constant pressure
 molar heat capacity and the isothermal compressibility show considerable
-errors. The dependence of the ZM results on the order\ $l$\ is {\color{red}
-little}. Although the splitting parameter, $\alpha $, also does not have
-significant influence on almost all these thermodynamic quantities for $l=1$%
-, only the isothermal compressibility admits a weak dependence. Overall, the ZM\
-agrees with the SPME results without any bias and out-performs the RF.
+errors. The dependence of the ZM results on the order\ $l$\ is little. Although the splitting parameter, $\alpha $,
+also does not have significant influence on almost all these thermodynamic
+quantities for $l=1$, only the isothermal compressibility admits a weak
+dependence. Overall, the ZM\ agrees with the SPME results without any bias
+and out-performs the RF.
 
-{\color{red} It should be noticed that in the calculation of the chemical
+It should be noticed that in the calculation of the chemical
 potential, the energy correction plays an important role. In the case of $%
 l=1 $, $\alpha =0.0\,\text{nm}^{-1}$, it contributes $-0.1$~kJ/mol to the
 final result. By increasing $l$ or $\alpha $, this contribution becomes more
 significant, and reaches $-0.6$~kJ/mol for $l=4$, $\alpha =0.0\,\text{nm}%
 ^{-1}$, and $-1.0$~kJ/mol for $l=1$, $\alpha =2.0\,\text{nm}^{-1}$,
-respectively. [\color{blue}COMMENT: We will clarify what is the "energy
+respectively. [{\color{blue}COMMENT: We will clarify what is the "energy
 correction" after making SecII, and describe the relation to IPSp after
-making Appendix B.] }
+making Appendix B.}] 
 
 \begin{figure}[tbp]
 \centering
@@ -339,7 +345,11 @@ The black solid line indicates the magnitude of the correct pressure: 1~Bar.
 The error bars present the statistical uncertainty at 95\% confidence level. 
 {\color{red} This uncertainty is twice of the standard deviation of the
 estimates (which are averages along MD trajectories) that is calculated by
-the block average method~\protect\cite{janke2002statistical}.} }
+the block average method~\protect\cite{janke2002statistical}.} [ {\ 
+\color{blue}It maybe good to repeat such explanation in Sec.IIIA.}].[{\ 
+\color{blue} another COMMENT: In these figures, can we see the statistical
+uncertainty of the pressure obtained by the SPME? Viz., I found no error
+bars for SPME.} \recheck{NO SPME result is given in this figure!}]}
 \label{fig:pres-comp}
 \end{figure}
 
@@ -382,11 +392,27 @@ l$\ and for a small $r_{\text{c}}$, which is consistent with the property of
 the pair potential of the ZM~\cite{fukuda2014zero}. The convergence is not
 sensitive to $\alpha $ up to $1.0\,\text{nm}^{-1}$.
 
-It should be noted that even with the system $L_{0}$ that
-contains 13824 water molecules, the fluctuation
-(measured by standard deviation) of the pressure is roughly 100~Bar, which
-means that it is very difficult to achieve very accurate estimate for this
-quantity. In practice a pressure error of 20~Bar is still acceptable.
+It should be noted that even with the system $L_{0}$ that contains 13824
+water molecules, the fluctuation (measured by standard deviation) of the
+pressure is roughly 100~Bar, which means that it is very difficult to
+achieve very accurate estimate for this quantity.
+\recheck{In practice a pressure
+error of 20~Bar will only cause a
+density deviation (calculated by the NPT simulations) of roughly 0.1\%.
+Taking different orders ZM method at cut-off 1.2~nm for example,
+the density deviations are 0.051\%, 0.061\%, 0.097\% and 0.146\% for $l=1,2,3$ and 4, respectively.
+For $l\leq 3$ the pressure error is less than 20~Bar, while for $l=4$ the pressure error is less than 30~Bar (see Fig.~\ref{fig:pres-comp}).
+} 
+
+[{\color{blue} COMMENT1: Can we have a
+trajectory figure of the pressure? It will show that the fluctuation is
+large and the 10 Bar error for ZM looks small. If there is a suitable one,
+it may be good to put it in SI.} \recheck{Could you explain why? The SD should be enough for our purpose.}] [ {\color{blue} COMMENT2: Can we have some
+data on the (mass) density? Some potential users of ZM\ may worry about the
+deviation of the density from the reality due to the pressure error. I
+remember that the density error for ZM was small. It is helpful to show that
+the deviation of the density is sufficiently small. These two comments
+indicates that one wants to feel how good or bad about the 10 Bar error.} \recheck{Done}]
 
 % \begin{table}
 %   \centering
@@ -426,22 +452,21 @@ quantity. In practice a pressure error of 20~Bar is still acceptable.
 trajectories used to compute the value. The SPME, ZM method $l=1$ to 4 and
 RF are presented. The cut-off distance of ZM and RF methods was 1.2~nm. The
 working parameters of SPME are given in Sec.~\protect\ref{sec:protocols} The
-system used for simulation is $S_{1}$.[ {\color{blue} This is for $S_{1}$
-and not shown in your report. right? } \recheck{Right, it was not shown}]}
+system used for simulation is $S_{1}$.}
 \label{fig:eps-conv}
 \end{figure}
 
 The dielectric constant computed by ZM method at different orders are listed
 in Tab.~\ref{tab:thermo}, and are consistent with the SPME computed results.
 In contrast, the RF method has poor accuracy in the dielectric constant. It
-is well known that the dielectric feature shows system-size dependence~\cite{vanderSpoel2006origin},
-therefore we further investigated this dependence
+is well known that the dielectric feature shows system-size dependence~\cite%
+{vanderSpoel2006origin}, therefore we further investigated this dependence
 and also the effect of the cutoff length, as shown in Table~I of SI. ZM
-shows good results without any system-size dependency and indicate $r_{\text{c}}\sim 1.2\,$nm\ being suffice for
-the accuracy. Since a slow convergence is also known for the dielectric
-constant, we have monitored the behavior as shown in Fig.~\ref{fig:eps-conv},
-and confirm the sufficient convergence w.r.t.~the length of the
-trajectories.
+shows good results without any system-size dependency and indicate $r_{\text{%
+c}}\sim 1.2\,$nm\ being suffice for the accuracy. Since a slow convergence
+is also known for the dielectric constant, we have monitored the behavior as
+shown in Fig.~\ref{fig:eps-conv}, and confirm the sufficient convergence
+w.r.t.~the length of the trajectories.
 
 \begin{figure}[tbp]
 \centering
@@ -470,10 +495,9 @@ highly consistent with the SPME result, and $l=2$ seems the best. In the
 system of larger size ($L_{1}$), the accuracies of the ZM method is less for
 order $l\geq 2$, while they may be in still acceptable accuracy. In both
 systems, ZM $l=1$ presents an artificial oscillation around the cut-off
-radius (1.2~nm), while this oscillation is not obvious for $l\geq 2$.
-\recheck{
-  The Kirkwood-G factor computed by ZM in system $S_1$ is as good as that computed in $M_1$,
-  and is presented in SI.}
+radius (1.2~nm), while this oscillation is not obvious for $l\geq 2$. 
+The Kirkwood-G factor computed by ZM in system $S_{1}$ is as
+good as that computed in $M_{1}$, and is presented in SI.
 
 \begin{figure}[tbp]
 \centering
@@ -490,22 +514,20 @@ confidence level by the error bars. }
 \includegraphics[]{fig/result.nvt/fig-gkr-l1-damp.eps}
 \caption{ The splitting parameter dependency in calculating the Kirkwood-G
 factor at order $l=1$. The cut-off radius is 1.2~nm. The statistical
-uncertainty is presented at 95~\% confidence level by the error bars. [ {\ 
-\color{blue} This is also not shown in your report. right? } \recheck{Right, it was not shown.}]}
+uncertainty is presented at 95~\% confidence level by the error bars. }
 \label{fig:gkr-damp-l1}
 \end{figure}
 
 We thus investigated the cut-off dependency in calculating the Kirkwood-G
 factor and present it in Fig.~\ref{fig:gkr-conv} for ZM method of order $l=3$%
 . Without surprising, the Kirkwood-G factor converges to the SPME result
-when using increasingly large cut-off radius. In Fig.~\ref%
-{fig:gkr-damp-l1}, it shows that in the case of $l=1$, the largest splitting
-parameter ($\alpha =2.0\ \text{nm}^{-1}$) is worse in calculating the
-Kirkwood-G factor than smaller splitting parameters.
-Splitting parameter dependency was not so clear for $l=2$ and 3 (shown in
-SI). Note that in many cases the discrepancies from the SPME were relatively
-prominent in the middle range of the distance and they tend small for larger
-distance.
+when using increasingly large cut-off radius. In Fig.~\ref{fig:gkr-damp-l1},
+it shows that in the case of $l=1$, the largest splitting parameter ($\alpha
+=2.0\ \text{nm}^{-1}$) is worse in calculating the Kirkwood-G factor than
+smaller splitting parameters. Splitting parameter dependency was not so
+clear for $l=2$ and 3 (shown in SI). Note that in many cases the
+discrepancies from the SPME were relatively prominent in the middle range of
+the distance and they tend small for larger distance.
 
 \subsection{Dynamical quantities}
 
@@ -541,7 +563,9 @@ as shown in Fig.~\ref{fig:conv-vis}. It is clear that the integral for the
 RF method converges at 6~ps, while the ZM method converges only in 2~ps,
 which is consistent with the SPME result. The value of ZM $l=1$ method is
 different from the rest ZM methods and SPME result, but the results was
-improved by the damping effect as shown in Fig.~\ref{fig:conv-vis-damp}.
+improved by the damping effect as shown in Fig.~\ref{fig:conv-vis-damp}. 
+Similar to the behaviors seen in Fig.~\ref{fig:conv-vis}, the
+convergence is quick for a large $\alpha $.
 
 \subsection{Structure property}
 
@@ -557,17 +581,17 @@ by a vertical black line. For ZM method, the splitting parameter $\protect%
 \end{figure}
 
 We plot in Fig.~\ref{fig:rdf} the center-of-mass radial distribution
-functions (RDFs) of TIP3P water calculated by the SPME, ZM ($l=1,2,3$ and $4$%
-) with $\alpha =0$\ and RF methods. It is observed from the figure that the
+functions (RDFs) of TIP3P water calculated by the SPME, ZM ($l=1,2,3$ and $4$)
+with $\alpha =0$\ and RF methods. It is observed from the figure that the
 ZM RDFs are consist very well with the SPME RDF, except oscillations around
 the cut-off radius. This oscillations are not so large, as the maximum
-magnitude of the discrepancies from the SPME is about \recheck{ $1.9\%$ for $l=1$ and 0.3\% for $l=2$,}
-% {[} {\color{blue}
+magnitude of the discrepancies from the SPME is about $1.9\%$
+for $l=1$ and ${0.3\%}$ for $l=2$, % {[} {\color{blue}
 % "$2\%"$ is just my guess. How about stating here the maximum error for
 % individual $l$}]
-but should be artificial. However, higher order ZM method
-present lower amplitude oscillation, and when $l\geq 3$, the improvement is
-dramatic and the oscillation is almost negligible.
+but should be artificial. However, higher order
+ZM method present lower amplitude oscillation, and when $l\geq 3$, the
+improvement is dramatic and the oscillation is almost negligible.
 
 {\color{red} Shall we comment here on the fact that group cut-off produces
 smoother RDF? Add figures in Supplementary material {\color{blue} Do you
@@ -575,8 +599,16 @@ mean the reason of the goodness in RF?} {\color{red} Yes, shall we discuss
 it? or it is too complicated and not very relevant to the current paper?}[} {%
 \color{blue} It is preferable to write it if the reason of the goodness is
 clear. Anyway, please describe.... This is the only matter ZM is inferior to
-RF. So, it may be interesting if the reason is clear. } \recheck{I agree, if the
-reason is not clear for us, we should not touch this topic.}]
+RF. So, it may be interesting if the reason is clear. } {\color{red} I
+agree, if the reason is not clear for us, we should not touch this topic.}][ 
+{\color{blue} COMMENT: Thank you very much for the O-O RDF. If you have time
+to reconsider this issue, it may be useful to calculate the RDF with H-H
+length (MD trajectory also remains). Deviations should be larger for H-H
+than O-O, but this is my guess: (1) eventually COG-COG is near O-O, sorry I
+did not notice.; (2) RDF deviations appear in 0.6 nm width around the cutoff
+and the H-H length is just the twice of this 0.6 nm). Rather, the true
+reason may be other, e.g., group cuotff MD scheme may intrinsically give the
+accracy at least for RDF. }]
 
 \begin{figure}[tbp]
 \centering
@@ -633,12 +665,12 @@ seen in several quantities. The weak effect is seen in the isothermal
 compressibility, {\color{red} } and dynamical quantities including the
 diffusion constant and viscosity, while the strong effect is seen in the
 RDF. Anti-damping effect was also observed in the pressure when $\alpha >1$
-and  Kirkwood-G factor (only $l=1$). A larger order is
-preferable slightly for dynamical quantities including diffusion constant
-and viscosity, and significantly for the RDF. Whereas a smaller order is
-preferable for the pressure, though $l=1,2$\ are similar.
+and Kirkwood-G factor (only $l=1$). A larger order is preferable slightly
+for dynamical quantities including diffusion constant and viscosity, and
+significantly for the RDF. Whereas a smaller order is preferable for the
+pressure, though $l=1,2$\ are similar.
 
-{\color{red} At cut-off radius of 1.2~nm, the recommended choices of
+At cut-off radius of 1.2~nm, the recommended choices of
 parameters for TIP3P system are thus $\alpha \leq 1$~$\text{nm}^{-1}$ and $%
 l=2$ or $l=3$. Using these parameters, the ZM method achieves almost perfect
 accuracy in computing the excess chemical potential, constant
@@ -647,17 +679,15 @@ coefficient, dielectric constant diffusion constant and viscosity. The order
 $l=2$ performs better in reproducing the pressure than $l=3$ (10
 v.s.~17~Bar), but worse in calculating the RDF (0.2\% error v.s.~almost
 negligible). Both of orders 2 and 3 are not sensitive to the splitting
-parameter up to 1.0~$\text{nm}^{-1}$.} {\color{blue} Although further
-increasing the splitting parameter will push the accuracy of RDF in case $l=2
-$ to as high as $l=3$, the pressure accuracy decreases (anti-damping
+parameter up to 1.0~$\text{nm}^{-1}$. Although further
+increasing the splitting parameter will push the accuracy of RDF in case $%
+l=2 $ to as high as $l=3$, the pressure accuracy decreases (anti-damping
 effect), so that $\alpha >1$\ for $l=2$ or $l=3$ is not recommended. It
 should be noticed that the recommended parameters indicate $5$\% error
 (largest) in calculating the Kirkwood-G factor for a larger system ($L_{1}$
-containing 13,824 molecules). [\color{blue}COMMENT:Did you calculate the G
-factor for the smallest $S_{1}$? \ If so, how was the results? \recheck{see the added
-  in Sec. IV B and SI}] If we seek
-more accuracy for the G factor, we should use a larger cut-off radius at the
-expense of the computational time. } 
+containing 13,824 molecules).  If we seek more
+accuracy for the G factor, we should use a larger cut-off radius at the
+expense of the computational time. 
 % Further increasing the splitting paraemter
 % Optimal parameter value for the TIP3P system is thus $l=2,\alpha \leq 1$,
 % where the error about $0.2\%$\  remains in the RDF. An
@@ -668,7 +698,27 @@ expense of the computational time. }
 the current water system since IPSp is developed for "polar" molecule (while
 IPSn is not)}]
 
-\bigskip
+[ {\color{blue} COMMENT0: Although I know this paper's aim is to judge the
+accuracy of the ZM, I also know many people may also be interested in some
+different aspects. So please see the following.}]
+
+[ {\color{blue} COMMENT1: The first one is the accuracy comparison between
+the ZM\ and a "default PME" that uses default protocol and parameters, e.g.,
+group-based cutoff scheme (OK?) and a short cutoff length(about 1 nm?) for
+the real part and a lower order spline and default grid spacing for the
+reciprocal part. Many peoples are not the specialist of the electrostatic
+calculation, and they just uses the default PME. Thus it would be OK\ for
+them if the difference between the ZM\ and a "default PME" is small. Is it
+possible to calculate e.g., pressure or KG factor for {$L_{1}$} (n{ot all
+the quantities}), using the {"default PME"?}}]
+
+[ {\color{blue} COMMENT2: The second one is the comparison of the
+computational timing between the ZM\ and a "default PME."\ Many people,
+including e.g. reviewers, should be interested in it. How about this
+comparison using a short time simulation?\ One expects ZM\ is faster than
+SPME. But is SPME with rc=1.0 nm along with the buffer length 0.2nm (are
+they default length?) faster than ZM\ with rc=1.2 nm along with the buffer
+length 0.3nm?? }]
 
 \appendix
 
@@ -678,11 +728,15 @@ IPSn is not)}]
 
 In this section we provide the formula used for computing the benchmark
 quantities. We assume that there are $N$ molecules in the water system. The
-position and configuration of each molecule are fully described by $\{%
-\mathbf{\mathit{r}}_{3i-2},\mathbf{\mathit{r}}_{3i-1},\mathbf{\mathit{r}}%
+position and configuration of each molecule are fully described by $\{\vect r_{3i-2},\mathbf{\mathit{r}}_{3i-1},\mathbf{\mathit{r}}
 _{3i}\},\,i\in 1,\cdots ,N$, and the corresponding velocities are denoted by 
 $\{\mathbf{\mathit{v}}_{3i-2},\mathbf{\mathit{v}}_{3i-1},\mathbf{\mathit{v}}%
-_{3i}\},\,i\in 1,\cdots ,N$. The mass of each atom is denoted by $m_{i}$.
+_{3i}\},\,i\in 1,\cdots ,N$. The mass of each atom is denoted by $m_{i}$.[ {%
+\color{blue} minor: I like bold font a little bit for $\mathbf{\mathit{r}}${%
+\ and }$\mathbf{\mathit{v}}${\ as in the first version, which is also seen
+in }$\boldsymbol{\mu }_{i}${. (In particular, }$\mathbf{\mathit{r}}${\ seems
+the distance, not vector. $\mathbf{\mathit{r}}$ appears below also. But if
+you like this font, please use it also for $\boldsymbol{\mu }_{i}$)}} \recheck{I prefer the original one, I did not change it. I guess your program did it automatically. I suggest you compile this file with standard latex that dose not do any automatic change to the source file!. Now I change the one of them back, please see if it works on your machine}]
 
 \subsection{Radial distribution function}
 
@@ -692,13 +746,13 @@ distance $r$ apart. It is a very important equilibrium structure property,
 by which the X-ray scattering intensity and a mount of thermodynamic
 properties can be computed. In this work, we investigate the center-of-mass
 RDF in the water system. The RDFs presented in the main text were computed
-in system $L_1$.
+from NVT simulations of system $L_1$.
 
 % The results are plotted in Fig.~\ref{fig:rdf}. As the order of ZM method goes higher, the precision of RDF improves. In addition, the precision of RF method is between $l=2$ and $l=3$.
 
 \subsection{Pressure}
 
-The pressure of the system calculated by the virial formula:
+The pressure of the system calculated by the virial formula: 
 % [ {\color{blue}
 % Modified $3N\longrightarrow N$} {\color{red} should be $3N$!, each molecule
 % contains 3 atoms. The pressure is computed by atom based virial formula. %
@@ -709,7 +763,7 @@ _{i}^{2}+\mathbf{\mathit{r}}_{i}\cdot \mathbf{\mathit{F}}_{i}\Big)%
 \Bigg\rangle,
 \end{equation*}%
 where $V$ is the volume of the system. The presented pressures were computed
-in system $L_{0}$.
+from NVT simulations of $L_{0}$.
 
 \subsection{Chemical potential}
 
@@ -744,7 +798,7 @@ ele). During stage vdw, 21 $\lambda$ values are equally distributed in $%
 (0.05, 1]$. Therefore, in total 47 simulations are performed for all $%
 \lambda $ values. The free energy differences and the error estimates are
 calculated by the Bennet's acceptance ratio method (BAR)~\cite%
-{bennett1976efficient}. The simulations were performed with system $L_0$.
+{bennett1976efficient}. The NVT simulations were performed with system $L_0$.
 
 \subsection{Constant volume/pressure molar heat capacity}
 
@@ -824,8 +878,7 @@ where
 \mathbf{\mathit{M }} = \sum_i\boldsymbol{\mu}_i = \sum_{\alpha\in i} q_\alpha%
 \mathbf{\mathit{r}}_\alpha
 \end{align}
-is the total dipole moment of the system. Since it is a fluctuation, the
-simulated system was $S_1$. 
+is the total dipole moment of the system. Since it is a fluctuation, and is calculated by NVT simulations of $S_1$. 
 % The results are listed in Tab.~\ref{tab:tmp2}. The dielectric constant calculated in system $\systemsb$ is reported in Table.~\ref{tab:thermo}.
 
 \subsection{Kirkwood G-factor}
@@ -837,7 +890,7 @@ G_k(r) = \Big\langle \frac 1N \sum_{i=1}^N \sum_{j, r_{ij} < r} \frac {%
 \cdot \vert\boldsymbol{\mu}_j\vert} \Big\rangle,
 \end{align}
 where $r_{ij}$ denotes the oxygen-oxygen distance between two water
-molecules. The system for computing this quantity is $L_1$.
+molecules. The system for computing this quantity is $L_1$ in NVT ensemble.
 
 \subsection{Diffusion constant}
 
@@ -848,7 +901,7 @@ _i(t) - \mathbf{\mathit{r}}_i(0)\vert^2\rangle.
 \end{align}
 In practice, the mean-square-displacement $\langle\vert \mathbf{\mathit{r}}%
 _i(t) - \mathbf{\mathit{r}}_i(0)\vert^2\rangle$ is calculated, then the
-value is linearly fitted. The system for simulation was $S_1$.
+value is linearly fitted. It is calculated by NVT simulations of system $S_1$.
 
 \subsection{Viscosity}
 
@@ -875,11 +928,12 @@ I_{\eta }(T)=\frac{V}{k_{B}T}\int_{0}^{T}\langle P_{\alpha \beta
 }(0)P_{\alpha \beta }(t)\rangle \,dt.
 \end{equation*}%
 The values listed in Table~\ref{tab:thermo} are computed with $I_{\eta }(10\,%
-\text{ps})$. The system for simulation was $S_{1}$.
+\text{ps})$. The quantity is calculated by NVT simulations of system $S_{1}$.
 
 \newpage
 
 % \bibliographystyle{plain}
+\bibliographystyle{plain}
 \bibliography{ref}
 {}
 
