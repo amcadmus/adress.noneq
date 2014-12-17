@@ -27,8 +27,8 @@ set mytics 5
 set mxtics 10
 set format y '%.2f'
 set grid
-set xlabel 'T [ ps ]'
-set ylabel 'I_{/Symbol h}(T) [ 10^{-3} Pa s ]'
+set xlabel 't [ ps ]'
+set ylabel 'I_{/Symbol h}(t) [ 10^{-3} Pa s ]'
 set key bottom right font "Helvetica, 14"
 
 
