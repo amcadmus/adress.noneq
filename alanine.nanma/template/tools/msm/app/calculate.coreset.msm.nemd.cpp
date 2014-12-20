@@ -229,7 +229,7 @@ int compute_next_index (const vector<unsigned > & disc_traj,
 
 int main(int argc, char * argv[])
 {
-  std::string ifile, idfile, ismfile, otmfile, ommfile;
+  std::string ifile, idfile, ismfile, otmfile, ommfile, opmfile;
   unsigned nbin, ndataBlock;
   
   po::options_description desc ("Calculates the MSM based on coreset milestoning.\nAllow options");
@@ -241,7 +241,9 @@ int main(int argc, char * argv[])
       ("num-bin,n", po::value<unsigned > (&nbin)->default_value (20), "number of blocks.")
       ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
       ("output-matrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
-      ("output-matrix-m", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.");
+      ("output-matrix-m", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.")
+      ("output-matrix-t", po::value<string > (&opmfile)->default_value ("coreset.p.out"), "the output matrix P = T - M + I of coreset MSM.");
+  
   
   po::variables_map vm;
   po::store(po::parse_command_line(argc, argv, desc), vm);
@@ -355,6 +357,7 @@ int main(int argc, char * argv[])
   }
   printf("\n");
   fclose (fp);
+
   FILE * fp1 = fopen (ommfile.c_str(), "w");
   if (fp1 == NULL){
     std::cerr << "cannot open file " << ommfile << std::endl;
@@ -370,6 +373,24 @@ int main(int argc, char * argv[])
   }
   fclose (fp1);
   
+  FILE * fp2 = fopen (opmfile.c_str(), "w");
+  if (fp2 == NULL){
+    std::cerr << "cannot open file " << ommfile << std::endl;
+    return 1;
+  }
+  for (unsigned ii = 0; ii < numCluster; ++ii){
+    for (unsigned jj = 0; jj < numCluster; ++jj){
+      if (ii != jj){
+	fprintf (fp2, "%f ", tmatrix[ii][jj].getAvg() - mmatrix[ii][jj].getAvg());
+      }
+      else{
+	fprintf (fp2, "%f ", tmatrix[ii][jj].getAvg() - mmatrix[ii][jj].getAvg() + 1);
+      }
+    }
+    fprintf (fp2, "\n");
+    printf("\n");
+  }
+  fclose (fp2);
   
   return 0;
 }
