@@ -242,7 +242,7 @@ int main(int argc, char * argv[])
       ("input-cluster-map", po::value<string > (&ismfile)->default_value ("cluster.map.out"), "the input of cluster map.")
       ("output-matrix-t", po::value<string > (&otmfile)->default_value ("coreset.t.out"), "the output matrix T of coreset MSM.")
       ("output-matrix-m", po::value<string > (&ommfile)->default_value ("coreset.m.out"), "the output matrix M of coreset MSM.")
-      ("output-matrix-t", po::value<string > (&opmfile)->default_value ("coreset.p.out"), "the output matrix P = T - M + I of coreset MSM.");
+      ("output-matrix-p", po::value<string > (&opmfile)->default_value ("coreset.p.out"), "the output matrix P = T - M + I of coreset MSM.");
   
   
   po::variables_map vm;
