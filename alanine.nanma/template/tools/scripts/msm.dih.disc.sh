@@ -64,6 +64,10 @@ echo "# recover 5 sets cg traj with command:"
 echo "# $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out"
 $msm_dir/recover.set.prob --input-prob cg.prob.dih.out --input-largest-set largestSet.dih --num-bin $msm_dih_nbin --num-sample 1000 --output cg.prob.dih.5sets.out
 
+mycommand="$msm_dir/calculate.trans.matrix --input traj.dih.disc --input-dir dir.name --input-largest-set largestSet.dih --n-data-block 1 --dt $pert_frame_feq --period $pert_warm_time --begin $msm_steady_begin --end $msm_steady_end --output direct.floquet.out"
+echo "# direct compute floquet matrix P by command : $mycommand"
+$mycommand
+
 mycommand="$msm_dir/calculate.time.dist --input-traj-dir dir.name --input-disc-traj traj.dih.disc --dt $pert_frame_feq --num-data-block 1 --num-bin $msm_dih_nbin --output bf.prob.dih.out"
 echo "# compute the bf probability with command : $mycommand"
 $mycommand

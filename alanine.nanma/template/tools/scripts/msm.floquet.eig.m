@@ -1,4 +1,4 @@
-fm = load('floque.B.out');
+fm = load('direct.floquet.out');
 fm = fm';
 [v e] = eig(fm);
 ee = sum(e)';

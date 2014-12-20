@@ -12,6 +12,7 @@ base_dir=$script_dir/..
 angle_dir=$base_dir/angles
 msm_dir=$base_dir/msm
 cwd=`pwd`
+floquet_file=direct.floquet.out
 
 echo "# use running parameter: parameters.sh"
 source parameters.sh
@@ -51,7 +52,7 @@ mycommand="$msm_dir/calculate.fht --input-largest-set $target_dir/largestSet.dih
 echo "# calculate first hitting time by command: $mycommand"
 $mycommand
 
-mycommand="$msm_dir/calculate.coreset.msm --num-bin $msm_dih_nbin --input-largest-set $target_dir/largestSet.dih  --input-floquet $target_dir/floque.B.out --input-cluster-map $target_dir/cluster.map.out --input-steady $target_dir/steady.dist.out.orig --input-fw $target_dir/commitor.fw.out.orig --input-bw $target_dir/commitor.bw.out.orig --output-tmatrix $target_dir/coreset.tmatrix.out"
+mycommand="$msm_dir/calculate.coreset.msm --num-bin $msm_dih_nbin --input-largest-set $target_dir/largestSet.dih  --input-floquet $target_dir/$floquet_file --input-cluster-map $target_dir/cluster.map.out --input-steady $target_dir/steady.dist.out.orig --input-fw $target_dir/commitor.fw.out.orig --input-bw $target_dir/commitor.bw.out.orig --output-tmatrix $target_dir/coreset.tmatrix.out"
 echo "# calculate coreset msm tmatrix by command: $mycommand"
 $mycommand
 
