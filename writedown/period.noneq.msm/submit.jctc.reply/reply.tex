@@ -1,0 +1,194 @@
+\documentclass{article}
+
+\addtolength{\textwidth}{2.5cm}
+\addtolength{\hoffset}{-.4in}
+
+\usepackage{graphicx}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\usepackage{lipsum}
+
+\renewcommand{\baselinestretch}{1.0}
+% \setlength{\footskip}{0cm}
+%\addtolength{\textheight}{10cm}
+% \sloppy
+
+\renewcommand{\arraystretch}{1.2}
+
+
+
+\begin{document}
+
+
+\hfill\begin{tabular}{@{}p{.4\linewidth}@{}}
+\multicolumn{1}{@{}c@{}}{} \\
+        Han Wang\\
+        CAEP Software Center for \\
+        High Performance Numerical\\
+        Simulation\\
+        Huayuan Road 6\\
+        Beijing 100088, China\\
+        \\
+        \today
+\end{tabular}
+\vskip .1cm
+\noindent
+\begin{tabular}{@{}p{.45\linewidth}@{}}
+\multicolumn{1}{@{}c@{}}{} \\
+Prof. William L. Jorgensen \\
+\\
+Yale University \\
+Department of Chemistry\\
+P.O. Box 208107 \\
+New Haven, CT  06520-8107 \\
+  USA\\  
+\end{tabular}\hfill
+
+\vskip 1cm
+
+\noindent
+\textbf{\large Resubmission for manuscript ct-2014-00997y}
+
+\vskip .5cm
+\noindent
+Dear Prof. Jorgensen,\\
+
+On behalf of the co-author, I would like to resubmit our article:
+\textit{``Building Markov State Models for
+  Periodically Driven Non-Equilibrium Systems''}
+by H.~Wang and C.~Sch\"utte to the
+\textit{Journal of Chemical Theory and Computation}.
+We gratefuly acknowledge the reviewers for the positive reports, and for
+their insight and suggestions, which helped us improving the quality
+of the manuscript.  In response to their comments, the revisions are
+reported below in details.  To help the referees spot the changes in
+the manuscript, we have submitted a separate file (highlight.pdf) with
+all changes highlighted in red.
+
+\vskip 1cm
+
+\noindent Best regards,\\
+Han Wang
+
+\vskip 1cm
+\newpage
+\section*{Reply to Referee 1}
+
+
+\textit{
+A periodically driven electric field is but one of several
+non-equilibrium situations that may be of interest to the simulation
+community.  Can the authors comment on how extensible their framework
+is to non-periodic forces?  For instance, what about steered molecular
+dynamics?  What if the work is far from equilibrium?  I believe the
+group of K. Schulten has made available SMD pulling/unfolding
+trajectories for deca-alanine. These simulations were performed at
+multiple velocities, including one simulation that was fully
+reversible.  It would be most outstanding for the authors to look into
+retrieving that data to reconstruct a non-equilibrium MSM for a
+larger, slightly more realistic system and for a different
+non-equilibrium regime.
+}\\
+
+The current theoretical framework firstly reduces to an
+time-homogeneous Markov process by the Floquet theory.  The extension
+to the non-periodic driving forces is not straightforward, because in
+general the Floquet theory is not applicable to for arbitrary driving
+force. Nevertheless, the question raised by the referee is very
+important, and we intend to address in future research.
+\\
+
+\textit{ Of course, alanine dipeptide is a toy system.  And, as the
+  authors show, researchers may not be able to arrive at a perfect
+  answer using their methods even for this toy system. I.e., the
+  second non-trivial eigenvalue for their example had some error,
+  already; therefore it would be my expectation that this would
+  essentially be unresolvable (realistically) for biological systems
+  of real interest.  As someone more in the applications field, I find
+  this worrisome. It would be helpful for the authors to discuss the
+  potential application of their framework to a realistic biological
+  system (e.g., a normal size protein).
+}\\
+
+% \begin{minipage}{.8\linewidth}
+%   \centering
+%   \includegraphics[width=0.6\textwidth]{hitting.eps}
+%   \captionof{figure}{Schematic plot of comparison between a continuous and time-discretized trajectories in hitting a core set.}
+% \end{minipage}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{hitting.eps}
+  \caption{Schematic plot of comparison between a continuous and time-discretized trajectories in hitting a core set.}
+  \label{fig:tmp1}
+\end{figure}
+
+The lower accuracy of the second non-trivial time scale stems from the
+time-disretization problem in core set hitting, which is graphically
+illustrated in Fig.~\ref{fig:tmp1}.  The milestone process is defined
+to change state when the trajectory hits a core set that is not the
+one it came from.  In Fig.~\ref{fig:tmp1}, if the trajectory is
+continuum, then the milestone process changes to state ``2'' at the
+first hitting at core set $C_2$. In comparison, the first hitting
+event would not be recognized if the trajectory is discretized, and
+the milestone process changes to state ``2'' only at the second
+hitting at core set $C_2$.\\
+
+This time-discretizations error would not be significant if the
+interested time-scale is much longer than the discretized time-step.
+However, it would be seen if the they are comparable. In our case, the minimum discretization
+time-step is the period $T=10$~ps, which is not well separated from the second non-trivial time-scale
+that is 26.5~ps.\\
+
+\begin{table}
+  \centering
+  \begin{tabular*}{0.9\textwidth}{@{\extracolsep{\fill}}l cccccc}\hline\hline
+    & NEMD & MSM & MSM &MSM &MSM &MSM \\
+    Time Discr. [ps] & 0.5 &  $10$ &  $20$ & $40$ & $80$ & $120$\\
+    $t_1$ [ps] & 100.2 & 104.8 & 108.8 & 115.5 & 127.6 & 142.4 \\\hline\hline
+  \end{tabular*}
+  \caption{The leading non-trivial time-scale computed by NEMD and MSM at different time-discretizations.
+  The smallest time-discretization of MSM is constrained by the period of external driving $T$ that is 10~ps.}
+  \label{tab:tmp1}
+\end{table}
+In order to further illustrate the artifact of time-discretizations,
+we discretized the trajectory by increasing time-steps, and compare
+the leading time-scale of the derived MSM with the NEMD, see Tab.~\ref{tab:tmp1}.
+It can be easily concluded that as the time-discretizations increases and approaches
+the leading non-trivial time-scale $t_1 = 100.2$~ps, the accuracy of MSM
+in computing $t_1$ decreases. When the time-discretizations increases to $4T = 40$~ps, the relative
+error is over 15\%.
+\\
+
+In the applications of the more complex and realistic problems, if the
+system has time-scale separation between the external driving period and the interested implied
+time-scales, then good accuracy is expected. Generally speaking, in
+more complex molecular system, the interested time-scales are longer
+than the alanine dipeptide toy system. Therefore, we would expect 
+higher accuracy in more complex systems if the period of external field is 10~ps.
+\\
+
+\textit{ Also, the authors and others in the field have used the
+  Chapman-Komolgorov tests to assess convergence or consistency of the
+  MSMs with the underlying simulations.  The authors should include
+  this metric, or the authors should state why they are not including
+  it.  In particular, it would be helpful for the authors to discuss
+  (if they are not using it) and clarify for the community, when it is
+  appropriate to use the CK test to assess convergence and when it is
+  not. Application of CK has been mysteriously lacking in all the
+  “real world” examples of MSM and this is an opportunity to help
+  clarify its application.
+}\\
+
+The discretizations time-step in the milestone MSM approach should be
+distinguished from the lag-time in the space full partitioning MSM
+approach. Larger time-discretizations in milestone MSM generally gives
+worse prediction of implied time-scales, whereas larger lag-time in
+space full partitioning MSM leads to better accuracy as long as the
+lag-time is smaller than the interested time-scale. The
+Chapman-Komolgorov test basically checks the consistency of full
+partitioning MSM with different lag-times, and it does not apply to
+the milestone MSM approach.
+
+
+
+\end{document}
