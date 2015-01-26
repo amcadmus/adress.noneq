@@ -29,7 +29,7 @@ else
     source $target_dir/msm.parameters.sh
 fi
 
-test_factor=8
+test_factor=12
 
 for ii in `cat dir.name`;
 do
@@ -40,11 +40,11 @@ do
     sed -n "1~${period_frame}p" $ii/traj.dih.disc | head -n $n_head_line | tail -n $n_tail_line > $ii/traj.dih.disc.period${test_factor}T
 done
 
-mycommand="$msm_dir/calculate.coreset.msm.nemd --num-bin $msm_dih_nbin --input traj.dih.disc.period${test_factor}T --input-dir dir.name --n-data-block 100 --input-cluster-map $target_dir/cluster.map.out --output-matrix-t $target_dir/coreset.t.out --output-matrix-m $target_dir/coreset.m.out --output-matrix-p $target_dir/coreset.p.out"
+mycommand="$msm_dir/calculate.coreset.msm.nemd --num-bin $msm_dih_nbin --input traj.dih.disc.period${test_factor}T --input-dir dir.name --n-data-block 100 --input-cluster-map $target_dir/cluster.map.out --output-matrix-t $target_dir/coreset.t.out --output-matrix-m $target_dir/coreset.m.out --output-matrix-p $target_dir/coreset.p.${test_factor}T.out"
 echo "# calculate coreset t and m matrices by command: $mycommand"
 $mycommand
 
-mycommand="$msm_dir/calculate.coreset.evlove --dt `echo "$test_factor * $pert_warm_time" | bc -l` --end $pert_time --input-init-prob $target_dir/coreset.prob.out --input-tmatrix $target_dir/coreset.p.out --output $target_dir/coreset.prob.coreset.${test_factor}T.out"
+mycommand="$msm_dir/calculate.coreset.evlove --dt `echo "$test_factor * $pert_warm_time" | bc -l` --end $pert_time --input-init-prob $target_dir/coreset.prob.out --input-tmatrix $target_dir/coreset.p.${test_factor}T.out --output $target_dir/coreset.prob.coreset.${test_factor}T.out"
 echo "# calculate the prob from coreset msm by $mycommand"
 $mycommand
 
