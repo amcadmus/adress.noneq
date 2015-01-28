@@ -53,7 +53,7 @@
 
 \title{Building Markov State Models for Periodically Driven Non-Equilibrium Systems}
 \author{Han Wang}
-\email{han.wang@fu-berlin.de}
+\email{wang_han@iapcm.ac.cn}
 \affiliation{CAEP Software Center for High Performance Numerical Simulation, Beijing, China}
 \alsoaffiliation{Zuse Institute Berlin (ZIB), Germany}
 \author{Christof Sch\"utte}
@@ -65,7 +65,7 @@
 \begin{document}
    
 \begin{abstract}
-Recent years have seen an increased interest in non-equilibrium molecular dynamics (NEMD) simulations, especially for molecular systems with periodic forcing by external fields, e.g., in the context of studying the  effects of electromagnetic radiation on human body tissues. Lately, and NEMD method with local thermostating has been proposed; that allows the study of 
+Recent years have seen an increased interest in non-equilibrium molecular dynamics (NEMD) simulations, especially for molecular systems with periodic forcing by external fields, e.g., in the context of studying the  effects of electromagnetic radiation on human body tissues. Lately, an NEMD method with local thermostating has been proposed that allows the study of 
 non-equilibrium processes in a statistically reliable and thermodynamically consistent way. In this article, we demonstrate how to construct Markov State Models (MSMs) for such NEMD simulations. MSM building is well-established for systems in equilibrium, where MSMs with only a few (macro-)states allow for accurate reproduction of the essential kinetics of the molecular system under consideration. Non-equilibrium MSMs have not been established yet. This article presents a method for construction of such MSMs and illustrates their validity and usefulness for the case of conformation dynamics of alanine dipeptide in an external electric field.  \\
 \textbf{Keywords:} {Non-equilibrium, Markov states model, Alanine dipeptide, Electric field, Floquet theory}
 \end{abstract}
@@ -80,7 +80,7 @@ Biomolecular systems under non-equilibrium conditions caused by external fields,
 systems under periodic forcing, have attracted increasing
 interest recently.  For example, the potential effects of electromagnetic
 radiation on  human body tissues (e.g.,~DNA, protein, and membrane)  have been extensively
-investigated in a vast number of articles, with the following list  representing an incomplete selection~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
+investigated in a vast number of studies, with the following list  representing an incomplete selection~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
   dePomerai2003microwave, mancinelli2004non, inskip2001cellular, bekard2013electric, budi2005electric,
   budi2007effect, budi2008comparative, astrakas2012structural,
   damm2012can, english2009nonequilibrium, solomentsev2012effects}.  Molecular dynamics (MD) simulations have proven particularly useful for understanding
@@ -117,7 +117,7 @@ becoming increasingly difficult as the system size and trajectory length grow; M
 % \end{itemize}
 
 % \textbf{Importance: first application of MSM in a non-equilibrium system.}
-To the knowledge of the authors this work is the first attempt of using MSMs for analyzing non-equilibrium systems under periodic external forcing.
+To the best of our knowledge, this work is the first attempt of using MSMs for analyzing non-equilibrium systems under periodic external forcing.
 More precisely, we will demonstrate how to use MSMs to investigate the conformational dynamics of a peptide (alanine dipeptide) under an oscillating electric field (EF).
 To this end, we will show how to generalize Markov state modeling to periodic non-equilibrium conditions, where one cannot assume reversibility of the dynamics as is most often case in the literature on MSM building.
 
