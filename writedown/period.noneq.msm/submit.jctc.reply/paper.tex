@@ -80,13 +80,13 @@ Biomolecular systems under non-equilibrium conditions caused by external fields,
 systems under periodic forcing, have attracted increasing
 interest recently.  For example, the potential effects of electromagnetic
 radiation on  human body tissues (e.g.,~DNA, protein, and membrane)  have been extensively
-investigated in a vast number of studies, with the following list  representing an incomplete selection~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
+investigated in a vast number of studies, with the following list  representing an incomplete selection Ref.~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
   dePomerai2003microwave, mancinelli2004non, inskip2001cellular, bekard2013electric, budi2005electric,
   budi2007effect, budi2008comparative, astrakas2012structural,
   damm2012can, english2009nonequilibrium, solomentsev2012effects}.  Molecular dynamics (MD) simulations have proven particularly useful for understanding
 the response of biomolecular conformations to external fields, because of their ability to  resolve molecular
 details that sometimes cannot be resolved in experiments. Only
-recently, a non-equilibrium MD simulation (D-NEMD) method with local thermostating has been proposed~\cite{wang2014exploring} that allows for studying 
+recently, a non-equilibrium MD simulation (NEMD) method with local thermostating has been proposed~\cite{wang2014exploring} that allows for studying 
 non-equilibrium processes in a statistically reliable and thermodynamically consistent way. 
 Despite the significance of the non-equilibrium phenomena, 
 analysis of the non-equilibrium MD simulations mainly follows standard approaches, and reliable tools for quantitative description of
@@ -102,7 +102,7 @@ The main concept underlying equilibrium MSMs is to approximate the original high
 using reduced Markovian dynamics over a finite number of (macro-)states. These (macro-)states
 have to be identified with the dominant metastable sets, in the sense that
 typical MD trajectories remain close to a metastable set substantially longer than
-they need for a transition to another such state~\cite{A19-31,schuette2011markov}. In this case, the metastable sets are the main conformations of the molecular system under consideration, which, often enough, are given by the main wells in the energy landscape. 
+they need for a transition to another such set~\cite{A19-31,schuette2011markov}. In this case, the metastable sets are the main conformations of the molecular system under consideration, which, often enough, are given by the main wells in the energy landscape. 
 It has been shown that for molecular systems exhibiting such metastable sets, the Markovian dynamics given by an MSM allows very close approximation of the longest relaxation processes of the underlying molecular system, at least under equilibrium conditions~\cite{sarich2010approximation,Eigenvalues}. 
 Moreover, it has been demonstrated that, in such cases, MSM building requires short MD trajectories only, which are much shorter than the timescales of interest~\cite{PNAS09,kohlhoff2014cloud}.  
 Thus, MSM building often allows the study of dynamic behavior on long timescales without requiring MD trajectories of comparable length.
@@ -119,7 +119,7 @@ becoming increasingly difficult as the system size and trajectory length grow; M
 % \textbf{Importance: first application of MSM in a non-equilibrium system.}
 To the best of our knowledge, this work is the first attempt of using MSMs for analyzing non-equilibrium systems under periodic external forcing.
 More precisely, we will demonstrate how to use MSMs to investigate the conformational dynamics of a peptide (alanine dipeptide) under an oscillating electric field (EF).
-To this end, we will show how to generalize Markov state modeling to periodic non-equilibrium conditions, where one cannot assume reversibility of the dynamics as is most often case in the literature on MSM building.
+To this end, we will show how to generalize Markov state modeling to periodic non-equilibrium conditions, where one cannot assume reversibility of the dynamics as is most often the case in the literature on MSM building.
 
 The outline of the article is as follows: 
 In Section~\ref{sec:disc}, we discuss the temporal and spatial
@@ -131,7 +131,7 @@ but not necessarily reversible, that is, irreversible Markov process. Since  ful
 for high-dimensional systems, we next show how to construct a \emph{few-states} MSM, based on milestoning~\cite{schuette2011markov,A19-29} of the discretized irreversible Markov process in Section~\ref{sec:build-msm}.
 The validity of the discretizations and the resulting MSM is checked in Section~\ref{sec:alanine}
 by comparing the kinetic fingerprints given by the MSM to brute force
-non-equilibrium MD simulations of alanine dipeptide under oscillating EF.
+NEMD simulations of alanine dipeptide under oscillating EF.
 The findings are summarized in Section~\ref{sec:conclusion}, which includes a chart presenting
 the workflow of MSM building for non-equilibrium systems, and a list of open questions.
 
@@ -148,7 +148,7 @@ $T$-periodic external field $E(t)$:
   \label{eq:disc-1}
   d\vect x_t = \Big(-\nabla V(\vect x_t) + E(t) D(\vect x_t)\Big)dt + \sqrt{2\beta^{-1}} d\vect w_t, 
 \end{align}
-where $x_t\in\Omega$ denotes the state of the molecular system at time $t$ in state space $\Omega$, $\vect w_t$ denotes standard $n$-dimensional Brownian motion, and $\beta$ the inverse temperature,
+where $x_t\in\Omega$ denotes the state of the molecular system at time $t$ in state space $\Omega \subset \mathbb R^{3N_{\textrm{atom}}}$ ($N_{\textrm{atom}}$ being the number of atoms), $\vect w_t$ denotes standard $3N_{\textrm{atom}}$-dimensional Brownian motion, and $\beta$ the inverse temperature,
 i.e.,~$\beta = 1/(k_B\mathcal T)$.
 Thermostatted Hamiltonian or Langevin dynamics can be treated in the same way as explained herein, so for the sake of simplicity, we focus on the discussion of diffusive dynamics.
 The propagation of probability
@@ -165,13 +165,13 @@ where $\ml^\dagger(t)$ is the adjoint of the generator
   \ml(t)=\beta^{-1}\Delta_{\vect x}+\Big(-\nabla_x V(\vect x) + E(t)D(\vect x)\Big)\cdot\nabla_{\vect x},
 \end{align}
 where $\Delta_{\vect x}$ denotes the Laplacian operator and $\nabla_{\vect x}$
-the nabla-operator with respect to to $\vect x$. 
+the nabla-operator with respect to $\vect x$. 
 The periodicity of the external driving force induces the periodicity of the generator,
 i.e.,~$\ml(t) = \ml(t+T)$.  
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial discretization: Master equation}
-We will now introduce an appropriate spatial discretization of this kind of non-equilibrium MD --  this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.
+We will now introduce an appropriate spatial discretization of this kind of NEMD --  this is done for reasons of simplicity only; we could completely avoid it for the price of more technical arguments.
 For achieving this discretization, we 
 introduce a partition of state space $\Omega$ into a finite number of disjoint
 sets $\{ \Omega_1, \cdots, \Omega_N\}$ satisfying $\Omega = \cup_i \Omega_i$,
@@ -325,7 +325,7 @@ dynamics with a very large number ($N$) of states.  Now we want to coarse our de
 constructing a Markov State Model (MSM) for $\vect P$ with $K\ll N$
 \emph{macrostates}, which would be the metastable states of the system. The resulting $K\times K$ MSM transition matrix $\hat{\vect P}$
 then defines the coarse-grained long-term kinetics that shall
-approximate the original long term kinetics well. 
+approximate the original long-term kinetics well. 
 The idea behind MSM building is that, given that the molecular system under consideration exhibits metastable conformations,  it is usually possible to construct a
 relatively small number of discrete sets --the metastable sets that form the so-called macrostates-- that
 correctly describe the slow  dynamics, and 
@@ -356,7 +356,7 @@ Now, consider an arbitrary infinitely long trajectory of $(\tilde X_m)$. Because
 This function is called the backward committor of $(\tilde X_m)$ associated with the set $C_j$ and is associated with the milestone process via
 \begin{align}
 \label{eq:msm-bwd-committor}  
-q^\bwd_j(i)=\prob_\mu(\hat{X}_m=j \mid X_m=i),
+q^\bwd_j(i)=\prob_\mu(\hat{X}_m=j \mid \tilde X_m=i),
 \end{align}
 where  the index $\mu$ refers to the fact that $\hat{X}_m$ is distributed due to $\mu$.
 %\recheck{\underline{QUESTION}: Here it is a \emph{conditional} probability,
@@ -406,10 +406,10 @@ $\hat{\vect P}$ can be computed by matrix multiplication using the committors:
   \end{align}
 where the inner product is defined by
 $\langle u,v \rangle_\mu=\sum_{i\in S} u(i) v(i) \mu(i)$. 
-In general, the milestone process need not be a Markov process. The results in \cite{A19-31,sarich2014utilizing} show, however, that it is an approximate Markov process as long as the core sets are proper metastable sets, i.e., if the typical timescale on which $(X_m)$ leaves $C$ is much smaller than the typical expected hitting times between the core sets.
+In general, the milestone process need not be a Markov process. The results in Ref.~\cite{A19-31,sarich2014utilizing} show, however, that it is an approximate Markov process as long as the core sets are proper metastable sets, i.e., if the typical timescale on which $(X_m)$ leaves $C$ is much smaller than the typical expected hitting times between the core sets.
 Thus, by taking $\hat{P}$ as our MSM transition matrix, we introduce an additional modeling error that is the smaller the more metastable the core sets are.
 With this MSM transition matrix, we can define the MSM kinetics:
-If we start from some initial probability $\hat{p}_j(0)$ of being in state $j$ at time $t=0$ then its evolution $\hat{p}_j(t)$ in time is discrete in multiples of period $T$ and given by
+If we start from some initial probability $\hat{p}_j(0)$ of being in state $j$ at time $t=0$, then its evolution $\hat{p}_j(t)$ in time is discrete in multiples of period $T$ and given by
 \begin{equation}\label{eq:num-29}
 \hat{p}_j(T)=\sum_k \hat{p}_k(0)\hat{\vect P}_{kj}.
 \end{equation}
@@ -439,14 +439,14 @@ That can be seen by means of direct computation: For the off-diagonal entries, w
 \end{align}
 Stochasticity yields
 $\hat T_{jj} - \hat M_{jj} + 1 = \hat P_{jj}$ for the diagonal entries.  Furthermore, as shown in the Appendix~\ref{sec:app-prove}, $\hat{T}$ as well as $\hat{M}$ can be computed from trajectories without requiring committors. 
-The importance of the pair $\hat{T}$ and $\hat{M}$ for MSM building comes from the following observation: the main NEMD relaxation timescales are given by the dominant eigenvalues of $P$ \cite{A19-31, A19-1}.
-These dominant eigenvalues can be approximated by discretizing the related eigenvalue problem $Pu=\lambda u$ by means of a Galerkin approximation with the finite dimensional ansatz space 
+The importance of the pair $\hat{T}$ and $\hat{M}$ for MSM building comes from the following observation: the main NEMD relaxation timescales are given by the dominant eigenvalues of $P$ \cite{A19-31, A19-1};
+and these dominant eigenvalues can be approximated by discretizing the related eigenvalue problem $Pu=\lambda u$ by means of a Galerkin approximation with the finite dimensional ansatz space 
 spanned by the forward committors $q^+_j$, $j=1,\ldots,K$, together  with the finite dimensional test function space spanned by the backward committors $q^-_j$, $j=1,\ldots,K$ (test functions multiplied from the left by the inner product $\langle\cdot,\cdot\rangle_\mu$). The thus discretized eigenproblem takes the form  of a generalized eigenproblem
 \begin{align}
   \label{eq:msm-gen-ev}
 \hat{T}\hat{u}=\hat{\lambda}\hat{M}\hat{u},\quad\mathrm{or, equivalently}\quad \hat{M}^{-1}\hat{T}\hat{u}=\hat{\lambda}\hat{u},.  
 \end{align}
-For the reversible case, it is known that the $k$ eigenvalues $\hat{\lambda}$ are very good approximations of the dominant eigenvalues $\lambda$ of the original problem, if the core sets are proper metastable sets~\cite{Eigenvalues}. Whether this is true for the non-reversible case is not yet known, but if the deviation from reversibility is weak and the dominant eigenvalues of $P$ are real-valued, then the results should hold analogously, see~\cite{A19-31} Thm.~4.19. 
+For the reversible case, it is known that the $k$ eigenvalues $\hat{\lambda}$ are very good approximations of the dominant eigenvalues $\lambda$ of the original problem, if the core sets are proper metastable sets~\cite{Eigenvalues}. Whether this is true for the non-reversible case is not yet known, but if the deviation from reversibility is weak and the dominant eigenvalues of $P$ are real-valued, then the results should hold analogously, see Ref.~\cite{A19-31} Thm.~4.19. 
 
 If all of its entries are positive, such that it is a stochastic matrix, $\hat{M}^{-1}\hat{T}$ thus can also be taken as MSM transition matrices. In the case of $\hat{M}^{-1}\hat{T}$, the MSM modeling error results from Galerkin discretization, while the MSM modeling error of $\hat{P}$ results from ignoring the potential non-Markovianity of $\hat{X}_m$.
 
@@ -541,7 +541,7 @@ non-equilibrium quasi-stationary state in roughly 300~ps.
 
 For this periodically driven molecular system, we will first show how to choose an appropriately fine spatial discretization. After validating this discretization, we will consider
 the time-discretized dynamics generated by the Floquet transition matrix $\vect P$
-in comparison to the original NEMD simulation. Finally, we will coarse grain this description further by construction of a $3$-state Markov State Model that is able to describe the long-term kinetics of the system correctly. 
+in comparison to the original NEMD simulation. Finally, we will coarse-grain this description further by construction of a $3$-state Markov State Model that is able to describe the long-term kinetics of the system correctly. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Spatial discretization}
