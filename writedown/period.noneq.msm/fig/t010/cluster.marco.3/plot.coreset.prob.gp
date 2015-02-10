@@ -9,22 +9,22 @@ set style line 15 lc 5 lw 2 pt 2 lt 1
 set style line 16 lc 6 lw 2 pt 2 lt 1
 
 set style line 21 lc 1 lw 2 pt 2 lt 2
-set style line 22 lc 2 lw 2 pt 2 lt 2
-set style line 23 lc 3 lw 2 pt 2 lt 2
-set style line 24 lc 4 lw 2 pt 2 lt 2
-set style line 25 lc 5 lw 2 pt 2 lt 2
+set style line 22 lc 2 lw 2 pt 1 lt 2
+set style line 23 lc 3 lw 2 pt 5 lt 2
+set style line 24 lc 4 lw 2 pt 8 lt 2
+set style line 25 lc 5 lw 2 pt 10 lt 2
 
-set style line 31 lc 1 lw 2 pt 2 lt 3
-set style line 32 lc 2 lw 2 pt 2 lt 3
-set style line 33 lc 3 lw 2 pt 2 lt 3
-set style line 34 lc 4 lw 2 pt 2 lt 3
-set style line 35 lc 5 lw 2 pt 2 lt 3
+set style line 31 lc 1 lw 2 pt 3 lt 3
+set style line 32 lc 2 lw 2 pt 3 lt 3
+set style line 33 lc 3 lw 2 pt 3 lt 3
+set style line 34 lc 4 lw 2 pt 3 lt 3
+set style line 35 lc 5 lw 2 pt 3 lt 3
 
-set style line 41 lc 1 lw 2 pt 2 lt 4
-set style line 42 lc 2 lw 2 pt 2 lt 4
-set style line 43 lc 3 lw 2 pt 2 lt 4
-set style line 44 lc 4 lw 2 pt 2 lt 4
-set style line 45 lc 5 lw 2 pt 2 lt 4
+set style line 41 lc 1 lw 2 pt 4 lt 4
+set style line 42 lc 2 lw 2 pt 4 lt 4
+set style line 43 lc 3 lw 2 pt 4 lt 4
+set style line 44 lc 4 lw 2 pt 4 lt 4
+set style line 45 lc 5 lw 2 pt 4 lt 4
 
 set grid
 set xtics 100

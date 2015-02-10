@@ -28,7 +28,8 @@ set mxtics 5
 set mytics 5
 set format y "%.1f"
 set ylabel "g(r)"
-set key bottom right
+set key bottom right font ",12" at 2.1,0.1
+set key spacing 0.8
 # set y2range [1e-5:10]
 # set logscale y2
 # set ytics nomirror
