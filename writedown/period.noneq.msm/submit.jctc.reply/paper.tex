@@ -10,6 +10,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{wasysym}
 % \usepackage{color}
 % \usepackage{tabularx}
 % \usepackage{algorithm}
@@ -18,7 +19,7 @@
 \makeatletter
 \makeatother
 
-\newcommand{\redrevision}[1]{\color{red} #1}
+\newcommand{\redrevision}[1]{{\color{red} #1}}
 \newcommand{\redc}[1]{{\color{red} #1}}
 \newcommand{\bluec}[1]{{\color{blue} #1}}
 \newcommand{\greenc}[1]{{\color{green} #1}}
@@ -63,7 +64,11 @@
 
 
 \begin{document}
-   
+
+\begin{tocentry}
+\includegraphics[height=3.6cm]{toc.eps}
+\end{tocentry}
+
 \begin{abstract}
 Recent years have seen an increased interest in non-equilibrium molecular dynamics (NEMD) simulations, especially for molecular systems with periodic forcing by external fields, e.g., in the context of studying the  effects of electromagnetic radiation on human body tissues. Lately, an NEMD method with local thermostating has been proposed that allows the study of 
 non-equilibrium processes in a statistically reliable and thermodynamically consistent way. In this article, we demonstrate how to construct Markov State Models (MSMs) for such NEMD simulations. MSM building is well-established for systems in equilibrium, where MSMs with only a few (macro-)states allow for accurate reproduction of the essential kinetics of the molecular system under consideration. Non-equilibrium MSMs have not been established yet. This article presents a method for construction of such MSMs and illustrates their validity and usefulness for the case of conformation dynamics of alanine dipeptide in an external electric field.  \\
@@ -81,7 +86,7 @@ systems under periodic forcing, have attracted increasing
 interest recently.  For example, the potential effects of electromagnetic
 radiation on  human body tissues (e.g.,~DNA, protein, and membrane)  have been extensively
 investigated in a vast number of studies, with the following list  representing an incomplete selection Ref.~\cite{bohr2000microwave, bohr2000microwave-1, dePomerai2000cell,
-  dePomerai2003microwave, mancinelli2004non, inskip2001cellular, bekard2013electric, budi2005electric,
+  dePomerai2003microwave, mancinelli2004non, inskip2001cellular, bekard2014electric, budi2005electric,
   budi2007effect, budi2008comparative, astrakas2012structural,
   damm2012can, english2009nonequilibrium, solomentsev2012effects}.  Molecular dynamics (MD) simulations have proven particularly useful for understanding
 the response of biomolecular conformations to external fields, because of their ability to  resolve molecular
@@ -881,10 +886,14 @@ timescale is not as good as the first, but is still acceptable.
 %%%CS
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{hitting.eps}
-  \caption{Schematic plot of comparison between a continuous and time-discretized trajectories in hitting a core set. }
+  \includegraphics[width=0.45\textwidth]{hitting.eps}
+  \caption{Schematic plot of comparison between a continuous and time-discretized trajectories in hitting a core set.
+    The time-continuous trajectory changes to state ``2'' at the first hit of the core set $C_2$ (indicated by changing from solid to dashed line).
+    The time-discretized trajectory changes to state ``2'' at the second hit (indicated by changing from ``$\times$'' to ``$\Circle$'').
+  }
   \label{fig:hitting}
 \end{figure}
+\redrevision{
 The lower accuracy of the second non-trivial timescale stems from the
 time-disretization underlying our approach. The associated problem is graphically
 illustrated in Fig.~\ref{fig:hitting}.  The milestone process is defined
@@ -898,7 +907,7 @@ However, it will become relevant if both are comparable. In our case, the tempor
 that is 26.5~ps (calculated by $-T/\log(\lambda_2)$). Therefore, we observe an unavoidable deviation in the second timescale.
 In applications to more complex and realistic problems (especially larger systems), in particular for
 systems exhibiting timescale separation between the external driving period and the interested implied
-timescales, good accuracy is expected. 
+timescales, good accuracy is expected.}
 %%%
 
 The difference between the eigenvalues of $\hat P$ and $\hat{M}^{-1}\hat T$
@@ -1055,24 +1064,28 @@ significantly increases relative to the equilibrium population
 and the leading relaxation timescale of the system is much shorter than in the equilibrium case.
 
 A final remark concerning the utilization of the proposed methodology may be in order: 
-%%%CS
+%%% CS
+\redrevision{
 The approach presented herein allows for MSM building for periodic forcings only; an extension
 to non-periodic driving forces is not straightforward, because in
 general Floquet theory is not applicable to non-periodic driving
-forcings. However 
+forcings. However,}
 %%%
 based on an MSM for given periodic forcing, optimal control problems may come into play:
 Using available methods, such as non-equilibrium
-linear response theory~\cite{wang2013linear} or computational alchemy for MSMs ~\cite{schutte2014markov}, one can construct the MSM for slightly changed parameters (e.g., period and amplitude) of the external forcing by appropriate reweighting of the MSM for the given forcing. This, in principle, allows for  answering questions such as the following:
+linear response theory~\cite{wang2013linear} or computational alchemy for MSMs~\cite{schutte2014markov}, one can construct the MSM for slightly changed parameters (e.g., period and amplitude) of the external forcing by appropriate reweighting of the MSM for the given forcing. This, in principle, allows for  answering questions such as the following:
 for which parameters of the external forcing does one achieve maximal population of  the left-handed $\alpha$-helix?
 Such questions, however, will
 be addressed the future studies.
 
 
-\section*{Acknowledgment}
+\begin{acknowledgement}
 
+The computation of this work was performed at the North-German Supercomputing Alliance (HLRN). The authors are grateful for this support.
 H.W. Acknowledges support from the National High Technology Research and Development
 Program of China under Grant No. 2015AA011201.
+\end{acknowledgement}
+
 
 \appendix
 
@@ -1391,332 +1404,7 @@ This proves the identity $\hat P = \hat T\hat M^{-1}$.
 Notice that in the fifth equation we assumes the Markovianity of the milestone process $\hat X_m$. In the sixth equation we use the result Eq.~\eqref{eq:appb-m}, and the time-homogeneity of the milestone process.
 
 
-\begin{thebibliography}{10}
-
-\bibitem{bohr2000microwave}
-Henrik Bohr and Jakob Bohr.
-\newblock Microwave-enhanced folding and denaturation of globular proteins.
-\newblock {\em Phys. Rev. E}, 61(4):4310, 2000.
-
-\bibitem{bohr2000microwave-1}
-Henrik Bohr and Jakob Bohr.
-\newblock Microwave enhanced kinetics observed in ord studies of a protein.
-\newblock {\em Bioelectromagnetics}, 21(1):68--72, 2000.
-
-\bibitem{dePomerai2000cell}
-David de~Pomerai, Clare Daniells, Helen David, Joanna Allan, Ian Duce, Mohammed
-  Mutwakil, David Thomas, Phillip Sewell, John Tattersall, Don Jones, and Peter
-  Candido.
-\newblock Cell biology: Non-thermal heat-shock response to microwaves.
-\newblock {\em Nature}, 405:417--418, 2000.
-
-\bibitem{dePomerai2003microwave}
-David~I de~Pomerai, Brette Smith, Adam Dawe, Kate North, Tim Smith, David~B
-  Archer, Ian~R Duce, Donald Jones, and E~Peter~M Candido.
-\newblock Microwave radiation can alter protein conformation without bulk
-  heating.
-\newblock {\em FEBS letters}, 543(1):93--97, 2003.
-
-\bibitem{mancinelli2004non}
-Fabrizio Mancinelli, Michele Caraglia, Alberto Abbruzzese, Guglielmo
-  d'Ambrosio, Rita Massa, and Ettore Bismuto.
-\newblock Non-thermal effects of electromagnetic fields at mobile phone
-  frequency on the refolding of an intracellular protein: Myoglobin.
-\newblock {\em J. Cell. Biochem.}, 93(1):188--196, 2004.
-
-\bibitem{inskip2001cellular}
-Peter~D Inskip, Robert~E Tarone, Elizabeth~E Hatch, Timothy~C Wilcosky,
-  William~R Shapiro, Robert~G Selker, Howard~A Fine, Peter~M Black, Jay~S
-  Loeffler, and Martha~S Linet.
-\newblock Cellular-telephone use and brain tumors.
-\newblock {\em N. Engl. J. Med.}, 344(2):79--86, 2001.
-
-\bibitem{bekard2013electric}
-I.~Bekard and D.E. Dunstan.
-\newblock Electric field induced changes in protein conformation.
-\newblock {\em Soft Matter}, pages~--, 2014.
-
-\bibitem{budi2005electric}
-A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
-\newblock Electric field effects on insulin chain-b conformation.
-\newblock {\em J. Phys. Chem. B}, 109(47):22641--22648, 2005.
-
-\bibitem{budi2007effect}
-A.~Budi, F.S. Legge, H.~Treutlein, and I.~Yarovsky.
-\newblock Effect of frequency on insulin response to electric field stress.
-\newblock {\em J. Phys. Chem. B}, 111(20):5748--5756, 2007.
-
-\bibitem{budi2008comparative}
-Akin Budi, F~Sue Legge, Herbert Treutlein, and Irene Yarovsky.
-\newblock Comparative study of insulin chain-b in isolated and monomeric
-  environments under external stress.
-\newblock {\em J. Phys. Chem. B}, 112(26):7916--7924, 2008.
-
-\bibitem{astrakas2012structural}
-Loukas~G Astrakas, Christos Gousias, and Margaret Tzaphlidou.
-\newblock Structural destabilization of chignolin under the influence of
-  oscillating electric fields.
-\newblock {\em J. Appl. Phys.}, 111(7):074702--074702, 2012.
-
-\bibitem{damm2012can}
-Markus Damm, Christoph Nusshold, David Cantillo, Gerald~N Rechberger, Karl
-  Gruber, Wolfgang Sattler, and C~Oliver Kappe.
-\newblock Can electromagnetic fields influence the structure and enzymatic
-  digest of proteins? a critical evaluation of microwave-assisted proteomics
-  protocols.
-\newblock {\em J. Proteomics}, 75:5533--5543, 2012.
-
-\bibitem{english2009nonequilibrium}
-N.J. English, G.Y. Solomentsev, and P.~O'Brien.
-\newblock Nonequilibrium molecular dynamics study of electric and low-frequency
-  microwave fields on hen egg white lysozyme.
-\newblock {\em J. Chem. Phys.}, 131:035106, 2009.
-
-\bibitem{solomentsev2012effects}
-G.Y. Solomentsev, N.J. English, and D.A. Mooney.
-\newblock Effects of external electromagnetic fields on the conformational
-  sampling of a short alanine peptide.
-\newblock {\em J. Comput. Chem.}, 33:917--923, 2012.
-
-\bibitem{wang2014exploring}
-Han Wang, Christof Sch{\"u}tte, Giovanni Ciccotti, and Luigi Delle~Site.
-\newblock Exploring the conformational dynamics of alanine dipeptide in
-  solution subjected to an external electric field: {A} nonequilibrium
-  molecular dynamics simulation.
-\newblock {\em Journal of Chemical Theory and Computation}, 10(4):1376--1386,
-  2014.
-
-\bibitem{A19-31}
-Ch. Sch\"utte and M.~Sarich.
-\newblock {\em Metastability and {{Markov}} State Models in Molecular Dynamics:
-  Modeling, Analysis, Algorithmic Approaches}, volume~24 of {\em Courant
-  Lecture Notes}.
-\newblock American Mathematical Society, December 2013.
-
-\bibitem{prinz2011markov}
-J.H. Prinz, H.~Wu, M.~Sarich, B.~Keller, M.~Senne, M.~Held, J.D. Chodera,
-  C.~Sch{\"u}tte, and F.~No{\'e}.
-\newblock {{Markov} models of molecular kinetics: Generation and validation}.
-\newblock {\em J. Chem. Phys.}, 134:174105, 2011.
-
-\bibitem{A19-1}
-G.~R. Bowman, V.~S. Pande, and F.~No\'e, editors.
-\newblock {\em An Introduction to {{Markov}} State Models and Their Application
-  to Long Timescale Molecular Simulation}, volume 797 of {\em Advances in
-  Experimental Medicine and Biology}.
-\newblock Springer, 2014.
-
-\bibitem{A19-49}
-M.~Senne, B.~Trendelkamp-Schroer, A.~S. J.~S. Mey, Ch. Sch\"utte, and F.~No\'e.
-\newblock Emma - a software package for {{Markov}} model building and analysis.
-\newblock {\em J. Chem. Theory Comput.}, 8:2223--2238, 2012.
-
-\bibitem{MSMBuilder}
-Kyle~A Beauchamp, Gregory R~Bowman andThomas J~Lane, Lutz Maibaum, Imran~S
-  Haque, and Vijay~S Pande.
-\newblock {MSMBuilder2}: {M}odeling conformational dynamics at the picosecond
-  to millisecond scale.
-\newblock {\em J Chem Theor Comput}, 2011.
-
-\bibitem{schuette2011markov}
-C.~Sch{\"u}tte, F.~No{\'e}, J.~Lu, M.~Sarich, and E.~Vanden-Eijnden.
-\newblock {{Markov} State Models based on Milestoning}.
-\newblock {\em J. Chem. Phys.}, 134:204105, 2011.
-
-\bibitem{sarich2010approximation}
-Marco Sarich, Frank No{\'e}, and Christof Sch{\"u}tte.
-\newblock On the approximation quality of {Markov} state models.
-\newblock {\em Multiscale Modeling \& Simulation}, 8(4):1154--1177, 2010.
-
-\bibitem{Eigenvalues}
-N.~Djurdjevac, M.~Sarich, and Ch~Sch{\"u}tte.
-\newblock Estimating the eigenvalue error of {M}arkov state models.
-\newblock {\em Multiscale Modeling \& Simulation}, 10(1):61--81, 2012.
-
-\bibitem{PNAS09}
-F.~No\'{e}, C.~Sch\"utte, E.~Vanden-Eijnden, L.~Reich, and T.~R. Weikl.
-\newblock Constructing the full ensemble of folding pathways from short
-  off-equilibrium simulations.
-\newblock {\em Proc. Natl. Acad. Sci. USA}, 106:19011--19016, 2009.
-
-\bibitem{kohlhoff2014cloud}
-Kai~J Kohlhoff, Diwakar Shukla, Morgan Lawrenz, Gregory~R Bowman, David~E
-  Konerding, Dan Belov, Russ~B Altman, and Vijay~S Pande.
-\newblock Cloud-based simulations on google exacycle reveal ligand modulation
-  of gpcr activation pathways.
-\newblock {\em Nature chemistry}, 6(1):15--21, 2014.
-
-\bibitem{A19-39}
-B.~G. Keller, J.-H. Prinz, and F.~No\'e.
-\newblock {{Markov}} models and dynamical fingerprints: {U}nraveling the
-  complexity of molecular kinetics.
-\newblock {\em Chem. Phys.}, 396:92--107, 2012.
-
-\bibitem{PrinzKellerNoe_PCCP11_Perspective}
-Jan-Hendrik Prinz, Bettina~G. Keller, and Frank No{\'e}.
-\newblock Probing molecular kinetics with {{{Markov}}} models: Metastable
-  states, transition pathways and spectroscopic observables.
-\newblock {\em Phys. Chem. Chem. Phys.}, 13:16912--16927, 2011.
-
-\bibitem{pande2010everything}
-V.S. Pande, K.~Beauchamp, and G.R. Bowman.
-\newblock Everything you wanted to know about {Markov} state models but were
-  afraid to ask.
-\newblock {\em Methods}, 52(1):99--105, 2010.
-
-\bibitem{A19-29}
-M.~Sarich, Ralf Banisch, C.~Hartmann, and Ch. Sch\"utte.
-\newblock {{Markov}} state models for rare events in molecular dynamics.
-\newblock {\em Entropy (Special Issue)}, 16(1):258--286, December 2013.
-
-\bibitem{latorre2011structure}
-Juan~C Latorre, Philipp Metzner, Carsten Hartmann, and Christof Sch{\"u}tte.
-\newblock A structure-preserving numerical discretization of reversible
-  diffusions.
-\newblock {\em Commun. Math. Sci}, 9(4):1051--1072, 2011.
-
-\bibitem{floquet1883equations}
-G~Floquet.
-\newblock Sur les {\'e}quations diff{\'e}rentielles lin{\'e}aires {\`a}
-  coefficients p{\'e}riodiques.
-\newblock {\em Annales scientifiques de l'{\'E}cole Normale Sup{\'e}rieure},
-  12:47--82, 1883.
-
-\bibitem{A19-26}
-F.~No\'e, H.~Wu, J.-H. Prinz, and N.~Plattner.
-\newblock Projected and hidden {{Markov}} models for calculating kinetics and
-  metastable states of complex molecules.
-\newblock {\em J. Chem. Phys.}, 139:184114, 2013.
-
-\bibitem{BucheteHummer}
-Nicaolae~V. Buchete and Gerhard Hummer.
-\newblock Coarse master equations for peptide folding dynamics.
-\newblock {\em J. Phys. Chem. B}, 112:6057--6069, 2008.
-
-\bibitem{sarich2014utilizing}
-Marco Sarich and Christof Sch{\"u}tte.
-\newblock Utilizing hitting times for finding metastable sets in non-reversible
-  {Markov} chains.
-\newblock {\em submitted to the Journal of Computational Dynamics}, 2014.
-
-\bibitem{discreteTPT}
-P.~Metzner, Ch. Sch{\"u}tte, and E.~Vanden-Eijnden.
-\newblock Transition path theory for {M}arkov jump processes.
-\newblock {\em Multiscale Modeling and Simulation}, 7(3):1192--1219, 2009.
-
-\bibitem{djurdjevac2010markov}
-N.~Djurdjevac, M.~Sarich, and C.~Sch{\"u}tte.
-\newblock On {{Markov}} state models for metastable processes.
-\newblock In {\em Proceedings of the International Congress of Mathematicians},
-  volume 901, pages 3105--3131, 2010.
-
-\bibitem{chodera2007automatic}
-J.D. Chodera, N.~Singhal, V.S. Pande, K.A. Dill, and W.C. Swope.
-\newblock Automatic discovery of metastable states for the construction of
-  {Markov} models of macromolecular conformational dynamics.
-\newblock {\em J. Chem. Phys.}, 126:155101, 2007.
-
-\bibitem{foloppe2000all}
-Nicolas Foloppe and Alexander~D MacKerell~Jr.
-\newblock All-atom empirical force field for nucleic acids: I. parameter
-  optimization based on small molecule and condensed phase macromolecular
-  target data.
-\newblock {\em J. Comput. Chem.}, 21(2):86--104, 2000.
-
-\bibitem{jorgensen1983comparison}
-William~L Jorgensen, Jayaraman Chandrasekhar, Jeffry~D Madura, Roger~W Impey,
-  and Michael~L Klein.
-\newblock Comparison of simple potential functions for simulating liquid water.
-\newblock {\em J. Chem. Phys.}, 79(2):926--935, 1983.
-
-\bibitem{mackerell2004extending}
-Alexander~D MacKerell, Michael Feig, and Charles~L Brooks~III.
-\newblock Extending the treatment of backbone energetics in protein force
-  fields: Limitations of gas-phase quantum mechanics in reproducing protein
-  conformational distributions in molecular dynamics simulations.
-\newblock {\em J. Comput. Chem.}, 25(11):1400--1415, 2004.
-
-\bibitem{pronk2013gromacs}
-S.~Pronk, S.~P{\'a}ll, R.~Schulz, P.~Larsson, P.~Bjelkmar, R.~Apostolov, M.R.
-  Shirts, J.C. Smith, P.M. Kasson, D.~van~der Spoel, Hess B., and Lindahl E.
-\newblock Gromacs 4.5: a high-throughput and highly parallel open source
-  molecular simulation toolkit.
-\newblock {\em Bioinformatics}, pages 1--10, 2013.
-
-\bibitem{bjelkmar2010implementation}
-P\"{a}r Bjelkmar, Per Larsson, Michel~A Cuendet, Berk Hess, and Erik Lindahl.
-\newblock Implementation of the charmm force field in gromacs: Analysis of
-  protein stability effects from correction maps, virtual interaction sites,
-  and water models.
-\newblock {\em J. Chem. Theory Comput.}, 6(2):459--466, 2010.
-
-\bibitem{parrinello1981polymorphic}
-M.~Parrinello and A.~Rahman.
-\newblock Polymorphic transitions in single crystals: A new molecular dynamics
-  method.
-\newblock {\em J. Appl. Phys.}, 52:7182, 1981.
-
-\bibitem{darden1993pme}
-T.~Darden, D.~York, and L.~Pedersen.
-\newblock {Particle mesh Ewald: An $N \log (N)$ method for Ewald sums in large
-  systems}.
-\newblock {\em J. Chem. Phys.}, 98:10089, 1993.
-
-\bibitem{essmann1995spm}
-U.~Essmann, L.~Perera, M.L. Berkowitz, T.~Darden, H.~Lee, and L.G. Pedersen.
-\newblock {A smooth Particle Mesh Ewald method}.
-\newblock {\em J. Chem. Phys.}, 103(19):8577, 1995.
-
-\bibitem{wang2010optimizing}
-Han Wang, Florian Dommert, and Christian Holm.
-\newblock Optimizing working parameters of the smooth particle mesh ewald
-  algorithm in terms of accuracy and efficiency.
-\newblock {\em The Journal of chemical physics}, 133(3):034117, 2010.
-
-\bibitem{hess1997lincs}
-B.~Hess, H.~Bekker, H.J.C. Berendsen, and J.G.E.M. Fraaije.
-\newblock {LINCS: a linear constraint solver for molecular simulations}.
-\newblock {\em J. Comput. Chem.}, 18(12):1463--1472, 1997.
-
-\bibitem{miyamoto2004settle}
-S.~Miyamoto and P.A. Kollman.
-\newblock {SETTLE: an analytical version of the SHAKE and RATTLE algorithm for
-  rigid water models}.
-\newblock {\em J. Comput. Chem.}, 13(8):952--962, 2004.
-
-\bibitem{PCCAplus}
-P.~Deuflhard and M.~Weber.
-\newblock Robust {P}erron cluster analysis in conformation dynamics.
-\newblock {\em Linear Algebra and its Applications}, 161(184), 2005.
-\newblock 398 Special issue on matrices and mathematical biology.
-
-\bibitem{PrinzHeldSmithNoe_Committorprep}
-Jan-Hendrik Prinz, Martin Held, Jeremy~C. Smith, and Frank No{\'e}.
-\newblock Efficient computation of committor probabilities and transition state
-  ensembles.
-\newblock {\em SIAM Multiscale Model. Simul.}, 9:545, 2011.
-
-\bibitem{wang2013linear}
-Han Wang, Carsten Hartmann, and Christof Sch{\"u}tte.
-\newblock Linear response theory and optimal control for a molecular system
-  under non-equilibrium conditions.
-\newblock {\em Molecular Physics}, 111(22-23):3555--3564, 2013.
-
-\bibitem{schutte2014markov}
-Christof Sch{\"u}tte, Adam Nielsen, and Marcus Weber.
-\newblock Markov state models and molecular alchemy.
-\newblock {\em Molecular Physics}, ahead-of-print, 2014.
-
-\bibitem{seifert2012stochastic}
-Udo Seifert.
-\newblock Stochastic thermodynamics, fluctuation theorems and molecular
-  machines.
-\newblock {\em Reports on Progress in Physics}, 75(12):126001, 2012.
-
-\end{thebibliography}
-% \bibliography{ref}{}
-% % \bibliographystyle{unsrt}
-
+\bibliography{ref}
 
 
 \end{document}
