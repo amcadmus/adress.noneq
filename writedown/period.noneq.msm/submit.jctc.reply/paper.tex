@@ -18,7 +18,7 @@
 \makeatletter
 \makeatother
 
-\newcommand{\recheck}[1]{{\color{red} #1}}
+\newcommand{\redrevision}[1]{\color{red} #1}
 \newcommand{\redc}[1]{{\color{red} #1}}
 \newcommand{\bluec}[1]{{\color{blue} #1}}
 \newcommand{\greenc}[1]{{\color{green} #1}}
@@ -119,7 +119,7 @@ becoming increasingly difficult as the system size and trajectory length grow; M
 % \textbf{Importance: first application of MSM in a non-equilibrium system.}
 To the best of our knowledge, this work is the first attempt of using MSMs for analyzing non-equilibrium systems under periodic external forcing.
 More precisely, we will demonstrate how to use MSMs to investigate the conformational dynamics of a peptide (alanine dipeptide) under an oscillating electric field (EF).
-To this end, we will show how to generalize Markov state modeling to periodic non-equilibrium conditions, where one cannot assume reversibility of the dynamics as is most often the case in the literature on MSM building.
+To this end, we will show how to generalize Markov state modeling to periodic non-equilibrium conditions, where one cannot assume reversibility of the dynamics as is most often the case in the literature on MSM building. 
 
 The outline of the article is as follows: 
 In Section~\ref{sec:disc}, we discuss the temporal and spatial
@@ -849,6 +849,21 @@ MSM out of the committors of the  discretized process.
 
 \subsection{MSM building and validation}
 
+\begin{table}
+  \centering
+  \caption{
+    Comparison of second and third eigenvalues of $\vect P$ and $3\times 3$ MSM transition matrices $\hat{P}$ and $\hat{M}^{-1}\hat{T}$, respectively, from the two different MSM approaches.
+  }
+  \begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}c rrr}\hline\hline
+      &  $\lambda_2$ & $\lambda_3$ & $\lambda_4$ \\\hline
+    $P$                 &0.905  &0.668 & 0.551       \\
+    $\hat P$     & 0.909  &0.710 & --       \\
+    $\hat{M}^{-1}\hat{T}$    & 0.901  &0.649 & --       \\
+    \hline\hline
+  \end{tabular*}
+  \label{tab:tmp1}
+\end{table}
+
 Following the process described in Section~\ref{sec:build-msm}, we are able to build a 
 3-state MSM for the externally driven alanine dipeptide system,
 where the quasi-stationary probability distribution $\mu$, the three core sets, and the forward and backward committors are
@@ -861,10 +876,31 @@ The MSM is able to accurately reproduce
 the largest non-trivial eigenvalue, which means a precise reproduction
 of the longest non-trivial implied timescale. The accuracy of the second non-trivial
 timescale is not as good as the first, but is still acceptable.
-The reason
-for the lower accuracy may also be that
-the corresponding timescale is 26.5~ps (calculated by $-T/\log(\lambda_2)$),
-which is NOT significantly longer than the temporal resolution given by the period $T=10$~ps of the external driving force.
+%The  lower accuracy is due to the fact that
+%the corresponding timescale of 26.5~ps (calculated by $-T/\log(\lambda_2)$) is \emph{not} significantly longer than the temporal resolution given by the period $T=10$~ps of the external driving force:
+%%%CS
+\begin{figure}
+  \centering
+  \includegraphics[width=0.6\textwidth]{hitting.eps}
+  \caption{Schematic plot of comparison between a continuous and time-discretized trajectories in hitting a core set. }
+  \label{fig:hitting}
+\end{figure}
+The lower accuracy of the second non-trivial timescale stems from the
+time-disretization underlying our approach. The associated problem is graphically
+illustrated in Fig.~\ref{fig:hitting}.  The milestone process is defined
+to change state when the trajectory hits a core set that is not the
+one it came from.  In Fig.~\ref{fig:hitting}, the milestone process based on the time-continuous trajectory changes to state ``2'' at the
+first hit of core set $C_2$. In comparison, this first hitting
+event would not be correctly recognized using the time-discretized trajectory; instead, in the time-discretized case 
+the milestone process would change to state ``2'' only at the second
+hit of core set $C_2$. This respective error in detecting the correct first hitting time will \emph{not} be significant if it is much longer than the discretization time-step.
+However, it will become relevant if both are comparable. In our case, the temporal discretization is given by the period $T=10$~ps, which is not well separated from the second non-trivial time-scale
+that is 26.5~ps (calculated by $-T/\log(\lambda_2)$). Therefore, we observe an unavoidable deviation in the second timescale.
+In applications to more complex and realistic problems (especially larger systems), in particular for
+systems exhibiting timescale separation between the external driving period and the interested implied
+timescales, good accuracy is expected. 
+%%%
+
 The difference between the eigenvalues of $\hat P$ and $\hat{M}^{-1}\hat T$
   can be taken as an indication for the non-Markovianity of the milestone process $\hat X_m$. This
   non-Markovianity seems to have stronger influence on the second non-trivial timescale than on the first; this may be caused by shorter decorrelation timescales due to weaker metastability of the core sets involved.
@@ -889,20 +925,6 @@ the MSM built out of it is almost reversible:
 The magnitude of the anti-symmetric part of the
 matrix $\textrm{diag}(\hat \mu)\cdot \hat P$ is only of order $10^{-4}$.
 
-\begin{table}
-  \centering
-  \caption{
-    Comparison of second and third eigenvalues of $\vect P$ and $3\times 3$ MSM transition matrices $\hat{P}$ and $\hat{M}^{-1}\hat{T}$, respectively, from the two different MSM approaches.
-  }
-  \begin{tabular*}{0.45\textwidth}{@{\extracolsep{\fill}}c rrr}\hline\hline
-      &  $\lambda_2$ & $\lambda_3$ & $\lambda_4$ \\\hline
-    $P$                 &0.905  &0.668 & 0.551       \\
-    $\hat P$     & 0.909  &0.710 & --       \\
-    $\hat{M}^{-1}\hat{T}$    & 0.901  &0.649 & --       \\
-    \hline\hline
-  \end{tabular*}
-  \label{tab:tmp1}
-\end{table}
 
 % \begin{figure}
 %   \centering
@@ -1032,8 +1054,14 @@ significantly increases relative to the equilibrium population
 (see also the discussions in Ref.~\cite{wang2014exploring}),
 and the leading relaxation timescale of the system is much shorter than in the equilibrium case.
 
-A final remark concerning the utilization of the proposed methodology may be in order. 
-Based on an MSM for given periodic forcing, optimal control problems may come into play:
+A final remark concerning the utilization of the proposed methodology may be in order: 
+%%%CS
+The approach presented herein allows for MSM building for periodic forcings only; an extension
+to non-periodic driving forces is not straightforward, because in
+general Floquet theory is not applicable to non-periodic driving
+forcings. However 
+%%%
+based on an MSM for given periodic forcing, optimal control problems may come into play:
 Using available methods, such as non-equilibrium
 linear response theory~\cite{wang2013linear} or computational alchemy for MSMs ~\cite{schutte2014markov}, one can construct the MSM for slightly changed parameters (e.g., period and amplitude) of the external forcing by appropriate reweighting of the MSM for the given forcing. This, in principle, allows for  answering questions such as the following:
 for which parameters of the external forcing does one achieve maximal population of  the left-handed $\alpha$-helix?

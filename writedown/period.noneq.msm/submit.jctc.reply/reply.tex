@@ -59,10 +59,15 @@ by H.~Wang and C.~Sch\"utte to the
 \textit{Journal of Chemical Theory and Computation}.
 We gratefuly acknowledge the reviewers for the positive reports, and for
 their insight and suggestions, which helped us improving the quality
-of the manuscript.  In response to their comments, the revisions are
-reported below in details.  To help the referees spot the changes in
+of the manuscript.  In response to their comments, the major questions raised by the referees are
+reported below in detail.  
+
+We revised the manuscript repsectively and reworked the English completely.
+To help the referees spot the major changes in
 the manuscript, we have submitted a separate file (highlight.pdf) with
 all changes highlighted in red.
+
+We hope that the revised manuscript is fit for publication now.
 
 \vskip 1cm
 
@@ -89,13 +94,15 @@ larger, slightly more realistic system and for a different
 non-equilibrium regime.
 }\\
 
-The current theoretical framework firstly reduces to an
-time-homogeneous Markov process by the Floquet theory.  The extension
-to the non-periodic driving forces is not straightforward, because in
-general the Floquet theory is not applicable to for arbitrary driving
-force. Nevertheless, the question raised by the referee is very
-important, and we intend to address in future research.
-\\
+The theoretical framework presented in the manuscript firstly reduces the NEMD process to a
+time-homogeneous Markov process by utilizing Floquet theory.  An extension
+to non-periodic driving forces is not straightforward, because in
+general Floquet theory is not applicable to arbitrary driving
+force. Nevertheless, apart from the aspects related to Floquet theory our general approach does well extend to more general driving forces so that
+the question raised by the referee is very relevant: Applications of the approach presented in the manuscript to approach like the one of K. Schulten is one of the final goals. \\
+
+However, one should be aware that our approach is \emph{the first} application of the MSM idea to NEMD. We think that the combination of the results presented here with the approach of the ideas presented in Sarich et al., Markov State Models for Rare Events in Molecular Dynamics. Entropy, 16 (1). pp. 258-286 (2013)  will allow for addressing the question of the referee in future research.\\
+
 
 \textit{ Of course, alanine dipeptide is a toy system.  And, as the
   authors show, researchers may not be able to arrive at a perfect
@@ -122,22 +129,19 @@ important, and we intend to address in future research.
   \label{fig:tmp1}
 \end{figure}
 
-The lower accuracy of the second non-trivial time scale stems from the
+The lower accuracy of the second non-trivial timescale stems from the
 time-disretization problem in core set hitting, which is graphically
 illustrated in Fig.~\ref{fig:tmp1}.  The milestone process is defined
 to change state when the trajectory hits a core set that is not the
-one it came from.  In Fig.~\ref{fig:tmp1}, if the trajectory is
-continuum, then the milestone process changes to state ``2'' at the
+one it came from.  In Fig.~\ref{fig:tmp1}, the milestone process based on the time-continuous trajectory changes to state ``2'' at the
 first hitting at core set $C_2$. In comparison, the first hitting
-event would not be recognized if the trajectory is discretized, and
-the milestone process changes to state ``2'' only at the second
-hitting at core set $C_2$.\\
-
-This time-discretizations error would not be significant if the
-interested time-scale is much longer than the discretized time-step.
-However, it would be seen if the they are comparable. In our case, the minimum discretization
+event would not be recognized using the time-discretized trajectory; in this case 
+the milestone process would change to state ``2'' only at the second
+hitting at core set $C_2$. This respective error in detecting the correct hitting time would not be significant if the
+first hitting time is much longer than the discretization time-step.
+However, it will become relevant whenever they are comparable. In our case, the minimum discretization
 time-step is the period $T=10$~ps, which is not well separated from the second non-trivial time-scale
-that is 26.5~ps.\\
+that is 26.5~ps. Therefore, we observe an unavoidable deviation in the second timescale.\\
 
 \begin{table}
   \centering
@@ -152,19 +156,17 @@ that is 26.5~ps.\\
 \end{table}
 In order to further illustrate the artifact of time-discretizations,
 we discretized the trajectory by increasing time-steps, and compare
-the leading time-scale of the derived MSM with the NEMD, see Tab.~\ref{tab:tmp1}.
-It can be easily concluded that as the time-discretizations increases and approaches
+the \emph{leading} timescale $t_1$ of the derived MSM with the NEMD, see Tab.~\ref{tab:tmp1}.
+It can be easily seen that as the discretization time-step increases and approaches
 the leading non-trivial time-scale $t_1 = 100.2$~ps, the accuracy of MSM
-in computing $t_1$ decreases. When the time-discretizations increases to $4T = 40$~ps, the relative
-error is over 15\%.
+in computing $t_1$ decreases. 
 \\
 
-In the applications of the more complex and realistic problems, if the
-system has time-scale separation between the external driving period and the interested implied
-time-scales, then good accuracy is expected. Generally speaking, in
-more complex molecular system, the interested time-scales are longer
-than the alanine dipeptide toy system. Therefore, we would expect 
-higher accuracy in more complex systems if the period of external field is 10~ps.
+In applications to more complex and realistic problems (larger systems), in particular for
+systems exhibiting timescale separation between the external driving period and the interested implied
+timescales, good accuracy is expected (and in fact guaranteed by general MSM theory). Generally speaking, in
+more complex molecular system, the  timescales of interest are longer
+than in the alanine dipeptide toy system. 
 \\
 
 \textit{ Also, the authors and others in the field have used the
@@ -179,21 +181,15 @@ higher accuracy in more complex systems if the period of external field is 10~ps
   clarify its application.
 }\\
 
-The discretizations time-step in the milestone MSM approach should be
-distinguished from the lag-time in the space full partitioning MSM
-approach. Larger time-discretizations in milestone MSM generally gives
-worse prediction of implied time-scales, whereas larger lag-time in
-space full partitioning MSM leads to better accuracy as long as the
-lag-time is smaller than the interested time-scale. The
+The discretization time-step in the milestoning MSM approach should be
+distinguished from the lag-time in the full partition MSM
+approach. Larger discretization time-steps in milestoning MSM generally result in
+worse prediction of implied timescales (as discussed above), while larger lag-times in
+full partition MSMs lead to better accuracy as long as the
+lag-time is smaller than the time-scales of interest. The
 Chapman-Komolgorov test basically checks the consistency of full
-partitioning MSM with different lag-times, and it does not apply to
-the milestone MSM approach.
+partition MSM with different lag-times, and thus does not apply to
+milestone MSMs. See Schütte et al. (2011), Markov State Models Based on Milestoning, J. Chem. Phys., 134 (20). 204105 (2011) for more details.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.48\textwidth]{fig-coreset-prob-chapman-ar.eps}
-  \includegraphics[width=0.48\textwidth]{fig-coreset-prob-chapman-al.eps}
-  \caption{The Chapman-Komolgorov test of state $\alpha_{\textrm{R}}$ (left) and $\alpha_{\textrm{L}}$ (right).}
-\end{figure}
 
 \end{document}
