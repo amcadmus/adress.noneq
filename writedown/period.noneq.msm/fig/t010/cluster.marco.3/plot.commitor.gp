@@ -20,48 +20,48 @@ set table 'img.dist.2d.dat'
 splot 'commitor.fw.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-fw-1.eps'
-set title 'Commitor fw 1'
-set title 'q@^{+}_{{/Symbol a}_R} by NEMD'
+set title 'Commitor fw 1' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_R} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.fw.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-fw-2.eps'
-set title 'Commitor fw 2'
-set title 'q@_{{/Symbol b}}^{+} by NEMD'
+set title 'Commitor fw 2' font "Helvetica,30"
+set title 'q@_{{/Symbol b}}^{+} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.fw.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-fw-3.eps'
-set title 'Commitor fw 3'
-set title 'q@^{+}_{{/Symbol a}_L} by NEMD'
+set title 'Commitor fw 3' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_L} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.fw.msm.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-fw-msm-1.eps'
-set title 'Commitor fw 1 MSM'
-set title 'q@^{+}_{{/Symbol a}_R} by discr. dyn.'
+set title 'Commitor fw 1 MSM' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_R} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.fw.msm.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-fw-msm-2.eps'
-set title 'Commitor fw 2 MSM'
-set title 'q@_{{/Symbol b}}^{+} by discr. dyn.'
+set title 'Commitor fw 2 MSM' font "Helvetica,30"
+set title 'q@_{{/Symbol b}}^{+} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.fw.msm.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-fw-msm-3.eps'
-set title 'Commitor fw 3 MSM'
-set title 'q@^{+}_{{/Symbol a}_L} by discr. dyn.'
+set title 'Commitor fw 3 MSM' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_L} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 
@@ -70,48 +70,48 @@ set table 'img.dist.2d.dat'
 splot 'commitor.bw.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-bw-1.eps'
-set title 'Commitor bw 1'
-set title 'q@^{-}_{{/Symbol a}_R} by NEMD'
+set title 'Commitor bw 1' font "Helvetica,30"
+set title 'q@^{-}_{{/Symbol a}_R} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.bw.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-bw-2.eps'
-set title 'Commitor bw 2'
-set title 'q@_{{/Symbol b}}^{-} by NEMD'
+set title 'Commitor bw 2' font "Helvetica,30"
+set title 'q@_{{/Symbol b}}^{-} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.bw.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-bw-3.eps'
-set title 'Commitor bw 3'
-set title 'q@^{-}_{{/Symbol a}_L} by NEMD'
+set title 'Commitor bw 3' font "Helvetica,30"
+set title 'q@^{-}_{{/Symbol a}_L} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.bw.msm.out' u 1:2:3 not
 unset table
 set out 'fig-commitor-bw-msm-1.eps'
-set title 'Commitor bw 1 MSM'
-set title 'q@^{-}_{{/Symbol a}_R} by discr. dyn.'
+set title 'Commitor bw 1 MSM' font "Helvetica,30"
+set title 'q@^{-}_{{/Symbol a}_R} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.bw.msm.out' u 1:2:5 not
 unset table
 set out 'fig-commitor-bw-msm-2.eps'
-set title 'Commitor bw 2 MSM'
-set title 'q@_{{/Symbol b}}^{-} by discr. dyn.'
+set title 'Commitor bw 2 MSM' font "Helvetica,30"
+set title 'q@_{{/Symbol b}}^{-} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
 splot 'commitor.bw.msm.out' u 1:2:7 not
 unset table
 set out 'fig-commitor-bw-msm-3.eps'
-set title 'Commitor bw 3 MSM'
-set title 'q@^{-}_{{/Symbol a}_L} by discr. dyn.'
+set title 'Commitor bw 3 MSM' font "Helvetica,30"
+set title 'q@^{-}_{{/Symbol a}_L} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 
@@ -158,15 +158,15 @@ splot 'commitor.msm.out' u 1:2:($3-$11) not
 unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-1.eps'
-set title 'Commitor diff 1 MSM'
-set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by discr. dyn.'
+set title 'Commitor diff 1 MSM' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($3-$11) not
 unset table
 set out 'fig-commitor-diff-1.eps'
-set title 'Commitor diff 1'
-set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by NEMD'
+set title 'Commitor diff 1' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_R} - q@^{-}_{{/Symbol a}_R} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -174,15 +174,15 @@ splot 'commitor.msm.out' u 1:2:($5-$13) not
 unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-2.eps'
-set title 'Commitor diff 2 MSM'
-set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by discr. dyn.'
+set title 'Commitor diff 2 MSM' font "Helvetica,30"
+set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($5-$13) not
 unset table
 set out 'fig-commitor-diff-2.eps'
-set title 'Commitor diff 2'
-set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by NEMD'
+set title 'Commitor diff 2' font "Helvetica,30"
+set title 'q@_{{/Symbol b}}^{+} - q@_{{/Symbol b}}^{-} by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 set table 'img.dist.2d.dat'
@@ -190,67 +190,67 @@ splot 'commitor.msm.out' u 1:2:($7-$15) not
 unset table
 set cbrange [-2e-1:2e-1]
 set out 'fig-commitor-diff-msm-3.eps'
-set title 'Commitor diff 3 MSM'
-set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L} by discr. dyn.'
+set title 'Commitor diff 3 MSM' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L} by discr. dyn.' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 set table 'img.dist.2d.dat'
 splot 'commitor.out' u 1:2:($7-$15) not
 unset table
 set out 'fig-commitor-diff-3.eps'
-set title 'Commitor diff 3'
-set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L}  by NEMD'
+set title 'Commitor diff 3' font "Helvetica,30"
+set title 'q@^{+}_{{/Symbol a}_L} - q@^{-}_{{/Symbol a}_L}  by NEMD' font "Helvetica,30"
 plot 'img.dist.2d.dat' with image
 
 # set cbrange [0:1]
 # set out 'fig-commitor-bw-1.eps'
-# set title 'Commitor bw 1'
+# set title 'Commitor bw 1' font "Helvetica,30"
 # splot 'commitor.bw.out' u 1:2:3 not w p pt 5 palette
 # set out 'fig-commitor-bw-2.eps'
-# set title 'Commitor bw 2'
+# set title 'Commitor bw 2' font "Helvetica,30"
 # splot 'commitor.bw.out' u 1:2:5 not w p pt 5 palette
 # set out 'fig-commitor-bw-3.eps'
-# set title 'Commitor bw 3'
+# set title 'Commitor bw 3' font "Helvetica,30"
 # splot 'commitor.bw.out' u 1:2:7 not w p pt 5 palette
 
 # set cbrange [0:1]
 # set out 'fig-commitor-bw-msm-1.eps'
-# set title 'Commitor bw 1 by MSM'
+# set title 'Commitor bw 1 by MSM' font "Helvetica,30"
 # splot 'commitor.bw.msm.out' u 1:2:3 not w p pt 5 palette
 # set out 'fig-commitor-bw-msm-2.eps'
-# set title 'Commitor bw 2 by MSM'
+# set title 'Commitor bw 2 by MSM' font "Helvetica,30"
 # splot 'commitor.bw.msm.out' u 1:2:5 not w p pt 5 palette
 # set out 'fig-commitor-bw-msm-3.eps'
-# set title 'Commitor bw 3 by MSM'
+# set title 'Commitor bw 3 by MSM' font "Helvetica,30"
 # splot 'commitor.bw.msm.out' u 1:2:7 not w p pt 5 palette
 
 
 # set cbrange [-2e-1:2e-1]
 # set out 'fig-commitor-diff-msm-1.eps'
-# set title 'Commitor diff 1 by MSM'
+# set title 'Commitor diff 1 by MSM' font "Helvetica,30"
 # splot 'commitor.msm.out' u 1:2:($3-$11) not w p pt 5 palette
 
 # set cbrange [-2e-1:2e-1]
 # set out 'fig-commitor-diff-1.eps'
-# set title 'Commitor diff 1 by BF'
+# set title 'Commitor diff 1 by BF' font "Helvetica,30"
 # splot 'commitor.out' u 1:2:($3-$11) not w p pt 5 palette
 
 # set cbrange [-2e-1:2e-1]
 # set out 'fig-commitor-diff-msm-2.eps'
-# set title 'Commitor diff 2 by MSM'
+# set title 'Commitor diff 2 by MSM' font "Helvetica,30"
 # splot 'commitor.msm.out' u 1:2:($5-$13) not w p pt 5 palette
 
 # set cbrange [-2e-1:2e-1]
 # set out 'fig-commitor-diff-2.eps'
-# set title 'Commitor diff 2 by BF'
+# set title 'Commitor diff 2 by BF' font "Helvetica,30"
 # splot 'commitor.out' u 1:2:($5-$13) not w p pt 5 palette
 
 
 # set cbrange [-1e-1:1e-1]
 # set out 'fig-commitor-diff-msm-3.eps'
-# set title 'Commitor diff 3 by MSM'
+# set title 'Commitor diff 3 by MSM' font "Helvetica,30"
 # splot 'commitor.msm.out' u 1:2:($7-$15) not w p pt 5 palette
 
 # set cbrange [-1e-1:1e-1]
 # set out 'fig-commitor-diff-3.eps'
-# set title 'Commitor diff 3 by BF'
+# Set title 'Commitor diff 3 by BF' font "Helvetica,30"
 # splot 'commitor.out' u 1:2:($7-$15) not w p pt 5 palette
